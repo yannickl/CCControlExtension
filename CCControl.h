@@ -33,14 +33,14 @@
 /** Kinds of possible events for the control objects. */
 enum 
 {
-    CCControlEventTouchDown           = 1 <<  0,    // A touch-down event in the control.
-    CCControlEventTouchDragInside     = 1 <<  1,    // An event where a finger is dragged inside the bounds of the control.
-    CCControlEventTouchDragOutside    = 1 <<  2,    // An event where a finger is dragged just outside the bounds of the control. 
-    CCControlEventTouchDragEnter      = 1 <<  3,    // An event where a finger is dragged into the bounds of the control.
-    CCControlEventTouchDragExit       = 1 <<  4,    // An event where a finger is dragged from within a control to outside its bounds.
-    CCControlEventTouchUpInside       = 1 <<  5,    // A touch-up event in the control where the finger is inside the bounds of the control. 
-    CCControlEventTouchUpOutside      = 1 <<  6,    // A touch-up event in the control where the finger is outside the bounds of the control.
-    CCControlEventTouchCancel         = 1 <<  7,    // A system event canceling the current touches for the control.
+    CCControlEventTouchDown           = 1 << 0,    // A touch-down event in the control.
+    CCControlEventTouchDragInside     = 1 << 1,    // An event where a finger is dragged inside the bounds of the control.
+    CCControlEventTouchDragOutside    = 1 << 2,    // An event where a finger is dragged just outside the bounds of the control. 
+    CCControlEventTouchDragEnter      = 1 << 3,    // An event where a finger is dragged into the bounds of the control.
+    CCControlEventTouchDragExit       = 1 << 4,    // An event where a finger is dragged from within a control to outside its bounds.
+    CCControlEventTouchUpInside       = 1 << 5,    // A touch-up event in the control where the finger is inside the bounds of the control. 
+    CCControlEventTouchUpOutside      = 1 << 6,    // A touch-up event in the control where the finger is outside the bounds of the control.
+    CCControlEventTouchCancel         = 1 << 7,    // A system event canceling the current touches for the control.
     CCControlEventValueChanged        = 1 << 8      // A touch dragging or otherwise manipulating a control, causing it to emit a series of different values.
 };
 typedef NSUInteger CCControlEvent;
@@ -137,16 +137,16 @@ typedef NSUInteger CCControlState;
  * @return YES whether a touch is inside the receiver’s rect.
  */
 - (BOOL)isTouchInside:(UITouch *)touch;
-#elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
+#elif __MAC_OS_X_VERSION_MAX_ALLOWED
 /**
- * Returns a boolean value that indicates whether a event is inside the bounds
- * of the receiver. The given touch must be relative to the world.
+ * Returns a boolean value that indicates whether a mouse is inside the bounds
+ * of the receiver. The given mouse event must be relative to the world.
  *
  * @param event An NSEvent object representing the event.
  *
- * @return YES whether a event is inside the receiver’s rect.
+ * @return YES whether a mouse event is inside the receiver’s rect.
  */
-- (BOOL)isEventInside:(NSEvent *)event;
+- (BOOL)isMouseInside:(NSEvent *)event;
 #endif
 
 @end

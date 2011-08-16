@@ -128,17 +128,13 @@
 {
     for (int i = 0; i < kControlEventTotalNumber; i++)
     {
-        if ((controlEvents & (1 << i)) > 0)
+        if ((controlEvents & (1 << i)))
         {
-            NSArray *invocationList =
-            [dispatchTable_ objectForKey:[NSNumber numberWithUnsignedInteger:controlEvents]];
+            NSMutableArray *invocationList = [self dispatchListforControlEvent:(1 << i)];
             
-            if (invocationList)
+            for (NSInvocation *invocation in invocationList)
             {
-                for (NSInvocation *invocation in invocationList)
-                {
-                    [invocation invoke];
-                }
+                [invocation invoke];
             }
         }
     }
@@ -180,9 +176,9 @@
 	return CGRectContainsPoint([self boundingBox], touchLocation);
 }
 
-#elif defined(__MAC_OS_X_VERSION_MAX_ALLOWED)
+#elif __MAC_OS_X_VERSION_MAX_ALLOWED
 
-- (BOOL)isEventInside:(NSEvent *)event
+- (BOOL)isMouseInside:(NSEvent *)event
 {
     CGPoint location = [[CCDirector sharedDirector] convertEventToGL:event];
 

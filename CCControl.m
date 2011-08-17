@@ -206,8 +206,10 @@
 
 #if NS_BLOCKS_AVAILABLE
     NSPredicate *predicate = 
-    [NSPredicate predicateWithBlock:^BOOL(NSInvocation *evaluatedObject, NSDictionary *bindings)
+    [NSPredicate predicateWithBlock:^BOOL(id object, NSDictionary *bindings)
      {
+         NSInvocation *evaluatedObject = object;
+         
          if ((target == nil && action == NULL)
              || (target == nil && [evaluatedObject selector] == action)
              || (action == NULL && [evaluatedObject target] == target)

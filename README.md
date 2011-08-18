@@ -5,6 +5,7 @@ CCControl is a convenient class for cocos2d-for-iphone which is inspired by the 
 The goal of CCControl is to define an interface and base implementation for preparing action messages and initially dispatching them to their targets when certain events occur.
 
 To use the CCControl you have to subclass it.
+There are some examples available here: https://github.com/YannickL/CCControl-Examples
   
 As well as Cocos2D for iPhone, CCControl is licensed under the MIT License. 
 You can download cocos2d-for-iphone here: https://github.com/cocos2d/cocos2d-iphone

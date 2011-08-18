@@ -126,8 +126,10 @@
 
 - (void)sendActionsForControlEvents:(CCControlEvent)controlEvents
 {
+    // For each control events
     for (int i = 0; i < kControlEventTotalNumber; i++)
     {
+        // If the given controlEvents bitmask contains the curent event
         if ((controlEvents & (1 << i)))
         {
             NSMutableArray *invocationList = [self dispatchListforControlEvent:(1 << i)];
@@ -145,7 +147,7 @@
     // For each control events
     for (int i = 0; i < kControlEventTotalNumber; i++)
     {
-        // If the given controlEvents bitmask contains it
+        // If the given controlEvents bitmask contains the curent event
         if ((controlEvents & (1 << i)))
         {
             [self addTarget:target action:action forControlEvent:(1 << i)];
@@ -158,7 +160,7 @@
     // For each control events
     for (int i = 0; i < kControlEventTotalNumber; i++)
     {
-        // If the given controlEvents bitmask contains it
+        // If the given controlEvents bitmask contains the curent event
         if ((controlEvents & (1 << i)))
         {
             [self removeTarget:target action:action forControlEvent:(1 << i)];

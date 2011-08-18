@@ -81,11 +81,11 @@ typedef NSUInteger CCControlState;
 }
 /** The current control state constant. */
 @property (assign, readonly) CCControlState state;
-/** Tells whether the button is enabled. */
+/** Tells whether the control is enabled. */
 @property (nonatomic, getter = isEnabled) BOOL enabled;
-/** A Boolean value that determines the button’s selected state. */
+/** A Boolean value that determines the control’s selected state. */
 @property(nonatomic, getter = isSelected) BOOL selected;
-/** A Boolean value that determines whether the button is highlighted. */
+/** A Boolean value that determines whether the control is highlighted. */
 @property(nonatomic, getter = isHighlighted) BOOL highlighted;
 
 #pragma mark CCControl - Preparing and Sending Action Messages

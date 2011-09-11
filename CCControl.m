@@ -101,6 +101,7 @@
 - (void)dealloc
 {
     [dispatchTable_ release], dispatchTable_ = nil;
+    
     [super dealloc];
 }
 
@@ -124,8 +125,54 @@
 #pragma mark -
 #pragma mark CCControl Public Methods
 
+- (void)setEnabled:(BOOL)enabled
+{
+    enabled_ = enabled;
+    
+    if (!enabled)
+    {
+        state_ = CCControlStateDisabled;
+        highlighted_ = NO;
+    } else
+    {
+        state_ = (selected_) ? CCControlStateSelected : CCControlStateNormal;
+    }
+}
+
+- (void)setSelected:(BOOL)selected
+{
+    selected_ = selected;
+    
+    if (!enabled_)
+    {
+        state_ = CCControlStateDisabled;
+    } else
+    {
+        state_ = (selected) ? CCControlStateSelected : CCControlStateNormal;
+    }
+}
+
+- (void)setHighlighted:(BOOL)highlighted
+{
+    highlighted_ = highlighted;
+    
+    if (!enabled_)
+    {
+        state_ = CCControlStateDisabled;
+        highlighted_ = NO;
+    } else if (selected_)
+    {
+        state_ = CCControlStateSelected;
+        highlighted_ = NO;
+    } else
+    {
+        state_ = (highlighted) ? CCControlStateHighlighted : CCControlStateNormal;
+    }
+}
+
 - (void)sendActionsForControlEvents:(CCControlEvent)controlEvents
 {
+    NSLog(@"sendActionsForControlEvents");
     // For each control events
     for (int i = 0; i < kControlEventTotalNumber; i++)
     {
@@ -133,9 +180,9 @@
         if ((controlEvents & (1 << i)))
         {
             NSMutableArray *invocationList = [self dispatchListforControlEvent:(1 << i)];
-            
+            NSLog(@"controlEvents: %d",(1 << i));
             for (NSInvocation *invocation in invocationList)
-            {
+            {NSLog(@"invocation");
                 [invocation invoke];
             }
         }
@@ -174,7 +221,8 @@
 {
     CGPoint touchLocation = [touch locationInView:[touch view]];
 	touchLocation = [[CCDirector sharedDirector] convertToGL:touchLocation];
-    
+    touchLocation = [[self parent] convertToNodeSpace:touchLocation];
+
 	return CGRectContainsPoint([self boundingBox], touchLocation);
 }
 
@@ -182,9 +230,10 @@
 
 - (BOOL)isMouseInside:(NSEvent *)event
 {
-    CGPoint location = [[CCDirector sharedDirector] convertEventToGL:event];
-
-    return CGRectContainsPoint([self boundingBox], location);
+    CGPoint eventLocation = [[CCDirector sharedDirector] convertEventToGL:event];
+    eventLocation = [[self parent] convertToNodeSpace:eventLocation];
+    
+    return CGRectContainsPoint([self boundingBox], eventLocation);
 }
 
 #endif

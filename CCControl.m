@@ -172,7 +172,6 @@
 
 - (void)sendActionsForControlEvents:(CCControlEvent)controlEvents
 {
-    NSLog(@"sendActionsForControlEvents");
     // For each control events
     for (int i = 0; i < kControlEventTotalNumber; i++)
     {
@@ -180,9 +179,9 @@
         if ((controlEvents & (1 << i)))
         {
             NSMutableArray *invocationList = [self dispatchListforControlEvent:(1 << i)];
-            NSLog(@"controlEvents: %d",(1 << i));
+
             for (NSInvocation *invocation in invocationList)
-            {NSLog(@"invocation");
+            {
                 [invocation invoke];
             }
         }

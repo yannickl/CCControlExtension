@@ -2,19 +2,12 @@ Cocos2d - CCControl-Examples
 =================
 These examples show how to the CCControl can be used.
 
-For the moment there is only one example which is the CCControlSlider.
+CCControls available:
+ * CCControlButton:
+CCControlButton provides a convenient way to create buttons with Cocos2d.
+
+ * CCControlSlider:
 CCControlSlider originally comes from the cocos2d-iphone-extensions CCSlider and I've modified it to use the CCControl. For more information you can see this article: http://yannickloriot.com/2011/08/use-cccontrol-to-create-a-slider-with-cocos2d-for-iphone/
-
-Example to use
-===================== 
-
-```
-    git clone git@github.com:YannickL/CCControl-Examples.git
-    cd CCControl-Examples
-
-    # to get latest stable source from master branch, use this command:
-    git checkout -t origin/master
-```
 
 Links
 ===================== 

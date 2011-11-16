@@ -93,6 +93,7 @@
 
 @implementation CCControl
 @synthesize dispatchTable = dispatchTable_;
+@synthesize defaultTouchPriority = defaultTouchPriority_;
 @synthesize state = state_;
 @synthesize enabled = enabled_;
 @synthesize selected = selected_;
@@ -116,11 +117,40 @@
         self.selected = NO;
         self.highlighted = NO;
         
+        // Set the touch dispatcher priority by default to 1
+        self.defaultTouchPriority = 1;
+        
         // Initialise the tables
         dispatchTable_ = [[NSMutableDictionary alloc] initWithCapacity:1];
     }
     return self;
 }
+
+- (void)onEnter
+{
+#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+	[[CCTouchDispatcher sharedDispatcher] addTargetedDelegate:self priority:defaultTouchPriority_ swallowsTouches:YES];
+#endif
+	[super onEnter];
+}
+
+- (void)onExit
+{
+#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+	[[CCTouchDispatcher sharedDispatcher] removeDelegate:self];
+#endif
+    
+	[super onExit];
+}
+
+#if __MAC_OS_X_VERSION_MAX_ALLOWED
+
+- (NSInteger)mouseDelegatePriority
+{
+	return defaultTouchPriority_;
+}
+
+#endif
 
 #pragma mark -
 #pragma mark CCControl Public Methods
@@ -186,7 +216,7 @@
 {
     CGPoint eventLocation = [[CCDirector sharedDirector] convertEventToGL:event];
     eventLocation = [[self parent] convertToNodeSpace:eventLocation];
-    
+
     return CGRectContainsPoint([self boundingBox], eventLocation);
 }
 

@@ -70,6 +70,8 @@ typedef NSUInteger CCControlState;
 @interface CCControl : CCLayer
 {
 @public
+    NSInteger defaultTouchPriority_;
+    
     CCControlState state_;
     
     BOOL enabled_;
@@ -79,6 +81,9 @@ typedef NSUInteger CCControlState;
 @private
     NSMutableDictionary *dispatchTable_;
 }
+/** Changes the priority of the button. The lower the number, the higher the
+ priority. */
+@property (nonatomic, assign) NSInteger defaultTouchPriority;
 /** The current control state constant. */
 @property (assign, readonly) CCControlState state;
 /** Tells whether the control is enabled. */

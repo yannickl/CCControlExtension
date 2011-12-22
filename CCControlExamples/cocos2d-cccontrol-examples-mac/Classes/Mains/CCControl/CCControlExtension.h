@@ -1,18 +1,19 @@
 /*
- * CCControlButtonTest.h
+ * CCControlExtension.h
  *
- * Copyright (c) 2011 Yannick Loriot
- *
+ * Copyright 2011 Yannick Loriot.
+ * http://yannickloriot.com
+ * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- *
+ * 
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- *
+ * 
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -23,39 +24,13 @@
  *
  */
 
-#import "CCControlScene.h"
+#ifndef CCControlExtension_h
+#define CCControlExtension_h
 
-@class CCControlButton;
+#import "CCScale9Sprite.h"
 
-@interface CCControlButtonTest_HelloVariableSize : CCControlScene
-{
-@protected
-}
+#import "CCControl.h"
+#import "CCControlButton.h"
+#import "CCControlSlider.h"
 
-#pragma mark Constructors - Initializers
-
-#pragma mark Public Methods
-
-@end
-
-@interface CCControlButtonTest_Event : CCControlScene
-{
-@protected
-    CCLabelTTF *displayEvents;
-}
-
-#pragma mark Constructors - Initializers
-
-#pragma mark Public Methods
-
-@end
-
-@interface CCControlButtonTest_Styling : CCControlScene
-{
-}
-
-#pragma mark Constructors - Initializers
-
-#pragma mark Public Methods
-
-@end
+#endif

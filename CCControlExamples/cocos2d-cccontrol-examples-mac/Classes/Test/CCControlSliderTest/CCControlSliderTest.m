@@ -26,7 +26,7 @@
 
 #import "CCControlSliderTest.h"
 
-#import "CCControlSlider.h"
+#import "CCControlExtension.h"
 
 @interface CCControlSliderTest ()
 @property (nonatomic, retain) CCLabelTTF *displayValueLabel;

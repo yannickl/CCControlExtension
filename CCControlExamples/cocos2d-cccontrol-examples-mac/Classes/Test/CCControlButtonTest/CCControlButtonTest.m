@@ -25,8 +25,72 @@
 
 #import "CCControlButtonTest.h"
 
-#import "CCControlButton.h"
-#import "CCScale9Sprite.h"
+#import "CCControlExtension.h"
+
+@interface CCControlButtonTest_HelloVariableSize ()
+
+/** Creates and return a button with a default background and title color. */
+- (CCControlButton *)standardButtonWithTitle:(NSString *)title;
+
+@end
+
+@implementation CCControlButtonTest_HelloVariableSize
+
+- (void)dealloc
+{
+    [super dealloc];
+}
+
+- (id)init
+{
+    if ((self = [super init]))
+    {
+        CGSize screenSize = [[CCDirector sharedDirector] winSize];
+        
+        // Defines an array of title to create buttons dynamically
+        NSArray *stringArray = [NSArray arrayWithObjects:@"Hello",@"Variable",@"Size",@"!", nil];
+        
+        CCNode *layer = [CCNode node];
+        [self addChild:layer];
+        
+        double total_width = 0, height = 0;
+        
+        // For each title in the array
+        for (NSString *title in stringArray)
+        {
+            // Creates a button with this string as title
+            CCControlButton *button = [self standardButtonWithTitle:title];
+            [button setPosition:ccp (total_width + button.contentSize.width / 2, button.contentSize.height / 2)];
+            [layer addChild:button];
+            
+            // Compute the size of the layer
+            height = button.contentSize.height;
+            total_width += button.contentSize.width;
+        }
+        
+        [layer setAnchorPoint:ccp (0.5, 0.5)];
+        [layer setContentSize:CGSizeMake(total_width, height)];
+        [layer setPosition:ccp(screenSize.width / 2.0f, screenSize.height / 2.0f)];
+    }
+    return self;
+}
+
+#pragma mark -
+#pragma CCControlButtonTest_HelloVariableSize Public Methods
+
+#pragma CCControlButtonTest_HelloVariableSize Private Methods
+
+- (CCControlButton *)standardButtonWithTitle:(NSString *)title
+{
+    /** Creates and return a button with a default background and title color. */
+    CCScale9Sprite *backgroundButton = [CCScale9Sprite spriteWithFile:@"CCControlButton.png"];
+    CCLabelTTF *titleButton = [CCLabelTTF labelWithString:title fontName:@"Helvetica" fontSize:30];
+    [titleButton setColor:ccBLACK];
+    
+    return [CCControlButton buttonWithLabel:titleButton backgroundSprite:backgroundButton];
+}
+
+@end
 
 @interface CCControlButtonTest_Event ()
 @property (nonatomic, retain) CCLabelTTF *displayValueLabel;
@@ -48,7 +112,7 @@
 	if ((self = [super init]))
     {
         CGSize screenSize = [[CCDirector sharedDirector] winSize];
-
+        
         // Add a label in which the button events will be displayed
 		self.displayValueLabel = [CCLabelTTF labelWithString:@"No Event" fontName:@"Marker Felt" fontSize:32];
         displayValueLabel.anchorPoint = ccp(0.5f, -1);
@@ -65,7 +129,7 @@
         controlButton.anchorPoint = ccp(0.5f, 1);
         controlButton.position = ccp(screenSize.width / 2.0f, screenSize.height / 2.0f);
         [self addChild:controlButton];
-
+        
         // Sets up event handlers
         [controlButton addTarget:self action:@selector(touchDownAction:) forControlEvents:CCControlEventTouchDown];
         [controlButton addTarget:self action:@selector(touchDragInsideAction:) forControlEvents:CCControlEventTouchDragInside];
@@ -128,6 +192,7 @@
 
 @interface CCControlButtonTest_Styling ()
 
+/** Creates and return a button with a default background and title color. */
 - (CCControlButton *)standardButtonWithTitle:(NSString *)title;
 
 @end
@@ -141,7 +206,7 @@
 
 - (id)init
 {
-	if ((self = [super init]))
+    if ((self = [super init]))
     {
         CGSize screenSize = [[CCDirector sharedDirector] winSize];
         
@@ -157,9 +222,8 @@
             {
                 // Add the buttons
                 CCControlButton *button = [self standardButtonWithTitle:[NSString stringWithFormat:@"%d",arc4random() % 30]];
-                button.backgroundSprite.preferedSize = CGSizeMake(45, 45);  // Set the prefered size
                 button.adjustBackgroundImage = NO;  // Tells the button that the background image must not be adjust
-                                                    // It'll use the prefered size of the background image
+                // It'll use the prefered size of the background image
                 button.position = ccp ((button.contentSize.width + space) * i, (button.contentSize.height + space) * j);
                 [layer addChild:button];
                 
@@ -171,8 +235,8 @@
         [layer setAnchorPoint:ccp (0.5, 0.5)];
         [layer setContentSize:CGSizeMake(max_w, max_h)];
         [layer setPosition:ccp(screenSize.width / 2.0f, screenSize.height / 2.0f)];
-	}
-	return self;
+    }
+    return self;
 }
 
 #pragma mark -
@@ -182,7 +246,10 @@
 
 - (CCControlButton *)standardButtonWithTitle:(NSString *)title
 {
+    /** Creates and return a button with a default background and title color. */
     CCScale9Sprite *backgroundButton = [CCScale9Sprite spriteWithFile:@"CCControlButton.png"];
+    [backgroundButton setPreferedSize:CGSizeMake(45, 45)];  // Set the prefered size
+    
     CCLabelTTF *titleButton = [CCLabelTTF labelWithString:title fontName:@"Helvetica" fontSize:30];
     [titleButton setColor:ccBLACK];
     

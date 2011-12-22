@@ -135,6 +135,11 @@
 		C29BEC2A13FAA801009B7468 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C29BEC2913FAA801009B7468 /* main.m */; };
 		C29BEC2D13FAA801009B7468 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C29BEC2C13FAA801009B7468 /* AppDelegate.m */; };
 		C29BEC3013FAA801009B7468 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C29BEC2F13FAA801009B7468 /* RootViewController.m */; };
+		C29F63E314A3E54B002B87F3 /* CCControl.m in Sources */ = {isa = PBXBuildFile; fileRef = C29F63DA14A3E54B002B87F3 /* CCControl.m */; };
+		C29F63E414A3E54B002B87F3 /* CCControlButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C29F63DC14A3E54B002B87F3 /* CCControlButton.m */; };
+		C29F63E514A3E54B002B87F3 /* CCControlSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = C29F63DF14A3E54B002B87F3 /* CCControlSlider.m */; };
+		C29F63E614A3E54B002B87F3 /* CCScale9Sprite.m in Sources */ = {isa = PBXBuildFile; fileRef = C29F63E114A3E54B002B87F3 /* CCScale9Sprite.m */; };
+		C29F63E714A3E54B002B87F3 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = C29F63E214A3E54B002B87F3 /* README.md */; };
 		C2D0FB3F1472E62100FE4DCE /* CCControlButtonTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C2D0FB341472E62100FE4DCE /* CCControlButtonTest.m */; };
 		C2D0FB401472E62100FE4DCE /* CCControlButton.png in Resources */ = {isa = PBXBuildFile; fileRef = C2D0FB361472E62100FE4DCE /* CCControlButton.png */; };
 		C2D0FB411472E62100FE4DCE /* CCControlSliderTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C2D0FB391472E62100FE4DCE /* CCControlSliderTest.m */; };
@@ -142,11 +147,6 @@
 		C2D0FB431472E62100FE4DCE /* sliderBG.png in Resources */ = {isa = PBXBuildFile; fileRef = C2D0FB3C1472E62100FE4DCE /* sliderBG.png */; };
 		C2D0FB441472E62100FE4DCE /* sliderThumb-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = C2D0FB3D1472E62100FE4DCE /* sliderThumb-hd.png */; };
 		C2D0FB451472E62100FE4DCE /* sliderThumb.png in Resources */ = {isa = PBXBuildFile; fileRef = C2D0FB3E1472E62100FE4DCE /* sliderThumb.png */; };
-		C2D0FB4D1472E6EC00FE4DCE /* CCControl.m in Sources */ = {isa = PBXBuildFile; fileRef = C2D0FB481472E6EC00FE4DCE /* CCControl.m */; };
-		C2D0FB4E1472E6EC00FE4DCE /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = C2D0FB491472E6EC00FE4DCE /* README.md */; };
-		C2D0FB581472E76500FE4DCE /* CCControlButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C2D0FB521472E76400FE4DCE /* CCControlButton.m */; };
-		C2D0FB591472E76500FE4DCE /* CCControlSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = C2D0FB551472E76500FE4DCE /* CCControlSlider.m */; };
-		C2D0FB5E1472E79B00FE4DCE /* CCScale9Sprite.m in Sources */ = {isa = PBXBuildFile; fileRef = C2D0FB5D1472E79B00FE4DCE /* CCScale9Sprite.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -399,6 +399,16 @@
 		C29BEC2E13FAA801009B7468 /* RootViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
 		C29BEC2F13FAA801009B7468 /* RootViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
 		C29BEC3413FAA801009B7468 /* GameConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameConfig.h; sourceTree = "<group>"; };
+		C29F63D914A3E54B002B87F3 /* CCControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCControl.h; sourceTree = "<group>"; };
+		C29F63DA14A3E54B002B87F3 /* CCControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCControl.m; sourceTree = "<group>"; };
+		C29F63DB14A3E54B002B87F3 /* CCControlButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCControlButton.h; sourceTree = "<group>"; };
+		C29F63DC14A3E54B002B87F3 /* CCControlButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCControlButton.m; sourceTree = "<group>"; };
+		C29F63DD14A3E54B002B87F3 /* CCControlExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCControlExtension.h; sourceTree = "<group>"; };
+		C29F63DE14A3E54B002B87F3 /* CCControlSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCControlSlider.h; sourceTree = "<group>"; };
+		C29F63DF14A3E54B002B87F3 /* CCControlSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCControlSlider.m; sourceTree = "<group>"; };
+		C29F63E014A3E54B002B87F3 /* CCScale9Sprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCScale9Sprite.h; sourceTree = "<group>"; };
+		C29F63E114A3E54B002B87F3 /* CCScale9Sprite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCScale9Sprite.m; sourceTree = "<group>"; };
+		C29F63E214A3E54B002B87F3 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		C2D0FB331472E62100FE4DCE /* CCControlButtonTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCControlButtonTest.h; sourceTree = "<group>"; };
 		C2D0FB341472E62100FE4DCE /* CCControlButtonTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCControlButtonTest.m; sourceTree = "<group>"; };
 		C2D0FB361472E62100FE4DCE /* CCControlButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CCControlButton.png; sourceTree = "<group>"; };
@@ -408,15 +418,6 @@
 		C2D0FB3C1472E62100FE4DCE /* sliderBG.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sliderBG.png; sourceTree = "<group>"; };
 		C2D0FB3D1472E62100FE4DCE /* sliderThumb-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sliderThumb-hd.png"; sourceTree = "<group>"; };
 		C2D0FB3E1472E62100FE4DCE /* sliderThumb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sliderThumb.png; sourceTree = "<group>"; };
-		C2D0FB471472E6EC00FE4DCE /* CCControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCControl.h; sourceTree = "<group>"; };
-		C2D0FB481472E6EC00FE4DCE /* CCControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCControl.m; sourceTree = "<group>"; };
-		C2D0FB491472E6EC00FE4DCE /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
-		C2D0FB511472E76400FE4DCE /* CCControlButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCControlButton.h; sourceTree = "<group>"; };
-		C2D0FB521472E76400FE4DCE /* CCControlButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCControlButton.m; sourceTree = "<group>"; };
-		C2D0FB541472E76500FE4DCE /* CCControlSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCControlSlider.h; sourceTree = "<group>"; };
-		C2D0FB551472E76500FE4DCE /* CCControlSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCControlSlider.m; sourceTree = "<group>"; };
-		C2D0FB5C1472E79B00FE4DCE /* CCScale9Sprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCScale9Sprite.h; sourceTree = "<group>"; };
-		C2D0FB5D1472E79B00FE4DCE /* CCScale9Sprite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCScale9Sprite.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -441,10 +442,7 @@
 		C2887FB6145B1BC300199251 /* Mains */ = {
 			isa = PBXGroup;
 			children = (
-				C2D0FB461472E6EC00FE4DCE /* CCControl */,
-				C2D0FB501472E76400FE4DCE /* CCControlButton */,
-				C2D0FB531472E76400FE4DCE /* CCControlSlider */,
-				C2D0FB5B1472E79B00FE4DCE /* CCScale9Sprite */,
+				C29F63D814A3E54B002B87F3 /* CCControl */,
 				C2887FB3145B1BBC00199251 /* CCControlScene.h */,
 				C2887FB4145B1BBD00199251 /* CCControlScene.m */,
 				C2887FD0145B1EB100199251 /* CCControlSceneManager.h */,
@@ -850,6 +848,24 @@
 			path = ..;
 			sourceTree = "<group>";
 		};
+		C29F63D814A3E54B002B87F3 /* CCControl */ = {
+			isa = PBXGroup;
+			children = (
+				C29F63D914A3E54B002B87F3 /* CCControl.h */,
+				C29F63DA14A3E54B002B87F3 /* CCControl.m */,
+				C29F63DB14A3E54B002B87F3 /* CCControlButton.h */,
+				C29F63DC14A3E54B002B87F3 /* CCControlButton.m */,
+				C29F63DD14A3E54B002B87F3 /* CCControlExtension.h */,
+				C29F63DE14A3E54B002B87F3 /* CCControlSlider.h */,
+				C29F63DF14A3E54B002B87F3 /* CCControlSlider.m */,
+				C29F63E014A3E54B002B87F3 /* CCScale9Sprite.h */,
+				C29F63E114A3E54B002B87F3 /* CCScale9Sprite.m */,
+				C29F63E214A3E54B002B87F3 /* README.md */,
+			);
+			name = CCControl;
+			path = Mains/CCControl;
+			sourceTree = "<group>";
+		};
 		C2D0FB321472E62100FE4DCE /* CCControlButtonTest */ = {
 			isa = PBXGroup;
 			children = (
@@ -887,47 +903,6 @@
 				C2D0FB3E1472E62100FE4DCE /* sliderThumb.png */,
 			);
 			path = Resources;
-			sourceTree = "<group>";
-		};
-		C2D0FB461472E6EC00FE4DCE /* CCControl */ = {
-			isa = PBXGroup;
-			children = (
-				C2D0FB471472E6EC00FE4DCE /* CCControl.h */,
-				C2D0FB481472E6EC00FE4DCE /* CCControl.m */,
-				C2D0FB491472E6EC00FE4DCE /* README.md */,
-			);
-			name = CCControl;
-			path = Mains/CCControl;
-			sourceTree = "<group>";
-		};
-		C2D0FB501472E76400FE4DCE /* CCControlButton */ = {
-			isa = PBXGroup;
-			children = (
-				C2D0FB511472E76400FE4DCE /* CCControlButton.h */,
-				C2D0FB521472E76400FE4DCE /* CCControlButton.m */,
-			);
-			name = CCControlButton;
-			path = Mains/CCControlButton;
-			sourceTree = "<group>";
-		};
-		C2D0FB531472E76400FE4DCE /* CCControlSlider */ = {
-			isa = PBXGroup;
-			children = (
-				C2D0FB541472E76500FE4DCE /* CCControlSlider.h */,
-				C2D0FB551472E76500FE4DCE /* CCControlSlider.m */,
-			);
-			name = CCControlSlider;
-			path = Mains/CCControlSlider;
-			sourceTree = "<group>";
-		};
-		C2D0FB5B1472E79B00FE4DCE /* CCScale9Sprite */ = {
-			isa = PBXGroup;
-			children = (
-				C2D0FB5C1472E79B00FE4DCE /* CCScale9Sprite.h */,
-				C2D0FB5D1472E79B00FE4DCE /* CCScale9Sprite.m */,
-			);
-			name = CCScale9Sprite;
-			path = Mains/CCScale9Sprite;
 			sourceTree = "<group>";
 		};
 		C2FC60A713FAA87B00AF8846 /* Classes */ = {
@@ -1026,7 +1001,7 @@
 				C2D0FB431472E62100FE4DCE /* sliderBG.png in Resources */,
 				C2D0FB441472E62100FE4DCE /* sliderThumb-hd.png in Resources */,
 				C2D0FB451472E62100FE4DCE /* sliderThumb.png in Resources */,
-				C2D0FB4E1472E6EC00FE4DCE /* README.md in Resources */,
+				C29F63E714A3E54B002B87F3 /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1138,10 +1113,10 @@
 				C2887FD2145B1EB200199251 /* CCControlSceneManager.m in Sources */,
 				C2D0FB3F1472E62100FE4DCE /* CCControlButtonTest.m in Sources */,
 				C2D0FB411472E62100FE4DCE /* CCControlSliderTest.m in Sources */,
-				C2D0FB4D1472E6EC00FE4DCE /* CCControl.m in Sources */,
-				C2D0FB581472E76500FE4DCE /* CCControlButton.m in Sources */,
-				C2D0FB591472E76500FE4DCE /* CCControlSlider.m in Sources */,
-				C2D0FB5E1472E79B00FE4DCE /* CCScale9Sprite.m in Sources */,
+				C29F63E314A3E54B002B87F3 /* CCControl.m in Sources */,
+				C29F63E414A3E54B002B87F3 /* CCControlButton.m in Sources */,
+				C29F63E514A3E54B002B87F3 /* CCControlSlider.m in Sources */,
+				C29F63E614A3E54B002B87F3 /* CCScale9Sprite.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

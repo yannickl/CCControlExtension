@@ -6,9 +6,10 @@ CCControls available:
 
  * CCControlButton:
 CCControlButton provides a convenient way to create buttons with Cocos2d.
+It is a subclass of CCControl that intercepts touch/mouse events and sends an action message to a target object when it’s clicked or pressed.
 
  * CCControlSlider:
-CCControlSlider originally comes from the cocos2d-iphone-extensions CCSlider and it has been modified to use the CCControl. For more information you can see this article: http://yannickloriot.com/2011/08/use-cccontrol-to-create-a-slider-with-cocos2d-for-iphone/
+CCControlSlider originally comes from the cocos2d-iphone-extensions CCSlider and it has been modified to subclass the CCControl. For more information you can see this article: http://yannickloriot.com/2011/08/use-cccontrol-to-create-a-slider-with-cocos2d-for-iphone/
 
 Forthcoming
 =====================

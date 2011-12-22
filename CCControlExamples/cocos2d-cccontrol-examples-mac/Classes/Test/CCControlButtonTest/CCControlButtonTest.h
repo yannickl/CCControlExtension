@@ -27,6 +27,17 @@
 
 @class CCControlButton;
 
+@interface CCControlButtonTest_HelloVariableSize : CCControlScene
+{
+@protected
+}
+
+#pragma mark Constructors - Initializers
+
+#pragma mark Public Methods
+
+@end
+
 @interface CCControlButtonTest_Event : CCControlScene
 {
 @protected

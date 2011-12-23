@@ -18,7 +18,7 @@ For more informations you can check [my blog][].
   
 License
 ====================
-As well as Cocos2D for iPhone, CCControl is licensed under the MIT License. 
+As well as Cocos2D for iPhone, CCControlExtension is licensed under the MIT License. 
 You can download cocos2d-for-iphone here: https://github.com/cocos2d/cocos2d-iphone
 
 Build & Runtime Requirements

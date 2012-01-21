@@ -55,6 +55,17 @@ enum
 };
 typedef NSUInteger CCControlState;
 
+#if NS_BLOCKS_AVAILABLE
+
+/** Defines the CCControl block type. 
+ *
+ * @param sender The sender object- that is call the block.
+ * @param event The event which is fired.
+ */
+typedef void (^CCControlBlock) (id sender, CCControlEvent event);
+
+#endif
+
 /*
  * @class
  * CCControl is inspired by the UIControl API class from the UIKit library of 
@@ -80,6 +91,7 @@ typedef NSUInteger CCControlState;
     
 @private
     NSMutableDictionary *dispatchTable_;
+    NSMutableDictionary *dispatchBlockTable_;
 }
 /** Changes the priority of the button. The lower the number, the higher the
  priority. */
@@ -131,6 +143,22 @@ typedef NSUInteger CCControlState;
  * target and action. See "CCControlEvent" for bitmask constants.
  */
 - (void)removeTarget:(id)target action:(SEL)action forControlEvents:(CCControlEvent)controlEvents;
+
+#if NS_BLOCKS_AVAILABLE
+#pragma mark CCControl - Preparing Blocks
+
+/**
+ * Sets a block for a particular event (or events) to an internal dispatch 
+ * table.
+ * 
+ * @param block The block to which the action message is sent. If the block is
+ * nil, it removes the previous one.
+ * @param controlEvents A bitmask specifying the control events for which the 
+ * action message is sent. See "CCControlEvent" for bitmask constants.
+ */
+- (void)setBlock:(CCControlBlock)block forControlEvents:(CCControlEvent)controlEvents;
+
+#endif
 
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 /**

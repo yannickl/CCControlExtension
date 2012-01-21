@@ -28,11 +28,16 @@
 
 @interface CCControl ()
 /** 
- * Table of correspondence between the CCControlEvents and their
- * associated target-actions pairs. For each CCButtonEvents a list of 
- * NSInvocation (which contains the target-action pair) is linked.
+ * Table of connection between the CCControlEvents and their associated
+ * target-actions pairs. For each CCButtonEvents a list of NSInvocation
+ * (which contains the target-action pair) is linked.
  */
 @property (nonatomic, retain) NSMutableDictionary *dispatchTable;
+/** 
+ * Table of connection between the CCControlEvents and their associated
+ * blocks. For each CCButtonEvents a list of blocks is linked.
+ */
+@property (nonatomic, retain) NSMutableDictionary *dispatchBlockTable;
 
 /**
  * Adds a target and action for a particular event to an internal dispatch 
@@ -89,10 +94,24 @@
  */
 - (NSMutableArray *)dispatchListforControlEvent:(CCControlEvent)controlEvent;
 
+#if NS_BLOCKS_AVAILABLE
+
+/**
+ * Sets a block for a particular event to an internal dispatch table.
+ * 
+ * @param block The block to which the action message is sent.
+ * @param controlEvent A control events for which the action message is sent.
+ * See "CCControlEvent" for constants.
+ */
+- (void)setBlock:(CCControlBlock)block forControlEvent:(CCControlEvent)controlEvent;
+
+#endif
+
 @end
 
 @implementation CCControl
 @synthesize dispatchTable = dispatchTable_;
+@synthesize dispatchBlockTable = dispatchBlockTable_;
 @synthesize defaultTouchPriority = defaultTouchPriority_;
 @synthesize state = state_;
 @synthesize enabled = enabled_;
@@ -101,6 +120,7 @@
 
 - (void)dealloc
 {
+    [dispatchBlockTable_ release], dispatchBlockTable_ = nil;
     [dispatchTable_ release], dispatchTable_ = nil;
     
     [super dealloc];
@@ -122,6 +142,7 @@
         
         // Initialise the tables
         dispatchTable_ = [[NSMutableDictionary alloc] initWithCapacity:1];
+        dispatchBlockTable_ = [[NSMutableDictionary alloc] initWithCapacity:1];
     }
     return self;
 }
@@ -163,11 +184,18 @@
         // If the given controlEvents bitmask contains the curent event
         if ((controlEvents & (1 << i)))
         {
-            NSMutableArray *invocationList = [self dispatchListforControlEvent:(1 << i)];
-
+            // Call invocations
+            NSArray *invocationList = [self dispatchListforControlEvent:(1 << i)];
             for (NSInvocation *invocation in invocationList)
             {
                 [invocation invoke];
+            }
+            
+            // Call blocks
+            CCControlBlock block = [dispatchBlockTable_ objectForKey:[NSNumber numberWithUnsignedInteger:(1 << i)]];
+            if (block)
+            {
+                block (self, (1 << i));
             }
         }
     }
@@ -341,5 +369,44 @@
     
     return invocationList;
 }
+
+#if NS_BLOCKS_AVAILABLE
+
+#pragma mark -
+#pragma mark CCControl Public Blocks Methods
+
+- (void)setBlock:(CCControlBlock)block forControlEvents:(CCControlEvent)controlEvents
+{
+    // For each control events
+    for (int i = 0; i < kControlEventTotalNumber; i++)
+    {
+        // If the given controlEvents bitmask contains the curent event
+        if ((controlEvents & (1 << i)))
+        {
+            [self setBlock:block forControlEvent:(1 << i)];
+        }
+    }
+}
+
+#pragma mark CCControl Private Blocks Methods
+
+- (void)setBlock:(CCControlBlock)block forControlEvent:(CCControlEvent)controlEvent
+{    
+    // Get the key for the given control event
+    NSNumber *controlEventKey = [NSNumber numberWithUnsignedInteger:controlEvent];
+    
+    if (block)
+    {
+        // Think to copy and release the block
+        CCControlBlock currentBlock = [block copy];
+        [dispatchBlockTable_ setObject:currentBlock forKey:controlEventKey];
+        [currentBlock release];
+    } else
+    {
+        [dispatchBlockTable_ removeObjectForKey:controlEventKey];
+    }
+}
+
+#endif
 
 @end

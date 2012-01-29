@@ -1,6 +1,6 @@
 Cocos2D - CCControlExtension Examples
 =====================
-These examples show how to the CCControl can be used.
+The puporse of these examples are to show you how the CCControl can be used into your Cocos2D projects. The examples are available for iOS and Mac OSX.
 
 Controls available:
 

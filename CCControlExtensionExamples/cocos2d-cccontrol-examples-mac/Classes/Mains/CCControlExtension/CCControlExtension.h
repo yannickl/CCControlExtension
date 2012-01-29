@@ -32,5 +32,6 @@
 #import "CCControl.h"
 #import "CCControlButton.h"
 #import "CCControlSlider.h"
+#import "CCControlColourPicker.h"
 
 #endif

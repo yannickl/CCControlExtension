@@ -26,6 +26,8 @@
 #import <Foundation/Foundation.h>
 #import "cocos2d.h"
 
+#import "CCControlExtension.h"
+
 @interface CCControlScene : CCLayer
 {
 @public

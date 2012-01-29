@@ -26,8 +26,6 @@
 
 #import "CCControlSliderTest.h"
 
-#import "CCControlExtension.h"
-
 @interface CCControlSliderTest ()
 @property (nonatomic, retain) CCLabelTTF *displayValueLabel;
 
@@ -53,13 +51,17 @@
         
 		// Add a label in which the slider value will be displayed
 		self.displayValueLabel = [CCLabelTTF labelWithString:@"Move the slider thumb!" fontName:@"Marker Felt" fontSize:32];
-        displayValueLabel.anchorPoint = ccp(0.5f, -1);
+        displayValueLabel.anchorPoint = ccp(0.5f, -1.0f);
         displayValueLabel.position = ccp(screenSize.width / 2.0f, screenSize.height / 2.0f);
 		[self addChild:displayValueLabel];
 		
         // Add the slider
-		CCControlSlider *slider = [CCControlSlider sliderWithBackgroundFile:@"sliderBG.png" thumbFile:@"sliderThumb.png"];
-        slider.anchorPoint = ccp(0.5f, 1);
+		CCControlSlider *slider = [CCControlSlider sliderWithBackgroundFile:@"sliderTrack.png" 
+                                                               progressFile:@"sliderProgress.png" 
+                                                                  thumbFile:@"sliderThumb.png"];
+        slider.anchorPoint = ccp(0.5f, 1.0f);
+        slider.minimumValue = 0.0f; // Sets the min value of range
+        slider.maximumValue = 5.0f; // Sets the max value of range
         slider.position = ccp(screenSize.width / 2.0f, screenSize.height / 2.0f);
         
         // When the value of the slider will change, the given selector will be call

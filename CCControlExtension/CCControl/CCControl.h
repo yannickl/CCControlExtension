@@ -161,6 +161,13 @@ typedef void (^CCControlBlock) (id sender, CCControlEvent event);
 #endif
 
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+
+/**
+ * Returns a point corresponding to the touh location converted into the 
+ * control space coordinates.
+ */
+- (CGPoint)touchLocation:(UITouch *)touch;
+
 /**
  * Returns a boolean value that indicates whether a touch is inside the bounds
  * of the receiver. The given touch must be relative to the world.
@@ -171,6 +178,13 @@ typedef void (^CCControlBlock) (id sender, CCControlEvent event);
  */
 - (BOOL)isTouchInside:(UITouch *)touch;
 #elif __MAC_OS_X_VERSION_MAX_ALLOWED
+
+/**
+ * Returns a point corresponding to the event location converted into the
+ * control space coordinates.
+ */
+- (CGPoint)eventLocation:(NSEvent *)event;
+
 /**
  * Returns a boolean value that indicates whether a mouse is inside the bounds
  * of the receiver. The given mouse event must be relative to the world.

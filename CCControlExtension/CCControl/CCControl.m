@@ -130,6 +130,14 @@
 {
     if ((self = [super init]))
     {
+#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+		// Enabled the touch event
+        self.isTouchEnabled = YES;
+#elif __MAC_OS_X_VERSION_MAX_ALLOWED
+        // Enabled the mouse event
+		self.isMouseEnabled = YES;
+#endif
+        
         // Initialise instance variables
         state_ = CCControlStateNormal;
         
@@ -229,21 +237,35 @@
 
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 
+- (CGPoint)touchLocation:(UITouch *)touch
+{
+    CGPoint touchLocation   = [touch locationInView:[touch view]];                      // Get the touch position
+    touchLocation           = [[CCDirector sharedDirector] convertToGL:touchLocation];  // Convert the position to GL space
+    touchLocation           = [[self parent] convertToNodeSpace:touchLocation];         // Convert to the node space of this class
+    
+    return touchLocation;
+}
+
 - (BOOL)isTouchInside:(UITouch *)touch
 {
-    CGPoint touchLocation = [touch locationInView:[touch view]];
-    touchLocation = [[CCDirector sharedDirector] convertToGL:touchLocation];
-    touchLocation = [[self parent] convertToNodeSpace:touchLocation];
+    CGPoint touchLocation = [self touchLocation:touch];
 
     return CGRectContainsPoint([self boundingBox], touchLocation);
 }
 
 #elif __MAC_OS_X_VERSION_MAX_ALLOWED
 
-- (BOOL)isMouseInside:(NSEvent *)event
+- (CGPoint)eventLocation:(NSEvent *)event
 {
     CGPoint eventLocation = [[CCDirector sharedDirector] convertEventToGL:event];
     eventLocation = [[self parent] convertToNodeSpace:eventLocation];
+    
+    return eventLocation;
+}
+
+- (BOOL)isMouseInside:(NSEvent *)event
+{
+    CGPoint eventLocation = [self eventLocation:event];
 
     return CGRectContainsPoint([self boundingBox], eventLocation);
 }

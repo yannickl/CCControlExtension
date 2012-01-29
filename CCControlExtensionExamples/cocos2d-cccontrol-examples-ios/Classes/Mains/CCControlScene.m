@@ -55,9 +55,20 @@
         // Get the sceensize
         CGSize screensize = [[CCDirector sharedDirector] winSize];
 
+        // Add the generated background
+        CCSprite *background = [CCSprite spriteWithFile:@"background.png"];
+        [background setPosition:ccp(screensize.width / 2, screensize.height / 2)];
+        [self addChild:background];
+        
+        // Add the ribbon
+        CCScale9Sprite *ribbon = [CCScale9Sprite spriteWithFile:@"ribbon.png" capInsets:CGRectMake(1, 1, 48, 55)];
+        [ribbon setContentSize:CGSizeMake(screensize.width, 57)];
+        [ribbon setPosition:ccp(screensize.width / 2.0f, screensize.height - ribbon.contentSize.height / 2.0f)];
+        [self addChild:ribbon];
+        
         // Add the title
         self.sceneTitleLabel = [CCLabelTTF labelWithString:@"Title" fontName:@"Arial" fontSize:12];
-        [sceneTitleLabel setPosition:ccp (screensize.width / 2, screensize.height - sceneTitleLabel.contentSize.height / 2)];
+        [sceneTitleLabel setPosition:ccp (screensize.width / 2, screensize.height - sceneTitleLabel.contentSize.height / 2 - 5)];
         [self addChild:sceneTitleLabel z:1];
         
         // Add the menu
@@ -68,11 +79,11 @@
 		CCMenuItemImage *item3 =
         [CCMenuItemImage itemFromNormalImage:@"f1.png" selectedImage:@"f2.png" target:self selector:@selector(nextCallback:)];
         
-		CCMenu *menu = [CCMenu menuWithItems:item1, item2, item3, nil];
+		CCMenu *menu = [CCMenu menuWithItems:item1, item3, item2, nil];
         [menu setPosition:CGPointZero];
-		[item1 setPosition:ccp(screensize.width / 2 - 100, 30)];
-		[item2 setPosition:ccp(screensize.width / 2, 30)];
-		[item3 setPosition:ccp(screensize.width / 2 + 100, 30)];
+		[item1 setPosition:ccp(screensize.width / 2 - 100, 37)];
+		[item2 setPosition:ccp(screensize.width / 2, 35)];
+		[item3 setPosition:ccp(screensize.width / 2 + 100, 37)];
         
 		[self addChild:menu z:1];
     }

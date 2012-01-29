@@ -78,7 +78,7 @@
 /** The current background sprite. */
 @property (nonatomic, retain) CCScale9Sprite *backgroundSprite;
 
-#pragma mark CCControlButton - Initializers
+#pragma mark Constructors - Initializers
 
 /** Initializes a button with a label in foreground and a sprite in background. */
 - (id)initWithLabel:(CCNode<CCLabelProtocol, CCRGBAProtocol> *)label backgroundSprite:(CCScale9Sprite *)backgroundsprite;
@@ -98,9 +98,7 @@
 /** Creates a button with a sprite in background. */
 + (id)buttonWithBackgroundSprite:(CCScale9Sprite *)sprite;
 
-#pragma mark CCControlButton - Convenient Initializers
-
-#pragma mark CCButton - Public Methods
+#pragma mark - Public Methods
 
 /**
  * Returns the title used for a state.

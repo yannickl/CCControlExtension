@@ -25,8 +25,6 @@
 
 #import "CCControlScene.h"
 
-@class CCControlButton;
-
 @interface CCControlButtonTest_HelloVariableSize : CCControlScene
 {
 @protected

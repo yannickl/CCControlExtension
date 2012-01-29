@@ -25,8 +25,6 @@
 
 #import "CCControlButtonTest.h"
 
-#import "CCControlExtension.h"
-
 @interface CCControlButtonTest_HelloVariableSize ()
 
 /** Creates and return a button with a default background and title color. */
@@ -51,7 +49,7 @@
         NSArray *stringArray = [NSArray arrayWithObjects:@"Hello",@"Variable",@"Size",@"!", nil];
         
         CCNode *layer = [CCNode node];
-        [self addChild:layer];
+        [self addChild:layer z:1];
         
         double total_width = 0, height = 0;
         
@@ -67,10 +65,16 @@
             height = button.contentSize.height;
             total_width += button.contentSize.width;
         }
-        
+
         [layer setAnchorPoint:ccp (0.5, 0.5)];
         [layer setContentSize:CGSizeMake(total_width, height)];
         [layer setPosition:ccp(screenSize.width / 2.0f, screenSize.height / 2.0f)];
+        
+        // Add the black background
+        CCScale9Sprite *background = [CCScale9Sprite spriteWithFile:@"buttonBackground.png"];
+        [background setContentSize:CGSizeMake(total_width + 14, height + 14)];
+        [background setPosition:ccp(screenSize.width / 2.0f, screenSize.height / 2.0f)];
+        [self addChild:background];
     }
     return self;
 }
@@ -83,11 +87,21 @@
 - (CCControlButton *)standardButtonWithTitle:(NSString *)title
 {
     /** Creates and return a button with a default background and title color. */
-    CCScale9Sprite *backgroundButton = [CCScale9Sprite spriteWithFile:@"CCControlButton.png"];
-    CCLabelTTF *titleButton = [CCLabelTTF labelWithString:title fontName:@"Helvetica" fontSize:30];
-    [titleButton setColor:ccBLACK];
+    CCScale9Sprite *backgroundButton = [CCScale9Sprite spriteWithFile:@"button.png"];
+    CCScale9Sprite *backgroundHighlightedButton = [CCScale9Sprite spriteWithFile:@"buttonHighlighted.png"];
     
-    return [CCControlButton buttonWithLabel:titleButton backgroundSprite:backgroundButton];
+#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+    CCLabelTTF *titleButton = [CCLabelTTF labelWithString:title fontName:@"HelveticaNeue-Bold" fontSize:30];
+#elif __MAC_OS_X_VERSION_MAX_ALLOWED
+    CCLabelTTF *titleButton = [CCLabelTTF labelWithString:title fontName:@"Marker Felt" fontSize:30];
+#endif
+    [titleButton setColor:ccc3(159, 168, 176)];
+    
+    CCControlButton *button = [CCControlButton buttonWithLabel:titleButton backgroundSprite:backgroundButton];
+    [button setBackgroundSprite:backgroundHighlightedButton forState:CCControlStateHighlighted];
+    [button setTitleColor:ccWHITE forState:CCControlStateHighlighted];
+    
+    return button;
 }
 
 @end
@@ -112,23 +126,38 @@
 	if ((self = [super init]))
     {
         CGSize screenSize = [[CCDirector sharedDirector] winSize];
-        
+
         // Add a label in which the button events will be displayed
 		self.displayValueLabel = [CCLabelTTF labelWithString:@"No Event" fontName:@"Marker Felt" fontSize:32];
         displayValueLabel.anchorPoint = ccp(0.5f, -1);
         displayValueLabel.position = ccp(screenSize.width / 2.0f, screenSize.height / 2.0f);
-		[self addChild:displayValueLabel];
+		[self addChild:displayValueLabel z:1];
         
         // Add the button
-        CCScale9Sprite *backgroundButton = [CCScale9Sprite spriteWithFile:@"CCControlButton.png"];
-        CCLabelTTF *titleButton = [CCLabelTTF labelWithString:@"Touch Me!" fontName:@"Helvetica" fontSize:30];
-        [titleButton setColor:ccBLACK];
+        CCScale9Sprite *backgroundButton = [CCScale9Sprite spriteWithFile:@"button.png"];
+        CCScale9Sprite *backgroundHighlightedButton = [CCScale9Sprite spriteWithFile:@"buttonHighlighted.png"];
+        
+#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+        CCLabelTTF *titleButton = [CCLabelTTF labelWithString:@"Touch Me!" fontName:@"HelveticaNeue-Bold" fontSize:30];
+#elif __MAC_OS_X_VERSION_MAX_ALLOWED
+        CCLabelTTF *titleButton = [CCLabelTTF labelWithString:@"Touch Me!" fontName:@"Marker Felt" fontSize:30];
+#endif
+        [titleButton setColor:ccc3(159, 168, 176)];
         
         CCControlButton *controlButton = [CCControlButton buttonWithLabel:titleButton
                                                          backgroundSprite:backgroundButton];
+        [controlButton setBackgroundSprite:backgroundHighlightedButton forState:CCControlStateHighlighted];
+        [controlButton setTitleColor:ccWHITE forState:CCControlStateHighlighted];
+        
         controlButton.anchorPoint = ccp(0.5f, 1);
         controlButton.position = ccp(screenSize.width / 2.0f, screenSize.height / 2.0f);
-        [self addChild:controlButton];
+        [self addChild:controlButton z:1];
+
+        // Add the black background
+        CCScale9Sprite *background = [CCScale9Sprite spriteWithFile:@"buttonBackground.png"];
+        [background setContentSize:CGSizeMake(300, 170)];
+        [background setPosition:ccp(screenSize.width / 2.0f, screenSize.height / 2.0f)];
+        [self addChild:background];
         
         // Sets up event handlers
         [controlButton addTarget:self action:@selector(touchDownAction:) forControlEvents:CCControlEventTouchDown];
@@ -209,9 +238,9 @@
     if ((self = [super init]))
     {
         CGSize screenSize = [[CCDirector sharedDirector] winSize];
-        
+
         CCNode *layer = [CCNode node];
-        [self addChild:layer];
+        [self addChild:layer z:1];
         
         NSInteger space = 10; // px
         
@@ -223,18 +252,25 @@
                 // Add the buttons
                 CCControlButton *button = [self standardButtonWithTitle:[NSString stringWithFormat:@"%d",arc4random() % 30]];
                 button.adjustBackgroundImage = NO;  // Tells the button that the background image must not be adjust
-                // It'll use the prefered size of the background image
-                button.position = ccp ((button.contentSize.width + space) * i, (button.contentSize.height + space) * j);
+                                                    // It'll use the prefered size of the background image
+                button.position = ccp (button.contentSize.width / 2 + (button.contentSize.width + space) * i,
+                                       button.contentSize.height / 2 + (button.contentSize.height + space) * j);
                 [layer addChild:button];
                 
-                max_w = MAX((button.contentSize.width + space) * i, max_w);
-                max_h = MAX((button.contentSize.height + space) * j, max_h);
+                max_w = MAX(button.contentSize.width * (i + 1) + space  * i, max_w);
+                max_h = MAX(button.contentSize.height * (j + 1) + space * j, max_h);
             }
         }
         
         [layer setAnchorPoint:ccp (0.5, 0.5)];
         [layer setContentSize:CGSizeMake(max_w, max_h)];
         [layer setPosition:ccp(screenSize.width / 2.0f, screenSize.height / 2.0f)];
+        
+        // Add the black background
+        CCScale9Sprite *backgroundButton = [CCScale9Sprite spriteWithFile:@"buttonBackground.png"];
+        [backgroundButton setContentSize:CGSizeMake(max_w + 14, max_h + 14)];
+        [backgroundButton setPosition:ccp(screenSize.width / 2.0f, screenSize.height / 2.0f)];
+        [self addChild:backgroundButton];
     }
     return self;
 }
@@ -247,13 +283,23 @@
 - (CCControlButton *)standardButtonWithTitle:(NSString *)title
 {
     /** Creates and return a button with a default background and title color. */
-    CCScale9Sprite *backgroundButton = [CCScale9Sprite spriteWithFile:@"CCControlButton.png"];
+    CCScale9Sprite *backgroundButton = [CCScale9Sprite spriteWithFile:@"button.png"];
     [backgroundButton setPreferedSize:CGSizeMake(45, 45)];  // Set the prefered size
+    CCScale9Sprite *backgroundHighlightedButton = [CCScale9Sprite spriteWithFile:@"buttonHighlighted.png"];
+    [backgroundHighlightedButton setPreferedSize:CGSizeMake(45, 45)];  // Set the prefered size
     
-    CCLabelTTF *titleButton = [CCLabelTTF labelWithString:title fontName:@"Helvetica" fontSize:30];
-    [titleButton setColor:ccBLACK];
+#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+    CCLabelTTF *titleButton = [CCLabelTTF labelWithString:title fontName:@"HelveticaNeue-Bold" fontSize:30];
+#elif __MAC_OS_X_VERSION_MAX_ALLOWED
+    CCLabelTTF *titleButton = [CCLabelTTF labelWithString:title fontName:@"Marker Felt" fontSize:30];
+#endif
+    [titleButton setColor:ccc3(159, 168, 176)];
     
-    return [CCControlButton buttonWithLabel:titleButton backgroundSprite:backgroundButton];
+    CCControlButton *button = [CCControlButton buttonWithLabel:titleButton backgroundSprite:backgroundButton];
+    [button setBackgroundSprite:backgroundHighlightedButton forState:CCControlStateHighlighted];
+    [button setTitleColor:ccWHITE forState:CCControlStateHighlighted];
+    
+    return button;
 }
 
 @end

@@ -1,17 +1,8 @@
 /*
  * CCControlSlider
  *
- * cocos2d-extensions
- * https://github.com/cocos2d/cocos2d-iphone-extensions
- *
- * Copyright (c) 2011 Israel Roth 
- * http://srooltheknife.blogspot.com/
- * https://bitbucket.org/iroth_net/ccslider
- *
- * Copyright (c) 2011 Stepan Generalov 
- *
- * Modified by Yannick Loriot
- * Copyright (c) 2011 Yannick Loriot
+ * Copyright 2011 Yannick Loriot. All rights reserved.
+ * http://yannickloriot.com
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -36,55 +27,55 @@
 #import "cocos2d.h"
 #import "CCControl.h"
 
-/** @class CCControlSlider Slider control for Cocos2D. Designed with SFX/Music level options in mind. */
+/** @class CCControlSlider Slider control for Cocos2D. */
 @interface CCControlSlider : CCControl 
 {  
 @public
-	float value; 
+	float value_; 
+    float minimumValue_;
+    float maximumValue_;
     
-@private
-	float minX;  
-	float maxX;  
-	
-	// weak links to children
-	CCMenuItem *_thumb;
-	CCSprite *_bg;
+@protected
+	// Weak links to children
+	CCMenuItem *thumbSprite_;
+    CCSprite *progressSprite_;
+	CCSprite *backgroundSprite_;
 }  
-
-/** Current chosen value, min is 0.0f, max is 1.0f. */
-@property (nonatomic, assign) float value;  
+/** Contains the receiver’s current value. */
+@property (nonatomic, assign) float value; 
+/** Contains the minimum value of the receiver. 
+ * The default value of this property is 0.0. */
+@property (nonatomic, assign) float minimumValue;
+/** Contains the maximum value of the receiver. 
+ * The default value of this property is 1.0. */
+@property (nonatomic, assign) float maximumValue;
 
 #pragma mark Contructors - Initializers
 
-/** Creates slider with backround image filename & thumb image filename. 
- *
- * @see initWithBackgroundFile:thumbFile: 
+/** 
+ * Creates slider with a background filename, a progress filename and a 
+ * thumb image filename.
  */
-+ (id) sliderWithBackgroundFile: (NSString *) bgFile thumbFile: (NSString *) thumbFile;
++ (id)sliderWithBackgroundFile:(NSString *)bgFile progressFile:(NSString *)progressFile thumbFile:(NSString *)thumbFile;
 
-/** Creates slider with given bg sprite and menu item as a thumb. 
+/** 
+ * Creates a slider with a given background sprite and a progress bar and a
+ * thumb item.
  *
- * @see initWithBackgroundSprite: thumbMenuItem:
+ * @see initWithBackgroundSprite:progressSprite:thumbMenuItem:
  */
-+ (id) sliderWithBackgroundSprite: (CCSprite *) bgSprite thumbMenuItem: (CCMenuItem *) aThumb;
++ (id)sliderWithBackgroundSprite:(CCSprite *)backgroundSprite progressSprite:(CCSprite *)pogressSprite thumbMenuItem:(CCMenuItem *)thumbItem;
 
-/** Easy init - filenames instead of CCSprite & CCMenuItem. Uses designated init inside.
+/** 
+ * Initializes a slider with a background sprite, a progress bar and a thumb
+ * item.
  *
- * @param thumbFile Filename, that is used to create normal & selected images for
- * thumbMenuItem. Selected sprite is darker than normal sprite.
- *
- * @param bgFile Filename for background CCSprite.
+ * @param backgroundSprite  CCSprite, that is used as a background.
+ * @param progressSprite    CCSprite, that is used as a progress bar.
+ * @param thumbItem         CCMenuItem, that is used as a thumb.
  */
-- (id) initWithBackgroundFile: (NSString *) bgFile thumbFile: (NSString *) thumbFile;
+- (id)initWithBackgroundSprite:(CCSprite *)backgroundSprite progressSprite:(CCSprite *)progressSprite thumbMenuItem:(CCMenuItem *)thumbItem;
 
-/** Designated init.
- *
- * @param bgSprite CCSprite, that is used as a background. It's bounding box is used
- * to determine max & min x position for a thumb menu item.
- *
- * @param aThumb MenuItem that is used as a thumb. Used without CCMenu, so CCMenuItem#activate
- * doesn't get called.
- */
-- (id) initWithBackgroundSprite: (CCSprite *) bgSprite thumbMenuItem: (CCMenuItem *) aThumb;
+#pragma mark - Public Methods
 
 @end  

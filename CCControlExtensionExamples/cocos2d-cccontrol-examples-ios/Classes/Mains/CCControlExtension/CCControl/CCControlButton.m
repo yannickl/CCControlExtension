@@ -53,19 +53,19 @@ enum
 @end
 
 @implementation CCControlButton
-@synthesize pushed = pushed_;
-@synthesize titleLabel = titleLabel_;
-@synthesize backgroundSprite = backgroundSprite_;
-@synthesize titleDispatchTable = titleDispatchTable_;
-@synthesize titleColorDispatchTable = titleColorDispatchTable_;
-@synthesize titleLabelDispatchTable = titleLabelDispatchTable_;
-@synthesize backgroundSpriteDispatchTable = backgroundSpriteDispatchTable_;
-@synthesize opacity = opacity_;
-@synthesize color = color_;
-@synthesize opacityModifyRGB = opacityModifyRGB_;
-@synthesize adjustBackgroundImage = adjustBackgroundImage_;
-@synthesize currentTitle = currentTitle_;
-@synthesize currentTitleColor = currentTitleColor_;
+@synthesize pushed                          = pushed_;
+@synthesize titleLabel                      = titleLabel_;
+@synthesize backgroundSprite                = backgroundSprite_;
+@synthesize titleDispatchTable              = titleDispatchTable_;
+@synthesize titleColorDispatchTable         = titleColorDispatchTable_;
+@synthesize titleLabelDispatchTable         = titleLabelDispatchTable_;
+@synthesize backgroundSpriteDispatchTable   = backgroundSpriteDispatchTable_;
+@synthesize opacity                         = opacity_;
+@synthesize color                           = color_;
+@synthesize opacityModifyRGB                = opacityModifyRGB_;
+@synthesize adjustBackgroundImage           = adjustBackgroundImage_;
+@synthesize currentTitle                    = currentTitle_;
+@synthesize currentTitleColor               = currentTitleColor_;
 
 - (void)dealloc
 {
@@ -93,13 +93,6 @@ enum
         
         self.pushed = NO;
         
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
-		// Enabled the touch event
-        self.isTouchEnabled = YES;
-#elif __MAC_OS_X_VERSION_MAX_ALLOWED
-        // Enabled the mouse event
-		self.isMouseEnabled = YES;
-#endif
         // Adjust the background image by default
         self.adjustBackgroundImage = YES;
         

@@ -12,7 +12,7 @@ How to use it
 
         #import "CCControlExtension.h"
 
-The `CCControlExtension.h` includes all the already made controls such as button, slider, gauge, etc.
+The `CCControlExtension.h` includes all the already made controls such as button, slider, colour picker, etc.
 There are various [examples][] to understand how to use controls and the possibilities they offer.
 
 For more informations you can check [my blog][].

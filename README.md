@@ -5,6 +5,12 @@ CCControlExtension is an open-source library which provides a lot of convenient 
 All these controls are subclasses of CCControl, which is inspired by the UIControl API from the UIKit of CocoaTouch. The main goal of CCControl is to simplify the creation of control objects in Cocos2D by providing an interface and a base implementation ala UIKit. I.e that this class manages the target-action pair registration and dispatches them to their targets when events occur.
 For iOS 4.0 or later and Snow Leopard the CCControl also uses the power of blocks to dispatch the events. 
 
+Screenshots
+====================
+![](http://github.com/YannickL/CCControlExtension/raw/master/screenshots/slider.png)
+![](http://github.com/YannickL/CCControlExtension/raw/master/screenshots/colourpicker.png)
+![](http://github.com/YannickL/CCControlExtension/raw/master/screenshots/button.png)
+
 How to use it
 ====================
 - Include the CCControlExtension folder into your project

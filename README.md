@@ -8,7 +8,7 @@ For iOS 4.0 or later and Snow Leopard the CCControl also uses the power of block
 Screenshots
 ====================
 ![](http://github.com/YannickL/CCControlExtension/raw/master/screenshots/slider.png)
-![](http://github.com/YannickL/CCControlExtension/raw/master/screenshots/colourpicker.png)
+![](http://github.com/YannickL/CCControlExtension/raw/master/screenshots/colorpicker.png)
 ![](http://github.com/YannickL/CCControlExtension/raw/master/screenshots/button.png)
 
 How to use it

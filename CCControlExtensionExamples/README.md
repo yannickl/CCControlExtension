@@ -5,21 +5,21 @@ These examples show how to the CCControl can be used.
 Controls available:
 
  * CCControlButton:
- * 
-![](http://github.com/YannickL/CCControlExtension/raw/master/screenshots/button.png)
+
+![CCControlButton](http://github.com/YannickL/CCControlExtension/raw/master/screenshots/button.png)
 
 CCControlButton provides a convenient way to create buttons with Cocos2D.
 A control button is compound of a title label and a background sprite. (More information here: http://yannickloriot.com/2011/12/create-buttons-in-cocos2d-by-using-cccontrolbutton/)
 
  * CCControlSlider:
- * 
-![](http://github.com/YannickL/CCControlExtension/raw/master/screenshots/slider.png)
+
+![CCControlSlider](http://github.com/YannickL/CCControlExtension/raw/master/screenshots/slider.png)
 
 CCControlSlider is an already made slider (but customizable) control for Cocos2D for iPhone. (More information here: http://yannickloriot.com/2011/08/use-cccontrol-to-create-a-slider-with-cocos2d-for-iphone/)
 
  * CCControlColourPicker:
- * 
-![](http://github.com/YannickL/CCControlExtension/raw/master/screenshots/colorpicker.png)
+
+![CCControlColourPicker](http://github.com/YannickL/CCControlExtension/raw/master/screenshots/colorpicker.png)
 
 CCControlColourPicker is an already made colour picker for Cocos2D for iPhone.
 

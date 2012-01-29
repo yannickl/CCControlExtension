@@ -9,19 +9,19 @@ Controls available:
 ![CCControlButton](http://github.com/YannickL/CCControlExtension/raw/master/screenshots/button.png)
 
 CCControlButton provides a convenient way to create buttons with Cocos2D.
-A control button is compound of a title label and a background sprite. (More information here: http://yannickloriot.com/2011/12/create-buttons-in-cocos2d-by-using-cccontrolbutton/)
+A control button is compound of a title label and a background sprite. You can set it to a predetermined size, to a variable size to fit to the title size etc. (More information here: http://yannickloriot.com/2011/12/create-buttons-in-cocos2d-by-using-cccontrolbutton/)
 
  * CCControlSlider:
 
 ![CCControlSlider](http://github.com/YannickL/CCControlExtension/raw/master/screenshots/slider.png)
 
-CCControlSlider is an already made slider (but customizable) control for Cocos2D for iPhone. (More information here: http://yannickloriot.com/2011/08/use-cccontrol-to-create-a-slider-with-cocos2d-for-iphone/)
+CCControlSlider is an already made slider (but customizable) control for Cocos2D for iPhone. It allow you to configure its range value. (More information here: http://yannickloriot.com/2011/08/use-cccontrol-to-create-a-slider-with-cocos2d-for-iphone/)
 
  * CCControlColourPicker:
 
 ![CCControlColourPicker](http://github.com/YannickL/CCControlExtension/raw/master/screenshots/colorpicker.png)
 
-CCControlColourPicker is an already made colour picker for Cocos2D for iPhone.
+CCControlColourPicker is an already made colour picker for Cocos2D for iPhone. It's a very useful control tool to preview and test color values.
 
 Forthcoming
 =====================

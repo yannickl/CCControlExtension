@@ -96,12 +96,12 @@ enum positions
         //
         
         // Centre
-        centre = [[CCSprite alloc] initWithBatchNode:scale9Image rect:capInsets_];
+        centre = [[CCSprite alloc] initWithTexture:scale9Image.texture rect:capInsets_];
         [scale9Image addChild:centre z:0 tag:pCentre];
         
         // Top
         top = [[CCSprite alloc]
-               initWithBatchNode:scale9Image
+               initWithTexture:scale9Image.texture
                rect:CGRectMake(capInsets_.origin.x,
                                t,
                                capInsets_.size.width,
@@ -111,7 +111,7 @@ enum positions
         
         // Bottom
         bottom = [[CCSprite alloc]
-                  initWithBatchNode:scale9Image
+                  initWithTexture:scale9Image.texture
                   rect:CGRectMake(capInsets_.origin.x,
                                   capInsets_.origin.y + capInsets_.size.height,
                                   capInsets_.size.width,
@@ -121,7 +121,7 @@ enum positions
         
         // Left
         left = [[CCSprite alloc]
-                initWithBatchNode:scale9Image
+                initWithTexture:scale9Image.texture
                 rect:CGRectMake(l,
                                 capInsets_.origin.y,
                                 capInsets_.origin.x - l,
@@ -131,7 +131,7 @@ enum positions
         
         // Right
         right = [[CCSprite alloc]
-                 initWithBatchNode:scale9Image
+                 initWithTexture:scale9Image.texture
                  rect:CGRectMake(capInsets_.origin.x + capInsets_.size.width,
                                  capInsets_.origin.y,
                                  w - (capInsets_.origin.x - l + capInsets_.size.width),
@@ -141,7 +141,7 @@ enum positions
         
         // Top left
         topLeft = [[CCSprite alloc]
-                   initWithBatchNode:scale9Image
+                   initWithTexture:scale9Image.texture
                    rect:CGRectMake(l,
                                    t,
                                    capInsets_.origin.x - l,
@@ -151,7 +151,7 @@ enum positions
         
         // Top right
         topRight = [[CCSprite alloc]
-                    initWithBatchNode:scale9Image
+                    initWithTexture:scale9Image.texture
                     rect:CGRectMake(capInsets_.origin.x + capInsets_.size.width,
                                     t,
                                     w - (capInsets_.origin.x - l + capInsets_.size.width),
@@ -161,7 +161,7 @@ enum positions
         
         // Bottom left
         bottomLeft = [[CCSprite alloc]
-                      initWithBatchNode:scale9Image
+                      initWithTexture:scale9Image.texture
                       rect:CGRectMake(l,
                                       capInsets_.origin.y + capInsets_.size.height,
                                       capInsets_.origin.x - l,
@@ -171,7 +171,7 @@ enum positions
         
         // Bottom right
         bottomRight = [[CCSprite alloc]
-                       initWithBatchNode:scale9Image
+                       initWithTexture:scale9Image.texture
                        rect:CGRectMake(capInsets_.origin.x + capInsets_.size.width,
                                        capInsets_.origin.y + capInsets_.size.height,
                                        w - (capInsets_.origin.x - l + capInsets_.size.width),

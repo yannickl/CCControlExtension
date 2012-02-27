@@ -71,7 +71,7 @@
 	CCSprite *thumbSelected         = [CCSprite spriteWithFile:thumbname];
 	thumbSelected.color             = ccGRAY;
 	
-	CCMenuItemSprite *thumbMenuItem = [CCMenuItemSprite itemFromNormalSprite:thumbNormal selectedSprite:thumbSelected];
+	CCMenuItemSprite *thumbMenuItem = [CCMenuItemSprite itemWithNormalSprite:thumbNormal selectedSprite:thumbSelected];
     
 	return [self sliderWithBackgroundSprite:backgroundSprite 
                              progressSprite:progressSprite

@@ -158,7 +158,8 @@
 - (void)onEnter
 {
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
-	[[CCTouchDispatcher sharedDispatcher] addTargetedDelegate:self priority:defaultTouchPriority_ swallowsTouches:YES];
+    CCTouchDispatcher * dispatcher = [CCDirector sharedDirector].touchDispatcher;
+	[dispatcher addTargetedDelegate:self priority:defaultTouchPriority_ swallowsTouches:YES];
 #endif
 	[super onEnter];
 }
@@ -166,7 +167,8 @@
 - (void)onExit
 {
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
-	[[CCTouchDispatcher sharedDispatcher] removeDelegate:self];
+    CCTouchDispatcher * dispatcher = [CCDirector sharedDirector].touchDispatcher;
+	[dispatcher removeDelegate:self];
 #endif
     
 	[super onExit];

@@ -78,11 +78,11 @@
 
 - (void)setHue:(CGFloat)hueValue
 {
-    hue_                = hueValue;
+    hue_                    = hueValue;
     
     // Set the position of the slider to the correct hue
     // We need to divide it by 360 as its taken as an angle in degrees
-    float huePercentage	= hueValue / 360.0f;
+    float huePercentage     = hueValue / 360.0f;
     
     // update
     [self setHuePercentage:huePercentage];
@@ -111,6 +111,13 @@
     float x                 = centerX + limit * cosf(angle);
     float y                 = centerY + limit * sinf(angle);
     slider_.position        = ccp(x, y);
+}
+
+- (void)setEnabled:(BOOL)enabled
+{
+    [super setEnabled:enabled];
+    
+    slider_.opacity = enabled ? 255.0f : 128.0f;
 }
 
 #pragma mark -
@@ -162,6 +169,11 @@
 
 - (BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event
 {
+    if (!self.isEnabled)
+    {
+        return NO;
+    }
+    
     // Get the touch location
 	CGPoint touchLocation   = [self touchLocation:touch];
 	
@@ -182,6 +194,11 @@
 
 - (BOOL)ccMouseDown:(NSEvent *)event
 {
+    if (!self.isEnabled)
+    {
+        return NO;
+    }
+    
     // Get the event location
 	CGPoint eventLocation   = [self eventLocation:event];
 
@@ -194,6 +211,11 @@
 
 - (BOOL)ccMouseDragged:(NSEvent *)event
 {
+    if (!self.isEnabled)
+    {
+        return NO;
+    }
+    
 	// Get the event location
 	CGPoint eventLocation   = [self eventLocation:event];
 	

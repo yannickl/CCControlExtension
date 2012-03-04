@@ -158,6 +158,14 @@
     [self updateHueAndControlPicker];
 }
 
+- (void)setEnabled:(BOOL)enabled
+{
+    [super setEnabled:enabled];
+    
+    huePicker_.enabled      = enabled;
+    colourPicker_.enabled   = enabled;
+}
+
 #pragma mark -
 #pragma mark CCControlColourPicker Public Methods
 

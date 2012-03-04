@@ -166,6 +166,12 @@
     return NO;
 }
 
+- (void)setEnabled:(BOOL)enabled
+{
+    [super setEnabled:enabled];
+    
+    slider.opacity = enabled ? 255.0f : 128.0f;
+}
 
 #pragma mark -
 #pragma mark CCTargetedTouch Delegate Methods
@@ -174,6 +180,11 @@
 
 -(BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event
 {
+    if (!self.isEnabled)
+    {
+        return NO;
+    }
+    
 	// Get the touch location
 	CGPoint touchLocation   = [self touchLocation:touch];
 	
@@ -194,6 +205,11 @@
 
 - (BOOL)ccMouseDown:(NSEvent *)event
 {
+    if (!self.isEnabled)
+    {
+        return NO;
+    }
+    
     // Get the event location
 	CGPoint eventLocation   = [self eventLocation:event];
 	
@@ -205,6 +221,11 @@
 
 - (BOOL)ccMouseDragged:(NSEvent *)event
 {
+    if (!self.isEnabled)
+    {
+        return NO;
+    }
+    
 	// Get the event location
 	CGPoint eventLocation   = [self eventLocation:event];
 	

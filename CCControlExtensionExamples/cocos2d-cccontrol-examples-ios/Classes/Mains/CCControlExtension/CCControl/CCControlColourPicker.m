@@ -34,10 +34,10 @@
 #import "Utils.h"
 
 @interface CCControlColourPicker ()
-@property (nonatomic, assign) HSV                   hsv;
-@property (nonatomic, retain) CCSprite              *background;
-@property (nonatomic, retain) CCControlSaturationBrightnessPicker       *colourPicker;
-@property (nonatomic, retain) CCControlHuePicker    *huePicker;
+@property (nonatomic, assign) HSV                                   hsv;
+@property (nonatomic, retain) CCSprite                              *background;
+@property (nonatomic, retain) CCControlSaturationBrightnessPicker   *colourPicker;
+@property (nonatomic, retain) CCControlHuePicker                    *huePicker;
 
 - (void)updateControlPicker;
 - (void)updateHueAndControlPicker;
@@ -53,9 +53,9 @@
 
 - (void)dealloc
 {    
-    [background_ removeFromParentAndCleanup:YES];
-    [huePicker_ removeFromParentAndCleanup:YES];
-    [colourPicker_ removeFromParentAndCleanup:YES];
+    [background_    removeFromParentAndCleanup:YES];
+    [huePicker_     removeFromParentAndCleanup:YES];
+    [colourPicker_  removeFromParentAndCleanup:YES];
 
     background_     = nil;
     huePicker_      = nil;
@@ -165,15 +165,15 @@
 
 - (void)updateControlPicker
 {
-    [huePicker_ setHue:hsv_.h];
-    [colourPicker_ updateWithHSV:hsv_];
+    [huePicker_     setHue:hsv_.h];
+    [colourPicker_  updateWithHSV:hsv_];
 }
 
 - (void)updateHueAndControlPicker
 {
-    [huePicker_ setHue:hsv_.h];
-    [colourPicker_ updateWithHSV:hsv_];
-    [colourPicker_ updateDraggerWithHSV:hsv_];
+    [huePicker_     setHue:hsv_.h];
+    [colourPicker_  updateWithHSV:hsv_];
+    [colourPicker_  updateDraggerWithHSV:hsv_];
 }
 
 #pragma mark - Callback Methods

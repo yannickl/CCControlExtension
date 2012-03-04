@@ -37,29 +37,29 @@
 @interface CCControlButton : CCControl <CCRGBAProtocol>
 {
 @public
-    GLubyte opacity_;
-    ccColor3B color_;
-    BOOL opacityModifyRGB_;
+    GLubyte                                 opacity_;
+    ccColor3B                               color_;
+    BOOL                                    opacityModifyRGB_;
     
-    BOOL adjustBackgroundImage_;
+    BOOL                                    adjustBackgroundImage_;
     
-    NSString *currentTitle_;
-    ccColor3B currentTitleColor_;
+    NSString                                *currentTitle_;
+    ccColor3B                               currentTitleColor_;
     CCNode<CCLabelProtocol, CCRGBAProtocol> *titleLabel_;
-    CCScale9Sprite *backgroundSprite_;
+    CCScale9Sprite                          *backgroundSprite_;
     
 @protected
-    BOOL pushed_;
+    BOOL                                    pushed_;
     
-    NSMutableDictionary *titleDispatchTable_;
-    NSMutableDictionary *titleColorDispatchTable_;
-    NSMutableDictionary *titleLabelDispatchTable_;
-    NSMutableDictionary *backgroundSpriteDispatchTable_;
+    NSMutableDictionary                     *titleDispatchTable_;
+    NSMutableDictionary                     *titleColorDispatchTable_;
+    NSMutableDictionary                     *titleLabelDispatchTable_;
+    NSMutableDictionary                     *backgroundSpriteDispatchTable_;
 }
 /** Conforms to CCRGBAProtocol protocol. */
-@property (nonatomic, readwrite) GLubyte opacity;
+@property (nonatomic, readwrite) GLubyte    opacity;
 /** Conforms to CCRGBAProtocol protocol. */
-@property (nonatomic, readwrite) ccColor3B color;
+@property (nonatomic, readwrite) ccColor3B  color;
 /** Conforms to CocosNodeRGBA protocol. */
 @property (nonatomic, getter = doesOpacityModifyRGB) BOOL opacityModifyRGB;
 

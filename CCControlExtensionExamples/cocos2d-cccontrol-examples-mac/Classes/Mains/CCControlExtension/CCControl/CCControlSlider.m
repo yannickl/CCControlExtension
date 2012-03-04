@@ -61,22 +61,22 @@
 + (id)sliderWithBackgroundFile:(NSString *)backgroundname progressFile:(NSString *)progressname thumbFile:(NSString *)thumbname
 {
     // Prepare background for slider
-	CCSprite *backgroundSprite      = [CCSprite spriteWithFile:backgroundname];
+    CCSprite *backgroundSprite      = [CCSprite spriteWithFile:backgroundname];
 	
     // Prepare progress for slider
     CCSprite *progressSprite        = [CCSprite spriteWithFile:progressname];
     
-	// Prepare thumb for slider
-	CCSprite *thumbSprite           = [CCSprite spriteWithFile:thumbname];
+    // Prepare thumb for slider
+    CCSprite *thumbSprite           = [CCSprite spriteWithFile:thumbname];
     
-	return [self sliderWithBackgroundSprite:backgroundSprite 
+    return [self sliderWithBackgroundSprite:backgroundSprite 
                              progressSprite:progressSprite
                                 thumbSprite:thumbSprite];
 }
 
 + (id)sliderWithBackgroundSprite:(CCSprite *)backgroundSprite progressSprite:(CCSprite *)pogressSprite thumbSprite:(CCSprite *)thumbSprite
 {
-	return [[[self alloc] initWithBackgroundSprite:backgroundSprite
+    return [[[self alloc] initWithBackgroundSprite:backgroundSprite
                                     progressSprite:pogressSprite
                                        thumbSprite:thumbSprite] autorelease];
 }
@@ -84,8 +84,8 @@
 // Designated init
 - (id)initWithBackgroundSprite:(CCSprite *)backgroundSprite progressSprite:(CCSprite *)progressSprite thumbSprite:(CCSprite *)thumbSprite  
 {  
-	if ((self = [super init]))  
-	{
+    if ((self = [super init]))  
+    {
         NSAssert(backgroundSprite,  @"Background sprite must be not nil");
         NSAssert(progressSprite,    @"Progress sprite must be not nil");
         NSAssert(thumbSprite,       @"Thumb sprite must be not nil");
@@ -102,42 +102,42 @@
         
 		// Add the slider background 
         backgroundSprite_.anchorPoint   = ccp (0.5f, 0.5f);
-		backgroundSprite_.position      = ccp(self.contentSize.width / 2, self.contentSize.height / 2);
-		[self addChild:backgroundSprite_];
+        backgroundSprite_.position      = ccp(self.contentSize.width / 2, self.contentSize.height / 2);
+        [self addChild:backgroundSprite_];
         
         // Add the progress bar
         progressSprite_.anchorPoint     = ccp (0.0f, 0.5f);
         progressSprite_.position        = ccp (0.0f, self.contentSize.height / 2);
         [self addChild:progressSprite_];
 		
-		// Add the slider thumb  
-		thumbSprite_.position           = ccp(0, self.contentSize.height / 2);  
-		[self addChild:thumbSprite_];
+        // Add the slider thumb  
+        thumbSprite_.position           = ccp(0, self.contentSize.height / 2);  
+        [self addChild:thumbSprite_];
         
         // Init default values
         minimumValue_                   = 0.0f;
         maximumValue_                   = 1.0f;
         self.value                      = minimumValue_;
-	}  
-	return self;  
+    }  
+    return self;  
 }  
 
 - (void)setValue:(float)value
 {
-	// set new value with sentinel
+    // set new value with sentinel
     if (value < minimumValue_)
     {
-		value                   = minimumValue_;
+        value                   = minimumValue_;
     }
 	
     if (value > maximumValue_) 
     {
-		value                   = maximumValue_;
+        value                   = maximumValue_;
     }
 
     value_                      = value;
 	
-	// Update thumb position for new value
+    // Update thumb position for new value
     float percent               = (value_ - minimumValue_) / (maximumValue_ - minimumValue_);
     
     CGPoint pos                 = thumbSprite_.position;
@@ -227,7 +227,7 @@
 
 - (CGPoint)locationFromEvent:(NSEvent *)event
 {
-	CGPoint eventLocation   = [[CCDirector sharedDirector] convertEventToGL:event];
+    CGPoint eventLocation   = [[CCDirector sharedDirector] convertEventToGL:event];
     eventLocation           = [self convertToNodeSpace:eventLocation];
     
     if (eventLocation.x < 0)
@@ -238,7 +238,7 @@
         eventLocation.x     = backgroundSprite_.contentSize.width;
     }
     
-	return eventLocation;
+    return eventLocation;
 }
 
 - (BOOL)ccMouseDown:(NSEvent*)event
@@ -258,7 +258,7 @@
 
 - (BOOL)ccMouseDragged:(NSEvent*)event
 {
-	if (!self.thumbSprite.isSelected)
+    if (!self.thumbSprite.isSelected)
     {
 		return NO;
     }
@@ -267,14 +267,14 @@
 	
     [self sliderMoved:location];
 	
-	return YES;
+    return YES;
 }
 
 - (BOOL)ccMouseUp:(NSEvent*)event
 {
     [self sliderEnded:CGPointZero];
 	
-	return NO;
+    return NO;
 }
 
 #endif

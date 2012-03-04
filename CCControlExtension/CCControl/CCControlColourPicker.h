@@ -35,6 +35,7 @@
 @class CCControlSaturationBrightnessPicker;
 @class CCControlHuePicker;
 
+/** @class CCControlColourPicker Colour picker control for Cocos2D. */
 @interface CCControlColourPicker : CCControl
 {
 @public

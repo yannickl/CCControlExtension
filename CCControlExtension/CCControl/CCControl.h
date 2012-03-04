@@ -45,7 +45,7 @@ enum
 };
 typedef NSUInteger CCControlEvent;
 
-/** The possible state for a control.  */
+/** The possible state for a control. */
 enum 
 {
     CCControlStateNormal       = 1 << 0, // The normal, or default state of a control—that is, enabled but neither selected nor highlighted.

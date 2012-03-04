@@ -24,20 +24,18 @@
  *
  */
 
-#import "cocos2d.h"
 #import "CCControl.h"
 
 /** @class CCControlSlider Slider control for Cocos2D. */
 @interface CCControlSlider : CCControl 
 {  
 @public
-	float value_; 
-    float minimumValue_;
-    float maximumValue_;
+	float   value_; 
+    float   minimumValue_;
+    float   maximumValue_;
     
 @protected
-	// Weak links to children
-	CCMenuItem *thumbSprite_;
+	CCSprite *thumbSprite_;
     CCSprite *progressSprite_;
 	CCSprite *backgroundSprite_;
 }  
@@ -56,7 +54,7 @@
  * Creates slider with a background filename, a progress filename and a 
  * thumb image filename.
  */
-+ (id)sliderWithBackgroundFile:(NSString *)bgFile progressFile:(NSString *)progressFile thumbFile:(NSString *)thumbFile;
++ (id)sliderWithBackgroundFile:(NSString *)backgroundFile progressFile:(NSString *)progressFile thumbFile:(NSString *)thumbFile;
 
 /** 
  * Creates a slider with a given background sprite and a progress bar and a
@@ -64,17 +62,17 @@
  *
  * @see initWithBackgroundSprite:progressSprite:thumbMenuItem:
  */
-+ (id)sliderWithBackgroundSprite:(CCSprite *)backgroundSprite progressSprite:(CCSprite *)pogressSprite thumbMenuItem:(CCMenuItem *)thumbItem;
++ (id)sliderWithBackgroundSprite:(CCSprite *)backgroundSprite progressSprite:(CCSprite *)pogressSprite thumbSprite:(CCSprite *)thumbSprite;
 
 /** 
  * Initializes a slider with a background sprite, a progress bar and a thumb
  * item.
  *
- * @param backgroundSprite  CCSprite, that is used as a background.
- * @param progressSprite    CCSprite, that is used as a progress bar.
- * @param thumbItem         CCMenuItem, that is used as a thumb.
+ * @param backgroundSprite CCSprite, that is used as a background.
+ * @param progressSprite CCSprite, that is used as a progress bar.
+ * @param thumbSprite CCSprite, that is used as a thumb.
  */
-- (id)initWithBackgroundSprite:(CCSprite *)backgroundSprite progressSprite:(CCSprite *)progressSprite thumbMenuItem:(CCMenuItem *)thumbItem;
+- (id)initWithBackgroundSprite:(CCSprite *)backgroundSprite progressSprite:(CCSprite *)progressSprite thumbSprite:(CCSprite *)thumbSprite;
 
 #pragma mark - Public Methods
 

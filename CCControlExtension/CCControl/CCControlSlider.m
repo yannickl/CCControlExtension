@@ -27,7 +27,7 @@
 #import "CCControlSlider.h"
 
 @interface CCControlSlider () 
-@property (nonatomic, retain) CCMenuItem *thumbSprite;
+@property (nonatomic, retain) CCSprite *thumbSprite;
 @property (nonatomic, retain) CCSprite *progressSprite;
 @property (nonatomic, retain) CCSprite *backgroundSprite;
 
@@ -51,9 +51,9 @@
 
 - (void)dealloc
 {
-    [thumbSprite_ release], thumbSprite_ = nil;
-    [progressSprite_ release], progressSprite_ = nil;
-    [backgroundSprite_ release], backgroundSprite_ = nil;
+    [thumbSprite_       release];
+    [progressSprite_    release];
+    [backgroundSprite_  release];
     
     [super dealloc];
 }
@@ -66,39 +66,35 @@
     // Prepare progress for slider
     CCSprite *progressSprite        = [CCSprite spriteWithFile:progressname];
     
-	// Prepare thumb (menuItem) for slider
-	CCSprite *thumbNormal           = [CCSprite spriteWithFile:thumbname];
-	CCSprite *thumbSelected         = [CCSprite spriteWithFile:thumbname];
-	thumbSelected.color             = ccGRAY;
-	
-	CCMenuItemSprite *thumbMenuItem = [CCMenuItemSprite itemFromNormalSprite:thumbNormal selectedSprite:thumbSelected];
+	// Prepare thumb for slider
+	CCSprite *thumbSprite           = [CCSprite spriteWithFile:thumbname];
     
 	return [self sliderWithBackgroundSprite:backgroundSprite 
                              progressSprite:progressSprite
-                              thumbMenuItem:thumbMenuItem];
+                                thumbSprite:thumbSprite];
 }
 
-+ (id)sliderWithBackgroundSprite:(CCSprite *)backgroundSprite progressSprite:(CCSprite *)pogressSprite thumbMenuItem:(CCMenuItem *)thumbItem
++ (id)sliderWithBackgroundSprite:(CCSprite *)backgroundSprite progressSprite:(CCSprite *)pogressSprite thumbSprite:(CCSprite *)thumbSprite
 {
 	return [[[self alloc] initWithBackgroundSprite:backgroundSprite
                                     progressSprite:pogressSprite
-                                     thumbMenuItem:thumbItem] autorelease];
+                                       thumbSprite:thumbSprite] autorelease];
 }
 
 // Designated init
-- (id)initWithBackgroundSprite:(CCSprite *)backgroundSprite progressSprite:(CCSprite *)progressSprite thumbMenuItem:(CCMenuItem *)thumbItem  
+- (id)initWithBackgroundSprite:(CCSprite *)backgroundSprite progressSprite:(CCSprite *)progressSprite thumbSprite:(CCSprite *)thumbSprite  
 {  
 	if ((self = [super init]))  
 	{
-        NSAssert(backgroundSprite, @"Background sprite must be not nil");
-        NSAssert(progressSprite, @"Progress sprite must be not nil");
-        NSAssert(thumbItem, @"Thumb item must be not nil");
+        NSAssert(backgroundSprite,  @"Background sprite must be not nil");
+        NSAssert(progressSprite,    @"Progress sprite must be not nil");
+        NSAssert(thumbSprite,       @"Thumb sprite must be not nil");
         
         self.isRelativeAnchorPoint      = YES;
         
         self.backgroundSprite           = backgroundSprite;
         self.progressSprite             = progressSprite;
-        self.thumbSprite                = thumbItem;
+        self.thumbSprite                = thumbSprite;
         
         // Defines the content size
         CGRect maxRect                  = CGRectUnion([backgroundSprite_ boundingBox], [thumbSprite_ boundingBox]);
@@ -131,12 +127,12 @@
 	// set new value with sentinel
     if (value < minimumValue_)
     {
-		value = minimumValue_;
+		value                   = minimumValue_;
     }
 	
     if (value > maximumValue_) 
     {
-		value = maximumValue_;
+		value                   = maximumValue_;
     }
 
     value_                      = value;
@@ -236,10 +232,10 @@
     
     if (eventLocation.x < 0)
     {
-        eventLocation.x = 0;
+        eventLocation.x     = 0;
     } else if (eventLocation.x > backgroundSprite_.contentSize.width)
     {
-        eventLocation.x = backgroundSprite_.contentSize.width;
+        eventLocation.x     = backgroundSprite_.contentSize.width;
     }
     
 	return eventLocation;
@@ -290,24 +286,25 @@
 
 - (void)sliderBegan:(CGPoint)location
 {
-    [thumbSprite_ selected];
-    
-    self.value = [self valueForLocation:location];
+    self.selected           = YES;
+    self.thumbSprite.color  = ccGRAY;
+    self.value              = [self valueForLocation:location];
 }
 
 - (void)sliderMoved:(CGPoint)location
 {
-    self.value = [self valueForLocation:location];
+    self.value              = [self valueForLocation:location];
 }
 
 - (void)sliderEnded:(CGPoint)location
 {
-    if (thumbSprite_.isSelected)
+    if (self.isSelected)
     {
-		[thumbSprite_ unselected];
-        
-        self.value = [self valueForLocation:thumbSprite_.position];
+        self.value          = [self valueForLocation:thumbSprite_.position];
     }
+    
+    self.thumbSprite.color  = ccWHITE;
+    self.selected           = NO;
 }
 
 - (float)valueForLocation:(CGPoint)location

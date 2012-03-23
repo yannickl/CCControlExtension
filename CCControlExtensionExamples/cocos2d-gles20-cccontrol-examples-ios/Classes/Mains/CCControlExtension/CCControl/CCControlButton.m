@@ -373,7 +373,7 @@ enum
     NSString* title = [self titleForState:state];
     if (!title) title = @"";
     
-    [self setTitleLabel:[CCLabelBMFont labelWithString:title fntFile:fntFile]];
+    [self setTitleLabel:[CCLabelBMFont labelWithString:title fntFile:fntFile] forState:state];
 }
 
 - (NSString*)titleBMFontForState:(CCControlState)state
@@ -381,7 +381,8 @@ enum
     CCNode<CCLabelProtocol>* label = [self titleLabelForState:state];
     if ([label isKindOfClass:[CCLabelBMFont class]])
     {
-        return [label fntFile];
+        CCLabelBMFont* bmLabel = (CCLabelBMFont*)label;
+        return [bmLabel fntFile];
     }
     else
     {

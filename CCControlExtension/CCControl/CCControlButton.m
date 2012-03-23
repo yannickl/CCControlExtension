@@ -66,6 +66,8 @@ enum
 @synthesize adjustBackgroundImage           = adjustBackgroundImage_;
 @synthesize currentTitle                    = currentTitle_;
 @synthesize currentTitleColor               = currentTitleColor_;
+@synthesize zoomOnTouchDown                 = zoomOnTouchDown_;
+@synthesize preferedSize                    = preferedSize_;
 
 - (void)dealloc
 {
@@ -83,6 +85,11 @@ enum
 #pragma mark -
 #pragma mark CCButton - Initializers
 
+- (id) init
+{
+    return [self initWithLabel:[CCLabelTTF labelWithString:@"" fontName:@"Helvetica" fontSize:12] backgroundSprite:[[[CCScale9Sprite alloc] init] autorelease]];
+}
+
 - (id)initWithLabel:(CCNode<CCLabelProtocol,CCRGBAProtocol> *)label backgroundSprite:(CCScale9Sprite *)backgroundsprite
 {
     if ((self = [super init]))
@@ -92,6 +99,7 @@ enum
         NSAssert([backgroundsprite isKindOfClass:[CCScale9Sprite class]], @"The background sprite must be kind of 'CCScale9Sprite' class.");
         
         self.pushed = NO;
+        self.zoomOnTouchDown = YES;
         
         // Adjust the background image by default
         self.adjustBackgroundImage = YES;
@@ -215,15 +223,39 @@ enum
     
     [self needsLayout];
     
-    float scaleValue = (highlighted && [self isEnabled] && ![self isSelected]) ? 1.1f : 1.0f;
-    CCAction *zoomAction = [CCScaleTo actionWithDuration:0.05f scale:scaleValue];
-    zoomAction.tag = kZoomActionTag;
-    [self runAction:zoomAction];
+    if (zoomOnTouchDown_)
+    {
+        float scaleValue = (highlighted && [self isEnabled] && ![self isSelected]) ? 1.1f : 1.0f;
+        CCAction *zoomAction = [CCScaleTo actionWithDuration:0.05f scale:scaleValue];
+        zoomAction.tag = kZoomActionTag;
+        [self runAction:zoomAction];
+    }
 }
 
 - (void)setAdjustBackgroundImage:(BOOL)adjustBackgroundImage
 {
     adjustBackgroundImage_ = adjustBackgroundImage;
+    
+    [self needsLayout];
+}
+
+- (void) setPreferedSize:(CGSize)preferedSize
+{
+    if (preferedSize.width == 0 && preferedSize.height == 0)
+    {
+        adjustBackgroundImage_ = YES;
+    }
+    else
+    {
+        adjustBackgroundImage_ = NO;
+    
+        for (id key in backgroundSpriteDispatchTable_)
+        {
+            CCScale9Sprite* sprite = [backgroundSpriteDispatchTable_ objectForKey:key];
+            [sprite setPreferedSize:preferedSize];
+        }
+        preferedSize_ = preferedSize;
+    }
     
     [self needsLayout];
 }
@@ -336,6 +368,28 @@ enum
     }
 }
 
+- (void)setTitleBMFont:(NSString*)fntFile forState:(CCControlState)state
+{
+    NSString* title = [self titleForState:state];
+    if (!title) title = @"";
+    
+    [self setTitleLabel:[CCLabelBMFont labelWithString:title fntFile:fntFile] forState:state];
+}
+
+- (NSString*)titleBMFontForState:(CCControlState)state
+{
+    CCNode<CCLabelProtocol>* label = [self titleLabelForState:state];
+    if ([label isKindOfClass:[CCLabelBMFont class]])
+    {
+        CCLabelBMFont* bmLabel = (CCLabelBMFont*)label;
+        return [bmLabel fntFile];
+    }
+    else
+    {
+        return @"";
+    }
+}
+
 - (CCScale9Sprite *)backgroundSpriteForState:(CCControlState)state
 {
     NSNumber *stateNumber = [NSNumber numberWithLong:state];
@@ -365,11 +419,22 @@ enum
     [sprite setVisible:NO];
     [self addChild:sprite];
     
+    if (preferedSize_.width != 0 || preferedSize_.height != 0)
+    {
+        [sprite setPreferedSize:preferedSize_];
+    }
+    
     // If the current state if equal to the given state we update the layout
     if (state_ == state)
     {
         [self needsLayout];
     }
+}
+
+- (void)setBackgroundSpriteFrame:(CCSpriteFrame*)spriteFrame forState:(CCControlState)state
+{
+    CCScale9Sprite* sprite = [CCScale9Sprite spriteWithSpriteFrame:spriteFrame];
+    [self setBackgroundSprite:sprite forState:state];
 }
 
 #pragma mark CCButton Private Methods
@@ -597,5 +662,74 @@ enum
 }
 
 #endif
+
+- (void) setValue:(id)value forUndefinedKey:(NSString *)key
+{
+    NSArray* chunks = [key componentsSeparatedByString:@"|"];
+    if ([chunks count] == 2)
+    {
+        NSString* keyChunk = [chunks objectAtIndex:0];
+        int state = [[chunks objectAtIndex:1] intValue];
+        
+        if ([keyChunk isEqualToString:@"title"])
+        {
+            [self setTitle:value forState:state];
+        }
+        else if ([keyChunk isEqualToString:@"backgroundSpriteFrame"])
+        {
+            [self setBackgroundSpriteFrame:value forState:state];
+        }
+        else if ([keyChunk isEqualToString:@"titleColor"])
+        {
+            ccColor3B c;
+            [value getValue:&c];
+            [self setTitleColor:c forState:state];
+        }
+        else if ([keyChunk isEqualToString:@"titleBMFont"])
+        {
+            [self setTitleBMFont:value forState:state];
+        }
+        else
+        {
+            [super setValue:value forUndefinedKey:key];
+        }
+    }
+    else
+    {
+        [super setValue:value forUndefinedKey:key];
+    }
+}
+
+- (id) valueForUndefinedKey:(NSString *)key
+{
+    NSArray* chunks = [key componentsSeparatedByString:@"|"];
+    if ([chunks count] == 2)
+    {
+        NSString* keyChunk = [chunks objectAtIndex:0];
+        int state = [[chunks objectAtIndex:1] intValue];
+        
+        if ([keyChunk isEqualToString:@"title"])
+        {
+            return [self titleForState:state];
+        }
+        else if ([keyChunk isEqualToString:@"titleColor"])
+        {
+            ccColor3B c = [self titleColorForState:state];
+            return [NSValue value:&c withObjCType:@encode(ccColor3B)];
+        }
+        else if ([keyChunk isEqualToString:@"titleBMFont"])
+        {
+            return [self titleBMFontForState:state];
+        }
+        else
+        {
+            return [super valueForUndefinedKey:key];
+        }
+    }
+    else
+    {
+        return [super valueForUndefinedKey:key];
+    }
+}
 
 @end

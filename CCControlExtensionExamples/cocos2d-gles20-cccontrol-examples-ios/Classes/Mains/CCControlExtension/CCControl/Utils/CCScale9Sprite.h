@@ -238,4 +238,11 @@
  */
 - (CCScale9Sprite *)resizableSpriteWithCapInsets:(CGRect)capInsets;
 
+/**
+ * Sets the sprite frame used to display the 9-slice sprite.
+ *
+ * @param spriteFrame The new sprite frame.
+ */
+- (void) setSpriteFrame:(CCSpriteFrame*) spriteFrame;
+
 @end

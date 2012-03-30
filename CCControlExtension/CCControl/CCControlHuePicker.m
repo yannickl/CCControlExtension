@@ -113,6 +113,13 @@
     slider_.position        = ccp(x, y);
 }
 
+- (void)setEnabled:(BOOL)enabled
+{
+    super.enabled   = enabled;
+    
+    slider_.opacity = enabled ? 255.0f : 128.0f;
+}
+
 #pragma mark -
 #pragma mark CCControlHuePicker Public Methods
 
@@ -162,8 +169,13 @@
 
 - (BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event
 {
+    if (![self isEnabled])
+    {
+        return NO;
+    }
+    
     // Get the touch location
-	CGPoint touchLocation   = [self touchLocation:touch];
+    CGPoint touchLocation   = [self touchLocation:touch];
 	
     // Check the touch position on the slider
     return [self checkSliderPosition:touchLocation];
@@ -172,7 +184,7 @@
 - (void)ccTouchMoved:(UITouch *)touch withEvent:(UIEvent *)event
 {
     // Get the touch location
-	CGPoint touchLocation   = [self touchLocation:touch];
+    CGPoint touchLocation   = [self touchLocation:touch];
 	
     // Check the touch position on the slider
     [self checkSliderPosition:touchLocation];
@@ -182,8 +194,13 @@
 
 - (BOOL)ccMouseDown:(NSEvent *)event
 {
+    if (![self isEnabled])
+    {
+        return NO;
+    }
+    
     // Get the event location
-	CGPoint eventLocation   = [self eventLocation:event];
+    CGPoint eventLocation   = [self eventLocation:event];
 
     // Check the touch position on the slider
     [self checkSliderPosition:eventLocation];
@@ -194,8 +211,13 @@
 
 - (BOOL)ccMouseDragged:(NSEvent *)event
 {
+    if (![self isEnabled])
+    {
+        return NO;
+    }
+    
 	// Get the event location
-	CGPoint eventLocation   = [self eventLocation:event];
+    CGPoint eventLocation   = [self eventLocation:event];
 	
     // Check the touch position on the slider
     [self checkSliderPosition:eventLocation];

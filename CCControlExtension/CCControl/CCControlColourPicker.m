@@ -158,6 +158,14 @@
     [self updateHueAndControlPicker];
 }
 
+- (void)setEnabled:(BOOL)enabled
+{
+    super.enabled           = enabled;
+    
+    huePicker_.enabled      = enabled;
+    colourPicker_.enabled   = enabled;
+}
+
 #pragma mark -
 #pragma mark CCControlColourPicker Public Methods
 
@@ -200,8 +208,8 @@
     RGBA rgb    = [CCColourUtils RGBfromHSV:hsv_];
     color_      = ccc3(rgb.r * 255.0f, rgb.g * 255.0f, rgb.b * 255.0f);
     
-	// Send CCControl callback
-	[self sendActionsForControlEvents:CCControlEventValueChanged];
+    // Send CCControl callback
+    [self sendActionsForControlEvents:CCControlEventValueChanged];
 }
 
 #pragma mark -

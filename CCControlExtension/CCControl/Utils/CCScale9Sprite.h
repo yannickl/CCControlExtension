@@ -4,7 +4,8 @@
 // Public domain. Use in anyway you see fit. No waranties of any kind express or implied.
 // Based off work of Steve Oldmeadow and Jose Antonio Andújar Clavell
 //
-// 2011/11/14: Modified by Yannick Loriot
+// Modification added by Yannick Loriot
+// Modification added by Viktor Lidholt
 //
 
 #import "cocos2d.h"

@@ -31,6 +31,10 @@
 #import "Utils.h"
 
 @interface CCControlSaturationBrightnessPicker ()
+@property (nonatomic, assign) CCSprite    *background;
+@property (nonatomic, assign) CCSprite    *overlay;
+@property (nonatomic, assign) CCSprite    *shadow;
+@property (nonatomic, assign) CCSprite    *slider;
 
 - (void)updateSliderPosition:(CGPoint)sliderPosition;
 - (BOOL)checkSliderPosition:(CGPoint)location;
@@ -38,6 +42,11 @@
 @end
 
 @implementation CCControlSaturationBrightnessPicker
+@synthesize background  = background_;
+@synthesize overlay     = overlay_;
+@synthesize shadow      = shadow_;
+@synthesize slider      = slider_;
+
 @synthesize saturation  = saturation_;
 @synthesize brightness  = brightness_;
 
@@ -45,10 +54,10 @@
 {
     [self removeAllChildrenWithCleanup:YES];
     
-    background  = nil;
-    overlay     = nil;
-    shadow      = nil;
-    slider      = nil;
+    background_ = nil;
+    overlay_    = nil;
+    shadow_     = nil;
+    slider_     = nil;
     
 	[super dealloc];
 }
@@ -57,11 +66,11 @@
 {
     if ((self = [super init]))
     {
-		// Add sprites
-        background      = [Utils addSprite:@"colourPickerBackground.png" toTarget:target withPos:pos andAnchor:ccp(0, 0)];
-        overlay         = [Utils addSprite:@"colourPickerOverlay.png" toTarget:target withPos:pos andAnchor:ccp(0, 0)];
-        shadow          = [Utils addSprite:@"colourPickerShadow.png" toTarget:target withPos:pos andAnchor:ccp(0, 0)];
-        slider          = [Utils addSprite:@"colourPicker.png" toTarget:target withPos:pos andAnchor:ccp(0.5f, 0.5f)];
+        // Add sprites
+        background_     = [Utils addSprite:@"colourPickerBackground.png" toTarget:target withPos:pos andAnchor:ccp(0, 0)];
+        overlay_        = [Utils addSprite:@"colourPickerOverlay.png" toTarget:target withPos:pos andAnchor:ccp(0, 0)];
+        shadow_         = [Utils addSprite:@"colourPickerShadow.png" toTarget:target withPos:pos andAnchor:ccp(0, 0)];
+        slider_         = [Utils addSprite:@"colourPicker.png" toTarget:target withPos:pos andAnchor:ccp(0.5f, 0.5f)];
         
         startPos        = pos;	// starting position of the colour picker
         boxPos          = 35;	// starting position of the virtual box area for picking a colour
@@ -70,6 +79,12 @@
     return self;
 }
 
+- (void)setEnabled:(BOOL)enabled
+{
+    super.enabled   = enabled;
+    
+    slider_.opacity = enabled ? 255.0f : 128.0f;
+}
 
 #pragma mark - 
 #pragma mark CCControlPicker Public Methods
@@ -77,13 +92,13 @@
 - (void)updateWithHSV:(HSV)hsv
 {
     HSV hsvTemp;
-    hsvTemp.s = 1;
-    hsvTemp.h = hsv.h;
-    hsvTemp.v = 1;
+    hsvTemp.s           = 1;
+    hsvTemp.h           = hsv.h;
+    hsvTemp.v           = 1;
     
-    RGBA rgb    = [CCColourUtils RGBfromHSV:hsvTemp];
+    RGBA rgb            = [CCColourUtils RGBfromHSV:hsvTemp];
     
-    [background setColor:ccc3(rgb.r * 255.0f, rgb.g * 255.0f, rgb.b * 255.0f)];
+    background_.color   = ccc3(rgb.r * 255.0f, rgb.g * 255.0f, rgb.b * 255.0f);
 }
 
 - (void)updateDraggerWithHSV:(HSV)hsv
@@ -104,8 +119,8 @@
     // Clamp the position of the icon within the circle
     
     // Get the center point of the bkgd image
-    float centerX           = startPos.x + background.boundingBox.size.width*.5;
-    float centerY           = startPos.y + background.boundingBox.size.height*.5;
+    float centerX           = startPos.x + background_.boundingBox.size.width*.5;
+    float centerY           = startPos.y + background_.boundingBox.size.height*.5;
     
     // Work out the distance difference between the location and center
     float dx                = sliderPosition.x - centerX;
@@ -116,7 +131,7 @@
     float angle             = atan2f(dy, dx);
     
     // Set the limit to the slider movement within the colour picker
-    float limit             = background.boundingBox.size.width*.5;
+    float limit             = background_.boundingBox.size.width*.5;
     
     // Check distance doesn't exceed the bounds of the circle
     if (dist > limit)
@@ -126,7 +141,7 @@
     }
     
     // Set the position of the dragger
-    slider.position         = sliderPosition;
+    slider_.position        = sliderPosition;
     
     
     // Clamp the position within the virtual box for colour selection
@@ -145,8 +160,8 @@
     // Clamp the position of the icon within the circle
     
     // get the center point of the bkgd image
-    float centerX           = startPos.x + background.boundingBox.size.width*.5;
-    float centerY           = startPos.y + background.boundingBox.size.height*.5;
+    float centerX           = startPos.x + background_.boundingBox.size.width*.5;
+    float centerY           = startPos.y + background_.boundingBox.size.height*.5;
     
     // work out the distance difference between the location and center
     float dx                = location.x - centerX;
@@ -154,7 +169,7 @@
     float dist              = sqrtf(dx*dx+dy*dy);
     
     // check that the touch location is within the bounding rectangle before sending updates
-	if (dist <= background.boundingBox.size.width*.5)
+    if (dist <= background_.boundingBox.size.width*.5)
     {
         [self updateSliderPosition:location];
         
@@ -174,28 +189,38 @@
 
 -(BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event
 {
-	// Get the touch location
-	CGPoint touchLocation   = [self touchLocation:touch];
+    if (![self isEnabled])
+    {
+        return NO;
+    }
+    
+    // Get the touch location
+    CGPoint touchLocation   = [self touchLocation:touch];
 	
     // check the touch position on the slider
-	return [self checkSliderPosition:touchLocation];
+    return [self checkSliderPosition:touchLocation];
 }
 
 -(void)ccTouchMoved:(UITouch *)touch withEvent:(UIEvent *)event
 {
-	// Get the touch location
-	CGPoint touchLocation   = [self touchLocation:touch];
+    // Get the touch location
+    CGPoint touchLocation   = [self touchLocation:touch];
 	
     // check the touch position on the slider
-	[self checkSliderPosition:touchLocation];
+    [self checkSliderPosition:touchLocation];
 }
 
 #elif __MAC_OS_X_VERSION_MAX_ALLOWED
 
 - (BOOL)ccMouseDown:(NSEvent *)event
 {
+    if (![self isEnabled])
+    {
+        return NO;
+    }
+    
     // Get the event location
-	CGPoint eventLocation   = [self eventLocation:event];
+    CGPoint eventLocation   = [self eventLocation:event];
 	
     // Check the touch position on the slider
     [self checkSliderPosition:eventLocation];
@@ -205,8 +230,13 @@
 
 - (BOOL)ccMouseDragged:(NSEvent *)event
 {
-	// Get the event location
-	CGPoint eventLocation   = [self eventLocation:event];
+    if (![self isEnabled])
+    {
+        return NO;
+    }
+    
+    // Get the event location
+    CGPoint eventLocation   = [self eventLocation:event];
 	
     // Check the touch position on the slider
     return [self checkSliderPosition:eventLocation];

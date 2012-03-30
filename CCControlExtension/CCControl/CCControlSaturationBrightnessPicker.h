@@ -37,10 +37,10 @@
     CGFloat     saturation_, brightness_;
     
 @protected
-    CCSprite    *background;
-    CCSprite    *overlay;
-    CCSprite    *shadow;
-    CCSprite    *slider;
+    CCSprite    *background_;
+    CCSprite    *overlay_;
+    CCSprite    *shadow_;
+    CCSprite    *slider_;
     CGPoint     startPos;
     
     int         boxPos;

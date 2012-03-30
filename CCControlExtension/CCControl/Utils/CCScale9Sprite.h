@@ -19,8 +19,15 @@
     CGSize preferedSize_;
     CGRect capInsets_;
     
+    float insetLeft_;
+    float insetTop_;
+    float insetRight_;
+    float insetBottom_;
+    
 @protected
     CGRect spriteRect;
+    CGRect capInsetsInternal_;
+    BOOL positionsAreDirty_;
     
     CCSpriteBatchNode *scale9Image;
     CCSprite *topLeft;
@@ -47,7 +54,16 @@
  * On a non-resizeable sprite, this property is set to CGRectZero; the sprite 
  * does not use end caps and the entire sprite is subject to stretching. 
  */
-@property(nonatomic, readonly) CGRect capInsets;
+@property(nonatomic, assign) CGRect capInsets;
+/** Sets the left side inset */
+@property(nonatomic, assign) float insetLeft;
+/** Sets the top side inset */
+@property(nonatomic, assign) float insetTop;
+/** Sets the right side inset */
+@property(nonatomic, assign) float insetRight;
+/** Sets the bottom side inset */
+@property(nonatomic, assign) float insetBottom;
+
 /** Conforms to CocosNodeRGBA protocol. */
 @property (nonatomic, readwrite) GLubyte opacity;
 /** Conforms to CocosNodeRGBA protocol. */

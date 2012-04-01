@@ -258,12 +258,12 @@
 
 - (BOOL)ccMouseDragged:(NSEvent*)event
 {
-    if (!self.thumbSprite.isSelected)
+    if (![self isSelected])
     {
 		return NO;
     }
 	
-    CGPoint location = [self locationFromEvent: event];
+    CGPoint location = [self locationFromEvent:event];
 	
     [self sliderMoved:location];
 	

@@ -42,11 +42,13 @@
     BOOL                                    opacityModifyRGB_;
     
     BOOL                                    adjustBackgroundImage_;
+    BOOL                                    zoomOnTouchDown_;
     
     NSString                                *currentTitle_;
     ccColor3B                               currentTitleColor_;
     CCNode<CCLabelProtocol, CCRGBAProtocol> *titleLabel_;
     CCScale9Sprite                          *backgroundSprite_;
+    CGSize                                  preferedSize_;
     
 @protected
     BOOL                                    pushed_;
@@ -67,6 +69,8 @@
 /** Adjust the background image. YES by default. If the property is set to NO, the 
  background will use the prefered size of the background image. */
 @property (nonatomic, getter = doesAdjustBackgroundImage) BOOL adjustBackgroundImage;
+/** Scale the button up when it is touched, default is YES. */
+@property (nonatomic, assign) BOOL zoomOnTouchDown;
 
 #pragma mark Getting the Current State
 /** The current title that is displayed on the button. */
@@ -77,6 +81,8 @@
 @property (nonatomic, retain) CCNode<CCLabelProtocol,CCRGBAProtocol> *titleLabel;
 /** The current background sprite. */
 @property (nonatomic, retain) CCScale9Sprite *backgroundSprite;
+/** The prefered size of the button, if label is larger it will be expanded. */
+@property (nonatomic, assign) CGSize preferedSize;
 
 #pragma mark Constructors - Initializers
 
@@ -160,6 +166,14 @@
 - (void)setTitleLabel:(CCNode<CCLabelProtocol, CCRGBAProtocol> *)label forState:(CCControlState)state;
 
 /**
+ * Sets the font of the label, changes the label to a CCLabelBMFont if neccessary.
+ * @param fntFile The name of the font to change to
+ * @param state The state that uses the specified fntFile. The values are described
+ * in "CCControlState".
+ */
+- (void)setTitleBMFont:(NSString *)fntFile forState:(CCControlState)state;
+
+/**
  * Returns the background sprite used for a state.
  *
  * @param state The state that uses the background sprite. Possible values are
@@ -175,5 +189,14 @@
  * in "CCControlState".
  */
 - (void)setBackgroundSprite:(CCScale9Sprite *)sprite forState:(CCControlState)state;
+
+/**
+ * Sets the background spriteFrame to use for the specified button state.
+ *
+ * @param spriteFrame The background spriteFrame to use for the specified state.
+ * @param state The state that uses the specified image. The values are described
+ * in "CCControlState".
+ */
+- (void)setBackgroundSpriteFrame:(CCSpriteFrame *)spriteFrame forState:(CCControlState)state;
 
 @end

@@ -738,6 +738,7 @@
 		C27D3D981528C4DD004EF65F /* CCControl */ = {
 			isa = PBXGroup;
 			children = (
+				C27D3DA51528C4DD004EF65F /* Utils */,
 				C27D3D991528C4DD004EF65F /* CCControl.h */,
 				C27D3D9A1528C4DD004EF65F /* CCControl.m */,
 				C27D3D9B1528C4DD004EF65F /* CCControlButton.h */,
@@ -750,7 +751,6 @@
 				C27D3DA21528C4DD004EF65F /* CCControlSaturationBrightnessPicker.m */,
 				C27D3DA31528C4DD004EF65F /* CCControlSlider.h */,
 				C27D3DA41528C4DD004EF65F /* CCControlSlider.m */,
-				C27D3DA51528C4DD004EF65F /* Utils */,
 			);
 			path = CCControl;
 			sourceTree = "<group>";

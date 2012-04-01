@@ -4,7 +4,8 @@
 // Public domain. Use in anyway you see fit. No waranties of any kind express or implied.
 // Based off work of Steve Oldmeadow and Jose Antonio Andújar Clavell
 //
-// 2011/11/14: Modified by Yannick Loriot
+// Modification added by Yannick Loriot
+// Modification added by Viktor Lidholt
 //
 
 #import "cocos2d.h"
@@ -15,28 +16,34 @@
 @interface CCScale9Sprite : CCNode <CCRGBAProtocol>
 {
 @public
-    CGSize originalSize_;
-    CGSize preferedSize_;
-    CGRect capInsets_;
+    CGSize              originalSize_;
+    CGSize              preferedSize_;
+    CGRect              capInsets_;
+    float               insetLeft_;
+	float               insetTop_;
+	float               insetRight_;
+	float               insetBottom_;
     
 @protected
-    CGRect spriteRect;
+    CGRect              spriteRect;
+    CGRect              capInsetsInternal_;
+    BOOL                positionsAreDirty_;
     
-    CCSpriteBatchNode *scale9Image;
-    CCSprite *topLeft;
-    CCSprite *top;
-    CCSprite *topRight;
-    CCSprite *left;
-    CCSprite *centre;
-    CCSprite *right;
-    CCSprite *bottomLeft;
-    CCSprite *bottom;
-    CCSprite *bottomRight;
+    CCSpriteBatchNode   *scale9Image;
+    CCSprite            *topLeft;
+    CCSprite            *top;
+    CCSprite            *topRight;
+    CCSprite            *left;
+    CCSprite            *centre;
+    CCSprite            *right;
+    CCSprite            *bottomLeft;
+    CCSprite            *bottom;
+    CCSprite            *bottomRight;
     
     // texture RGBA
-    GLubyte opacity_;
-    ccColor3B color_;
-    BOOL opacityModifyRGB_;
+    GLubyte             opacity_;
+    ccColor3B           color_;
+    BOOL                opacityModifyRGB_;
 }
 /** Original sprite's size. */
 @property (nonatomic, readonly) CGSize originalSize;
@@ -48,6 +55,14 @@
  * does not use end caps and the entire sprite is subject to stretching. 
  */
 @property(nonatomic, readonly) CGRect capInsets;
+/** Sets the left side inset */
+@property(nonatomic, assign) float insetLeft;
+/** Sets the top side inset */
+@property(nonatomic, assign) float insetTop;
+/** Sets the right side inset */
+@property(nonatomic, assign) float insetRight;
+/** Sets the bottom side inset */
+@property(nonatomic, assign) float insetBottom;
 /** Conforms to CocosNodeRGBA protocol. */
 @property (nonatomic, readwrite) GLubyte opacity;
 /** Conforms to CocosNodeRGBA protocol. */
@@ -237,5 +252,12 @@
  * @param capInsets The values to use for the cap insets.
  */
 - (CCScale9Sprite *)resizableSpriteWithCapInsets:(CGRect)capInsets;
+
+/**
+ * Sets the sprite frame used to display the 9-slice sprite.
+ *
+ * @param spriteFrame The new sprite frame.
+ */
+- (void)setSpriteFrame:(CCSpriteFrame *)spriteFrame;
 
 @end

@@ -22,6 +22,8 @@ enum positions
 @interface CCScale9Sprite ()
 
 - (id)initWithBatchNode:(CCSpriteBatchNode *)batchnode rect:(CGRect)rect capInsets:(CGRect)capInsets;
+- (void)updateWithBatchNode:(CCSpriteBatchNode *)batchnode rect:(CGRect)rect capInsets:(CGRect)capInsets;
+- (void)updatePosition;
 
 @end
 
@@ -32,155 +34,44 @@ enum positions
 @synthesize opacity = opacity_;
 @synthesize color = color_;
 @synthesize opacityModifyRGB = opacityModifyRGB_;
+@synthesize insetTop = insetTop_;
+@synthesize insetLeft = insetLeft_;
+@synthesize insetBottom = insetBottom_;
+@synthesize insetRight = insetRight_;
 
 - (void)dealloc
 {
-    [topLeft release];
-    [top release];
-    [topRight release];
-    [left release];
-    [centre release];
-    [right release];
-    [bottomLeft release];
-    [bottom release];
-    [bottomRight release];
-    [scale9Image release];
-    
-    [super dealloc];
+    [topLeft        release];
+    [top            release];
+    [topRight       release];
+    [left           release];
+    [centre         release];
+    [right          release];
+    [bottomLeft     release];
+    [bottom         release];
+    [bottomRight    release];
+    [scale9Image    release];
+
+    [super          dealloc];
 }
 
 #pragma mark Constructor - Initializers
+
+- (id)init
+{
+    return [self initWithBatchNode:NULL rect:CGRectZero capInsets:CGRectZero];
+}
 
 - (id)initWithBatchNode:(CCSpriteBatchNode *)batchnode rect:(CGRect)rect capInsets:(CGRect)capInsets
 {
     if ((self = [super init]))
     {
-        NSAssert(batchnode, @"The batchnode must be not nil.");
-        
-        scale9Image = [batchnode retain];
-        
-        // If there is no given rect
-        if (CGRectEqualToRect(rect, CGRectZero))
+        if (batchnode)
         {
-            // Get the texture size as original
-            CGSize textureSize = [[[scale9Image textureAtlas] texture] contentSize];
-            
-            rect = CGRectMake(0, 0, textureSize.width, textureSize.height);
+            [self updateWithBatchNode:batchnode rect:rect capInsets:capInsets];
         }
         
-        // Set the given rect's size as original size
-        spriteRect = rect;
-        originalSize_ = rect.size;
-        preferedSize_ = originalSize_;
-        capInsets_ = capInsets;
-        anchorPoint_ = ccp(0.5f, 0.5f);
-        
-        // If there is no specified center region
-        if (CGRectEqualToRect(capInsets_, CGRectZero))
-        {
-            // Apply the 3x3 grid format
-            capInsets_ = CGRectMake(rect.origin.x + originalSize_.width / 3, 
-                                    rect.origin.y + originalSize_.height / 3, 
-                                    originalSize_.width / 3,
-                                    originalSize_.height / 3);
-        }
-        
-        // Get the image edges
-        float l = rect.origin.x;
-        float t = rect.origin.y;
-        float h = rect.size.height;
-        float w = rect.size.width;
-        
-        //
-        // Set up the image
-        //
-        
-        // Centre
-        centre = [[CCSprite alloc] initWithBatchNode:scale9Image rect:capInsets_];
-        [scale9Image addChild:centre z:0 tag:pCentre];
-        
-        // Top
-        top = [[CCSprite alloc]
-               initWithBatchNode:scale9Image
-               rect:CGRectMake(capInsets_.origin.x,
-                               t,
-                               capInsets_.size.width,
-                               capInsets_.origin.y - t)
-               ];
-        [scale9Image addChild:top z:1 tag:pTop];
-        
-        // Bottom
-        bottom = [[CCSprite alloc]
-                  initWithBatchNode:scale9Image
-                  rect:CGRectMake(capInsets_.origin.x,
-                                  capInsets_.origin.y + capInsets_.size.height,
-                                  capInsets_.size.width,
-                                  h - (capInsets_.origin.y - t + capInsets_.size.height))
-                  ];
-        [scale9Image addChild:bottom z:1 tag:pBottom];
-        
-        // Left
-        left = [[CCSprite alloc]
-                initWithBatchNode:scale9Image
-                rect:CGRectMake(l,
-                                capInsets_.origin.y,
-                                capInsets_.origin.x - l,
-                                capInsets_.size.height)
-                ];
-        [scale9Image addChild:left z:1 tag:pLeft];
-        
-        // Right
-        right = [[CCSprite alloc]
-                 initWithBatchNode:scale9Image
-                 rect:CGRectMake(capInsets_.origin.x + capInsets_.size.width,
-                                 capInsets_.origin.y,
-                                 w - (capInsets_.origin.x - l + capInsets_.size.width),
-                                 capInsets_.size.height)
-                 ];
-        [scale9Image addChild:right z:1 tag:pRight];
-        
-        // Top left
-        topLeft = [[CCSprite alloc]
-                   initWithBatchNode:scale9Image
-                   rect:CGRectMake(l,
-                                   t,
-                                   capInsets_.origin.x - l,
-                                   capInsets_.origin.y - t)
-                   ];
-        [scale9Image addChild:topLeft z:2 tag:pTopLeft];
-        
-        // Top right
-        topRight = [[CCSprite alloc]
-                    initWithBatchNode:scale9Image
-                    rect:CGRectMake(capInsets_.origin.x + capInsets_.size.width,
-                                    t,
-                                    w - (capInsets_.origin.x - l + capInsets_.size.width),
-                                    capInsets_.origin.y - t)
-                    ];
-        [scale9Image addChild:topRight z:2 tag:pTopRight];
-        
-        // Bottom left
-        bottomLeft = [[CCSprite alloc]
-                      initWithBatchNode:scale9Image
-                      rect:CGRectMake(l,
-                                      capInsets_.origin.y + capInsets_.size.height,
-                                      capInsets_.origin.x - l,
-                                      h - (capInsets_.origin.y - t + capInsets_.size.height))
-                      ];
-        [scale9Image addChild:bottomLeft z:2 tag:pBottomLeft];
-        
-        // Bottom right
-        bottomRight = [[CCSprite alloc]
-                       initWithBatchNode:scale9Image
-                       rect:CGRectMake(capInsets_.origin.x + capInsets_.size.width,
-                                       capInsets_.origin.y + capInsets_.size.height,
-                                       w - (capInsets_.origin.x - l + capInsets_.size.width),
-                                       h - (capInsets_.origin.y - t + capInsets_.size.height))
-                       ];
-        [scale9Image addChild:bottomRight z:2 tag:pBottomRight];
-        
-        [self setContentSize:rect.size];
-        [self addChild:scale9Image];
+        positionsAreDirty_ = YES;
     }
     return self;
 }
@@ -293,46 +184,67 @@ enum positions
 {
     [super setContentSize:size];
     
-    float sizableWidth = size.width - topLeft.contentSize.width - topRight.contentSize.width;
-    float sizableHeight = size.height - topLeft.contentSize.height - bottomRight.contentSize.height;
+    positionsAreDirty_  = YES;
+}
+
+- (void)updatePosition
+{
+    CGSize size             = contentSize_;
     
-    float horizontalScale = sizableWidth/centre.contentSize.width;
-    float verticalScale = sizableHeight/centre.contentSize.height;
+    float sizableWidth      = size.width - topLeft.contentSize.width - topRight.contentSize.width;
+    float sizableHeight     = size.height - topLeft.contentSize.height - bottomRight.contentSize.height;
     
-    centre.scaleX = horizontalScale;
-    centre.scaleY = verticalScale;
+    float horizontalScale   = sizableWidth/centre.contentSize.width;
+    float verticalScale     = sizableHeight/centre.contentSize.height;
+
+    centre.scaleX           = horizontalScale;
+    centre.scaleY           = verticalScale;
     
-    float rescaledWidth = centre.contentSize.width * horizontalScale;
-    float rescaledHeight = centre.contentSize.height * verticalScale;
+    float rescaledWidth     = centre.contentSize.width * horizontalScale;
+    float rescaledHeight    = centre.contentSize.height * verticalScale;
     
-    float despx = size.width * 0.5f;
-    float despy = size.height * 0.5f;
+    float leftWidth         = bottomLeft.contentSize.width;
+    float bottomHeight      = bottomLeft.contentSize.height;
     
+    // Set anchor points
+    bottomLeft.anchorPoint  = ccp(0,0);
+    bottomRight.anchorPoint = ccp(0,0);
+    topLeft.anchorPoint     = ccp(0,0);
+    topRight.anchorPoint    = ccp(0,0);
+    left.anchorPoint        = ccp(0,0);
+    right.anchorPoint       = ccp(0,0);
+    top.anchorPoint         = ccp(0,0);
+    bottom.anchorPoint      = ccp(0,0);
+    centre.anchorPoint      = ccp(0,0);
+   
     // Position corners
-    [topLeft setPosition:
-     CGPointMake(-rescaledWidth/2 - topLeft.contentSize.width/2 +despx, rescaledHeight/2 + topLeft.contentSize.height*0.5 + despy)];
-    [topRight setPosition:
-     CGPointMake(rescaledWidth/2 + topRight.contentSize.width/2 +despx, rescaledHeight/2 + topRight.contentSize.height*0.5 + despy)];
-    [bottomLeft setPosition:
-     CGPointMake(-rescaledWidth/2 - bottomLeft.contentSize.width/2 + despx, -rescaledHeight/2 - bottomLeft.contentSize.height*0.5 + despy)];
-    [bottomRight setPosition:
-     CGPointMake(rescaledWidth/2 + bottomRight.contentSize.width/2 + despx, -rescaledHeight/2 + -bottomRight.contentSize.height*0.5 + despy)];
-    
+    bottomLeft.position     = ccp(0,0);
+    bottomRight.position    = ccp(leftWidth+rescaledWidth,0);
+    topLeft.position        = ccp(0, bottomHeight+rescaledHeight);
+    topRight.position       = ccp(leftWidth+rescaledWidth, bottomHeight+rescaledHeight);
+   
     // Scale and position borders
-    top.scaleX = horizontalScale;
-    [top setPosition:CGPointMake(0+despx,rescaledHeight/2 + topLeft.contentSize.height*0.5 + despy)];
-    bottom.scaleX = horizontalScale;
-    [bottom setPosition:CGPointMake(0+despx,-rescaledHeight/2 - bottomLeft.contentSize.height*0.5 + despy)];
-    left.scaleY = verticalScale;
-    [left setPosition:CGPointMake(-rescaledWidth/2 - topLeft.contentSize.width/2 +despx, 0 + despy)];
-    right.scaleY = verticalScale;
-    [right setPosition:CGPointMake(rescaledWidth/2 + topRight.contentSize.width/2 +despx, 0 + despy)];
+    left.position           = ccp(0, bottomHeight);
+    left.scaleY             = verticalScale;
+    right.position          = ccp(leftWidth+rescaledWidth,bottomHeight);
+    right.scaleY            = verticalScale;
+    bottom.position         = ccp(leftWidth,0);
+    bottom.scaleX           = horizontalScale;
+    top.position            = ccp(leftWidth,bottomHeight+rescaledHeight);
+    top.scaleX              = horizontalScale;
     
-    // Position center
-    [centre setPosition:CGPointMake(despx, despy)];
+    // Position centre
+    centre.position         = ccp(leftWidth, bottomHeight);
 }
 
 #pragma mark Properties
+
+- (void)setPreferedSize:(CGSize)preferedSize
+{
+    [self setContentSize:preferedSize];
+    
+    preferedSize_ = preferedSize;
+}
 
 - (void)setColor:(ccColor3B)color
 {
@@ -364,12 +276,236 @@ enum positions
     }
 }
 
+- (void)setSpriteFrame:(CCSpriteFrame *)spriteFrame
+{
+    CCSpriteBatchNode *batchnode = [CCSpriteBatchNode batchNodeWithTexture:spriteFrame.texture capacity:9];
+    [self updateWithBatchNode:batchnode rect:spriteFrame.rect capInsets:CGRectZero];
+
+    // Reset insets
+    insetLeft_      = 0;
+    insetTop_       = 0;
+    insetRight_     = 0;
+    insetBottom_    = 0;
+}
+
+- (void)setCapInsets:(CGRect)capInsets
+{
+    CGSize contentSize = contentSize_;
+    [self updateWithBatchNode:scale9Image rect:spriteRect capInsets:capInsets];
+    [self setContentSize:contentSize];
+}
+
+- (void)updateCapInset_
+{
+    CGRect insets;
+    if (insetLeft_ == 0 && insetTop_ == 0 && insetRight_ == 0 && insetBottom_ == 0)
+    {
+        insets = CGRectZero;
+    } else
+    {
+        insets = CGRectMake(insetLeft_,
+                            insetTop_,
+                            spriteRect.size.width-insetLeft_-insetRight_,
+                            spriteRect.size.height-insetTop_-insetBottom_);
+    }
+    [self setCapInsets:insets];
+}
+	
+- (void)setInsetLeft:(float)insetLeft
+{
+    insetLeft_ = insetLeft;
+    [self updateCapInset_];
+}
+
+- (void)setInsetTop:(float)insetTop
+{
+    insetTop_ = insetTop;
+    [self updateCapInset_];
+}
+
+- (void) setInsetRight:(float)insetRight
+{
+    insetRight_ = insetRight;
+    [self updateCapInset_];
+}
+
+- (void) setInsetBottom:(float)insetBottom
+{
+    insetBottom_ = insetBottom;
+    [self updateCapInset_];
+}
+
 #pragma mark -
 #pragma mark CCScale9Sprite Public Methods
 
 - (CCScale9Sprite *)resizableSpriteWithCapInsets:(CGRect)capInsets
 {
     return [[[CCScale9Sprite alloc] initWithBatchNode:scale9Image rect:spriteRect capInsets:capInsets] autorelease];
+}
+
+#pragma mark CCScale9Sprite Private Methods
+
+- (void)updateWithBatchNode:(CCSpriteBatchNode *)batchnode rect:(CGRect)rect capInsets:(CGRect)capInsets
+{
+    // Release old sprites
+    [self removeAllChildrenWithCleanup:YES];
+    
+    [topLeft        release];
+    [top            release];
+    [topRight       release];
+    [left           release];
+    [centre         release];
+    [right          release];
+    [bottomLeft     release];
+    [bottom         release];
+    [bottomRight    release];
+
+    if (scale9Image != batchnode)
+    {
+        [scale9Image release];
+        
+        scale9Image = [batchnode retain];
+    }
+
+    [scale9Image removeAllChildrenWithCleanup:YES];
+
+    // If there is no given rect
+    if (CGRectEqualToRect(rect, CGRectZero))
+    {
+        // Get the texture size as original
+        CGSize textureSize  = [[[scale9Image textureAtlas] texture] contentSize];
+        rect                = CGRectMake(0, 0, textureSize.width, textureSize.height);
+    }
+	
+    // Set the given rect's size as original size
+    spriteRect          = rect;
+    originalSize_       = rect.size;
+    preferedSize_       = originalSize_;
+    capInsets_          = capInsets;
+    capInsetsInternal_  = capInsets;
+    anchorPoint_        = ccp(0.5f, 0.5f);
+
+    // If there is no specified center region
+    if (CGRectEqualToRect(capInsetsInternal_, CGRectZero))
+    {
+        // Apply the 3x3 grid format
+        capInsetsInternal_  = CGRectMake(rect.origin.x + originalSize_.width / 3,
+                                         rect.origin.y + originalSize_.height / 3,
+                                         originalSize_.width / 3,
+                                         originalSize_.height / 3);
+    }
+
+    // Get the image edges
+    float l = rect.origin.x;
+    float t = rect.origin.y;
+    float h = rect.size.height;
+    float w = rect.size.width;
+
+    //
+    // Set up the image
+    //
+
+    // Centre
+    centre  = [[CCSprite alloc] initWithTexture:scale9Image.texture rect:capInsetsInternal_];
+    [scale9Image addChild:centre z:0 tag:pCentre];
+
+    // Top
+    top = [[CCSprite alloc]
+           initWithTexture:scale9Image.texture
+           rect:CGRectMake(capInsetsInternal_.origin.x,
+                           t,
+                           capInsetsInternal_.size.width,
+                           capInsetsInternal_.origin.y - t)
+           ];
+    [scale9Image addChild:top z:1 tag:pTop];
+
+    // Bottom
+    bottom = [[CCSprite alloc]
+              initWithTexture:scale9Image.texture
+              rect:CGRectMake(capInsetsInternal_.origin.x,
+                              capInsetsInternal_.origin.y + capInsetsInternal_.size.height,
+                              capInsetsInternal_.size.width,
+                              h - (capInsetsInternal_.origin.y - t + capInsetsInternal_.size.height))
+              ];
+    [scale9Image addChild:bottom z:1 tag:pBottom];
+	
+    // Left
+    left = [[CCSprite alloc]
+            initWithTexture:scale9Image.texture
+            rect:CGRectMake(l,
+                            capInsetsInternal_.origin.y,
+                            capInsetsInternal_.origin.x - l,
+                            capInsetsInternal_.size.height)
+            ];
+    [scale9Image addChild:left z:1 tag:pLeft];
+	
+    // Right
+    right = [[CCSprite alloc]
+             initWithTexture:scale9Image.texture
+             rect:CGRectMake(capInsetsInternal_.origin.x + capInsetsInternal_.size.width,
+                             capInsetsInternal_.origin.y,
+                             w - (capInsetsInternal_.origin.x - l + capInsetsInternal_.size.width),
+                             capInsetsInternal_.size.height)
+             ];
+    [scale9Image addChild:right z:1 tag:pRight];
+
+    // Top left
+    topLeft = [[CCSprite alloc]
+               initWithTexture:scale9Image.texture
+               rect:CGRectMake(l,
+                               t,
+                               capInsetsInternal_.origin.x - l,
+                               capInsetsInternal_.origin.y - t)
+               ];
+    [scale9Image addChild:topLeft z:2 tag:pTopLeft];
+
+    // Top right
+    topRight = [[CCSprite alloc]
+                initWithTexture:scale9Image.texture
+                rect:CGRectMake(capInsetsInternal_.origin.x + capInsetsInternal_.size.width,
+                                t,
+                                w - (capInsetsInternal_.origin.x - l + capInsetsInternal_.size.width),
+                                capInsetsInternal_.origin.y - t)
+                ];
+    [scale9Image addChild:topRight z:2 tag:pTopRight];
+	
+    // Bottom left
+    bottomLeft = [[CCSprite alloc]
+                  initWithTexture:scale9Image.texture
+                  rect:CGRectMake(l,
+                                  capInsetsInternal_.origin.y + capInsetsInternal_.size.height,
+                                  capInsetsInternal_.origin.x - l,
+                                  h - (capInsetsInternal_.origin.y - t + capInsetsInternal_.size.height))
+                  ];
+    [scale9Image addChild:bottomLeft z:2 tag:pBottomLeft];
+
+    // Bottom right
+    bottomRight = [[CCSprite alloc]
+                   initWithTexture:scale9Image.texture
+                   rect:CGRectMake(capInsetsInternal_.origin.x + capInsetsInternal_.size.width,
+                                   capInsetsInternal_.origin.y + capInsetsInternal_.size.height,
+                                   w - (capInsetsInternal_.origin.x - l + capInsetsInternal_.size.width),
+                                   h - (capInsetsInternal_.origin.y - t + capInsetsInternal_.size.height))
+                   ];
+    [scale9Image addChild:bottomRight z:2 tag:pBottomRight];
+
+    [self setContentSize:rect.size];
+    [self addChild:scale9Image];
+}
+
+#pragma mark -
+#pragma mark Overridden
+
+- (void)visit
+{
+    if (positionsAreDirty_)
+    {
+        [self updatePosition];
+        
+        positionsAreDirty_ = NO;
+    }
+    
+    [super visit];
 }
 
 @end

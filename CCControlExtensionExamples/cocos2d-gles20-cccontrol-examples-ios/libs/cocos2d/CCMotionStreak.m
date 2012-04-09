@@ -25,7 +25,7 @@
 
 #import "CCMotionStreak.h"
 #import "CCTextureCache.h"
-#import "ccGLState.h"
+#import "ccGLStateCache.h"
 #import "CCGLProgram.h"
 #import "CCShaderCache.h"
 #import "ccMacros.h"
@@ -252,6 +252,8 @@
 	glVertexAttribPointer(kCCVertexAttrib_Color, 4, GL_UNSIGNED_BYTE, GL_TRUE, 0, colorPointer_);
 
     glDrawArrays(GL_TRIANGLE_STRIP, 0, (GLsizei)nuPoints_*2);
+	
+	CC_INCREMENT_GL_DRAWS(1);
 }
 
 - (void)dealloc

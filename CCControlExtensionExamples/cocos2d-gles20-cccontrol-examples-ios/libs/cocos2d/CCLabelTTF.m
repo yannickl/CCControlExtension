@@ -45,9 +45,7 @@
 
 - (id) init
 {
-	NSAssert(NO, @"CCLabelTTF: Init not supported. Use initWithString");
-	[self release];
-	return nil;
+    return [self initWithString:@"" fontName:@"Helvetica" fontSize:12];
 }
 
 + (id) labelWithString:(NSString*)string dimensions:(CGSize)dimensions alignment:(CCTextAlignment)alignment lineBreakMode:(CCLineBreakMode)lineBreakMode fontName:(NSString*)name fontSize:(CGFloat)size;
@@ -124,10 +122,21 @@
 										 fontSize:fontSize_  * CC_CONTENT_SCALE_FACTOR()];
 
 #ifdef __CC_PLATFORM_IOS
-	if( CC_CONTENT_SCALE_FACTOR() == 2 )
-		[tex setResolutionType:kCCResolutionRetinaDisplay];
+	// iPad ?
+	if( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
+		if( CC_CONTENT_SCALE_FACTOR() == 2 )
+			[tex setResolutionType:kCCResolutioniPadRetinaDisplay];
+		else
+			[tex setResolutionType:kCCResolutioniPad];
+	}
+	// iPhone ?
 	else
-		[tex setResolutionType:kCCResolutionStandard];
+	{
+		if( CC_CONTENT_SCALE_FACTOR() == 2 )
+			[tex setResolutionType:kCCResolutioniPhoneRetinaDisplay];
+		else
+			[tex setResolutionType:kCCResolutioniPhone];
+	}
 #endif
 
 	[self setTexture:tex];
@@ -141,6 +150,53 @@
 -(NSString*) string
 {
 	return string_;
+}
+
+- (void)setFontName:(NSString*)fontName
+{
+	if( fontName != fontName_ ) {
+		[fontName_ release];
+		fontName_ = [fontName retain];
+    
+		// Force update
+		[self setString:[self string]];
+	}
+}
+
+- (NSString*)fontName
+{
+    return fontName_;
+}
+
+- (void) setFontSize:(float)fontSize
+{
+	if( fontSize != fontSize_ ) {
+		fontSize_ = fontSize;
+		
+		// Force update
+		[self setString:[self string]];
+	}
+}
+
+- (float) fontSize
+{
+    return fontSize_;
+}
+
+-(void) setDimensions:(CGSize) dim
+{
+    if( dim.width != dimensions_.width || dim.height != dimensions_.height)
+	{
+        dimensions_ = dim;
+        
+		// Force update
+		[self setString:[self string]];
+    }
+}
+
+-(CGSize) dimensions
+{
+    return dimensions_;
 }
 
 - (void) dealloc

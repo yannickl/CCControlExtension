@@ -136,6 +136,20 @@ const NSInteger	kCCZoomActionTag = 0xc0c05002;
 					  contentSize_.width, contentSize_.height);
 }
 
+-(void) setBlock:(void(^)(id sender))block
+{
+    [block_ release];
+    block_ = [block copy];
+}
+
+-(void) setTarget:(id)target selector:(SEL)selector
+{
+    [self setBlock:^(id sender) {
+        
+		[target performSelector:selector withObject:sender];
+	}];
+}
+
 @end
 
 
@@ -410,8 +424,9 @@ const NSInteger	kCCZoomActionTag = 0xc0c05002;
 
 -(void) recreateLabel
 {
-	CCLabelTTF *label = [CCLabelTTF labelWithString:[label_ string] fontName:fontName_ fontSize:fontSize_];
+	CCLabelTTF *label = [[CCLabelTTF alloc] initWithString:[label_ string] fontName:fontName_ fontSize:fontSize_];
 	self.label = label;
+	[label release];
 }
 
 -(void) setFontSize: (NSUInteger) size
@@ -507,6 +522,8 @@ const NSInteger	kCCZoomActionTag = 0xc0c05002;
 		[self addChild:image];
 
 		normalImage_ = image;
+        
+        [self setContentSize: [normalImage_ contentSize]];
 	}
 }
 
@@ -673,6 +690,24 @@ const NSInteger	kCCZoomActionTag = 0xc0c05002;
 	return [super initWithNormalSprite:normalImage selectedSprite:selectedImage disabledSprite:disabledImage block:block];
 }
 
+//
+// Setter of sprite frames
+//
+-(void) setNormalSpriteFrame:(CCSpriteFrame *)frame
+{
+    [self setNormalImage:[CCSprite spriteWithSpriteFrame:frame]];
+}
+
+-(void) setSelectedSpriteFrame:(CCSpriteFrame *)frame
+{
+    [self setSelectedImage:[CCSprite spriteWithSpriteFrame:frame]];
+}
+
+-(void) setDisabledSpriteFrame:(CCSpriteFrame *)frame
+{
+    [self setDisabledImage:[CCSprite spriteWithSpriteFrame:frame]];
+}
+
 @end
 
 #pragma mark - CCMenuItemToggle
@@ -745,8 +780,10 @@ const NSInteger	kCCZoomActionTag = 0xc0c05002;
 {
 	if( index != selectedIndex_ ) {
 		selectedIndex_=index;
-		[self removeChildByTag:kCCCurrentItemTag cleanup:NO];
-
+		CCMenuItem *currentItem = (CCMenuItem*)[self getChildByTag:kCCCurrentItemTag];
+		if( currentItem )
+			[currentItem removeFromParentAndCleanup:NO];
+		
 		CCMenuItem *item = [subItems_ objectAtIndex:selectedIndex_];
 		[self addChild:item z:0 tag:kCCCurrentItemTag];
 

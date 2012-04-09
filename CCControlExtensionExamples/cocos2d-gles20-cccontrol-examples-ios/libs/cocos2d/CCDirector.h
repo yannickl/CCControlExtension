@@ -94,10 +94,11 @@ and when to execute the Scenes.
 	NSUInteger totalFrames_;
 	ccTime secondsPerFrame_;
 
-	ccTime accumDt_;
-	ccTime frameRate_;
+	ccTime		accumDt_;
+	ccTime		frameRate_;
 	CCLabelAtlas *FPSLabel_;
 	CCLabelAtlas *SPFLabel_;
+	CCLabelAtlas *drawsLabel_;
 
 	/* is the running scene paused */
 	BOOL isPaused_;
@@ -145,6 +146,9 @@ and when to execute the Scenes.
 
 	/* action manager associated with this director */
 	CCActionManager *actionManager_;
+	
+	/*  OpenGLView. On iOS it is a copy of self.view */
+	CCGLView		*view_;
 }
 
 /** returns the cocos2d thread.
@@ -204,12 +208,6 @@ and when to execute the Scenes.
 
 
 #pragma mark Director - Stats
-
-/** Whether or not to display the FPS on the bottom-left corner
- @deprecated Use setDisplayStats:YES instead
- */
--(void) setDisplayFPS:(BOOL)display DEPRECATED_ATTRIBUTE;
-
 
 #pragma mark Director - Win Size
 /** returns the size of the OpenGL view in points */
@@ -330,3 +328,5 @@ and when to execute the Scenes.
 -(void) createStatsLabel;
 @end
 
+// optimization. Should only be used to read it. Never to write it.
+extern NSUInteger __ccNumberOfDraws;

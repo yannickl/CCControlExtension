@@ -16,35 +16,35 @@
 @interface CCScale9Sprite : CCNode <CCRGBAProtocol>
 {
 @public
-    CGSize originalSize_;
-    CGSize preferedSize_;
-    CGRect capInsets_;
+    CGSize              originalSize_;
+    CGSize              preferedSize_;
+    CGRect              capInsets_;
     
-    float insetLeft_;
-    float insetTop_;
-    float insetRight_;
-    float insetBottom_;
+    float               insetLeft_;
+    float               insetTop_;
+    float               insetRight_;
+    float               insetBottom_;
     
 @protected
-    CGRect spriteRect;
-    CGRect capInsetsInternal_;
-    BOOL positionsAreDirty_;
+    CGRect              spriteRect;
+    CGRect              capInsetsInternal_;
+    BOOL                positionsAreDirty_;
     
-    CCSpriteBatchNode *scale9Image;
-    CCSprite *topLeft;
-    CCSprite *top;
-    CCSprite *topRight;
-    CCSprite *left;
-    CCSprite *centre;
-    CCSprite *right;
-    CCSprite *bottomLeft;
-    CCSprite *bottom;
-    CCSprite *bottomRight;
+    CCSpriteBatchNode   *scale9Image;
+    CCSprite            *topLeft;
+    CCSprite            *top;
+    CCSprite            *topRight;
+    CCSprite            *left;
+    CCSprite            *centre;
+    CCSprite            *right;
+    CCSprite            *bottomLeft;
+    CCSprite            *bottom;
+    CCSprite            *bottomRight;
     
     // texture RGBA
-    GLubyte opacity_;
-    ccColor3B color_;
-    BOOL opacityModifyRGB_;
+    GLubyte             opacity_;
+    ccColor3B           color_;
+    BOOL                opacityModifyRGB_;
 }
 /** Original sprite's size. */
 @property (nonatomic, readonly) CGSize originalSize;

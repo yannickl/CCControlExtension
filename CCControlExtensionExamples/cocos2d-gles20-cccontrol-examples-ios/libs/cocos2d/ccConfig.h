@@ -37,14 +37,29 @@
 
  If this functionality is disabled, then ccGLUseProgram(), ccGLDeleteProgram(), ccGLBlendFunc() will call the GL ones, without using the cache.
 
- It is recommened to enable whenever possible to improve speed.
+ It is recommened to enable it whenever possible to improve speed.
  If you are migrating your code from GL ES 1.1, then keep it disabled. Once all your code works as expected, turn it on.
+
+ Default value: Disabled by default
 
  @since v2.0.0
  */
 #ifndef CC_ENABLE_GL_STATE_CACHE
 #define CC_ENABLE_GL_STATE_CACHE 0
 #endif
+
+/** @def CC_ENABLE_DEPRECATED
+ If enabled, cocos2d will compile all deprecated methods, classes and free functions. Also, renamed constants will be active as well.
+ Enable it only when migrating a v1.0 or earlier v2.0 versions to the most recent cocdos2d version.
+ 
+ Default value: Enabled by default
+ 
+ @since v2.0.0
+ */
+#ifndef CC_ENABLE_DEPRECATED
+#define CC_ENABLE_DEPRECATED 1
+#endif
+
 
 /** @def CC_FIX_ARTIFACTS_BY_STRECHING_TEXEL
  If enabled, the texture coordinates will be calculated by using this formula:
@@ -70,24 +85,24 @@
 #define CC_FIX_ARTIFACTS_BY_STRECHING_TEXEL 0
 #endif
 
-/** @def CC_DIRECTOR_FPS_INTERVAL
- Seconds between FPS updates.
- 0.5 seconds, means that the FPS number will be updated every 0.5 seconds.
- Having a bigger number means a more reliable FPS
+/** @def CC_DIRECTOR_STATS_INTERVAL
+ Seconds between stats updates.
+ 0.5 seconds, means that the stats will be updated every 0.5 seconds.
+ Having a bigger number means more stable stats
 
  Default value: 0.1f
  */
-#ifndef CC_DIRECTOR_FPS_INTERVAL
-#define CC_DIRECTOR_FPS_INTERVAL (0.1f)
+#ifndef CC_DIRECTOR_STATS_INTERVAL
+#define CC_DIRECTOR_STATS_INTERVAL (0.1f)
 #endif
 
-/** @def CC_DIRECTOR_FPS_POSITION
+/** @def CC_DIRECTOR_STATS_POSITION
  Position of the FPS
 
  Default: 0,0 (bottom-left corner)
  */
-#ifndef CC_DIRECTOR_FPS_POSITION
-#define CC_DIRECTOR_FPS_POSITION ccp(0,0)
+#ifndef CC_DIRECTOR_STATS_POSITION
+#define CC_DIRECTOR_STATS_POSITION ccp(0,0)
 #endif
 
 /** @def CC_DIRECTOR_IOS_USE_BACKGROUND_THREAD
@@ -104,19 +119,26 @@
 #define CC_DIRECTOR_IOS_USE_BACKGROUND_THREAD 0
 #endif
 
-/** @def CC_DIRECTOR_MAC_USE_DISPLAY_LINK_THREAD
- If enabled, cocos2d-mac will run on the Display Link thread. If disabled cocos2d-mac will run in its own thread.
 
- If enabled, the images will be drawn at the "correct" time, but the events might not be very responsive.
- If disabled, some frames might be skipped, but the events will be dispatched as they arrived.
+#define CC_MAC_USE_DISPLAY_LINK_THREAD 0
+#define CC_MAC_USE_OWN_THREAD 1
+#define CC_MAC_USE_MAIN_THREAD 2
 
- To enable set it to a 1, to disable it set to 0. Enabled by default.
+/** @def CC_DIRECTOR_MAC_THREAD
+ cocos2d-mac can run on its own thread, on the Display Link thread, or in the  main thread.
+ If you are developing a game, the Display Link or Own thread are the best alternatives.
+ If you are developing an editor that uses AppKit, you might need to use the Main Thread (only if you are lazy and don't want to create a sync queue).
 
+ Options:
+	CC_MAC_USE_DISPLAY_LINK_THREAD  (default)
+	CC_MAC_USE_OWN_THREAD
+	CC_MAC_USE_MAIN_THREAD
+ 
  Only valid for cocos2d-mac. Not supported on cocos2d-ios.
 
  */
-#ifndef CC_DIRECTOR_MAC_USE_DISPLAY_LINK_THREAD
-#define CC_DIRECTOR_MAC_USE_DISPLAY_LINK_THREAD 1
+#ifndef CC_DIRECTOR_MAC_THREAD
+#define CC_DIRECTOR_MAC_THREAD CC_MAC_USE_DISPLAY_LINK_THREAD
 #endif
 
 /** @def CC_NODE_RENDER_SUBPIXEL
@@ -148,6 +170,18 @@
  */
 #ifndef CC_TEXTURE_ATLAS_USE_TRIANGLE_STRIP
 #define CC_TEXTURE_ATLAS_USE_TRIANGLE_STRIP 0
+#endif
+
+/** @def CC_TEXTURE_ATLAS_USE_VAO
+ By default, CCTextureAtlas (used by many cocos2d classes) will use VAO (Vertex Array Objects).
+ Apple recommends its usage but they might consume a lot of memory, specially if you use many of them.
+ So for certain cases, where you might need hundreds of VAO objects, it might be a good idea to disable it.
+ 
+ To disable it set it to 0. Enabled by default.
+ 
+ */
+#ifndef CC_TEXTURE_ATLAS_USE_VAO
+#define CC_TEXTURE_ATLAS_USE_VAO 1
 #endif
 
 

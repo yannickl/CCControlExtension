@@ -37,26 +37,26 @@
 @interface CCControlButton : CCControl <CCRGBAProtocol>
 {
 @public
-    GLubyte opacity_;
-    ccColor3B color_;
-    BOOL opacityModifyRGB_;
+    GLubyte                                 opacity_;
+    ccColor3B                               color_;
+    BOOL                                    opacityModifyRGB_;
     
-    BOOL adjustBackgroundImage_;
-    BOOL zoomOnTouchDown_;
+    BOOL                                    adjustBackgroundImage_;
+    BOOL                                    zoomOnTouchDown_;
     
-    NSString *currentTitle_;
-    ccColor3B currentTitleColor_;
+    NSString                                *currentTitle_;
+    ccColor3B                               currentTitleColor_;
     CCNode<CCLabelProtocol, CCRGBAProtocol> *titleLabel_;
-    CCScale9Sprite *backgroundSprite_;
-    CGSize preferedSize_;
+    CCScale9Sprite                          *backgroundSprite_;
+    CGSize                                  preferedSize_;
     
 @protected
-    BOOL pushed_;
+    BOOL                                    pushed_;
     
-    NSMutableDictionary *titleDispatchTable_;
-    NSMutableDictionary *titleColorDispatchTable_;
-    NSMutableDictionary *titleLabelDispatchTable_;
-    NSMutableDictionary *backgroundSpriteDispatchTable_;
+    NSMutableDictionary                     *titleDispatchTable_;
+    NSMutableDictionary                     *titleColorDispatchTable_;
+    NSMutableDictionary                     *titleLabelDispatchTable_;
+    NSMutableDictionary                     *backgroundSpriteDispatchTable_;
 }
 /** Conforms to CCRGBAProtocol protocol. */
 @property (nonatomic, readwrite) GLubyte opacity;

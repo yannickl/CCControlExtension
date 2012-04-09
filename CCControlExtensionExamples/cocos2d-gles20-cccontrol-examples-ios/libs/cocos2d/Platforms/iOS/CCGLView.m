@@ -155,10 +155,10 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 {
 	if( (self = [super initWithCoder:aDecoder]) ) {
 
-		CAEAGLLayer*			eaglLayer = (CAEAGLLayer*)[self layer];
+		CAEAGLLayer* eaglLayer = (CAEAGLLayer*)[self layer];
 
 		pixelformat_ = kEAGLColorFormatRGB565;
-		depthFormat_ = 0; // GL_DEPTH_COMPONENT24_OES;
+		depthFormat_ = 0; // GL_DEPTH_COMPONENT24;
 		multiSampling_= NO;
 		requestedSamples_ = 0;
 		size_ = [eaglLayer bounds].size;
@@ -196,7 +196,6 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 		return NO;
 
 	context_ = [renderer_ context];
-	[context_ renderbufferStorage:GL_RENDERBUFFER_OES fromDrawable:eaglLayer];
 
 	discardFramebufferSupported_ = [[CCConfiguration sharedConfiguration] supportsDiscardFramebuffer];
 
@@ -216,6 +215,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 - (void) layoutSubviews
 {
 	[renderer_ resizeFromLayer:(CAEAGLLayer*)self.layer];
+
 	size_ = [renderer_ backingSize];
 
 	// Issue #914 #924
@@ -238,8 +238,8 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 	{
 		/* Resolve from msaaFramebuffer to resolveFramebuffer */
 		//glDisable(GL_SCISSOR_TEST);
-		glBindFramebufferOES(GL_READ_FRAMEBUFFER_APPLE, [renderer_ msaaFrameBuffer]);
-		glBindFramebufferOES(GL_DRAW_FRAMEBUFFER_APPLE, [renderer_ defaultFrameBuffer]);
+		glBindFramebuffer(GL_READ_FRAMEBUFFER_APPLE, [renderer_ msaaFrameBuffer]);
+		glBindFramebuffer(GL_DRAW_FRAMEBUFFER_APPLE, [renderer_ defaultFrameBuffer]);
 		glResolveMultisampleFramebufferAPPLE();
 	}
 
@@ -249,35 +249,45 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 		{
 			if (depthFormat_)
 			{
-				GLenum attachments[] = {GL_COLOR_ATTACHMENT0_OES, GL_DEPTH_ATTACHMENT_OES};
+				GLenum attachments[] = {GL_COLOR_ATTACHMENT0, GL_DEPTH_ATTACHMENT};
 				glDiscardFramebufferEXT(GL_READ_FRAMEBUFFER_APPLE, 2, attachments);
 			}
 			else
 			{
-				GLenum attachments[] = {GL_COLOR_ATTACHMENT0_OES};
+				GLenum attachments[] = {GL_COLOR_ATTACHMENT0};
 				glDiscardFramebufferEXT(GL_READ_FRAMEBUFFER_APPLE, 1, attachments);
 			}
 
-			glBindRenderbufferOES(GL_RENDERBUFFER_OES, [renderer_ colorRenderBuffer]);
+			glBindRenderbuffer(GL_RENDERBUFFER, [renderer_ colorRenderBuffer]);
 
 		}
 
 		// not MSAA
 		else if (depthFormat_ ) {
-			GLenum attachments[] = { GL_DEPTH_ATTACHMENT_OES};
-			glDiscardFramebufferEXT(GL_FRAMEBUFFER_OES, 1, attachments);
+			GLenum attachments[] = { GL_DEPTH_ATTACHMENT};
+			glDiscardFramebufferEXT(GL_FRAMEBUFFER, 1, attachments);
 		}
 	}
 
-	if(![context_ presentRenderbuffer:GL_RENDERBUFFER_OES])
+	if(![context_ presentRenderbuffer:GL_RENDERBUFFER])
 		CCLOG(@"cocos2d: Failed to swap renderbuffer in %s\n", __FUNCTION__);
-
-	CHECK_GL_ERROR_DEBUG();
 
 	// We can safely re-bind the framebuffer here, since this will be the
 	// 1st instruction of the new main loop
 	if( multiSampling_ )
-		glBindFramebufferOES(GL_FRAMEBUFFER_OES, [renderer_ msaaFrameBuffer]);
+		glBindFramebuffer(GL_FRAMEBUFFER, [renderer_ msaaFrameBuffer]);
+
+	CHECK_GL_ERROR_DEBUG();
+}
+
+-(void) lockOpenGLContext
+{
+	// unused on iOS
+}
+
+-(void) unlockOpenGLContext
+{
+	// unused on iOS
 }
 
 - (unsigned int) convertPixelFormat:(NSString*) pixelFormat
@@ -287,7 +297,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
 
 	if([pixelFormat isEqualToString:@"EAGLColorFormat565"])
-		pFormat = GL_RGB565_OES;
+		pFormat = GL_RGB565;
 	else
 		pFormat = GL_RGBA8_OES;
 
@@ -345,5 +355,6 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 }
 
 @end
+
 
 #endif // __CC_PLATFORM_IOS

@@ -98,36 +98,37 @@ enum
         NSAssert(backgroundsprite, @"Background sprite must not be nil.");
         NSAssert([backgroundsprite isKindOfClass:[CCScale9Sprite class]], @"The background sprite must be kind of 'CCScale9Sprite' class.");
         
-        self.pushed = NO;
-        self.zoomOnTouchDown = YES;
+        self.pushed                         = NO;
+        self.zoomOnTouchDown                = YES;
         
         // Adjust the background image by default
-        self.adjustBackgroundImage = YES;
+        self.adjustBackgroundImage          = YES;
+        self.preferedSize                   = CGSizeZero;
         
         // Set the default anchor point
-        self.isRelativeAnchorPoint = YES;
-        self.anchorPoint = ccp (0.5f, 0.5f);
+        self.isRelativeAnchorPoint          = YES;
+        self.anchorPoint                    = ccp (0.5f, 0.5f);
         
-        // Set the nodes
-        self.titleLabel = label;
-        self.backgroundSprite = backgroundsprite;
+        // Set the nodes    
+        self.titleLabel                     = label;
+        self.backgroundSprite               = backgroundsprite;
         
         // Initialize the button state tables
-        self.titleDispatchTable = [NSMutableDictionary dictionary];
-        self.titleColorDispatchTable = [NSMutableDictionary dictionary];
-        self.titleLabelDispatchTable = [NSMutableDictionary dictionary];
-        self.backgroundSpriteDispatchTable = [NSMutableDictionary dictionary];
+        self.titleDispatchTable             = [NSMutableDictionary dictionary];
+        self.titleColorDispatchTable        = [NSMutableDictionary dictionary];
+        self.titleLabelDispatchTable        = [NSMutableDictionary dictionary];
+        self.backgroundSpriteDispatchTable  = [NSMutableDictionary dictionary];
         
         // Set the default color and opacity
-        [self setColor:ccc3(255, 255, 255)];
-        [self setOpacity:255];
-        [self setOpacityModifyRGB:YES];
+        self.color                          = ccc3(255.0f, 255.0f, 255.0f);
+        self.opacity                        = 255.0f;
+        self.opacityModifyRGB               = YES;
         
         // Initialize the dispatch table
-        [self setTitle:[label string] forState:CCControlStateNormal];
-        [self setTitleColor:[label color] forState:CCControlStateNormal];
-        [self setTitleLabel:label forState:CCControlStateNormal];
-        [self setBackgroundSprite:backgroundsprite forState:CCControlStateNormal];
+        [self setTitle:[label string]               forState:CCControlStateNormal];
+        [self setTitleColor:[label color]           forState:CCControlStateNormal];
+        [self setTitleLabel:label                   forState:CCControlStateNormal];
+        [self setBackgroundSprite:backgroundsprite  forState:CCControlStateNormal];
         
         // Layout update
         [self needsLayout];
@@ -239,11 +240,11 @@ enum
     [self needsLayout];
 }
 
-- (void) setPreferedSize:(CGSize)preferedSize
+- (void)setPreferedSize:(CGSize)preferedSize
 {
     if (preferedSize.width == 0 && preferedSize.height == 0)
     {
-        adjustBackgroundImage_ = YES;
+        adjustBackgroundImage_  = YES;
     }
     else
     {
@@ -254,8 +255,9 @@ enum
             CCScale9Sprite* sprite = [backgroundSpriteDispatchTable_ objectForKey:key];
             [sprite setPreferedSize:preferedSize];
         }
-        preferedSize_ = preferedSize;
     }
+    
+    preferedSize_   = preferedSize;
     
     [self needsLayout];
 }
@@ -297,10 +299,10 @@ enum
 
 - (ccColor3B)titleColorForState:(CCControlState)state
 {
-    NSNumber *stateNumber = [NSNumber numberWithLong:state];
+    NSNumber *stateNumber   = [NSNumber numberWithLong:state];
     
     ccColor3B returnColor;
-    NSValue *colorValue = [titleColorDispatchTable_ objectForKey:stateNumber];
+    NSValue *colorValue     = [titleColorDispatchTable_ objectForKey:stateNumber];
     
     if (colorValue)
     {
@@ -317,9 +319,9 @@ enum
 
 - (void)setTitleColor:(ccColor3B)color forState:(CCControlState)state
 {
-    NSNumber *stateNumber = [NSNumber numberWithLong:state];
+    NSNumber *stateNumber   = [NSNumber numberWithLong:state];
     
-    NSValue *colorValue = [NSValue valueWithBytes:&color objCType:@encode(ccColor3B)];
+    NSValue *colorValue     = [NSValue valueWithBytes:&color objCType:@encode(ccColor3B)];
     
     [titleColorDispatchTable_ removeObjectForKey:stateNumber];
     [titleColorDispatchTable_ setObject:colorValue forKey:stateNumber];
@@ -381,10 +383,9 @@ enum
     CCNode<CCLabelProtocol>* label = [self titleLabelForState:state];
     if ([label isKindOfClass:[CCLabelBMFont class]])
     {
-        CCLabelBMFont* bmLabel = (CCLabelBMFont*)label;
+        CCLabelBMFont* bmLabel = (CCLabelBMFont *)label;
         return [bmLabel fntFile];
-    }
-    else
+    } else
     {
         return @"";
     }
@@ -406,9 +407,9 @@ enum
 
 - (void)setBackgroundSprite:(CCScale9Sprite *)sprite forState:(CCControlState)state
 {
-    NSNumber *stateNumber = [NSNumber numberWithLong:state];
+    NSNumber *stateNumber                       = [NSNumber numberWithLong:state];
     
-    CCScale9Sprite *previousBackgroundSprite = [backgroundSpriteDispatchTable_ objectForKey:stateNumber];
+    CCScale9Sprite *previousBackgroundSprite    = [backgroundSpriteDispatchTable_ objectForKey:stateNumber];
     if (previousBackgroundSprite)
     {
         [self removeChild:previousBackgroundSprite cleanup:YES];
@@ -442,28 +443,28 @@ enum
 - (void)needsLayout
 {
     // Hide the background and the label
-    [titleLabel_ setVisible:NO];
-    [backgroundSprite_ setVisible:NO];
+    titleLabel_.visible         = NO;
+    backgroundSprite_.visible   = NO;
     
     // Update the label to match with the current state
     if (currentTitle_)
     {
         [currentTitle_ release], currentTitle_ = nil;
     }
-    currentTitle_ = [[self titleForState:state_] retain];
-    currentTitleColor_ = [self titleColorForState:state_];
+    currentTitle_               = [[self titleForState:state_] retain];
+    currentTitleColor_          = [self titleColorForState:state_];
     
-    self.titleLabel = [self titleLabelForState:state_];
-    [titleLabel_ setString:currentTitle_];
-    [titleLabel_ setColor:currentTitleColor_];
-    [titleLabel_ setPosition:ccp (self.contentSize.width / 2, self.contentSize.height / 2)];
+    self.titleLabel             = [self titleLabelForState:state_];
+    titleLabel_.string          = currentTitle_;
+    titleLabel_.color           = currentTitleColor_;
+    titleLabel_.position        = ccp (self.contentSize.width / 2, self.contentSize.height / 2);
     
     // Update the background sprite
-    self.backgroundSprite = [self backgroundSpriteForState:state_];
-    [backgroundSprite_ setPosition:ccp (self.contentSize.width / 2, self.contentSize.height / 2)];
-    
+    self.backgroundSprite       = [self backgroundSpriteForState:state_];
+    backgroundSprite_.position  = ccp (self.contentSize.width / 2, self.contentSize.height / 2);
+
     // Get the title label size
-    CGSize titleLabelSize = [titleLabel_ boundingBox].size;
+    CGSize titleLabelSize       = [titleLabel_ boundingBox].size;
     
     // Adjust the background image if necessary
     if ([self doesAdjustBackgroundImage])
@@ -473,7 +474,8 @@ enum
          CGSizeMake(titleLabelSize.width + CCControlButtonMarginLR * 2, titleLabelSize.height + CCControlButtonMarginTB * 2)];
     } else
     {
-        CGSize preferedSize = [backgroundSprite_ preferedSize];
+        CGSize preferedSize     = [backgroundSprite_ preferedSize];
+
         if (preferedSize.width <= 0)
         {
             preferedSize.width = titleLabelSize.width;
@@ -487,15 +489,15 @@ enum
     }
     
     // Set the content size
-    CGRect maxRect = CGRectUnion([titleLabel_ boundingBox], [backgroundSprite_ boundingBox]);
-    [self setContentSize:CGSizeMake(maxRect.size.width, maxRect.size.height)];
+    CGRect maxRect              = CGRectUnion([titleLabel_ boundingBox], [backgroundSprite_ boundingBox]);
+    self.contentSize            = CGSizeMake(maxRect.size.width, maxRect.size.height);
     
-    [titleLabel_ setPosition:ccp (self.contentSize.width / 2, self.contentSize.height / 2)];
-    [backgroundSprite_ setPosition:ccp (self.contentSize.width / 2, self.contentSize.height / 2)];
+    titleLabel_.position        = ccp (self.contentSize.width / 2, self.contentSize.height / 2);
+    backgroundSprite_.position  = ccp (self.contentSize.width / 2, self.contentSize.height / 2);
     
     // Make visible the background and the label
-    [titleLabel_ setVisible:YES];
-    [backgroundSprite_ setVisible:YES];
+    titleLabel_.visible         = YES;
+    backgroundSprite_.visible   = YES;
 }
 
 #pragma mark -
@@ -511,10 +513,9 @@ enum
 		return NO;
 	}
     
-    state_ = CCControlStateHighlighted;
-    pushed_ = YES;
-    
-    [self setHighlighted:YES];
+    state_              = CCControlStateHighlighted;
+    pushed_             = YES;
+    self.highlighted    = YES;
     
     [self sendActionsForControlEvents:CCControlEventTouchDown];
     
@@ -560,10 +561,9 @@ enum
 
 - (void)ccTouchEnded:(UITouch *)touch withEvent:(UIEvent *)event
 {
-    state_ = CCControlStateNormal;
-    pushed_ = NO;
-    
-    [self setHighlighted:NO];
+    state_              = CCControlStateNormal;
+    pushed_             = NO;
+    self.highlighted    = NO;
     
     if ([self isTouchInside:touch])
     {
@@ -576,10 +576,9 @@ enum
 
 - (void)ccTouchCancelled:(UITouch *)touch withEvent:(UIEvent *)event
 {
-    state_ = CCControlStateNormal;
-    pushed_ = NO;
-    
-    [self setHighlighted:NO];
+    state_              = CCControlStateNormal;
+    pushed_             = NO;
+    self.highlighted    = NO;
     
     [self sendActionsForControlEvents:CCControlEventTouchCancel];
 }
@@ -593,10 +592,9 @@ enum
         return NO;
     }
     
-    state_ = CCControlStateHighlighted;
-    pushed_ = YES;
-    
-    [self setHighlighted:YES];
+    state_              = CCControlStateHighlighted;
+    pushed_             = YES;
+    self.highlighted    = YES;
     
     [self sendActionsForControlEvents:CCControlEventTouchDown];
     
@@ -645,10 +643,9 @@ enum
 
 - (BOOL)ccMouseUp:(NSEvent *)event
 {
-    state_ = CCControlStateNormal;
-    pushed_ = NO;
-    
-    [self setHighlighted:NO];
+    state_              = CCControlStateNormal;
+    pushed_             = NO;
+    self.highlighted    = NO;
     
     if ([self isMouseInside:event])
     {
@@ -663,7 +660,7 @@ enum
 
 #endif
 
-- (void) setValue:(id)value forUndefinedKey:(NSString *)key
+- (void)setValue:(id)value forUndefinedKey:(NSString *)key
 {
     NSArray* chunks = [key componentsSeparatedByString:@"|"];
     if ([chunks count] == 2)
@@ -700,7 +697,7 @@ enum
     }
 }
 
-- (id) valueForUndefinedKey:(NSString *)key
+- (id)valueForUndefinedKey:(NSString *)key
 {
     NSArray* chunks = [key componentsSeparatedByString:@"|"];
     if ([chunks count] == 2)

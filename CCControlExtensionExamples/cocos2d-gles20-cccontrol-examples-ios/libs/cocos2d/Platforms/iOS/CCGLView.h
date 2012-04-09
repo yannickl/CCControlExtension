@@ -69,8 +69,8 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 #import <UIKit/UIKit.h>
 #import <OpenGLES/EAGL.h>
 #import <OpenGLES/EAGLDrawable.h>
-#import <OpenGLES/ES1/gl.h>
-#import <OpenGLES/ES1/glext.h>
+#import <OpenGLES/ES2/gl.h>
+#import <OpenGLES/ES2/glext.h>
 
 #import "CCESRenderer.h"
 
@@ -146,6 +146,12 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
 /** CCGLView uses double-buffer. This method swaps the buffers */
 -(void) swapBuffers;
+
+/** uses and locks the OpenGL context */
+-(void) lockOpenGLContext;
+
+/** unlocks the openGL context */
+-(void) unlockOpenGLContext;
 
 - (CGPoint) convertPointFromViewToSurface:(CGPoint)point;
 - (CGRect) convertRectFromViewToSurface:(CGRect)rect;

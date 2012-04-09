@@ -30,10 +30,13 @@
 #import "CCTexture2D.h"
 #import "CCTexturePVR.h"
 #import "CCConfiguration.h"
-#import "Support/CCFileUtils.h"
 #import "CCDirector.h"
 #import "ccConfig.h"
 #import "ccTypes.h"
+
+#import "Support/CCFileUtils.h"
+#import "Support/NSThread+performBlock.h"
+
 
 #ifdef __CC_PLATFORM_MAC
 #import "Platforms/Mac/CCDirectorMac.h"
@@ -175,9 +178,7 @@ static CCTextureCache *sharedTextureCache;
 			glFlush();
 
 			// callback should be executed in cocos2d thread
-			dispatch_async(dispatch_get_main_queue(), ^{
-				[target performSelector:selector withObject:texture];
-			});
+			[target performSelector:selector onThread:[[CCDirector sharedDirector] runningThread] withObject:texture waitUntilDone:NO];
 
 			[EAGLContext setCurrentContext:nil];
 		} else {
@@ -194,9 +195,7 @@ static CCTextureCache *sharedTextureCache;
 		glFlush();
 
 		// callback should be executed in cocos2d thread
-		dispatch_async(dispatch_get_main_queue(), ^{
-			[target performSelector:selector withObject:texture];
-		});
+		[target performSelector:selector onThread:[[CCDirector sharedDirector] runningThread] withObject:texture waitUntilDone:NO];
 
 		[NSOpenGLContext clearCurrentContext];
 
@@ -240,9 +239,8 @@ static CCTextureCache *sharedTextureCache;
 			glFlush();
 
 			// callback should be executed in cocos2d thread
-			dispatch_async(dispatch_get_main_queue(), ^{
-				block(texture);
-			});
+			NSThread *thread = [[CCDirector sharedDirector] runningThread];
+			[thread performBlock:block withObject:texture waitUntilDone:NO];
 
 			[EAGLContext setCurrentContext:nil];
 		} else {
@@ -259,9 +257,8 @@ static CCTextureCache *sharedTextureCache;
 		glFlush();
 
 		// callback should be executed in cocos2d thread
-		dispatch_async(dispatch_get_main_queue(), ^{
-			block(texture);
-		});
+		NSThread *thread = [[CCDirector sharedDirector] runningThread];
+		[thread performBlock:block withObject:texture waitUntilDone:NO];
 
 		[NSOpenGLContext clearCurrentContext];
 
@@ -288,50 +285,21 @@ static CCTextureCache *sharedTextureCache;
 	if( ! tex ) {
 
 		NSString *lowerCase = [path lowercaseString];
-		// all images are handled by UIImage except PVR extension that is handled by our own handler
+
+		// all images are handled by UIKit/AppKit except PVR extension that is handled by cocos2d's handler
 
 		if ( [lowerCase hasSuffix:@".pvr"] || [lowerCase hasSuffix:@".pvr.gz"] || [lowerCase hasSuffix:@".pvr.ccz"] )
 			tex = [self addPVRImage:path];
 
-		// Only iPhone
 #ifdef __CC_PLATFORM_IOS
-
-		// Issue #886: TEMPORARY FIX FOR TRANSPARENT JPEGS IN IOS4
-		else if ( ( [[CCConfiguration sharedConfiguration] OSVersion] >= kCCiOSVersion_4_0) &&
-				  ( [lowerCase hasSuffix:@".jpg"] || [lowerCase hasSuffix:@".jpeg"] )
-				 ) {
-			// convert jpg to png before loading the texture
-
-			CCLOG(@"cocos2d: WARNING: Loading JPEG image. For faster loading times, convert it to PVR or PNG");
-
-			ccResolutionType resolution;
-			NSString *fullpath = [CCFileUtils fullPathFromRelativePath: path resolutionType:&resolution];
-
-			UIImage *jpg = [[UIImage alloc] initWithContentsOfFile:fullpath];
-			UIImage *png = [[UIImage alloc] initWithData:UIImagePNGRepresentation(jpg)];
-			tex = [ [CCTexture2D alloc] initWithImage:png.CGImage resolutionType:resolution];
-			[png release];
-			[jpg release];
-
-			if( tex ){
-				dispatch_sync(_dictQueue, ^{
-					[textures_ setObject: tex forKey:path];
-				});
-			}else{
-				CCLOG(@"cocos2d: Couldn't add image:%@ in CCTextureCache", path);
-			}
-
-			// autorelease prevents possible crash in multithreaded environments
-			[tex autorelease];
-		}
 
 		else {
 
 			ccResolutionType resolution;
 			NSString *fullpath = [CCFileUtils fullPathFromRelativePath:path resolutionType:&resolution];
 
-			UIImage *image = [ [UIImage alloc] initWithContentsOfFile: fullpath ];
-			tex = [ [CCTexture2D alloc] initWithImage:image.CGImage resolutionType:resolution];
+			UIImage *image = [[UIImage alloc] initWithContentsOfFile:fullpath];
+			tex = [[CCTexture2D alloc] initWithCGImage:image.CGImage resolutionType:resolution];
 			[image release];
 
 			if( tex ){
@@ -347,14 +315,13 @@ static CCTextureCache *sharedTextureCache;
 		}
 
 
-		// Only in Mac
 #elif defined(__CC_PLATFORM_MAC)
 		else {
 			NSString *fullpath = [CCFileUtils fullPathFromRelativePath: path ];
 
 			NSData *data = [[NSData alloc] initWithContentsOfFile:fullpath];
 			NSBitmapImageRep *image = [[NSBitmapImageRep alloc] initWithData:data];
-			tex = [ [CCTexture2D alloc] initWithImage:[image CGImage]];
+			tex = [ [CCTexture2D alloc] initWithCGImage:[image CGImage]];
 
 			[data release];
 			[image release];
@@ -370,7 +337,6 @@ static CCTextureCache *sharedTextureCache;
 			// autorelease prevents possible crash in multithreaded environments
 			[tex autorelease];
 		}
-
 #endif // __CC_PLATFORM_MAC
 
 	}
@@ -395,13 +361,9 @@ static CCTextureCache *sharedTextureCache;
 	}
 
 #ifdef __CC_PLATFORM_IOS
-	// prevents overloading the autorelease pool
-	UIImage *image = [[UIImage alloc] initWithCGImage:imageref];
-	tex = [[CCTexture2D alloc] initWithImage:image.CGImage resolutionType:kCCResolutionUnknown];
-	[image release];
-
-#elif defined(__CC_PLATFORM_MAC)
-	tex = [[CCTexture2D alloc] initWithImage: imageref];
+	tex = [[CCTexture2D alloc] initWithCGImage:imageref resolutionType:kCCResolutionUnknown];
+#elif __CC_PLATFORM_MAC
+	tex = [[CCTexture2D alloc] initWithCGImage:imageref];
 #endif
 
 	if(tex && key){

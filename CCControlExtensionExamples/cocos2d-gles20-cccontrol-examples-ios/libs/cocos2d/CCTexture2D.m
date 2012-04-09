@@ -78,8 +78,9 @@
 #import "CCConfiguration.h"
 #import "CCTexturePVR.h"
 #import "CCGLProgram.h"
-#import "ccGLState.h"
+#import "ccGLStateCache.h"
 #import "CCShaderCache.h"
+#import "CCDirector.h"
 
 #import "Support/ccUtils.h"
 #import "Support/CCFileUtils.h"
@@ -186,15 +187,8 @@ static CCTexture2DPixelFormat defaultAlphaPixelFormat_ = kCCTexture2DPixelFormat
 
 	[shaderProgram_ release];
 
-	if( name_ ) {
-
-		GLuint name = name_;
-
-		//It is very likely dealloc will get called from the texture cache's dictionary thread but this must be run from the main thread.
-		dispatch_async(dispatch_get_main_queue(), ^(void) {
-			ccGLDeleteTexture( name );
-		});
-	}
+	if( name_ )
+		ccGLDeleteTexture( name_ );
 
 	[super dealloc];
 }
@@ -221,14 +215,14 @@ static CCTexture2DPixelFormat defaultAlphaPixelFormat_ = kCCTexture2DPixelFormat
 @implementation CCTexture2D (Image)
 
 #ifdef __CC_PLATFORM_IOS
-- (id) initWithImage:(CGImageRef)cgImage resolutionType:(ccResolutionType)resolution
+- (id) initWithCGImage:(CGImageRef)cgImage resolutionType:(ccResolutionType)resolution
 #elif defined(__CC_PLATFORM_MAC)
-- (id) initWithImage:(CGImageRef)cgImage
+- (id) initWithCGImage:(CGImageRef)cgImage
 #endif
 {
 	NSUInteger				POTWide, POTHigh;
 	CGContextRef			context = nil;
-	void*					data = nil;;
+	void*					data = nil;
 	CGColorSpaceRef			colorSpace;
 	void*					tempData;
 	unsigned int*			inPixel32;
@@ -273,11 +267,21 @@ static CCTexture2DPixelFormat defaultAlphaPixelFormat_ = kCCTexture2DPixelFormat
 	colorSpace = CGImageGetColorSpace(cgImage);
 
 	if(colorSpace) {
-		if(hasAlpha || bpp >= 8)
+		if( hasAlpha ) {
 			pixelFormat = defaultAlphaPixelFormat_;
-		else {
-			CCLOG(@"cocos2d: CCTexture2D: Using RGB565 texture since image has no alpha");
-			pixelFormat = kCCTexture2DPixelFormat_RGB565;
+			info = kCGImageAlphaPremultipliedLast;
+		}
+		else
+		{
+			info = kCGImageAlphaNoneSkipLast;
+
+			if( bpp >= 8 )
+				pixelFormat = kCCTexture2DPixelFormat_RGB888;
+			else
+				pixelFormat = kCCTexture2DPixelFormat_RGB565;
+			
+			CCLOG(@"cocos2d: CCTexture2D: Using %@ texture since image has no alpha", (bpp>=8) ? @"RGBA888" : @"RGB565" );
+				
 		}
 	} else {
 		// NOTE: No colorspace means a mask image
@@ -293,18 +297,12 @@ static CCTexture2DPixelFormat defaultAlphaPixelFormat_ = kCCTexture2DPixelFormat
 		case kCCTexture2DPixelFormat_RGBA8888:
 		case kCCTexture2DPixelFormat_RGBA4444:
 		case kCCTexture2DPixelFormat_RGB5A1:
-			colorSpace = CGColorSpaceCreateDeviceRGB();
-			data = malloc(POTHigh * POTWide * 4);
-			info = hasAlpha ? kCGImageAlphaPremultipliedLast : kCGImageAlphaNoneSkipLast;
-            //			info = kCGImageAlphaPremultipliedLast;  // issue #886. This patch breaks BMP images.
-			context = CGBitmapContextCreate(data, POTWide, POTHigh, 8, 4 * POTWide, colorSpace, info | kCGBitmapByteOrder32Big);
-			CGColorSpaceRelease(colorSpace);
-			break;
-
 		case kCCTexture2DPixelFormat_RGB565:
+		case kCCTexture2DPixelFormat_RGB888:
 			colorSpace = CGColorSpaceCreateDeviceRGB();
 			data = malloc(POTHigh * POTWide * 4);
-			info = kCGImageAlphaNoneSkipLast;
+//			info = hasAlpha ? kCGImageAlphaPremultipliedLast : kCGImageAlphaNoneSkipLast;
+//			info = kCGImageAlphaPremultipliedLast;  // issue #886. This patch breaks BMP images.
 			context = CGBitmapContextCreate(data, POTWide, POTHigh, 8, 4 * POTWide, colorSpace, info | kCGBitmapByteOrder32Big);
 			CGColorSpaceRelease(colorSpace);
 			break;
@@ -335,6 +333,23 @@ static CCTexture2DPixelFormat defaultAlphaPixelFormat_ = kCCTexture2DPixelFormat
 		data = tempData;
 
 	}
+
+	else if(pixelFormat == kCCTexture2DPixelFormat_RGB888) {
+		//Convert "RRRRRRRRRGGGGGGGGBBBBBBBBAAAAAAAA" to "RRRRRRRRGGGGGGGGBBBBBBB"
+		tempData = malloc(POTHigh * POTWide * 3);
+		char *inData = (char*)data;
+		char *outData = (char*)tempData;
+		int j=0;
+		for(unsigned int i = 0; i < POTWide * POTHigh *4; i++) {
+			outData[j++] = inData[i++];
+			outData[j++] = inData[i++];
+			outData[j++] = inData[i++];
+		}
+		free(data);
+		data = tempData;
+		
+	}
+
 	else if (pixelFormat == kCCTexture2DPixelFormat_RGBA4444) {
 		//Convert "RRRRRRRRRGGGGGGGGBBBBBBBBAAAAAAAA" to "RRRRGGGGBBBBAAAA"
 		tempData = malloc(POTHigh * POTWide * 2);
@@ -659,8 +674,8 @@ static BOOL PVRHaveAlphaPremultiplied_ = NO;
 		width + point.x,	height  + point.y };
 
 	ccGLEnableVertexAttribs( kCCVertexAttribFlag_Position | kCCVertexAttribFlag_TexCoords );
-	ccGLUseProgram( shaderProgram_->program_ );
-	ccGLUniformModelViewProjectionMatrix( shaderProgram_ );
+	[shaderProgram_ use];
+	[shaderProgram_ setUniformForModelViewProjectionMatrix];
 
 	ccGLBindTexture2D( name_ );
 
@@ -670,6 +685,8 @@ static BOOL PVRHaveAlphaPremultiplied_ = NO;
 
 
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+	
+	CC_INCREMENT_GL_DRAWS(1);
 }
 
 
@@ -685,9 +702,10 @@ static BOOL PVRHaveAlphaPremultiplied_ = NO;
 		rect.origin.x + rect.size.width,						rect.origin.y + rect.size.height };
 
 
+	[shaderProgram_ use];
+	[shaderProgram_ setUniformForModelViewProjectionMatrix];    
+
 	ccGLEnableVertexAttribs( kCCVertexAttribFlag_Position | kCCVertexAttribFlag_TexCoords );
-	ccGLUseProgram( shaderProgram_->program_ );
-	ccGLUniformModelViewProjectionMatrix( shaderProgram_ );
 
 	ccGLBindTexture2D( name_ );
 
@@ -696,6 +714,8 @@ static BOOL PVRHaveAlphaPremultiplied_ = NO;
 
 
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+	
+	CC_INCREMENT_GL_DRAWS(1);
 }
 
 @end

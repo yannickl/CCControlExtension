@@ -70,7 +70,6 @@
 @synthesize startColor, startColorVar, endColor, endColorVar;
 @synthesize startSpin, startSpinVar, endSpin, endSpinVar;
 @synthesize emissionRate;
-@synthesize totalParticles;
 @synthesize startSize, startSizeVar;
 @synthesize endSize, endSizeVar;
 @synthesize blendFunc = blendFunc_;
@@ -85,9 +84,7 @@
 }
 
 -(id) init {
-	NSAssert(NO, @"CCParticleSystem: Init not supported.");
-	[self release];
-	return nil;
+	return [self initWithTotalParticles:150];
 }
 
 -(id) initWithFile:(NSString *)plistFile
@@ -272,10 +269,11 @@
 		particles = calloc( totalParticles, sizeof(tCCParticle) );
 
 		if( ! particles ) {
-			NSLog(@"Particle system: not enough memory");
+			CCLOG(@"Particle system: not enough memory");
 			[self release];
 			return nil;
 		}
+        allocatedParticles = numberOfParticles;
 
 		if (batchNode_)
 		{
@@ -459,13 +457,18 @@
 
 	if( active && emissionRate ) {
 		float rate = 1.0f / emissionRate;
-		emitCounter += dt;
+		
+		//issue #1201, prevent bursts of particles, due to too high emitCounter
+		if (particleCount < totalParticles)
+			emitCounter += dt; 
+		
 		while( particleCount < totalParticles && emitCounter > rate ) {
 			[self addParticle];
 			emitCounter -= rate;
 		}
 
 		elapsed += dt;
+
 		if(duration != -1 && duration < elapsed)
 			[self stopSystem];
 	}
@@ -656,6 +659,19 @@
 -(BOOL) blendAdditive
 {
 	return( blendFunc_.src == GL_SRC_ALPHA && blendFunc_.dst == GL_ONE);
+}
+
+#pragma mark ParticleSystem - Total Particles Property
+
+- (void) setTotalParticles:(NSUInteger)tp
+{
+    NSAssert( tp <= allocatedParticles, @"Particle: resizing particle array only supported for quads");
+    totalParticles = tp;
+}
+
+- (NSUInteger) totalParticles
+{
+    return totalParticles;
 }
 
 #pragma mark ParticleSystem - Properties of Gravity Mode

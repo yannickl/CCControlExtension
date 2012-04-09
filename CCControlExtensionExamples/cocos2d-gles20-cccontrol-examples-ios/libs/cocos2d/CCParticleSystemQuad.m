@@ -40,7 +40,7 @@
 #import "CCSpriteFrame.h"
 #import "CCDirector.h"
 #import "CCShaderCache.h"
-#import "ccGLState.h"
+#import "ccGLStateCache.h"
 #import "CCGLProgram.h"
 
 // support
@@ -91,7 +91,7 @@
 	indices_ = calloc( sizeof(indices_[0]) * totalParticles * 6, 1 );
 
 	if( !quads_ || !indices_) {
-		NSLog(@"cocos2d: Particle system: not enough memory");
+		CCLOG(@"cocos2d: Particle system: not enough memory");
 		if( quads_ )
 			free( quads_ );
 		if(indices_)
@@ -103,6 +103,65 @@
 	return YES;
 }
 
+- (void) setTotalParticles:(NSUInteger)tp
+{
+    // If we are setting the total numer of particles to a number higher
+    // than what is allocated, we need to allocate new arrays
+    if( tp > allocatedParticles )
+    {
+        // Allocate new memory
+        size_t particlesSize = tp * sizeof(tCCParticle);
+        size_t quadsSize = sizeof(quads_[0]) * tp * 1;
+        size_t indicesSize = sizeof(indices_[0]) * tp * 6 * 1;
+        
+        tCCParticle* particlesNew = realloc(particles, particlesSize);
+        ccV3F_C4B_T2F_Quad *quadsNew = realloc(quads_, quadsSize);
+        GLushort* indicesNew = realloc(indices_, indicesSize);
+        
+        if (particlesNew && quadsNew && indicesNew)
+        {
+            // Assign pointers
+            particles = particlesNew;
+            quads_ = quadsNew;
+            indices_ = indicesNew;
+            
+            // Clear the memory
+            memset(particles, 0, particlesSize);
+            memset(quads_, 0, quadsSize);
+            memset(indices_, 0, indicesSize);
+            
+            allocatedParticles = tp;
+        }
+        else
+        {
+            // Out of memory, failed to resize some array
+            if (particlesNew) particles = particlesNew;
+            if (quadsNew) quads_ = quadsNew;
+            if (indicesNew) indices_ = indicesNew;
+            
+            CCLOG(@"Particle system: out of memory");
+            return;
+        }
+        
+        totalParticles = tp;
+        
+        // Init particles
+        if (batchNode_)
+		{
+			for (int i = 0; i < totalParticles; i++)
+			{
+				particles[i].atlasIndex=i;
+			}
+		}
+        
+        [self initIndices];
+        [self initVAO];
+    }
+    else
+    {
+        totalParticles = tp;
+    }
+}
 
 -(void) initVAO
 {
@@ -178,6 +237,7 @@
 #endif // ! CC_FIX_ARTIFACTS_BY_STRECHING_TEXEL
 
 	// Important. Texture in cocos2d are inverted, so the Y component should be inverted
+//<<<<<<< HEAD
 	CC_SWAP( top, bottom);
 
 	ccV3F_C4B_T2F_Quad *quads;
@@ -209,6 +269,48 @@
 		// top-right vertex:
 		quads[i].tr.texCoords.u = right;
 		quads[i].tr.texCoords.v = top;
+//=======
+//		CC_SWAP( top, bottom);
+//		
+//		ccV3F_C4B_T2F_Quad *quadCollection; 
+//		NSUInteger start, end; 
+//		if (useBatchNode_)
+//		{
+//			quadCollection = [[batchNode_ textureAtlas] quads]; 
+//			start = atlasIndex_; 
+//			end = atlasIndex_ + totalParticles; 
+//		}
+//		else 
+//		{
+//			quadCollection = quads_; 
+//			start = 0; 
+//			end = totalParticles; 
+//		}
+//		
+//		ccV3F_C4B_T2F_Quad quad;
+//		bzero( &quad, sizeof(quad) );
+//
+//		for(NSInteger i=start; i<end; i++) {
+//			// bottom-left vertex:
+//			quad.bl.texCoords.u = left;
+//			quad.bl.texCoords.v = bottom;
+//			// bottom-right vertex:
+//			quad.br.texCoords.u = right;
+//			quad.br.texCoords.v = bottom;
+//			// top-left vertex:
+//			quad.tl.texCoords.u = left;
+//			quad.tl.texCoords.v = top;
+//			// top-right vertex:
+//			quad.tr.texCoords.u = right;
+//			quad.tr.texCoords.v = top;
+//			
+//			quad.bl.texCoords.u = left;
+//			quad.bl.texCoords.v = bottom;
+//			
+//			quadCollection[i] = quad;
+//		
+//		}
+//>>>>>>> develop
 	}
 }
 
@@ -353,6 +455,8 @@
 	glDrawElements(GL_TRIANGLES, (GLsizei) particleIdx*6, GL_UNSIGNED_SHORT, 0);
 
 	glBindVertexArray( 0 );
+
+	CC_INCREMENT_GL_DRAWS(1);
 
 	CHECK_GL_ERROR_DEBUG();
 }

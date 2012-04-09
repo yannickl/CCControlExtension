@@ -29,7 +29,7 @@
 #import "ccTypes.h"
 #import "CCProtocols.h"
 #import "ccConfig.h"
-#import "ccGLState.h"
+#import "ccGLStateCache.h"
 #import "Support/CCArray.h"
 #import "kazmath/kazmath.h"
 
@@ -148,6 +148,7 @@ enum {
 
 	// user data field
 	void *userData_;
+	id userObject_;
 
 	// Shader
 	CCGLProgram	*shaderProgram_;
@@ -165,24 +166,23 @@ enum {
 	CCActionManager	*actionManager_;
 
 	// Is running
-	BOOL isRunning_:1;
+	BOOL isRunning_;
 
-	// To reduce memory, place BOOLs that are not properties here:
-	BOOL isTransformDirty_:1;
-	BOOL isInverseDirty_:1;
+	BOOL isTransformDirty_;
+	BOOL isInverseDirty_;
 
 	// is visible
-	BOOL visible_:1;
+	BOOL visible_;
 	// If YES the transformtions will be relative to (-transform.x, -transform.y).
 	// Sprites, Labels and any other "small" object uses it.
 	// Scenes, Layers and other "whole screen" object don't use it.
-	BOOL isRelativeAnchorPoint_:1;
+	BOOL isRelativeAnchorPoint_;
 
-	BOOL isReorderChildDirty_:1;
+	BOOL isReorderChildDirty_;	
 }
 
 /** The z order of the node relative to its "siblings": children of the same parent */
-@property(nonatomic,readonly) NSInteger zOrder;
+@property(nonatomic,assign) NSInteger zOrder;
 /** The real openGL Z vertex.
  Differences between openGL Z vertex and cocos2d Z order:
    - OpenGL Z modifies the Z vertex, and not the Z order in the relation between parent-children
@@ -256,7 +256,10 @@ enum {
 /** A tag used to identify the node easily */
 @property(nonatomic,readwrite,assign) NSInteger tag;
 /** A custom user data pointer */
-@property(nonatomic,readwrite,assign) void *userData;
+@property(nonatomic,readwrite,assign) void* userData;
+/** Similar to userData, but instead of holding a void* it holds an id */
+@property(nonatomic,readwrite,retain) id userObject;
+
 /** Shader Program
  @since v2.0
  */

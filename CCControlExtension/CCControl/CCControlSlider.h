@@ -31,15 +31,15 @@
 @interface CCControlSlider : CCControl 
 {  
 @public
-	float value_; 
-    float minimumValue_;
-    float maximumValue_;
+	float       value_; 
+    float       minimumValue_;
+    float       maximumValue_;
     
 @protected
 	// Weak links to children
-	CCMenuItem *thumbSprite_;
-    CCSprite *progressSprite_;
-	CCSprite *backgroundSprite_;
+	CCSprite    *thumbSprite_;
+    CCSprite    *progressSprite_;
+	CCSprite    *backgroundSprite_;
 }  
 /** Contains the receiver’s current value. */
 @property (nonatomic, assign) float value; 
@@ -62,9 +62,9 @@
  * Creates a slider with a given background sprite and a progress bar and a
  * thumb item.
  *
- * @see initWithBackgroundSprite:progressSprite:thumbMenuItem:
+ * @see initWithBackgroundSprite:progressSprite:thumbSprite:
  */
-+ (id)sliderWithBackgroundSprite:(CCSprite *)backgroundSprite progressSprite:(CCSprite *)pogressSprite thumbMenuItem:(CCMenuItem *)thumbItem;
++ (id)sliderWithBackgroundSprite:(CCSprite *)backgroundSprite progressSprite:(CCSprite *)pogressSprite thumbSprite:(CCSprite *)thumbSprite;
 
 /** 
  * Initializes a slider with a background sprite, a progress bar and a thumb
@@ -72,9 +72,9 @@
  *
  * @param backgroundSprite  CCSprite, that is used as a background.
  * @param progressSprite    CCSprite, that is used as a progress bar.
- * @param thumbItem         CCMenuItem, that is used as a thumb.
+ * @param thumbItem         CCSprite, that is used as a thumb.
  */
-- (id)initWithBackgroundSprite:(CCSprite *)backgroundSprite progressSprite:(CCSprite *)progressSprite thumbMenuItem:(CCMenuItem *)thumbItem;
+- (id)initWithBackgroundSprite:(CCSprite *)backgroundSprite progressSprite:(CCSprite *)progressSprite thumbSprite:(CCSprite *)thumbSprite;
 
 #pragma mark - Public Methods
 

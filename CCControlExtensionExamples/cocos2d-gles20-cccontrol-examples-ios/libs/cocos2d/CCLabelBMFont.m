@@ -40,6 +40,7 @@
 #import "CCSprite.h"
 #import "CCDrawingPrimitives.h"
 #import "CCConfiguration.h"
+#import "CCTextureCache.h"
 #import "Support/CCFileUtils.h"
 #import "Support/CGPointExtension.h"
 #import "Support/uthash.h"
@@ -79,11 +80,19 @@ typedef struct _KerningHashElement
 	UT_hash_handle	hh;
 } tKerningHashElement;
 
+
 #pragma mark -
 #pragma mark BitmapFontConfiguration
 
+typedef struct _FontDefHashElement
+{
+	NSUInteger		key;		// key. Font Unicode value
+	ccBMFontDef		fontDef;	// font definition
+	UT_hash_handle	hh;
+} tFontDefHashElement;
 
-@interface CCBMFontConfiguration (Private)
+
+@interface CCBMFontConfiguration ()
 -(void) parseConfigFile:(NSString*)controlFile;
 -(void) parseCharacterDefinition:(NSString*)line charDef:(ccBMFontDef*)characterDefinition;
 -(void) parseInfoArguments:(NSString*)line;
@@ -92,6 +101,7 @@ typedef struct _KerningHashElement
 -(void) parseKerningCapacity:(NSString*)line;
 -(void) parseKerningEntry:(NSString*)line;
 -(void) purgeKerningDictionary;
+-(void) purgeFontDefDictionary;
 @end
 
 #pragma mark -
@@ -109,6 +119,7 @@ typedef struct _KerningHashElement
 	if((self=[super init])) {
 
 		kerningDictionary_ = NULL;
+		fontDefDictionary_ = NULL;
 
 		[self parseConfigFile:fntFile];
 	}
@@ -118,6 +129,7 @@ typedef struct _KerningHashElement
 - (void) dealloc
 {
 	CCLOGINFO( @"cocos2d: deallocing %@", self);
+	[self purgeFontDefDictionary];
 	[self purgeKerningDictionary];
 	[atlasName_ release];
 	[super dealloc];
@@ -125,11 +137,22 @@ typedef struct _KerningHashElement
 
 - (NSString*) description
 {
-	return [NSString stringWithFormat:@"<%@ = %08X | Kernings:%d | Image = %@>", [self class], self,
+	return [NSString stringWithFormat:@"<%@ = %08X | Glphys:%d Kernings:%d | Image = %@>", [self class], self,
+			HASH_COUNT(fontDefDictionary_),
 			HASH_COUNT(kerningDictionary_),
 			atlasName_];
 }
 
+
+-(void) purgeFontDefDictionary
+{	
+	tFontDefHashElement *current, *tmp;
+	
+	HASH_ITER(hh, fontDefDictionary_, current, tmp) {
+		HASH_DEL(fontDefDictionary_, current);
+		free(current);
+	}
+}
 
 -(void) purgeKerningDictionary
 {
@@ -180,11 +203,12 @@ typedef struct _KerningHashElement
 		}
 		else if([line hasPrefix:@"char"]) {
 			// Parse the current line and create a new CharDef
-			ccBMFontDef characterDefinition;
-			[self parseCharacterDefinition:line charDef:&characterDefinition];
-
-			// Add the CharDef returned to the charArray
-			BMFontArray_[ characterDefinition.charID ] = characterDefinition;
+			tFontDefHashElement *element = malloc( sizeof(*element) );
+			
+			[self parseCharacterDefinition:line charDef:&element->fontDef];
+			
+			element->key = element->fontDef.charID;
+			HASH_ADD_INT(fontDefDictionary_, key, element);
 		}
 		else if([line hasPrefix:@"kernings count"]) {
 			[self parseKerningCapacity:line];
@@ -346,7 +370,6 @@ typedef struct _KerningHashElement
 	propertyValue = [nse nextObject];
 	propertyValue = [propertyValue substringToIndex: [propertyValue rangeOfString: @" "].location];
 	characterDefinition->charID = [propertyValue intValue];
-	NSAssert(characterDefinition->charID < kCCBMFontMaxChars, @"BitmpaFontAtlas: CharID bigger than supported");
 
 	// Character x
 	propertyValue = [nse nextObject];
@@ -425,13 +448,11 @@ typedef struct _KerningHashElement
 #pragma mark -
 #pragma mark CCLabelBMFont
 
-@interface CCLabelBMFont (Private)
--(NSString*) atlasNameFromFntFile:(NSString*)fntFile;
+@interface CCLabelBMFont ()
 
 -(int) kerningAmountForFirst:(unichar)first second:(unichar)second;
-
 -(void) updateLabel;
--(void) setString:(NSString*) newString fromUpdate:(bool)fromUpdate;
+-(void) setString:(NSString*) newString updateLabel:(BOOL)update;
 
 @end
 
@@ -440,7 +461,7 @@ typedef struct _KerningHashElement
 
 @implementation CCLabelBMFont
 
-@synthesize initialString = initialString_, width = width_, alignment = alignment_;
+@synthesize alignment = alignment_;
 @synthesize opacity = opacity_, color = color_;
 
 
@@ -454,33 +475,42 @@ typedef struct _KerningHashElement
 
 +(id) labelWithString:(NSString *)string fntFile:(NSString *)fntFile
 {
-	return [[[self alloc] initWithString:string fntFile:fntFile] autorelease];
+	return [[[self alloc] initWithString:string fntFile:fntFile width:kCCLabelAutomaticWidth alignment:CCTextAlignmentLeft imageOffset:CGPointZero] autorelease];
 }
 
 +(id) labelWithString:(NSString*)string fntFile:(NSString*)fntFile width:(float)width alignment:(CCTextAlignment)alignment
 {
-    return [[[self alloc] initWithString:string fntFile:fntFile width:width alignment:alignment] autorelease];
+    return [[[self alloc] initWithString:string fntFile:fntFile width:width alignment:alignment imageOffset:CGPointZero] autorelease];
+}
+
++(id) labelWithString:(NSString*)string fntFile:(NSString*)fntFile width:(float)width alignment:(CCTextAlignment)alignment imageOffset:(CGPoint)offset
+{
+    return [[[self alloc] initWithString:string fntFile:fntFile width:width alignment:alignment imageOffset:offset] autorelease];
 }
 
 -(id) initWithString:(NSString*)theString fntFile:(NSString*)fntFile
 {
-    return [self initWithString:theString fntFile:fntFile width:-1 alignment:CCTextAlignmentLeft];
+    return [self initWithString:theString fntFile:fntFile width:kCCLabelAutomaticWidth alignment:CCTextAlignmentLeft];
 }
 
 -(id) initWithString:(NSString*)theString fntFile:(NSString*)fntFile width:(float)width alignment:(CCTextAlignment)alignment
 {
+	return [self initWithString:theString fntFile:fntFile width:width alignment:alignment imageOffset:CGPointZero];
+}
 
-	[configuration_ release]; // allow re-init
+-(id) initWithString:(NSString*)theString fntFile:(NSString*)fntFile width:(float)width alignment:(CCTextAlignment)alignment imageOffset:(CGPoint)offset
+{
+	NSAssert(!configuration_, @"re-init is no longer supported");
 
 	configuration_ = FNTConfigLoadFile(fntFile);
 	[configuration_ retain];
+    
+    fntFile_ = [fntFile retain];
 
 	NSAssert( configuration_, @"Error creating config for LabelBMFont");
 
-
 	if ((self=[super initWithFile:configuration_->atlasName_ capacity:[theString length]])) {
 
-        initialString_ = [theString copy];
         width_ = width;
         alignment_ = alignment;
 
@@ -493,11 +523,9 @@ typedef struct _KerningHashElement
 
 		anchorPoint_ = ccp(0.5f, 0.5f);
 
+		imageOffset_ = offset;
 
-
-		[self setString:theString];
-
-        [self updateLabel];
+		[self setString:theString updateLabel:YES];
 	}
 
 	return self;
@@ -506,20 +534,22 @@ typedef struct _KerningHashElement
 -(void) dealloc
 {
 	[string_ release];
-    [initialString_ release], initialString_ = nil;
+    [initialString_ release];
 	[configuration_ release];
+    [fntFile_ release];
+
 	[super dealloc];
 }
 
 #pragma mark LabelBMFont - Alignment
 
-- (void)updateLabel {
-
-    [self setString:initialString_ fromUpdate:YES];
-
+- (void)updateLabel
+{	
+    [self setString:initialString_ updateLabel:NO];
+	
     if (width_ > 0){
         //Step 1: Make multiline
-
+		
         NSString *multilineString = @"", *lastWord = @"";
         int line = 1, i = 0;
         NSUInteger stringLength = [self.string length];
@@ -528,22 +558,22 @@ typedef struct _KerningHashElement
         //Go through each character and insert line breaks as necessary
         for (int j = 0; j < [children_ count]; j++) {
             CCSprite *characterSprite;
-
+			
             while(!(characterSprite = (CCSprite *)[self getChildByTag:j+skip]))
                 skip++;
-
+			
             if (!characterSprite.visible) continue;
-
+			
             if (i >= stringLength || i < 0)
                 break;
-
+			
             unichar character = [self.string characterAtIndex:i];
-
+			
             if (startOfWord == -1)
                 startOfWord = characterSprite.position.x - characterSprite.contentSize.width/2;
             if (startOfLine == -1)
                 startOfLine = startOfWord;
-
+			
             //Character is a line break
             //Put lastWord on the current line and start a new line
             //Reset lastWord
@@ -555,18 +585,18 @@ typedef struct _KerningHashElement
                 line++;
                 startOfLine = -1;
                 i++;
-
+				
                 //CCLabelBMFont do not have a character for new lines, so do NOT "continue;" in the for loop. Process the next character
                 if (i >= stringLength || i < 0)
                     break;
                 character = [self.string characterAtIndex:i];
-
+				
                 if (startOfWord == -1)
                     startOfWord = characterSprite.position.x - characterSprite.contentSize.width/2;
                 if (startOfLine == -1)
                     startOfLine = startOfWord;
             }
-
+			
             //Character is a whitespace
             //Put lastWord on current line and continue on current line
             //Reset lastWord
@@ -578,11 +608,11 @@ typedef struct _KerningHashElement
                 i++;
                 continue;
             }
-
+			
             //Character is out of bounds
             //Do not put lastWord on current line. Add "\n" to current line to start a new line
             //Append to lastWord
-            if (characterSprite.position.x + characterSprite.contentSize.width/2 - startOfLine > self.width) {
+            if (characterSprite.position.x + characterSprite.contentSize.width/2 - startOfLine >  width_) {
                 lastWord = [lastWord stringByAppendingFormat:@"%C", character];
                 NSString *trimmedString = [multilineString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
                 multilineString = [trimmedString stringByAppendingString:@"\n"];
@@ -598,33 +628,33 @@ typedef struct _KerningHashElement
                 continue;
             }
         }
-
+		
         multilineString = [multilineString stringByAppendingFormat:@"%@", lastWord];
-
-        [self setString:multilineString fromUpdate:YES];
+		
+        [self setString:multilineString updateLabel:NO];
     }
-
+	
     //Step 2: Make alignment
-
+	
     if (self.alignment != CCTextAlignmentLeft) {
-
+		
         int i = 0;
         //Number of spaces skipped
         int lineNumber = 0;
         //Go through line by line
         for (NSString *lineString in [string_ componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]]) {
             int lineWidth = 0;
-
+			
             //Find index of last character in this line
             NSInteger index = i + [lineString length] - 1 + lineNumber;
             if (index < 0)
                 continue;
-
+			
             //Find position of last character on the line
             CCSprite *lastChar = (CCSprite *)[self getChildByTag:index];
-
+			
             lineWidth = lastChar.position.x + lastChar.contentSize.width/2;
-
+			
             //Figure out how much to shift each character in this line horizontally
             float shift = 0;
             switch (self.alignment) {
@@ -636,7 +666,7 @@ typedef struct _KerningHashElement
                 default:
                     break;
             }
-
+			
             if (shift != 0) {
                 int j = 0;
                 //For each character, shift it so that the line is center aligned
@@ -702,7 +732,6 @@ typedef struct _KerningHashElement
 
 	for(NSUInteger i = 0; i<stringLen; i++) {
 		unichar c = [string_ characterAtIndex:i];
-		NSAssert( c < kCCBMFontMaxChars, @"LabelBMFont: character outside bounds");
 
 		if (c == '\n') {
 			nextFontPositionX = 0;
@@ -712,16 +741,27 @@ typedef struct _KerningHashElement
 
 		kerningAmount = [self kerningAmountForFirst:prev second:c];
 
-		ccBMFontDef fontDef = configuration_->BMFontArray_[c];
+		
+		tFontDefHashElement *element = NULL;
+		
+		// unichar is a short, and an int is needed on HASH_FIND_INT
+		NSUInteger key = (NSUInteger)c;
+		HASH_FIND_INT(configuration_->fontDefDictionary_ , &key, element);
+		NSAssert(element, @"FontDefinition could not be found!");
+
+		ccBMFontDef fontDef = element->fontDef;
 
 		CGRect rect = fontDef.rect;
 		rect = CC_RECT_PIXELS_TO_POINTS(rect);
+		
+		rect.origin.x += imageOffset_.x;
+		rect.origin.y += imageOffset_.y;
 
 		CCSprite *fontChar;
 
 		fontChar = (CCSprite*) [self getChildByTag:i];
 		if( ! fontChar ) {
-			fontChar = [[CCSprite alloc] initWithBatchNode:self rect:rect];
+			fontChar = [[CCSprite alloc] initWithTexture:textureAtlas_.texture rect:rect];
 			[self addChild:fontChar z:0 tag:i];
 			[fontChar release];
 		}
@@ -735,11 +775,12 @@ typedef struct _KerningHashElement
 		}
 
 		float yOffset = configuration_->commonHeight_ - fontDef.yOffset;
-        CGPoint fontPos = ccp( (float)nextFontPositionX + fontDef.xOffset + fontDef.rect.size.width*0.5f + kerningAmount, (float)nextFontPositionY + yOffset - rect.size.height*0.5f );
+		CGPoint fontPos = ccp( (float)nextFontPositionX + fontDef.xOffset + fontDef.rect.size.width*0.5f + kerningAmount,
+							  (float)nextFontPositionY + yOffset - rect.size.height*0.5f * CC_CONTENT_SCALE_FACTOR() );
         fontChar.position = CC_POINT_PIXELS_TO_POINTS(fontPos);
 
 		// update kerning
-		nextFontPositionX += configuration_->BMFontArray_[c].xAdvance + kerningAmount;
+		nextFontPositionX += fontDef.xAdvance + kerningAmount;
 		prev = c;
 
 		// Apply label properties
@@ -763,31 +804,6 @@ typedef struct _KerningHashElement
 }
 
 #pragma mark LabelBMFont - CCLabelProtocol protocol
-- (void) setString:(NSString*) newString
-{
-    [self setString:newString fromUpdate:NO];
-}
-
-- (void) setString:(NSString*) newString fromUpdate:(bool)fromUpdate
-{
-    if (fromUpdate) {
-        [string_ release];
-        string_ = [newString copy];
-    } else {
-        [initialString_ release];
-        initialString_ = [newString copy];
-    }
-
-    CCSprite *child;
-    CCARRAY_FOREACH(children_, child)
-		child.visible = NO;
-
-	[self createFontChars];
-
-    if (!fromUpdate)
-        [self updateLabel];
-}
-
 -(NSString*) string
 {
 	return string_;
@@ -795,7 +811,32 @@ typedef struct _KerningHashElement
 
 -(void) setCString:(char*)label
 {
-	[self setString:[NSString stringWithUTF8String:label]];
+	[self setString:[NSString stringWithUTF8String:label] ];
+}
+
+- (void) setString:(NSString*)newString
+{
+	[self setString:newString updateLabel:YES];
+}
+
+- (void) setString:(NSString*) newString updateLabel:(BOOL)update
+{
+    if( !update ) {
+        [string_ release];
+        string_ = [newString copy];
+    } else {
+        [initialString_ release];
+        initialString_ = [newString copy];
+    }
+	
+    CCSprite *child;
+    CCARRAY_FOREACH(children_, child)
+	child.visible = NO;
+	
+	[self createFontChars];
+	
+    if (update)
+        [self updateLabel];
 }
 
 #pragma mark LabelBMFont - CCRGBAProtocol protocol
@@ -849,6 +890,27 @@ typedef struct _KerningHashElement
 - (void)setAlignment:(CCTextAlignment)alignment {
     alignment_ = alignment;
     [self updateLabel];
+}
+
+#pragma mark LabelBMFont - FntFile
+- (void) setFntFile:(NSString*) fntFile
+{
+	if( fntFile != fntFile_ ) {
+		[fntFile_ release];
+		fntFile_ = [fntFile retain];
+		
+		[configuration_ release];
+		configuration_ = FNTConfigLoadFile(fntFile);
+		[configuration_ retain];
+	
+		[self setTexture:[[CCTextureCache sharedTextureCache] addImage:configuration_->atlasName_]];
+		[self createFontChars];
+	}
+}
+
+- (NSString*) fntFile
+{
+    return fntFile_;
 }
 
 #pragma mark LabelBMFont - Debug draw

@@ -47,6 +47,13 @@
 	NSString	*string_;
 }
 
+/** Font name used in the label */
+@property (nonatomic,retain) NSString* fontName;
+/** Font size of the label */
+@property (nonatomic,assign) float fontSize;
+/** Dimensions of the label in Points */
+@property (nonatomic,assign) CGSize dimensions;
+
 /** creates a CCLabel from a fontname, alignment, dimension in points, line break mode, and font size in points.
  Supported lineBreakModes:
  - iOS: all UILineBreakMode supported modes
@@ -74,5 +81,7 @@
  * @warning Changing the string is as expensive as creating a new CCLabel. To obtain better performance use CCLabelAtlas
  */
 - (void) setString:(NSString*)str;
+
+
 
 @end

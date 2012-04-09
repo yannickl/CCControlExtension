@@ -30,77 +30,171 @@
 #import "CCTexture2D.h"
 #import "CCTextureCache.h"
 
+#pragma mark - CCAnimationFrame
+@implementation CCAnimationFrame
+
+@synthesize spriteFrame = spriteFrame_, delayUnits = delayUnits_, userInfo=userInfo_;
+
+-(id) initWithSpriteFrame:(CCSpriteFrame *)spriteFrame delayUnits:(float)delayUnits userInfo:(NSDictionary*)userInfo
+{
+	if( (self=[super init]) ) {
+		self.spriteFrame = spriteFrame;
+		self.delayUnits = delayUnits;
+		self.userInfo = userInfo;
+	}
+	
+	return self;
+}
+
+-(void) dealloc
+{    
+	CCLOGINFO( @"cocos2d: deallocing %@", self);
+
+	[spriteFrame_ release];
+	[userInfo_ release];
+
+    [super dealloc];
+}
+
+-(id) copyWithZone: (NSZone*) zone
+{
+	CCAnimationFrame *copy = [[[self class] allocWithZone: zone] initWithSpriteFrame:[[spriteFrame_ copy] autorelease] delayUnits:delayUnits_ userInfo:[[userInfo_ copy] autorelease] ];
+	return copy;
+}
+
+-(NSString*) description
+{
+	return [NSString stringWithFormat:@"<%@ = %08X | SpriteFrame = %08X, delayUnits = %0.2f >", [self class], self, spriteFrame_, delayUnits_ ];
+}
+@end
+
+
+#pragma mark - CCAnimation
+
 @implementation CCAnimation
-@synthesize delay = delay_, frames = frames_;
+@synthesize frames = frames_, totalDelayUnits=totalDelayUnits_, delayPerUnit=delayPerUnit_, restoreOriginalFrame=restoreOriginalFrame_, loops=loops_;
 
 +(id) animation
 {
 	return [[[self alloc] init] autorelease];
 }
 
-+(id) animationWithFrames:(NSArray*)frames
++(id) animationWithSpriteFrames:(NSArray*)frames
 {
-	return [[[self alloc] initWithFrames:frames] autorelease];
+	return [[[self alloc] initWithSpriteFrames:frames] autorelease];
 }
 
-+(id) animationWithFrames:(NSArray*)frames delay:(float)delay
++(id) animationWithSpriteFrames:(NSArray*)frames delay:(float)delay
 {
-	return [[[self alloc] initWithFrames:frames delay:delay] autorelease];
+	return [[[self alloc] initWithSpriteFrames:frames delay:delay] autorelease];
+}
+
++(id) animationWithAnimationFrames:(NSArray*)arrayOfAnimationFrames delayPerUnit:(float)delayPerUnit loops:(NSUInteger)loops
+{
+	return [[[self alloc] initWithAnimationFrames:arrayOfAnimationFrames delayPerUnit:delayPerUnit loops:loops] autorelease];
 }
 
 -(id) init
 {
-	return [self initWithFrames:nil delay:0];
+	return [self initWithSpriteFrames:nil delay:0];
 }
 
--(id) initWithFrames:(NSArray*)frames
+-(id) initWithSpriteFrames:(NSArray*)frames
 {
-	return [self initWithFrames:frames delay:0];
+	return [self initWithSpriteFrames:frames delay:0];
 }
 
--(id) initWithFrames:(NSArray*)array delay:(float)delay
+-(id) initWithSpriteFrames:(NSArray*)array delay:(float)delay
 {
-	if( (self=[super init]) ) {
+	if( (self=[super init]) )
+	{
+		loops_ = 1;
+		delayPerUnit_ = delay;
 
-		delay_ = delay;
-		self.frames = [NSMutableArray arrayWithArray:array];
+		self.frames = [NSMutableArray arrayWithCapacity:[array count]];
+		
+		for( CCSpriteFrame *frame in array ) {
+			CCAnimationFrame *animFrame = [[CCAnimationFrame alloc] initWithSpriteFrame:frame delayUnits:1 userInfo:nil];
+			
+			[self.frames addObject:animFrame];
+			[animFrame release];
+			totalDelayUnits_++;
+		}
+		
+	}
+	return self;
+}
+
+-(id) initWithAnimationFrames:(NSArray*)arrayOfAnimationFrames delayPerUnit:(float)delayPerUnit loops:(NSUInteger)loops
+{
+	if( ( self=[super init]) )
+	{
+		delayPerUnit_ = delayPerUnit;
+		loops_ = loops;
+
+		self.frames = [NSMutableArray arrayWithArray:arrayOfAnimationFrames];
+
+		for( CCAnimationFrame *animFrame in frames_ )
+			totalDelayUnits_ += animFrame.delayUnits;
 	}
 	return self;
 }
 
 - (NSString*) description
 {
-	return [NSString stringWithFormat:@"<%@ = %08X | frames=%d, delay:%f>", [self class], self,
+	return [NSString stringWithFormat:@"<%@ = %08X | frames=%d, totalDelayUnits=%d, delayPerUnit=%f, loops=%d>", [self class], self,
 			[frames_ count],
-			delay_
+			totalDelayUnits_,
+			delayPerUnit_,
+			loops_
 			];
+}
+
+-(float) duration
+{
+	return totalDelayUnits_ * delayPerUnit_;
+}
+
+- (id)copyWithZone:(NSZone *)zone
+{
+	CCAnimation *animation  = [[[self class] allocWithZone: zone] initWithAnimationFrames:frames_ delayPerUnit:delayPerUnit_ loops:loops_];
+	animation.restoreOriginalFrame = restoreOriginalFrame_;
+
+	return animation;
 }
 
 -(void) dealloc
 {
 	CCLOGINFO( @"cocos2d: deallocing %@",self);
+
 	[frames_ release];
 	[super dealloc];
 }
 
--(void) addFrame:(CCSpriteFrame*)frame
+-(void) addSpriteFrame:(CCSpriteFrame*)frame
 {
-	[frames_ addObject:frame];
+	CCAnimationFrame *animFrame = [[CCAnimationFrame alloc] initWithSpriteFrame:frame delayUnits:1 userInfo:nil];
+	[frames_ addObject:animFrame];
+	[animFrame release];
+	
+	// update duration
+	totalDelayUnits_++;
 }
 
--(void) addFrameWithFilename:(NSString*)filename
+-(void) addSpriteFrameWithFilename:(NSString*)filename
 {
 	CCTexture2D *texture = [[CCTextureCache sharedTextureCache] addImage:filename];
 	CGRect rect = CGRectZero;
 	rect.size = texture.contentSize;
-	CCSpriteFrame *frame = [CCSpriteFrame frameWithTexture:texture rect:rect];
-	[frames_ addObject:frame];
+	CCSpriteFrame *spriteFrame = [CCSpriteFrame frameWithTexture:texture rect:rect];
+
+	[self addSpriteFrame:spriteFrame];
 }
 
--(void) addFrameWithTexture:(CCTexture2D*)texture rect:(CGRect)rect
+-(void) addSpriteFrameWithTexture:(CCTexture2D*)texture rect:(CGRect)rect
 {
 	CCSpriteFrame *frame = [CCSpriteFrame frameWithTexture:texture rect:rect];
-	[frames_ addObject:frame];
+	[self addSpriteFrame:frame];
 }
 
 @end

@@ -77,7 +77,7 @@ static NSUInteger globalOrderOfArrival = 1;
 @synthesize tag = tag_;
 @synthesize vertexZ = vertexZ_;
 @synthesize isRunning = isRunning_;
-@synthesize userData = userData_;
+@synthesize userData = userData_, userObject = userObject_;
 @synthesize	shaderProgram = shaderProgram_;
 @synthesize orderOfArrival = orderOfArrival_;
 @synthesize glServerState = glServerState_;
@@ -134,7 +134,8 @@ static NSUInteger globalOrderOfArrival = 1;
 		children_ = nil;
 
 		// userData is always inited as nil
-		userData_ = nil;
+		userData_ = NULL;
+		userObject_ = nil;
 
 		//initialize parent to nil
 		parent_ = nil;
@@ -144,7 +145,7 @@ static NSUInteger globalOrderOfArrival = 1;
 		orderOfArrival_ = 0;
 
 		glServerState_ = CC_GL_BLEND;
-
+		
 		// set default scheduler and actionManager
 		CCDirector *director = [CCDirector sharedDirector];
 		self.actionManager = [director actionManager];
@@ -178,6 +179,7 @@ static NSUInteger globalOrderOfArrival = 1;
 	[camera_ release];
 	[grid_ release];
 	[shaderProgram_ release];
+	[userObject_ release];
 
 	// children
 	CCNode *child;
@@ -274,6 +276,14 @@ static NSUInteger globalOrderOfArrival = 1;
 {
 	scaleX_ = scaleY_ = s;
 	isTransformDirty_ = isInverseDirty_ = YES;
+}
+
+- (void) setZOrder:(NSInteger)zOrder
+{
+	[self _setZOrder:zOrder];
+
+    if (parent_)
+        [parent_ reorderChild:self z:zOrder];
 }
 
 #pragma mark CCNode Composition

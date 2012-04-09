@@ -22,7 +22,8 @@ enum positions
 @interface CCScale9Sprite ()
 
 - (id)initWithBatchNode:(CCSpriteBatchNode *)batchnode rect:(CGRect)rect capInsets:(CGRect)capInsets;
-- (void) updateWithBatchNode:(CCSpriteBatchNode*)batchnode rect:(CGRect)rect capInsets:(CGRect)capInsets;
+- (void)updateWithBatchNode:(CCSpriteBatchNode*)batchnode rect:(CGRect)rect capInsets:(CGRect)capInsets;
+- (void)updatePosition;
 
 @end
 
@@ -36,6 +37,7 @@ enum positions
 @synthesize insetLeft           = insetLeft_;
 @synthesize insetBottom         = insetBottom_;
 @synthesize insetRight          = insetRight_;
+@synthesize preferedSize        = preferedSize_;
 
 - (void)dealloc
 {
@@ -328,11 +330,12 @@ enum positions
 
 - (void)setContentSize:(CGSize)size
 {
-    [super setContentSize:size];
-    positionsAreDirty_ = YES;
+    super.contentSize   = size;
+    
+    positionsAreDirty_  = YES;
 }
 
-- (void) updatePositions_
+- (void)updatePosition
 {
     CGSize size             = contentSize_;
     
@@ -382,22 +385,17 @@ enum positions
     centre.position         = ccp(leftWidth, bottomHeight);
 }
 
-- (void) setPreferedSize:(CGSize)preferedSize
+- (void)setPreferedSize:(CGSize)preferedSize
 {
-    [self setContentSize:preferedSize];
-    preferedSize_ = preferedSize;
-}
-
-- (CGSize) preferedSize
-{
-    return contentSize_;
+    self.contentSize        = preferedSize;
+    preferedSize_           = preferedSize;
 }
 
 #pragma mark Properties
 
 - (void)setColor:(ccColor3B)color
 {
-    color_ = color;
+    color_      = color;
     
     for (CCNode<CCRGBAProtocol> *child in scale9Image.children)
     {
@@ -407,7 +405,7 @@ enum positions
 
 - (void)setOpacity:(GLubyte)opacity
 {
-    opacity_ = opacity;
+    opacity_    = opacity;
     
     for (CCNode<CCRGBAProtocol> *child in scale9Image.children)
     {
@@ -496,13 +494,15 @@ enum positions
 #pragma mark -
 #pragma mark Overridden
 
-- (void) visit
+- (void)visit
 {
     if (positionsAreDirty_)
     {
-        [self updatePositions_];
+        [self updatePosition];
+        
         positionsAreDirty_ = NO;
     }
+    
     [super visit];
 }
 

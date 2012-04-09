@@ -69,11 +69,11 @@
 	CCTextureAtlas			*textureAtlas_;			// Sprite Sheet texture atlas (weak reference)
 	NSUInteger				atlasIndex_;			// Absolute (real) Index on the batch node
 	CCSpriteBatchNode		*batchNode_;			// Used batch node (weak reference)
-	BOOL					dirty_:1;				// Sprite needs to be updated
-	BOOL					recursiveDirty_:1;		// Subchildren needs to be updated
-	BOOL					hasChildren_:1;			// optimization to check if it contain children
-	BOOL					shouldBeHidden_:1;		// should not be drawn because one of the ancestors is not visible
 	CGAffineTransform		transformToBatch_;		//
+	BOOL					dirty_;					// Sprite needs to be updated
+	BOOL					recursiveDirty_;		// Subchildren needs to be updated
+	BOOL					hasChildren_;			// optimization to check if it contain children
+	BOOL					shouldBeHidden_;		// should not be drawn because one of the ancestors is not visible
 
 	//
 	// Data used when the sprite is self-rendered
@@ -89,7 +89,7 @@
 	CGRect	rect_;
 
 	// texture
-	BOOL	rectRotated_:1;
+	BOOL	rectRotated_;
 
 	// Offset Position (used by Zwoptex)
 	CGPoint	offsetPosition_;
@@ -102,11 +102,11 @@
 	GLubyte		opacity_;
 	ccColor3B	color_;
 	ccColor3B	colorUnmodified_;
-	BOOL		opacityModifyRGB_:1;
+	BOOL		opacityModifyRGB_;
 
 	// image is flipped
-	BOOL	flipX_:1;
-	BOOL	flipY_:1;
+	BOOL	flipX_;
+	BOOL	flipY_;
 }
 
 /** whether or not the Sprite needs to be updated in the Atlas */
@@ -193,11 +193,6 @@
  */
 +(id) spriteWithCGImage: (CGImageRef)image key:(NSString*)key;
 
-
-/** Creates an sprite with an CCBatchNode and a rect
- */
-+(id) spriteWithBatchNode:(CCSpriteBatchNode*)batchNode rect:(CGRect)rect;
-
 /** Initializes an sprite with a texture.
  The rect used will be the size of the texture.
  The offset will be (0,0).
@@ -246,14 +241,6 @@
  */
 -(id) initWithCGImage:(CGImageRef)image key:(NSString*)key;
 
-/** Initializes an sprite with an CCSpriteBatchNode and a rect in points
- */
--(id) initWithBatchNode:(CCSpriteBatchNode*)batchNode rect:(CGRect)rect;
-
-/** Initializes an sprite with an CCSpriteBatchNode and a rect in points, optionally rotated.
- */
--(id) initWithBatchNode:(CCSpriteBatchNode*)batchNode rect:(CGRect)rect rotated:(BOOL)rotated;
-
 #pragma mark CCSprite - BatchNode methods
 
 /** updates the quad according the the rotation, position, scale values.
@@ -288,7 +275,7 @@
 -(BOOL) isFrameDisplayed:(CCSpriteFrame*)frame;
 
 /** returns the current displayed frame. */
--(CCSpriteFrame*) displayedFrame;
+-(CCSpriteFrame*) displayFrame;
 
 #pragma mark CCSprite - Animation
 

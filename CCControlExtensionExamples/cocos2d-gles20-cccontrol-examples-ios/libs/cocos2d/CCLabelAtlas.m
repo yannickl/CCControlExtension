@@ -31,7 +31,7 @@
 #import "CCLabelAtlas.h"
 #import "CCShaderCache.h"
 #import "CCGLProgram.h"
-#import "ccGLState.h"
+#import "ccGLStateCache.h"
 #import "CCDirector.h"
 #import "Support/CGPointExtension.h"
 #import "Support/TransformUtils.h"
@@ -137,18 +137,24 @@
 
 - (void) setString:(NSString*) newString
 {
-	NSUInteger len = [newString length];
-	if( len > textureAtlas_.capacity )
-		[textureAtlas_ resizeCapacity:len];
+	if( newString == string_ )
+		return;
 
-	[string_ release];
-	string_ = [newString copy];
-	[self updateAtlasValues];
+	if( [newString hash] != [string_ hash] ) {
 
-	CGSize s = CGSizeMake(len * itemWidth_, itemHeight_);
-	[self setContentSize:s];
+		NSUInteger len = [newString length];
+		if( len > textureAtlas_.capacity )
+			[textureAtlas_ resizeCapacity:len];
 
-	self.quadsToDraw = len;
+		[string_ release];
+		string_ = [newString copy];
+		[self updateAtlasValues];
+
+		CGSize s = CGSizeMake(len * itemWidth_, itemHeight_);
+		[self setContentSize:s];
+
+		self.quadsToDraw = len;
+	}
 }
 
 -(NSString*) string

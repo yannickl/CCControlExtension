@@ -149,7 +149,9 @@
      [CCActionTween actionWithDuration:0.2f 
                                    key:@"sliderXPosition" 
                                   from:switchSprite_.sliderXPosition
-                                    to:(on_) ? switchSprite_.onPosition : switchSprite_.offPosition]];    
+                                    to:(on_) ? switchSprite_.onPosition : switchSprite_.offPosition]];
+    
+    [self sendActionsForControlEvents:CCControlEventValueChanged];
 }
 
 #pragma mark CCTargetedTouch Delegate Methods
@@ -207,8 +209,6 @@
     {
         [self setOn:![self isOn] animated:YES];
     }
-    
-    [self sendActionsForControlEvents:CCControlEventValueChanged];
 }
 
 - (void)ccTouchCancelled:(UITouch *)touch withEvent:(UIEvent *)event

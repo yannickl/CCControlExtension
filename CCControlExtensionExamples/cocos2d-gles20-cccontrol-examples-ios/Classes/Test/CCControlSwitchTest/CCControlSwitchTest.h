@@ -1,5 +1,5 @@
 /*
- * CCControlButtonTest.h
+ * CCControlSwitchTest.h
  *
  * Copyright (c) 2011 Yannick Loriot
  * http://yannickloriot.com
@@ -26,35 +26,10 @@
 
 #import "CCControlScene.h"
 
-@interface CCControlButtonTest_HelloVariableSize : CCControlScene
+@interface CCControlSwitchTest : CCControlScene
 {
 @protected
+    CCLabelTTF *displayValueLabel; 
 }
-
-#pragma mark Constructors - Initializers
-
-#pragma mark Public Methods
-
-@end
-
-@interface CCControlButtonTest_Event : CCControlScene
-{
-@protected
-    CCLabelTTF *displayEvents;
-}
-
-#pragma mark Constructors - Initializers
-
-#pragma mark Public Methods
-
-@end
-
-@interface CCControlButtonTest_Styling : CCControlScene
-{
-}
-
-#pragma mark Constructors - Initializers
-
-#pragma mark Public Methods
 
 @end

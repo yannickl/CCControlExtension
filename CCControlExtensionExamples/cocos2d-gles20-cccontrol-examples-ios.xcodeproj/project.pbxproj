@@ -10,6 +10,11 @@
 		C227EA6B153436A20030DD7E /* CCControlSwitchMask.fsh in Sources */ = {isa = PBXBuildFile; fileRef = C227EA6A153436A20030DD7E /* CCControlSwitchMask.fsh */; };
 		C227EA6E153436C70030DD7E /* CCControlSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = C227EA6D153436C70030DD7E /* CCControlSwitch.m */; };
 		C227EA6F153438100030DD7E /* CCControlSwitchMask.fsh in Resources */ = {isa = PBXBuildFile; fileRef = C227EA6A153436A20030DD7E /* CCControlSwitchMask.fsh */; };
+		C227EA7B153439640030DD7E /* CCControlSwitchTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C227EA75153439640030DD7E /* CCControlSwitchTest.m */; };
+		C227EA7C153439640030DD7E /* switch-mask.png in Resources */ = {isa = PBXBuildFile; fileRef = C227EA77153439640030DD7E /* switch-mask.png */; };
+		C227EA7D153439640030DD7E /* switch-off.png in Resources */ = {isa = PBXBuildFile; fileRef = C227EA78153439640030DD7E /* switch-off.png */; };
+		C227EA7E153439640030DD7E /* switch-on.png in Resources */ = {isa = PBXBuildFile; fileRef = C227EA79153439640030DD7E /* switch-on.png */; };
+		C227EA7F153439640030DD7E /* switch-thumb.png in Resources */ = {isa = PBXBuildFile; fileRef = C227EA7A153439640030DD7E /* switch-thumb.png */; };
 		C234FFBE15264B9300141008 /* CCControl.m in Sources */ = {isa = PBXBuildFile; fileRef = C234FFA915264B9300141008 /* CCControl.m */; };
 		C234FFBF15264B9300141008 /* CCControlButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C234FFAB15264B9300141008 /* CCControlButton.m */; };
 		C234FFC015264B9300141008 /* CCControlColourPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = C234FFAD15264B9300141008 /* CCControlColourPicker.m */; };
@@ -209,6 +214,12 @@
 		C227EA6A153436A20030DD7E /* CCControlSwitchMask.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = CCControlSwitchMask.fsh; sourceTree = "<group>"; };
 		C227EA6C153436C70030DD7E /* CCControlSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCControlSwitch.h; sourceTree = "<group>"; };
 		C227EA6D153436C70030DD7E /* CCControlSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCControlSwitch.m; sourceTree = "<group>"; };
+		C227EA74153439640030DD7E /* CCControlSwitchTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCControlSwitchTest.h; sourceTree = "<group>"; };
+		C227EA75153439640030DD7E /* CCControlSwitchTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCControlSwitchTest.m; sourceTree = "<group>"; };
+		C227EA77153439640030DD7E /* switch-mask.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "switch-mask.png"; sourceTree = "<group>"; };
+		C227EA78153439640030DD7E /* switch-off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "switch-off.png"; sourceTree = "<group>"; };
+		C227EA79153439640030DD7E /* switch-on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "switch-on.png"; sourceTree = "<group>"; };
+		C227EA7A153439640030DD7E /* switch-thumb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "switch-thumb.png"; sourceTree = "<group>"; };
 		C234FFA815264B9300141008 /* CCControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCControl.h; sourceTree = "<group>"; };
 		C234FFA915264B9300141008 /* CCControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCControl.m; sourceTree = "<group>"; };
 		C234FFAA15264B9300141008 /* CCControlButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCControlButton.h; sourceTree = "<group>"; };
@@ -578,6 +589,27 @@
 			path = Shaders;
 			sourceTree = "<group>";
 		};
+		C227EA73153439640030DD7E /* CCControlSwitchTest */ = {
+			isa = PBXGroup;
+			children = (
+				C227EA76153439640030DD7E /* Resources */,
+				C227EA74153439640030DD7E /* CCControlSwitchTest.h */,
+				C227EA75153439640030DD7E /* CCControlSwitchTest.m */,
+			);
+			path = CCControlSwitchTest;
+			sourceTree = "<group>";
+		};
+		C227EA76153439640030DD7E /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				C227EA77153439640030DD7E /* switch-mask.png */,
+				C227EA78153439640030DD7E /* switch-off.png */,
+				C227EA79153439640030DD7E /* switch-on.png */,
+				C227EA7A153439640030DD7E /* switch-thumb.png */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		C234FFA615264B9300141008 /* CCControlExtension */ = {
 			isa = PBXGroup;
 			children = (
@@ -801,6 +833,7 @@
 				C23877871503DC78004BF57E /* CCControlButtonTest */,
 				C23877901503DC78004BF57E /* CCControlColourPicker */,
 				C23877A01503DC78004BF57E /* CCControlSliderTest */,
+				C227EA73153439640030DD7E /* CCControlSwitchTest */,
 			);
 			path = Test;
 			sourceTree = "<group>";
@@ -830,9 +863,9 @@
 		C23877901503DC78004BF57E /* CCControlColourPicker */ = {
 			isa = PBXGroup;
 			children = (
+				C23877931503DC78004BF57E /* Resources */,
 				C23877911503DC78004BF57E /* CCControlColourPickerTest.h */,
 				C23877921503DC78004BF57E /* CCControlColourPickerTest.m */,
-				C23877931503DC78004BF57E /* Resources */,
 			);
 			path = CCControlColourPicker;
 			sourceTree = "<group>";
@@ -1351,6 +1384,10 @@
 				C2B0924C1533962700007ECC /* CMakeLists.txt in Resources */,
 				C2B0925A1533964600007ECC /* fps_images-ipadhd.png in Resources */,
 				C227EA6F153438100030DD7E /* CCControlSwitchMask.fsh in Resources */,
+				C227EA7C153439640030DD7E /* switch-mask.png in Resources */,
+				C227EA7D153439640030DD7E /* switch-off.png in Resources */,
+				C227EA7E153439640030DD7E /* switch-on.png in Resources */,
+				C227EA7F153439640030DD7E /* switch-thumb.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1476,6 +1513,7 @@
 				C2B092581533962700007ECC /* vec4.c in Sources */,
 				C227EA6B153436A20030DD7E /* CCControlSwitchMask.fsh in Sources */,
 				C227EA6E153436C70030DD7E /* CCControlSwitch.m in Sources */,
+				C227EA7B153439640030DD7E /* CCControlSwitchTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

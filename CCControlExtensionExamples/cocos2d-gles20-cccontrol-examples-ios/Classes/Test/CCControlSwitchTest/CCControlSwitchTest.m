@@ -1,7 +1,7 @@
 /*
  * CCControlSwitchTest.m
  *
- * Copyright (c) 2011 Yannick Loriot
+ * Copyright (c) 2012 Yannick Loriot
  * http://yannickloriot.com
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy

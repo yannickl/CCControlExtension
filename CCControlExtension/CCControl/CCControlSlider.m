@@ -126,7 +126,7 @@
 
 - (void)setEnabled:(BOOL)enabled
 {
-    super.enabled           = enabled;
+    super.enabled                = enabled;
     
     thumbSprite_.opacity    = (enabled) ? 255.0f : 128.0f;
 }
@@ -185,6 +185,8 @@
     self.value          = minimumValue_;
 }
 
+#pragma mark CCTargetedTouch Delegate Methods
+
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 
 - (CGPoint)locationFromTouch:(UITouch *)touch
@@ -212,7 +214,7 @@
         return NO;
     }
     
-    CGPoint location = [self locationFromTouch:touch];
+    CGPoint location        = [self locationFromTouch:touch];
     
     [self sliderBegan:location];
     
@@ -221,7 +223,7 @@
 
 - (void)ccTouchMoved:(UITouch *)touch withEvent:(UIEvent *)event
 {
-    CGPoint location = [self locationFromTouch:touch];
+    CGPoint location        = [self locationFromTouch:touch];
 	
     [self sliderMoved:location];
 }

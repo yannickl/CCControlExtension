@@ -291,6 +291,10 @@
     }
 }
 
+- (void)needsLayout
+{
+}
+
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 
 - (CGPoint)touchLocation:(UITouch *)touch
@@ -324,11 +328,6 @@
     CGPoint eventLocation = [self eventLocation:event];
 
     return CGRectContainsPoint([self boundingBox], eventLocation);
-}
-
-- (void)needsLayout
-{
-    
 }
 
 #endif

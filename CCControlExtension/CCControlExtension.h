@@ -1,7 +1,7 @@
 /*
  * CCControlExtension.h
  *
- * Copyright 2011 Yannick Loriot.
+ * Copyright 2012 Yannick Loriot.
  * http://yannickloriot.com
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -31,7 +31,8 @@
 
 #import "CCControl.h"
 #import "CCControlButton.h"
-#import "CCControlSlider.h"
 #import "CCControlColourPicker.h"
+#import "CCControlSlider.h"
+#import "CCControlSwitch.h"
 
 #endif

@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C227EA6B153436A20030DD7E /* CCControlSwitchMask.fsh in Sources */ = {isa = PBXBuildFile; fileRef = C227EA6A153436A20030DD7E /* CCControlSwitchMask.fsh */; };
+		C227EA6E153436C70030DD7E /* CCControlSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = C227EA6D153436C70030DD7E /* CCControlSwitch.m */; };
+		C227EA6F153438100030DD7E /* CCControlSwitchMask.fsh in Resources */ = {isa = PBXBuildFile; fileRef = C227EA6A153436A20030DD7E /* CCControlSwitchMask.fsh */; };
 		C234FFBE15264B9300141008 /* CCControl.m in Sources */ = {isa = PBXBuildFile; fileRef = C234FFA915264B9300141008 /* CCControl.m */; };
 		C234FFBF15264B9300141008 /* CCControlButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C234FFAB15264B9300141008 /* CCControlButton.m */; };
 		C234FFC015264B9300141008 /* CCControlColourPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = C234FFAD15264B9300141008 /* CCControlColourPicker.m */; };
@@ -203,6 +206,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C227EA6A153436A20030DD7E /* CCControlSwitchMask.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = CCControlSwitchMask.fsh; sourceTree = "<group>"; };
+		C227EA6C153436C70030DD7E /* CCControlSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCControlSwitch.h; sourceTree = "<group>"; };
+		C227EA6D153436C70030DD7E /* CCControlSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCControlSwitch.m; sourceTree = "<group>"; };
 		C234FFA815264B9300141008 /* CCControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCControl.h; sourceTree = "<group>"; };
 		C234FFA915264B9300141008 /* CCControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCControl.m; sourceTree = "<group>"; };
 		C234FFAA15264B9300141008 /* CCControlButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCControlButton.h; sourceTree = "<group>"; };
@@ -564,6 +570,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C227EA69153436A10030DD7E /* Shaders */ = {
+			isa = PBXGroup;
+			children = (
+				C227EA6A153436A20030DD7E /* CCControlSwitchMask.fsh */,
+			);
+			path = Shaders;
+			sourceTree = "<group>";
+		};
 		C234FFA615264B9300141008 /* CCControlExtension */ = {
 			isa = PBXGroup;
 			children = (
@@ -578,6 +592,7 @@
 		C234FFA715264B9300141008 /* CCControl */ = {
 			isa = PBXGroup;
 			children = (
+				C227EA69153436A10030DD7E /* Shaders */,
 				C234FFB415264B9300141008 /* Utils */,
 				C234FFA815264B9300141008 /* CCControl.h */,
 				C234FFA915264B9300141008 /* CCControl.m */,
@@ -591,6 +606,8 @@
 				C234FFB115264B9300141008 /* CCControlSaturationBrightnessPicker.m */,
 				C234FFB215264B9300141008 /* CCControlSlider.h */,
 				C234FFB315264B9300141008 /* CCControlSlider.m */,
+				C227EA6C153436C70030DD7E /* CCControlSwitch.h */,
+				C227EA6D153436C70030DD7E /* CCControlSwitch.m */,
 			);
 			path = CCControl;
 			sourceTree = "<group>";
@@ -1333,6 +1350,7 @@
 				C2B0924B1533962700007ECC /* ChangeLog in Resources */,
 				C2B0924C1533962700007ECC /* CMakeLists.txt in Resources */,
 				C2B0925A1533964600007ECC /* fps_images-ipadhd.png in Resources */,
+				C227EA6F153438100030DD7E /* CCControlSwitchMask.fsh in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1456,6 +1474,8 @@
 				C2B092561533962700007ECC /* vec2.c in Sources */,
 				C2B092571533962700007ECC /* vec3.c in Sources */,
 				C2B092581533962700007ECC /* vec4.c in Sources */,
+				C227EA6B153436A20030DD7E /* CCControlSwitchMask.fsh in Sources */,
+				C227EA6E153436C70030DD7E /* CCControlSwitch.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

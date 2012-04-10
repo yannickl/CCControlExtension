@@ -167,6 +167,11 @@
 		C29BEC2A13FAA801009B7468 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C29BEC2913FAA801009B7468 /* main.m */; };
 		C29BEC2D13FAA801009B7468 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C29BEC2C13FAA801009B7468 /* AppDelegate.m */; };
 		C29BEC3013FAA801009B7468 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C29BEC2F13FAA801009B7468 /* RootViewController.m */; };
+		C29E0625153475E600249EB1 /* CCControlSwitchTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C29E061F153475E600249EB1 /* CCControlSwitchTest.m */; };
+		C29E0626153475E600249EB1 /* switch-mask.png in Resources */ = {isa = PBXBuildFile; fileRef = C29E0621153475E600249EB1 /* switch-mask.png */; };
+		C29E0627153475E600249EB1 /* switch-off.png in Resources */ = {isa = PBXBuildFile; fileRef = C29E0622153475E600249EB1 /* switch-off.png */; };
+		C29E0628153475E600249EB1 /* switch-on.png in Resources */ = {isa = PBXBuildFile; fileRef = C29E0623153475E600249EB1 /* switch-on.png */; };
+		C29E0629153475E600249EB1 /* switch-thumb.png in Resources */ = {isa = PBXBuildFile; fileRef = C29E0624153475E600249EB1 /* switch-thumb.png */; };
 		C2A0F07B14D58FE200696B8A /* CCControlColourPickerSpriteSheet-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = C2A0F07014D58FE200696B8A /* CCControlColourPickerSpriteSheet-hd.plist */; };
 		C2A0F07C14D58FE200696B8A /* CCControlColourPickerSpriteSheet-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = C2A0F07114D58FE200696B8A /* CCControlColourPickerSpriteSheet-hd.png */; };
 		C2A0F07D14D58FE200696B8A /* CCControlColourPickerSpriteSheet-hd.tps in Resources */ = {isa = PBXBuildFile; fileRef = C2A0F07214D58FE200696B8A /* CCControlColourPickerSpriteSheet-hd.tps */; };
@@ -472,6 +477,12 @@
 		C29BEC2E13FAA801009B7468 /* RootViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
 		C29BEC2F13FAA801009B7468 /* RootViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
 		C29BEC3413FAA801009B7468 /* GameConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameConfig.h; sourceTree = "<group>"; };
+		C29E061E153475E600249EB1 /* CCControlSwitchTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCControlSwitchTest.h; sourceTree = "<group>"; };
+		C29E061F153475E600249EB1 /* CCControlSwitchTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCControlSwitchTest.m; sourceTree = "<group>"; };
+		C29E0621153475E600249EB1 /* switch-mask.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "switch-mask.png"; sourceTree = "<group>"; };
+		C29E0622153475E600249EB1 /* switch-off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "switch-off.png"; sourceTree = "<group>"; };
+		C29E0623153475E600249EB1 /* switch-on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "switch-on.png"; sourceTree = "<group>"; };
+		C29E0624153475E600249EB1 /* switch-thumb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "switch-thumb.png"; sourceTree = "<group>"; };
 		C2A0F07014D58FE200696B8A /* CCControlColourPickerSpriteSheet-hd.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "CCControlColourPickerSpriteSheet-hd.plist"; sourceTree = "<group>"; };
 		C2A0F07114D58FE200696B8A /* CCControlColourPickerSpriteSheet-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CCControlColourPickerSpriteSheet-hd.png"; sourceTree = "<group>"; };
 		C2A0F07214D58FE200696B8A /* CCControlColourPickerSpriteSheet-hd.tps */ = {isa = PBXFileReference; lastKnownFileType = file; path = "CCControlColourPickerSpriteSheet-hd.tps"; sourceTree = "<group>"; };
@@ -973,6 +984,27 @@
 			path = ..;
 			sourceTree = "<group>";
 		};
+		C29E061D153475E600249EB1 /* CCControlSwitchTest */ = {
+			isa = PBXGroup;
+			children = (
+				C29E0620153475E600249EB1 /* Resources */,
+				C29E061E153475E600249EB1 /* CCControlSwitchTest.h */,
+				C29E061F153475E600249EB1 /* CCControlSwitchTest.m */,
+			);
+			path = CCControlSwitchTest;
+			sourceTree = "<group>";
+		};
+		C29E0620153475E600249EB1 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				C29E0621153475E600249EB1 /* switch-mask.png */,
+				C29E0622153475E600249EB1 /* switch-off.png */,
+				C29E0623153475E600249EB1 /* switch-on.png */,
+				C29E0624153475E600249EB1 /* switch-thumb.png */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		C2A0F06D14D58FE200696B8A /* CCControlColourPicker */ = {
 			isa = PBXGroup;
 			children = (
@@ -1084,6 +1116,7 @@
 				C2D0FB321472E62100FE4DCE /* CCControlButtonTest */,
 				C2A0F06D14D58FE200696B8A /* CCControlColourPicker */,
 				C2D0FB371472E62100FE4DCE /* CCControlSliderTest */,
+				C29E061D153475E600249EB1 /* CCControlSwitchTest */,
 			);
 			name = Examples;
 			path = Test;
@@ -1193,6 +1226,10 @@
 				C2A0F08314D58FE200696B8A /* CCControlColourPickerSpriteSheet.tps in Resources */,
 				C27D3DB81528C4DD004EF65F /* README.md in Resources */,
 				C27D3DB91528C4DD004EF65F /* LICENSE_CCControlExtention.txt in Resources */,
+				C29E0626153475E600249EB1 /* switch-mask.png in Resources */,
+				C29E0627153475E600249EB1 /* switch-off.png in Resources */,
+				C29E0628153475E600249EB1 /* switch-on.png in Resources */,
+				C29E0629153475E600249EB1 /* switch-thumb.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1313,6 +1350,7 @@
 				C27D3DB61528C4DD004EF65F /* CCScale9Sprite.m in Sources */,
 				C27D3DB71528C4DD004EF65F /* Utils.m in Sources */,
 				C214049B1534450700ACFB89 /* CCControlSwitch.m in Sources */,
+				C29E0625153475E600249EB1 /* CCControlSwitchTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

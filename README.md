@@ -9,6 +9,7 @@ Screenshots
 ====================
 ![](http://github.com/YannickL/CCControlExtension/raw/master/screenshots/slider.png)
 ![](http://github.com/YannickL/CCControlExtension/raw/master/screenshots/colorpicker.png)
+![](http://github.com/YannickL/CCControlExtension/raw/master/screenshots/switch.png)
 ![](http://github.com/YannickL/CCControlExtension/raw/master/screenshots/button.png)
 
 How to use it
@@ -18,7 +19,7 @@ How to use it
 
         #import "CCControlExtension.h"
 
-The `CCControlExtension.h` includes all the already made controls such as button, slider, colour picker, etc.
+The `CCControlExtension.h` includes all the already made controls such as button, slider, switch, colour picker, etc.
 There are various [examples][] to understand how to use controls and the possibilities they offer.
 
 For more informations you can check [my blog][].

@@ -63,6 +63,7 @@ static CCControlSceneManager *sharedInstance = nil;
         controlScenes = [[NSArray alloc] initWithObjects:
                          @"CCControlSliderTest",
                          @"CCControlColourPickerTest",
+                         @"CCControlSwitchTest",
                          @"CCControlButtonTest_HelloVariableSize",
                          @"CCControlButtonTest_Event",
                          @"CCControlButtonTest_Styling",

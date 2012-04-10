@@ -23,6 +23,14 @@ CCControlSlider is an already made slider (but customizable) control for Cocos2D
 
 CCControlColourPicker is an already made colour picker for Cocos2D for iPhone. It's a very useful control tool to preview and test color values.
 
+* CCControlSwitch:
+
+![CCControlSwitch](http://github.com/YannickL/CCControlExtension/raw/master/screenshots/switch.png)
+
+The CCControlSwitch is an implementation of the UISwitch for Cocos2D for iPhone.
+The CCControlSwitch class declares a property and a method to control its on/off state. As with CCControlSlider, when the user manipulates the switch control ("flips" it) an UIControlEventValueChanged event is generated.
+You can customize the appearance of the switch by changing the on/off background sprites and label.
+
 Forthcoming
 =====================
 

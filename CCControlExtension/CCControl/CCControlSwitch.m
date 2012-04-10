@@ -136,6 +136,8 @@
     return [[[self alloc] initWithMaskSprite:maskSprite onSprite:onSprite offSprite:offSprite thumbSprite:thumbSprite onLabel:onLabel offLabel:offLabel] autorelease];
 }
 
+#pragma mark Properties
+
 - (void)setOn:(BOOL)isOn
 {
     [self setOn:isOn animated:NO];
@@ -154,6 +156,13 @@
     [self sendActionsForControlEvents:CCControlEventValueChanged];
 }
 
+- (void)setEnabled:(BOOL)enabled
+{
+    enabled_                            = enabled;
+
+    switchSprite_.opacity               = (enabled) ? 255.0f : 128.0f;
+}
+
 #pragma mark CCTargetedTouch Delegate Methods
 
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
@@ -169,7 +178,8 @@
 
 - (BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event
 {
-    if (![self isTouchInside:touch])
+    if (![self isTouchInside:touch]
+        || ![self isEnabled])
     {
         return NO;
     }

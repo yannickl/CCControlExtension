@@ -81,7 +81,7 @@
                                                                            offLabel:[CCLabelTTF labelWithString:@"Off" fontName:@"Arial-BoldMT" fontSize:16]];
         switchControl.position               = ccp (layer_width + 10 + switchControl.contentSize.width / 2, 0);
         [layer addChild:switchControl];
-        
+
         [switchControl addTarget:self action:@selector(valueChanged:) forControlEvents:CCControlEventValueChanged];
         
         // Set the layer size

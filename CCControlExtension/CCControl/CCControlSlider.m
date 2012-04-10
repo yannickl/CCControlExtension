@@ -122,6 +122,8 @@
 	return self;  
 }
 
+#pragma mark Properties
+
 - (void)setEnabled:(BOOL)enabled
 {
     super.enabled           = enabled;

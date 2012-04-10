@@ -232,6 +232,80 @@
     }
 }
 
+#elif __MAC_OS_X_VERSION_MAX_ALLOWED
+
+- (CGPoint)locationFromEvent:(NSEvent *)event
+{
+    CGPoint eventLocation   = [[CCDirector sharedDirector] convertEventToGL:event];
+    eventLocation           = [self convertToNodeSpace:eventLocation]; 
+    
+    return eventLocation;
+}
+
+- (BOOL)ccMouseDown:(NSEvent *)event
+{
+    if (![self isMouseInside:event]
+        || ![self isEnabled])
+    {
+        return NO;
+    }
+    
+    selected_                       = YES;
+    moved_                          = NO;
+    
+    CGPoint location                = [self locationFromEvent:event];
+    
+    initialTouchXPosition_          = location.x - switchSprite_.sliderXPosition;
+    
+    switchSprite_.thumbSprite.color = ccGRAY;
+    [switchSprite_ needsLayout];
+    
+    return YES;
+}
+
+- (BOOL)ccMouseDragged:(NSEvent *)event
+{
+    if (![self isEnabled]
+        || ![self isSelected])
+    {
+        return NO;
+    }
+    
+	CGPoint location    = [self locationFromEvent:event];
+    location            = ccp (location.x - initialTouchXPosition_, 0);
+    
+    moved_              = YES;
+    
+    [switchSprite_ setSliderXPosition:location.x];
+    
+    return YES;
+}
+
+- (BOOL)ccMouseUp:(NSEvent *)event
+{
+    if (![self isEnabled]
+        || ![self isSelected])
+    {
+        return NO;
+    }
+    
+    selected_           = YES;
+    
+    CGPoint location    = [self locationFromEvent:event];
+    
+    switchSprite_.thumbSprite.color  = ccWHITE;
+    
+    if ([self hasMoved])
+    {
+        [self setOn:!(location.x < switchSprite_.contentSize.width / 2) animated:YES];
+    } else
+    {
+        [self setOn:![self isOn] animated:YES];
+    }
+    
+	return NO;
+}
+
 #endif
 
 @end

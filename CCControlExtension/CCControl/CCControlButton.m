@@ -604,7 +604,6 @@ enum
     return YES;
 }
 
-
 - (BOOL)ccMouseDragged:(NSEvent *)event
 {
 	if (![self isEnabled]

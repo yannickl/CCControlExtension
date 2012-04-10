@@ -110,20 +110,23 @@
 @end
 
 @implementation CCControl
-@synthesize dispatchTable = dispatchTable_;
-@synthesize dispatchBlockTable = dispatchBlockTable_;
-@synthesize defaultTouchPriority = defaultTouchPriority_;
-@synthesize state = state_;
-@synthesize enabled = enabled_;
-@synthesize selected = selected_;
-@synthesize highlighted = highlighted_;
+@synthesize dispatchTable           = dispatchTable_;
+@synthesize dispatchBlockTable      = dispatchBlockTable_;
+@synthesize defaultTouchPriority    = defaultTouchPriority_;
+@synthesize state                   = state_;
+@synthesize enabled                 = enabled_;
+@synthesize selected                = selected_;
+@synthesize highlighted             = highlighted_;
+@synthesize opacity                 = opacity_;
+@synthesize color                   = color_;
+@synthesize opacityModifyRGB        = opacityModifyRGB_;
 
 - (void)dealloc
 {
-    [dispatchBlockTable_ release], dispatchBlockTable_ = nil;
-    [dispatchTable_ release], dispatchTable_ = nil;
+    [dispatchBlockTable_    release];
+    [dispatchTable_         release];
     
-    [super dealloc];
+    [super                  dealloc];
 }
 
 - (id)init
@@ -180,6 +183,59 @@
 }
 
 #endif
+
+#pragma mark Properties
+
+- (void)setColor:(ccColor3B)color
+{
+    color_ = color;
+    
+    for (CCNode<CCRGBAProtocol> *child in self.children)
+    {
+        [child setColor:color];
+    }
+}
+
+- (void)setOpacity:(GLubyte)opacity
+{
+    opacity_ = opacity;
+    
+    for (CCNode<CCRGBAProtocol> *child in self.children)
+    {
+        [child setOpacity:opacity];
+    }
+}
+
+- (void)setOpacityModifyRGB:(BOOL)opacityModifyRGB
+{
+    opacityModifyRGB_ = opacityModifyRGB;
+    
+    for (CCNode<CCRGBAProtocol> *child in self.children)
+    {
+        [child setOpacityModifyRGB:opacityModifyRGB];
+    }
+}
+
+- (void)setEnabled:(BOOL)enabled
+{
+    enabled_        = enabled;
+    
+    [self needsLayout];
+}
+
+- (void)setSelected:(BOOL)selected
+{
+    selected_       = selected;
+    
+    [self needsLayout];
+}
+
+- (void)setHighlighted:(BOOL)highlighted
+{
+    highlighted_    = highlighted;
+    
+    [self needsLayout];
+}
 
 #pragma mark -
 #pragma mark CCControl Public Methods
@@ -268,6 +324,11 @@
     CGPoint eventLocation = [self eventLocation:event];
 
     return CGRectContainsPoint([self boundingBox], eventLocation);
+}
+
+- (void)needsLayout
+{
+    
 }
 
 #endif

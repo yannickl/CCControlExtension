@@ -38,9 +38,6 @@
 /** @class CCControlColourPicker Colour picker control for Cocos2D. */
 @interface CCControlColourPicker : CCControl
 {
-@public
-    ccColor3B           color_;
-    
 @protected
     HSV                 hsv_;
     
@@ -48,8 +45,6 @@
     CCControlSaturationBrightnessPicker     *colourPicker_;
     CCControlHuePicker  *huePicker_;
 }
-/** Contains the receiver’s current color value. */
-@property (nonatomic, assign) ccColor3B color;
 
 #pragma mark - Constuctors - Initializers
 

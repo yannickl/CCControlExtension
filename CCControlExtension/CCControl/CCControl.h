@@ -78,21 +78,31 @@ typedef void (^CCControlBlock) (id sender, CCControlEvent event);
  *
  * To use the CCControl you have to subclass it.
  */
-@interface CCControl : CCLayer
+@interface CCControl : CCLayer <CCRGBAProtocol>
 {
 @public
-    NSInteger defaultTouchPriority_;
+    GLubyte             opacity_;
+    ccColor3B           color_;
+    BOOL                opacityModifyRGB_;
     
-    CCControlState state_;
+    NSInteger           defaultTouchPriority_;
     
-    BOOL enabled_;
-    BOOL selected_;
-    BOOL highlighted_;
+    CCControlState      state_;
+    
+    BOOL                enabled_;
+    BOOL                selected_;
+    BOOL                highlighted_;
     
 @private
     NSMutableDictionary *dispatchTable_;
     NSMutableDictionary *dispatchBlockTable_;
 }
+/** Conforms to CCRGBAProtocol protocol. */
+@property (nonatomic, readwrite) GLubyte    opacity;
+/** Conforms to CCRGBAProtocol protocol. */
+@property (nonatomic, readwrite) ccColor3B  color;
+/** Conforms to CocosNodeRGBA protocol. */
+@property (nonatomic, getter = doesOpacityModifyRGB) BOOL opacityModifyRGB;
 /** Changes the priority of the button. The lower the number, the higher the
  priority. */
 @property (nonatomic, assign) NSInteger defaultTouchPriority;
@@ -195,5 +205,10 @@ typedef void (^CCControlBlock) (id sender, CCControlEvent event);
  */
 - (BOOL)isMouseInside:(NSEvent *)event;
 #endif
+
+/**
+ * Updates the control layout using its current internal state.
+ */
+- (void)needsLayout;
 
 @end

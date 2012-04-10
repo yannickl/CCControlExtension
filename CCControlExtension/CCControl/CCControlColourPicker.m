@@ -49,7 +49,6 @@
 @synthesize background      = background_;
 @synthesize colourPicker    = colourPicker_;
 @synthesize huePicker       = huePicker_;
-@synthesize color           = color_;
 
 - (void)dealloc
 {    

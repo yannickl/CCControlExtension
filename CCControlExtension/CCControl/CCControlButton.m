@@ -45,11 +45,6 @@ enum
 /** Table of correspondence between the state and the background sprite. */
 @property (nonatomic, retain) NSMutableDictionary *backgroundSpriteDispatchTable;
 
-/**
- * Updates the layout using the current state value.
- */
-- (void)needsLayout;
-
 @end
 
 @implementation CCControlButton
@@ -61,9 +56,6 @@ enum
 @synthesize titleColorDispatchTable         = titleColorDispatchTable_;
 @synthesize titleLabelDispatchTable         = titleLabelDispatchTable_;
 @synthesize backgroundSpriteDispatchTable   = backgroundSpriteDispatchTable_;
-@synthesize opacity                         = opacity_;
-@synthesize color                           = color_;
-@synthesize opacityModifyRGB                = opacityModifyRGB_;
 @synthesize adjustBackgroundImage           = adjustBackgroundImage_;
 @synthesize zoomOnTouchDown                 = zoomOnTouchDown_;
 @synthesize currentTitle                    = currentTitle_;
@@ -166,50 +158,6 @@ enum
 }
 
 #pragma mark Properties
-
-- (void)setColor:(ccColor3B)color
-{
-    color_              = color;
-    
-    for (CCNode<CCRGBAProtocol> *child in self.children)
-    {
-        [child setColor:color];
-    }
-}
-
-- (void)setOpacity:(GLubyte)opacity
-{
-    opacity_            = opacity;
-    
-    for (CCNode<CCRGBAProtocol> *child in self.children)
-    {
-        [child setOpacity:opacity];
-    }
-}
-
-- (void)setOpacityModifyRGB:(BOOL)opacityModifyRGB
-{
-    opacityModifyRGB_   = opacityModifyRGB;
-    
-    for (CCNode<CCRGBAProtocol> *child in self.children)
-    {
-        [child setOpacityModifyRGB:opacityModifyRGB];
-    }
-}
-
-- (void)setEnabled:(BOOL)enabled
-{
-    [super setEnabled:enabled];
-    
-    [self needsLayout];
-}
-
-- (void)setSelected:(BOOL)selected
-{
-    [super setSelected:selected];
-    
-    [self needsLayout];
-}
 
 - (void)setHighlighted:(BOOL)highlighted
 {

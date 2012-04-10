@@ -34,13 +34,9 @@
 @class CCScale9Sprite;
 
 /** @class CCControlButton Button control for Cocos2D. */
-@interface CCControlButton : CCControl <CCRGBAProtocol>
+@interface CCControlButton : CCControl
 {
 @public
-    GLubyte                                 opacity_;
-    ccColor3B                               color_;
-    BOOL                                    opacityModifyRGB_;
-    
     BOOL                                    adjustBackgroundImage_;
     BOOL                                    zoomOnTouchDown_;
     
@@ -58,13 +54,6 @@
     NSMutableDictionary                     *titleLabelDispatchTable_;
     NSMutableDictionary                     *backgroundSpriteDispatchTable_;
 }
-/** Conforms to CCRGBAProtocol protocol. */
-@property (nonatomic, readwrite) GLubyte    opacity;
-/** Conforms to CCRGBAProtocol protocol. */
-@property (nonatomic, readwrite) ccColor3B  color;
-/** Conforms to CocosNodeRGBA protocol. */
-@property (nonatomic, getter = doesOpacityModifyRGB) BOOL opacityModifyRGB;
-
 #pragma mark Configuring Background Image Size
 /** Adjust the background image. YES by default. If the property is set to NO, the 
  background will use the prefered size of the background image. */

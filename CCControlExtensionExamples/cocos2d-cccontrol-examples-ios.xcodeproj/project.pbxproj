@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C214049B1534450700ACFB89 /* CCControlSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = C214049A1534450700ACFB89 /* CCControlSwitch.m */; };
 		C240CADD14D43567009BFD83 /* background-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = C240CADA14D43567009BFD83 /* background-hd.png */; };
 		C240CADE14D43567009BFD83 /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = C240CADB14D43567009BFD83 /* background.png */; };
 		C240CADF14D43567009BFD83 /* background-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = C240CADC14D43567009BFD83 /* background-ipad.png */; };
@@ -181,6 +182,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C21404991534450700ACFB89 /* CCControlSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCControlSwitch.h; sourceTree = "<group>"; };
+		C214049A1534450700ACFB89 /* CCControlSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCControlSwitch.m; sourceTree = "<group>"; };
 		C240CADA14D43567009BFD83 /* background-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "background-hd.png"; sourceTree = "<group>"; };
 		C240CADB14D43567009BFD83 /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background.png; sourceTree = "<group>"; };
 		C240CADC14D43567009BFD83 /* background-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "background-ipad.png"; sourceTree = "<group>"; };
@@ -751,6 +754,8 @@
 				C27D3DA21528C4DD004EF65F /* CCControlSaturationBrightnessPicker.m */,
 				C27D3DA31528C4DD004EF65F /* CCControlSlider.h */,
 				C27D3DA41528C4DD004EF65F /* CCControlSlider.m */,
+				C21404991534450700ACFB89 /* CCControlSwitch.h */,
+				C214049A1534450700ACFB89 /* CCControlSwitch.m */,
 			);
 			path = CCControl;
 			sourceTree = "<group>";
@@ -1307,6 +1312,7 @@
 				C27D3DB51528C4DD004EF65F /* CCColourUtils.m in Sources */,
 				C27D3DB61528C4DD004EF65F /* CCScale9Sprite.m in Sources */,
 				C27D3DB71528C4DD004EF65F /* Utils.m in Sources */,
+				C214049B1534450700ACFB89 /* CCControlSwitch.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

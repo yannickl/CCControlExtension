@@ -110,20 +110,23 @@
 @end
 
 @implementation CCControl
-@synthesize dispatchTable = dispatchTable_;
-@synthesize dispatchBlockTable = dispatchBlockTable_;
-@synthesize defaultTouchPriority = defaultTouchPriority_;
-@synthesize state = state_;
-@synthesize enabled = enabled_;
-@synthesize selected = selected_;
-@synthesize highlighted = highlighted_;
+@synthesize dispatchTable           = dispatchTable_;
+@synthesize dispatchBlockTable      = dispatchBlockTable_;
+@synthesize defaultTouchPriority    = defaultTouchPriority_;
+@synthesize state                   = state_;
+@synthesize enabled                 = enabled_;
+@synthesize selected                = selected_;
+@synthesize highlighted             = highlighted_;
+@synthesize opacity                 = opacity_;
+@synthesize color                   = color_;
+@synthesize opacityModifyRGB        = opacityModifyRGB_;
 
 - (void)dealloc
 {
-    [dispatchBlockTable_ release], dispatchBlockTable_ = nil;
-    [dispatchTable_ release], dispatchTable_ = nil;
+    [dispatchBlockTable_    release];
+    [dispatchTable_         release];
     
-    [super dealloc];
+    [super                  dealloc];
 }
 
 - (id)init
@@ -132,25 +135,25 @@
     {
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 		// Enabled the touch event
-        self.isTouchEnabled = YES;
+        self.isTouchEnabled         = YES;
 #elif __MAC_OS_X_VERSION_MAX_ALLOWED
         // Enabled the mouse event
-		self.isMouseEnabled = YES;
+		self.isMouseEnabled         = YES;
 #endif
         
         // Initialise instance variables
-        state_ = CCControlStateNormal;
+        state_                      = CCControlStateNormal;
         
-        self.enabled = YES;
-        self.selected = NO;
-        self.highlighted = NO;
+        self.enabled                = YES;
+        self.selected               = NO;
+        self.highlighted            = NO;
         
         // Set the touch dispatcher priority by default to 1
-        self.defaultTouchPriority = 1;
+        self.defaultTouchPriority   = 1;
         
         // Initialise the tables
-        dispatchTable_ = [[NSMutableDictionary alloc] initWithCapacity:1];
-        dispatchBlockTable_ = [[NSMutableDictionary alloc] initWithCapacity:1];
+        dispatchTable_              = [[NSMutableDictionary alloc] initWithCapacity:1];
+        dispatchBlockTable_         = [[NSMutableDictionary alloc] initWithCapacity:1];
     }
     return self;
 }
@@ -158,7 +161,7 @@
 - (void)onEnter
 {
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
-    CCTouchDispatcher * dispatcher = [CCDirector sharedDirector].touchDispatcher;
+    CCTouchDispatcher * dispatcher  = [CCDirector sharedDirector].touchDispatcher;
 	[dispatcher addTargetedDelegate:self priority:defaultTouchPriority_ swallowsTouches:YES];
 #endif
 	[super onEnter];
@@ -167,7 +170,7 @@
 - (void)onExit
 {
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
-    CCTouchDispatcher * dispatcher = [CCDirector sharedDirector].touchDispatcher;
+    CCTouchDispatcher * dispatcher  = [CCDirector sharedDirector].touchDispatcher;
 	[dispatcher removeDelegate:self];
 #endif
     
@@ -182,6 +185,59 @@
 }
 
 #endif
+
+#pragma mark Properties
+
+- (void)setColor:(ccColor3B)color
+{
+    color_ = color;
+    
+    for (CCNode<CCRGBAProtocol> *child in self.children)
+    {
+        [child setColor:color];
+    }
+}
+
+- (void)setOpacity:(GLubyte)opacity
+{
+    opacity_ = opacity;
+    
+    for (CCNode<CCRGBAProtocol> *child in self.children)
+    {
+        [child setOpacity:opacity];
+    }
+}
+
+- (void)setOpacityModifyRGB:(BOOL)opacityModifyRGB
+{
+    opacityModifyRGB_ = opacityModifyRGB;
+    
+    for (CCNode<CCRGBAProtocol> *child in self.children)
+    {
+        [child setOpacityModifyRGB:opacityModifyRGB];
+    }
+}
+
+- (void)setEnabled:(BOOL)enabled
+{
+    enabled_        = enabled;
+    
+    [self needsLayout];
+}
+
+- (void)setSelected:(BOOL)selected
+{
+    selected_       = selected;
+    
+    [self needsLayout];
+}
+
+- (void)setHighlighted:(BOOL)highlighted
+{
+    highlighted_    = highlighted;
+    
+    [self needsLayout];
+}
 
 #pragma mark -
 #pragma mark CCControl Public Methods
@@ -250,7 +306,7 @@
 
 - (BOOL)isTouchInside:(UITouch *)touch
 {
-    CGPoint touchLocation = [self touchLocation:touch];
+    CGPoint touchLocation   = [self touchLocation:touch];
 
     return CGRectContainsPoint([self boundingBox], touchLocation);
 }
@@ -259,20 +315,24 @@
 
 - (CGPoint)eventLocation:(NSEvent *)event
 {
-    CGPoint eventLocation = [[CCDirector sharedDirector] convertEventToGL:event];
-    eventLocation = [[self parent] convertToNodeSpace:eventLocation];
+    CGPoint eventLocation   = [[CCDirector sharedDirector] convertEventToGL:event];
+    eventLocation           = [[self parent] convertToNodeSpace:eventLocation];
     
     return eventLocation;
 }
 
 - (BOOL)isMouseInside:(NSEvent *)event
 {
-    CGPoint eventLocation = [self eventLocation:event];
+    CGPoint eventLocation   = [self eventLocation:event];
 
     return CGRectContainsPoint([self boundingBox], eventLocation);
 }
 
 #endif
+
+- (void)needsLayout
+{
+}
 
 #pragma mark CCControl Private Methods
 
@@ -291,7 +351,6 @@
     // Retrieve all invocations for the given control event
     NSMutableArray *eventInvocationList = [self dispatchListforControlEvent:controlEvent];
 
-#if NS_BLOCKS_AVAILABLE
     NSPredicate *predicate = 
     [NSPredicate predicateWithBlock:^BOOL(id object, NSDictionary *bindings)
      {
@@ -310,36 +369,6 @@
     
     // Define the invocation to remove for the given control event
     NSArray *removeObjectList = [eventInvocationList filteredArrayUsingPredicate:predicate];
-#else
-    NSMutableArray *removeObjectList = [NSMutableArray array];
-    if (target == nil && action == NULL)
-    {
-        removeObjectList = eventInvocationList;
-    } else
-    {
-        if (target)
-        {
-            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"target == %@",target];
-            removeObjectList = [NSMutableArray arrayWithArray:[eventInvocationList filteredArrayUsingPredicate:predicate]];
-        } else
-        {
-            removeObjectList = [NSMutableArray arrayWithArray:eventInvocationList];
-        }
-        
-        if (action != NULL)
-        {
-            NSMutableArray *tempObjectToKeep = [NSMutableArray array];
-            for (NSInvocation *invocation in removeObjectList)
-            {
-                if ([invocation selector] != action)
-                {
-                    [tempObjectToKeep addObject:invocation];
-                }
-            }
-            [removeObjectList removeObjectsInArray:tempObjectToKeep];
-        }
-    }
-#endif
     
     // Remove the corresponding invocation objects
     [eventInvocationList removeObjectsInArray:removeObjectList];
@@ -394,7 +423,6 @@
     return invocationList;
 }
 
-#if NS_BLOCKS_AVAILABLE
 
 #pragma mark -
 #pragma mark CCControl Public Blocks Methods
@@ -430,7 +458,5 @@
         [dispatchBlockTable_ removeObjectForKey:controlEventKey];
     }
 }
-
-#endif
 
 @end

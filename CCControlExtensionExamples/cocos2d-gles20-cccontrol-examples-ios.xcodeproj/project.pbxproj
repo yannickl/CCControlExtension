@@ -863,9 +863,9 @@
 		C23877A01503DC78004BF57E /* CCControlSliderTest */ = {
 			isa = PBXGroup;
 			children = (
+				C23877A31503DC78004BF57E /* Resources */,
 				C23877A11503DC78004BF57E /* CCControlSliderTest.h */,
 				C23877A21503DC78004BF57E /* CCControlSliderTest.m */,
-				C23877A31503DC78004BF57E /* Resources */,
 			);
 			path = CCControlSliderTest;
 			sourceTree = "<group>";

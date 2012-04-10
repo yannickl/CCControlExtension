@@ -120,36 +120,33 @@
         self.value                      = minimumValue_;
 	}  
 	return self;  
-}  
+}
+
+- (void)setEnabled:(BOOL)enabled
+{
+    super.enabled           = enabled;
+    
+    thumbSprite_.opacity    = (enabled) ? 255.0f : 128.0f;
+}
 
 - (void)setValue:(float)value
 {
 	// set new value with sentinel
     if (value < minimumValue_)
     {
-		value = minimumValue_;
+		value           = minimumValue_;
     }
 	
     if (value > maximumValue_) 
     {
-		value = maximumValue_;
+		value           = maximumValue_;
     }
 
-    value_                      = value;
+    value_              = value;
 	
-	// Update thumb position for new value
-    float percent               = (value_ - minimumValue_) / (maximumValue_ - minimumValue_);
+    [self needsLayout];
     
-    CGPoint pos                 = thumbSprite_.position;
-    pos.x                       = percent * backgroundSprite_.contentSize.width;
-    thumbSprite_.position       = pos;
-    
-    // Stretches content proportional to newLevel
-    CGRect textureRect          = progressSprite_.textureRect;
-    textureRect                 = CGRectMake(textureRect.origin.x, textureRect.origin.y, pos.x, textureRect.size.height);
-    progressSprite_.textureRect = textureRect;
-	
-    [self sendActionsForControlEvents:CCControlEventValueChanged];    
+    [self sendActionsForControlEvents:CCControlEventValueChanged];
 }
 
 - (void)setMinimumValue:(float)minimumValue
@@ -197,7 +194,8 @@
 
 - (BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event
 {
-    if (![self isTouchInside:touch])
+    if (![self isTouchInside:touch]
+        || ![self isEnabled])
     {
         return NO;
     }
@@ -243,7 +241,8 @@
 
 - (BOOL)ccMouseDown:(NSEvent*)event
 {
-    if (![self isMouseInside:event])
+    if (![self isMouseInside:event]
+        || ![self isEnabled])
     {
         return NO;
     }
@@ -258,7 +257,8 @@
 
 - (BOOL)ccMouseDragged:(NSEvent*)event
 {
-	if (!self.thumbSprite.isSelected)
+	if (![self isSelected]
+        || ![self isEnabled])
     {
 		return NO;
     }
@@ -282,6 +282,21 @@
 #pragma mark -
 #pragma mark CCControlSlider Public Methods
 
+- (void)needsLayout
+{
+    // Update thumb position for new value
+    float percent               = (value_ - minimumValue_) / (maximumValue_ - minimumValue_);
+    
+    CGPoint pos                 = thumbSprite_.position;
+    pos.x                       = percent * backgroundSprite_.contentSize.width;
+    thumbSprite_.position       = pos;
+    
+    // Stretches content proportional to newLevel
+    CGRect textureRect          = progressSprite_.textureRect;
+    textureRect                 = CGRectMake(textureRect.origin.x, textureRect.origin.y, pos.x, textureRect.size.height);
+    progressSprite_.textureRect = textureRect;
+}
+
 #pragma mark CCControlSlider Private Methods
 
 - (void)sliderBegan:(CGPoint)location
@@ -293,12 +308,12 @@
 
 - (void)sliderMoved:(CGPoint)location
 {
-    self.value = [self valueForLocation:location];
+    self.value              = [self valueForLocation:location];
 }
 
 - (void)sliderEnded:(CGPoint)location
 {
-    if (self.isSelected)
+    if ([self isSelected])
     {
         self.value          = [self valueForLocation:thumbSprite_.position];
     }
@@ -309,7 +324,7 @@
 
 - (float)valueForLocation:(CGPoint)location
 {
-    float percent = location.x / backgroundSprite_.contentSize.width;
+    float percent           = location.x / backgroundSprite_.contentSize.width;
     return minimumValue_ + percent * (maximumValue_ - minimumValue_);
 }
 

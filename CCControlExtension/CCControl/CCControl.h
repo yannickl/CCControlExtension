@@ -55,16 +55,12 @@ enum
 };
 typedef NSUInteger CCControlState;
 
-#if NS_BLOCKS_AVAILABLE
-
 /** Defines the CCControl block type. 
  *
  * @param sender The sender object- that is call the block.
  * @param event The event which is fired.
  */
 typedef void (^CCControlBlock) (id sender, CCControlEvent event);
-
-#endif
 
 /*
  * @class
@@ -78,21 +74,31 @@ typedef void (^CCControlBlock) (id sender, CCControlEvent event);
  *
  * To use the CCControl you have to subclass it.
  */
-@interface CCControl : CCLayer
+@interface CCControl : CCLayer <CCRGBAProtocol>
 {
 @public
-    NSInteger defaultTouchPriority_;
+    GLubyte             opacity_;
+    ccColor3B           color_;
+    BOOL                opacityModifyRGB_;
     
-    CCControlState state_;
+    NSInteger           defaultTouchPriority_;
     
-    BOOL enabled_;
-    BOOL selected_;
-    BOOL highlighted_;
+    CCControlState      state_;
+    
+    BOOL                enabled_;
+    BOOL                selected_;
+    BOOL                highlighted_;
     
 @private
     NSMutableDictionary *dispatchTable_;
     NSMutableDictionary *dispatchBlockTable_;
 }
+/** Conforms to CCRGBAProtocol protocol. */
+@property (nonatomic, readwrite) GLubyte opacity;
+/** Conforms to CCRGBAProtocol protocol. */
+@property (nonatomic, readwrite) ccColor3B color;
+/** Conforms to CocosNodeRGBA protocol. */
+@property (nonatomic, getter = doesOpacityModifyRGB) BOOL opacityModifyRGB;
 /** Changes the priority of the button. The lower the number, the higher the
  priority. */
 @property (nonatomic, assign) NSInteger defaultTouchPriority;
@@ -144,7 +150,6 @@ typedef void (^CCControlBlock) (id sender, CCControlEvent event);
  */
 - (void)removeTarget:(id)target action:(SEL)action forControlEvents:(CCControlEvent)controlEvents;
 
-#if NS_BLOCKS_AVAILABLE
 #pragma mark CCControl - Preparing Blocks
 
 /**
@@ -157,8 +162,6 @@ typedef void (^CCControlBlock) (id sender, CCControlEvent event);
  * action message is sent. See "CCControlEvent" for bitmask constants.
  */
 - (void)setBlock:(CCControlBlock)block forControlEvents:(CCControlEvent)controlEvents;
-
-#endif
 
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 
@@ -195,5 +198,10 @@ typedef void (^CCControlBlock) (id sender, CCControlEvent event);
  */
 - (BOOL)isMouseInside:(NSEvent *)event;
 #endif
+
+/**
+ * Updates the control layout using its current internal state.
+ */
+- (void)needsLayout;
 
 @end

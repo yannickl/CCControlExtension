@@ -45,11 +45,6 @@ enum
 /** Table of correspondence between the state and the background sprite. */
 @property (nonatomic, retain) NSMutableDictionary *backgroundSpriteDispatchTable;
 
-/**
- * Updates the layout using the current state value.
- */
-- (void)needsLayout;
-
 @end
 
 @implementation CCControlButton
@@ -60,9 +55,6 @@ enum
 @synthesize titleColorDispatchTable         = titleColorDispatchTable_;
 @synthesize titleLabelDispatchTable         = titleLabelDispatchTable_;
 @synthesize backgroundSpriteDispatchTable   = backgroundSpriteDispatchTable_;
-@synthesize opacity                         = opacity_;
-@synthesize color                           = color_;
-@synthesize opacityModifyRGB                = opacityModifyRGB_;
 @synthesize adjustBackgroundImage           = adjustBackgroundImage_;
 @synthesize currentTitle                    = currentTitle_;
 @synthesize currentTitleColor               = currentTitleColor_;
@@ -71,23 +63,24 @@ enum
 
 - (void)dealloc
 {
-    [backgroundSpriteDispatchTable_ release], backgroundSpriteDispatchTable_ = nil;
-    [titleLabelDispatchTable_ release], titleLabelDispatchTable_ = nil;
-    [titleColorDispatchTable_ release], titleColorDispatchTable_ = nil;
-    [titleDispatchTable_ release], titleDispatchTable_ = nil;
-    [backgroundSprite_ release], backgroundSprite_ = nil;
-    [titleLabel_ release], titleLabel_ = nil;
-    [currentTitle_ release], currentTitle_ = nil;
+    [backgroundSpriteDispatchTable_ release];
+    [titleLabelDispatchTable_       release];
+    [titleColorDispatchTable_       release];
+    [titleDispatchTable_            release];
+    [backgroundSprite_              release];
+    [titleLabel_                    release];
+    [currentTitle_                  release];
     
-    [super dealloc];
+    [super                          dealloc];
 }
 
 #pragma mark -
 #pragma mark CCButton - Initializers
 
-- (id) init
+- (id)init
 {
-    return [self initWithLabel:[CCLabelTTF labelWithString:@"" fontName:@"Helvetica" fontSize:12] backgroundSprite:[[[CCScale9Sprite alloc] init] autorelease]];
+    return [self initWithLabel:[CCLabelTTF labelWithString:@"" fontName:@"Helvetica" fontSize:12] 
+              backgroundSprite:[[[CCScale9Sprite alloc] init] autorelease]];
 }
 
 - (id)initWithLabel:(CCNode<CCLabelProtocol,CCRGBAProtocol> *)label backgroundSprite:(CCScale9Sprite *)backgroundsprite
@@ -168,55 +161,11 @@ enum
 
 #pragma mark Properties
 
-- (void)setColor:(ccColor3B)color
-{
-    color_ = color;
-    
-    for (CCNode<CCRGBAProtocol> *child in self.children)
-    {
-        [child setColor:color];
-    }
-}
-
-- (void)setOpacity:(GLubyte)opacity
-{
-    opacity_ = opacity;
-    
-    for (CCNode<CCRGBAProtocol> *child in self.children)
-    {
-        [child setOpacity:opacity];
-    }
-}
-
-- (void)setOpacityModifyRGB:(BOOL)opacityModifyRGB
-{
-    opacityModifyRGB_ = opacityModifyRGB;
-    
-    for (CCNode<CCRGBAProtocol> *child in self.children)
-    {
-        [child setOpacityModifyRGB:opacityModifyRGB];
-    }
-}
-
-- (void)setEnabled:(BOOL)enabled
-{
-    [super setEnabled:enabled];
-    
-    [self needsLayout];
-}
-
-- (void)setSelected:(BOOL)selected
-{
-    [super setSelected:selected];
-    
-    [self needsLayout];
-}
-
 - (void)setHighlighted:(BOOL)highlighted
 {
-    [super setHighlighted:highlighted];
+    highlighted_        = highlighted;
     
-    CCAction *action = [self getActionByTag:kZoomActionTag];
+    CCAction *action    = [self getActionByTag:kZoomActionTag];
     if (action)
     {
         [self stopAction:action];
@@ -226,9 +175,9 @@ enum
     
     if (zoomOnTouchDown_)
     {
-        float scaleValue = (highlighted && [self isEnabled] && ![self isSelected]) ? 1.1f : 1.0f;
-        CCAction *zoomAction = [CCScaleTo actionWithDuration:0.05f scale:scaleValue];
-        zoomAction.tag = kZoomActionTag;
+        float scaleValue        = (highlighted && [self isEnabled] && ![self isSelected]) ? 1.1f : 1.0f;
+        CCAction *zoomAction    = [CCScaleTo actionWithDuration:0.05f scale:scaleValue];
+        zoomAction.tag          = kZoomActionTag;
         [self runAction:zoomAction];
     }
 }

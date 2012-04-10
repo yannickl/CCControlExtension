@@ -34,10 +34,10 @@
 #import "Utils.h"
 
 @interface CCControlColourPicker ()
-@property (nonatomic, assign) HSV                   hsv;
-@property (nonatomic, retain) CCSprite              *background;
-@property (nonatomic, retain) CCControlSaturationBrightnessPicker       *colourPicker;
-@property (nonatomic, retain) CCControlHuePicker    *huePicker;
+@property (nonatomic, assign) HSV                                   hsv;
+@property (nonatomic, retain) CCSprite                              *background;
+@property (nonatomic, retain) CCControlSaturationBrightnessPicker   *colourPicker;
+@property (nonatomic, retain) CCControlHuePicker                    *huePicker;
 
 - (void)updateControlPicker;
 - (void)updateHueAndControlPicker;
@@ -49,19 +49,18 @@
 @synthesize background      = background_;
 @synthesize colourPicker    = colourPicker_;
 @synthesize huePicker       = huePicker_;
-@synthesize color           = color_;
 
 - (void)dealloc
 {    
-    [background_ removeFromParentAndCleanup:YES];
-    [huePicker_ removeFromParentAndCleanup:YES];
-    [colourPicker_ removeFromParentAndCleanup:YES];
+    [background_    removeFromParentAndCleanup:YES];
+    [huePicker_     removeFromParentAndCleanup:YES];
+    [colourPicker_  removeFromParentAndCleanup:YES];
 
     background_     = nil;
     huePicker_      = nil;
     colourPicker_   = nil;
     
-    [super dealloc];
+    [super          dealloc];
 }
 
 - (id)init

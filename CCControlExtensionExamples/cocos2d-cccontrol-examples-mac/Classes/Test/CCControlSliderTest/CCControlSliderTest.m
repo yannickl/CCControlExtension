@@ -63,7 +63,7 @@
         slider.minimumValue = 0.0f; // Sets the min value of range
         slider.maximumValue = 5.0f; // Sets the max value of range
         slider.position = ccp(screenSize.width / 2.0f, screenSize.height / 2.0f);
-        
+
         // When the value of the slider will change, the given selector will be call
 		[slider addTarget:self action:@selector(valueChanged:) forControlEvents:CCControlEventValueChanged];
         

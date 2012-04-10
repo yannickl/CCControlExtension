@@ -122,6 +122,15 @@
     return self;  
 }  
 
+#pragma mark Properties
+
+- (void)setEnabled:(BOOL)enabled
+{
+    super.enabled           = enabled;
+    
+    thumbSprite_.opacity    = (enabled) ? 255.0f : 128.0f;
+}
+
 - (void)setValue:(float)value
 {
     // set new value with sentinel
@@ -197,7 +206,8 @@
 
 - (BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event
 {
-    if (![self isTouchInside:touch])
+    if (![self isTouchInside:touch]
+        || ![self isEnabled])
     {
         return NO;
     }
@@ -243,7 +253,8 @@
 
 - (BOOL)ccMouseDown:(NSEvent*)event
 {
-    if (![self isMouseInside:event])
+    if (![self isMouseInside:event]
+        || ![self isEnabled])
     {
         return NO;
     }
@@ -258,7 +269,8 @@
 
 - (BOOL)ccMouseDragged:(NSEvent*)event
 {
-    if (![self isSelected])
+    if (![self isSelected]
+        || ![self isEnabled])
     {
 		return NO;
     }
@@ -272,6 +284,12 @@
 
 - (BOOL)ccMouseUp:(NSEvent*)event
 {
+    if (![self isSelected]
+        || ![self isEnabled])
+    {
+		return NO;
+    }
+    
     [self sliderEnded:CGPointZero];
 	
     return NO;

@@ -360,7 +360,7 @@
     offSprite_.position     = ccp(onSprite_.contentSize.width + offSprite_.contentSize.width / 2 + sliderXPosition_, 
                                                             offSprite_.contentSize.height / 2);
     thumbSprite_.position   = ccp(onSprite_.contentSize.width + sliderXPosition_,
-                                                            thumbSprite_.contentSize.height / 2);
+                                                            maskTexture_.contentSize.height / 2);
     
     if (onLabel_)
     {

@@ -288,6 +288,8 @@
         self.onLabel            = onLabel;
         self.offLabel           = offLabel;
         
+        [self addChild:thumbSprite_];
+        
         // Set up the mask with the Mask shader
         self.maskTexture        = [maskSprite texture];
         self.shaderProgram      = [[CCGLProgram alloc] initWithVertexShaderFilename:@"PositionTextureColor.vsh"
@@ -377,7 +379,6 @@
     [rt                 begin];
     [self.onSprite      visit];        
     [self.offSprite     visit]; 
-    [self.thumbSprite   visit];
     
     if (onLabel_)
     {

@@ -384,7 +384,6 @@
     [inRT           begin];
     [onSprite_      visit];
     [offSprite_     visit];
-    [thumbSprite_   visit];
     
     if (onLabel_)
     {
@@ -394,7 +393,7 @@
     {
         [offLabel_  visit];
     }
-    [inRT end];
+    [inRT           end];
     
     CCSprite *inSprite      = inRT.sprite;
     inSprite.position       = maskSprite_.position;
@@ -406,6 +405,7 @@
     [rt                 begin];
     [self.maskSprite    visit];
     [inSprite           visit];
+    [thumbSprite_       visit];
     [rt                 end];
 
     self.texture            = rt.sprite.texture;

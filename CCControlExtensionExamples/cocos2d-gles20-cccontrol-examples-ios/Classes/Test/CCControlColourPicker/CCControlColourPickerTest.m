@@ -111,7 +111,7 @@
 
 - (void)colourValueChanged:(CCControlColourPicker *)sender
 {
-    colorLabel.string = [NSString stringWithFormat:@"#%02X%02X%02X",sender.color.r, sender.color.g, sender.color.b];
+    colorLabel.string   = [NSString stringWithFormat:@"#%02X%02X%02X",sender.color.r, sender.color.g, sender.color.b];
 }
 
 @end

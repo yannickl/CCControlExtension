@@ -72,9 +72,9 @@
         shadow_         = [Utils addSprite:@"colourPickerShadow.png" toTarget:target withPos:pos andAnchor:ccp(0, 0)];
         slider_         = [Utils addSprite:@"colourPicker.png" toTarget:target withPos:pos andAnchor:ccp(0.5f, 0.5f)];
         
-        startPos        = pos;	// starting position of the colour picker
-        boxPos          = 35;	// starting position of the virtual box area for picking a colour
-        boxSize         = 150;	// the size (width and height) of the virtual box for picking a colour from
+        startPos        = pos;                                  // starting position of the colour picker
+        boxPos          = 35;                                   // starting position of the virtual box area for picking a colour
+        boxSize         = background_.contentSize.width / 2;    // the size (width and height) of the virtual box for picking a colour from
     }
     return self;
 }
@@ -119,8 +119,8 @@
     // Clamp the position of the icon within the circle
     
     // Get the center point of the bkgd image
-    float centerX           = startPos.x + background_.boundingBox.size.width*.5;
-    float centerY           = startPos.y + background_.boundingBox.size.height*.5;
+    float centerX           = startPos.x + background_.boundingBox.size.width * 0.5f;
+    float centerY           = startPos.y + background_.boundingBox.size.height * 0.5f;
     
     // Work out the distance difference between the location and center
     float dx                = sliderPosition.x - centerX;
@@ -131,7 +131,7 @@
     float angle             = atan2f(dy, dx);
     
     // Set the limit to the slider movement within the colour picker
-    float limit             = background_.boundingBox.size.width*.5;
+    float limit             = background_.boundingBox.size.width * 0.5f;
     
     // Check distance doesn't exceed the bounds of the circle
     if (dist > limit)
@@ -160,16 +160,16 @@
     // Clamp the position of the icon within the circle
     
     // get the center point of the bkgd image
-    float centerX           = startPos.x + background_.boundingBox.size.width*.5;
-    float centerY           = startPos.y + background_.boundingBox.size.height*.5;
+    float centerX           = startPos.x + background_.boundingBox.size.width * 0.5f;
+    float centerY           = startPos.y + background_.boundingBox.size.height * 0.5f;
     
     // work out the distance difference between the location and center
     float dx                = location.x - centerX;
     float dy                = location.y - centerY;
-    float dist              = sqrtf(dx*dx+dy*dy);
+    float dist              = sqrtf(dx*dx + dy*dy);
     
     // check that the touch location is within the bounding rectangle before sending updates
-    if (dist <= background_.boundingBox.size.width*.5)
+    if (dist <= background_.boundingBox.size.width * 0.5f)
     {
         [self updateSliderPosition:location];
         

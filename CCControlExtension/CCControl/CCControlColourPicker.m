@@ -102,7 +102,6 @@
                                                                             background_.contentSize.height / 2));
         
         // Setup panels
-        
         CGFloat hueShift                = 16;
         CGFloat colourShift             = 56;
         

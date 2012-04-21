@@ -63,9 +63,9 @@
         shadow          = [Utils addSprite:@"colourPickerShadow.png" toTarget:target withPos:pos andAnchor:ccp(0, 0)];
         slider          = [Utils addSprite:@"colourPicker.png" toTarget:target withPos:pos andAnchor:ccp(0.5f, 0.5f)];
         
-        startPos        = pos;	// starting position of the colour picker
-        boxPos          = 35;	// starting position of the virtual box area for picking a colour
-        boxSize         = 150;	// the size (width and height) of the virtual box for picking a colour from
+        startPos        = pos;                              // starting position of the colour picker
+        boxPos          = 35;                               // starting position of the virtual box area for picking a colour
+        boxSize         = background.contentSize.width / 2; // the size (width and height) of the virtual box for picking a colour from
     }
     return self;
 }

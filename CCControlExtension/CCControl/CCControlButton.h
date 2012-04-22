@@ -156,11 +156,49 @@
 
 /**
  * Sets the font of the label, changes the label to a CCLabelBMFont if neccessary.
+ *
  * @param fntFile The name of the font to change to
  * @param state The state that uses the specified fntFile. The values are described
  * in "CCControlState".
  */
 - (void)setTitleBMFont:(NSString*)fntFile forState:(CCControlState)state;
+
+/**
+ * Sets the font of the label, changes the label to a CCLabelTTF if neccessary.
+ *
+ * @param fntFile The name of the font to change to
+ * @param state The state that uses the specified fntFile. The values are described
+ * in "CCControlState".
+ */
+- (void)setTitleTTF:(NSString*)fontName forState:(CCControlState)state;
+
+/**
+ * Returns the name of the TTF font used by the label, or NULL if the
+ * label is a CCLabelBMFont.
+ *
+ * @param state The state that uses the specified font. The values are described
+ * in "CCControlState".
+ */
+- (NSString*) titleTTFForState:(CCControlState)state;
+
+
+/**
+ * Sets the font size of the label, will only work with ttf labels.
+ *
+ * @param fntFile The name of the font to change to
+ * @param state The state that uses the specified fntFile. The values are described
+ * in "CCControlState".
+ */
+- (void)setTitleTTFSize:(float)size forState:(CCControlState)state;
+
+/**
+ * Returns the sizer of the TTF font used by the label, or 0 if the
+ * label is a CCLabelBMFont.
+ *
+ * @param state The state that uses the specified font. The values are described
+ * in "CCControlState".
+ */
+- (float) titleTTFSizeForState:(CCControlState)state;
 
 /**
  * Returns the background sprite used for a state.

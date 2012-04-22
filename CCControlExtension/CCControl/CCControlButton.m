@@ -340,6 +340,47 @@ enum
     }
 }
 
+- (void)setTitleTTF:(NSString *)fontName forState:(CCControlState)state
+{
+    NSString* title = [self titleForState:state];
+    if (!title) title = @"";
+    
+    [self setTitleLabel:[CCLabelTTF labelWithString:title fontName:fontName fontSize:12] forState:state];
+}
+
+- (NSString*) titleTTFForState:(CCControlState)state
+{
+    CCNode<CCLabelProtocol>* label = [self titleLabelForState:state];
+    if (!label) return NULL;
+    if ([label isKindOfClass:[CCLabelTTF class]])
+    {
+        CCLabelTTF* labelTTF = (CCLabelTTF*)label;
+        return [labelTTF fontName];
+    }
+    return NULL;
+}
+
+- (void) setTitleTTFSize:(float)size forState:(CCControlState)state
+{
+    CCNode<CCLabelProtocol>* label = [self titleLabelForState:state];
+    if (label && [label isKindOfClass:[CCLabelTTF class]])
+    {
+        CCLabelTTF* labelTTF = (CCLabelTTF*)label;
+        [labelTTF setFontSize:size];
+    }
+}
+
+- (float) titleTTFSizeForState:(CCControlState)state
+{
+    CCNode<CCLabelProtocol>* label = [self titleLabelForState:state];
+    if (label && [label isKindOfClass:[CCLabelTTF class]])
+    {
+        CCLabelTTF* labelTTF = (CCLabelTTF*)label;
+        return [labelTTF fontSize];
+    }
+    return 0;
+}
+
 - (CCScale9Sprite *)backgroundSpriteForState:(CCControlState)state
 {
     NSNumber *stateNumber = [NSNumber numberWithLong:state];
@@ -635,6 +676,16 @@ enum
         {
             [self setTitleBMFont:value forState:state];
         }
+        else if ([keyChunk isEqualToString:@"titleTTF"])
+        {
+            NSLog(@"setTitleTTF: %@ forState:%d", value, state);
+            
+            [self setTitleTTF:value forState:state];
+        }
+        else if ([keyChunk isEqualToString:@"titleTTFSize"])
+        {
+            [self setTitleTTFSize:[value floatValue] forState:state];
+        }
         else
         {
             [super setValue:value forUndefinedKey:key];
@@ -666,6 +717,14 @@ enum
         else if ([keyChunk isEqualToString:@"titleBMFont"])
         {
             return [self titleBMFontForState:state];
+        }
+        else if ([keyChunk isEqualToString:@"titleTTF"])
+        {
+            return [self titleTTFForState:state];
+        }
+        else if ([keyChunk isEqualToString:@"titleTTFSize"])
+        {
+            return [NSNumber numberWithFloat:[self titleTTFSizeForState:state]];
         }
         else
         {

@@ -64,6 +64,7 @@ enum positions
         if (batchnode)
         {
             [self updateWithBatchNode:batchnode rect:rect capInsets:capInsets];
+            anchorPoint_        = ccp(0.5f, 0.5f);
         }
         positionsAreDirty_ = YES;
     }
@@ -216,7 +217,6 @@ enum positions
     originalSize_       = rect.size;
     preferedSize_       = originalSize_;
     capInsetsInternal_  = capInsets;
-    anchorPoint_        = ccp(0.5f, 0.5f);
     
     // If there is no specified center region
     if (CGRectEqualToRect(capInsetsInternal_, CGRectZero))

@@ -90,7 +90,7 @@
         NSAssert(progressSprite,    @"Progress sprite must be not nil");
         NSAssert(thumbSprite,       @"Thumb sprite must be not nil");
         
-        self.isRelativeAnchorPoint      = YES;
+        self.ignoreAnchorPointForPosition      = NO;
         
         self.backgroundSprite           = backgroundSprite;
         self.progressSprite             = progressSprite;

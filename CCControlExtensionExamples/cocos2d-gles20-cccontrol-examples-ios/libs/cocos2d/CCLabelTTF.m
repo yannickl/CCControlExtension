@@ -30,6 +30,8 @@
 #import "ccMacros.h"
 #import "CCShaderCache.h"
 #import "CCGLProgram.h"
+#import "Support/CCFileUtils.h"
+#import "ccDeprecated.h"
 
 #ifdef __CC_PLATFORM_IOS
 #import "Platforms/iOS/CCDirectorIOS.h"
@@ -41,38 +43,81 @@
 #define SHADER_PROGRAM kCCShader_PositionTextureA8Color
 #endif
 
+@interface CCLabelTTF ()
+-(void) updateTexture;
+@end
+
 @implementation CCLabelTTF
+
+// -
++ (id) labelWithString:(NSString*)string fontName:(NSString*)name fontSize:(CGFloat)size
+{
+	return [[[self alloc] initWithString:string fontName:name fontSize:size]autorelease];
+}
+
+// hAlignment
++ (id) labelWithString:(NSString*)string dimensions:(CGSize)dimensions hAlignment:(CCTextAlignment)alignment fontName:(NSString*)name fontSize:(CGFloat)size
+{
+	return [[[self alloc] initWithString: string dimensions:dimensions hAlignment:alignment vAlignment:kCCVerticalTextAlignmentTop lineBreakMode:kCCLineBreakModeWordWrap fontName:name fontSize:size]autorelease];
+}
+
+// hAlignment, vAlignment
++ (id) labelWithString:(NSString*)string dimensions:(CGSize)dimensions hAlignment:(CCTextAlignment)alignment vAlignment:(CCVerticalTextAlignment) vertAlignment fontName:(NSString*)name fontSize:(CGFloat)size
+{
+	return [[[self alloc] initWithString: string dimensions:dimensions hAlignment:alignment vAlignment:vertAlignment fontName:name fontSize:size]autorelease];
+}
+
+// hAlignment, lineBreakMode
++ (id) labelWithString:(NSString*)string dimensions:(CGSize)dimensions hAlignment:(CCTextAlignment)alignment lineBreakMode:(CCLineBreakMode)lineBreakMode fontName:(NSString*)name fontSize:(CGFloat)size;
+{
+	return [[[self alloc] initWithString: string dimensions:dimensions hAlignment:alignment vAlignment:kCCVerticalTextAlignmentTop lineBreakMode:lineBreakMode fontName:name fontSize:size]autorelease];
+}
+
+// hAlignment, vAlignment, lineBreakMode
++ (id) labelWithString:(NSString*)string dimensions:(CGSize)dimensions hAlignment:(CCTextAlignment)alignment vAlignment:(CCVerticalTextAlignment) vertAlignment lineBreakMode:(CCLineBreakMode)lineBreakMode fontName:(NSString*)name fontSize:(CGFloat)size;
+{
+	return [[[self alloc] initWithString: string dimensions:dimensions hAlignment:alignment vAlignment:vertAlignment lineBreakMode:lineBreakMode fontName:name fontSize:size]autorelease];
+}
 
 - (id) init
 {
     return [self initWithString:@"" fontName:@"Helvetica" fontSize:12];
 }
 
-+ (id) labelWithString:(NSString*)string dimensions:(CGSize)dimensions alignment:(CCTextAlignment)alignment lineBreakMode:(CCLineBreakMode)lineBreakMode fontName:(NSString*)name fontSize:(CGFloat)size;
+- (id) initWithString:(NSString*)str fontName:(NSString*)name fontSize:(CGFloat)size
 {
-	return [[[self alloc] initWithString: string dimensions:dimensions alignment:alignment lineBreakMode:lineBreakMode fontName:name fontSize:size]autorelease];
+	return [self initWithString:str dimensions:CGSizeZero hAlignment:kCCTextAlignmentLeft vAlignment:kCCVerticalTextAlignmentTop lineBreakMode:kCCLineBreakModeWordWrap fontName:name fontSize:size];
 }
 
-+ (id) labelWithString:(NSString*)string dimensions:(CGSize)dimensions alignment:(CCTextAlignment)alignment fontName:(NSString*)name fontSize:(CGFloat)size
+// hAlignment
+- (id) initWithString:(NSString*)str dimensions:(CGSize)dimensions hAlignment:(CCTextAlignment)alignment fontName:(NSString*)name fontSize:(CGFloat)size
 {
-	return [[[self alloc] initWithString: string dimensions:dimensions alignment:alignment fontName:name fontSize:size]autorelease];
+	return [self initWithString:str dimensions:dimensions hAlignment:alignment vAlignment:kCCVerticalTextAlignmentTop lineBreakMode:kCCLineBreakModeWordWrap fontName:name fontSize:size];
 }
 
-+ (id) labelWithString:(NSString*)string fontName:(NSString*)name fontSize:(CGFloat)size
+// hAlignment, vAlignment
+- (id) initWithString:(NSString*)str dimensions:(CGSize)dimensions hAlignment:(CCTextAlignment)alignment vAlignment:(CCVerticalTextAlignment) vertAlignment fontName:(NSString*)name fontSize:(CGFloat)size
 {
-	return [[[self alloc] initWithString: string fontName:name fontSize:size]autorelease];
+	return [self initWithString:str dimensions:dimensions hAlignment:alignment vAlignment:vertAlignment lineBreakMode:kCCLineBreakModeWordWrap fontName:name fontSize:size];
 }
 
+// hAlignment, lineBreakMode
+- (id) initWithString:(NSString*)str dimensions:(CGSize)dimensions hAlignment:(CCTextAlignment)alignment lineBreakMode:(CCLineBreakMode)lineBreakMode fontName:(NSString*)name fontSize:(CGFloat)size
+{
+	return [self initWithString:str dimensions:dimensions hAlignment:alignment vAlignment:kCCVerticalTextAlignmentTop lineBreakMode:lineBreakMode fontName:name fontSize:size];
+}
 
-- (id) initWithString:(NSString*)str dimensions:(CGSize)dimensions alignment:(CCTextAlignment)alignment lineBreakMode:(CCLineBreakMode)lineBreakMode fontName:(NSString*)name fontSize:(CGFloat)size
+// hAlignment, vAligment, lineBreakMode
+- (id) initWithString:(NSString*)str dimensions:(CGSize)dimensions hAlignment:(CCTextAlignment)alignment vAlignment:(CCVerticalTextAlignment) vertAlignment lineBreakMode:(CCLineBreakMode)lineBreakMode fontName:(NSString*)name fontSize:(CGFloat)size
 {
 	if( (self=[super init]) ) {
 
 		// shader program
 		self.shaderProgram = [[CCShaderCache sharedShaderCache] programForKey:SHADER_PROGRAM];
 
-		dimensions_ = CGSizeMake( dimensions.width, dimensions.height );
-		alignment_ = alignment;
+		dimensions_ = dimensions;
+		hAlignment_ = alignment;
+		vAlignment_ = vertAlignment;
 		fontName_ = [name retain];
 		fontSize_ = size;
 		lineBreakMode_ = lineBreakMode;
@@ -82,69 +127,16 @@
 	return self;
 }
 
-- (id) initWithString:(NSString*)str dimensions:(CGSize)dimensions alignment:(CCTextAlignment)alignment fontName:(NSString*)name fontSize:(CGFloat)size
-{
-	return [self initWithString:str dimensions:dimensions alignment:alignment lineBreakMode:CCLineBreakModeWordWrap fontName:name fontSize:size];
-}
-
-- (id) initWithString:(NSString*)str fontName:(NSString*)name fontSize:(CGFloat)size
-{
-	if( (self=[super init]) ) {
-
-		// shader program
-		self.shaderProgram = [[CCShaderCache sharedShaderCache] programForKey:SHADER_PROGRAM];
-
-		dimensions_ = CGSizeZero;
-		fontName_ = [name retain];
-		fontSize_ = size;
-
-		[self setString:str];
-	}
-	return self;
-}
-
 - (void) setString:(NSString*)str
 {
-	[string_ release];
-	string_ = [str copy];
+	NSAssert( str, @"Invalid string" );
 
-	CCTexture2D *tex;
-	if( CGSizeEqualToSize( dimensions_, CGSizeZero ) )
-		tex = [[CCTexture2D alloc] initWithString:str
-										 fontName:fontName_
-										 fontSize:fontSize_  * CC_CONTENT_SCALE_FACTOR()];
-	else
-		tex = [[CCTexture2D alloc] initWithString:str
-									   dimensions:CC_SIZE_POINTS_TO_PIXELS(dimensions_)
-										alignment:alignment_
-									lineBreakMode:lineBreakMode_
-										 fontName:fontName_
-										 fontSize:fontSize_  * CC_CONTENT_SCALE_FACTOR()];
-
-#ifdef __CC_PLATFORM_IOS
-	// iPad ?
-	if( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
-		if( CC_CONTENT_SCALE_FACTOR() == 2 )
-			[tex setResolutionType:kCCResolutioniPadRetinaDisplay];
-		else
-			[tex setResolutionType:kCCResolutioniPad];
+	if( string_.hash != str.hash ) {
+		[string_ release];
+		string_ = [str copy];
+		
+		[self updateTexture];
 	}
-	// iPhone ?
-	else
-	{
-		if( CC_CONTENT_SCALE_FACTOR() == 2 )
-			[tex setResolutionType:kCCResolutioniPhoneRetinaDisplay];
-		else
-			[tex setResolutionType:kCCResolutioniPhone];
-	}
-#endif
-
-	[self setTexture:tex];
-	[tex release];
-
-	CGRect rect = CGRectZero;
-	rect.size = [texture_ contentSize];
-	[self setTextureRect: rect];
 }
 
 -(NSString*) string
@@ -154,12 +146,25 @@
 
 - (void)setFontName:(NSString*)fontName
 {
-	if( fontName != fontName_ ) {
+	if( fontName.hash != fontName_.hash ) {
 		[fontName_ release];
-		fontName_ = [fontName retain];
-    
+		fontName_ = [fontName copy];
+		
+#ifdef __CC_PLATFORM_MAC
+		if ([[fontName lowercaseString] hasSuffix:@".ttf"] || YES)
+		{
+			// This is a file, register font with font manager
+			NSString* fontFile = [[CCFileUtils sharedFileUtils] fullPathFromRelativePath:fontName];
+			NSURL* fontURL = [NSURL fileURLWithPath:fontFile];
+			CTFontManagerRegisterFontsForURL((CFURLRef)fontURL, kCTFontManagerScopeProcess, NULL);
+			NSString *newFontName = [[fontFile lastPathComponent] stringByDeletingPathExtension];
+
+			fontName_ = [newFontName copy];
+		}
+#endif
 		// Force update
-		[self setString:[self string]];
+		if( string_ )
+			[self updateTexture];
 	}
 }
 
@@ -174,7 +179,8 @@
 		fontSize_ = fontSize;
 		
 		// Force update
-		[self setString:[self string]];
+		if( string_ )
+			[self updateTexture];
 	}
 }
 
@@ -199,6 +205,38 @@
     return dimensions_;
 }
 
+-(void) setHorizontalAlignment:(CCTextAlignment)alignment
+{
+    if (alignment != hAlignment_)
+    {
+        hAlignment_ = alignment;
+        
+        // Force update
+        [self setString:[self string]];
+    }
+}
+
+- (CCTextAlignment) horizontalAlignment
+{
+    return hAlignment_;
+}
+
+-(void) setVerticalAlignment:(CCVerticalTextAlignment)verticalAlignment
+{
+    if (vAlignment_ != verticalAlignment)
+    {
+        vAlignment_ = verticalAlignment;
+        
+        // Force update
+        [self setString:[self string]];
+    }
+}
+
+- (CCVerticalTextAlignment) verticalAlignment
+{
+    return vAlignment_;
+}
+
 - (void) dealloc
 {
 	[string_ release];
@@ -211,6 +249,49 @@
 {
 	// XXX: string_, fontName_ can't be displayed here, since they might be already released
 
-	return [NSString stringWithFormat:@"<%@ = %08X | FontSize = %.1f>", [self class], self, fontSize_];
+	return [NSString stringWithFormat:@"<%@ = %p | FontSize = %.1f>", [self class], self, fontSize_];
+}
+
+// Helper
+- (void) updateTexture
+{				
+	CCTexture2D *tex;
+	if( dimensions_.width == 0 || dimensions_.height == 0 )
+		tex = [[CCTexture2D alloc] initWithString:string_
+										 fontName:fontName_
+										 fontSize:fontSize_  * CC_CONTENT_SCALE_FACTOR()];
+	else
+		tex = [[CCTexture2D alloc] initWithString:string_
+									   dimensions:CC_SIZE_POINTS_TO_PIXELS(dimensions_)
+									   hAlignment:hAlignment_
+									   vAlignment:vAlignment_
+									lineBreakMode:lineBreakMode_
+										 fontName:fontName_
+										 fontSize:fontSize_  * CC_CONTENT_SCALE_FACTOR()];
+		
+#ifdef __CC_PLATFORM_IOS
+	// iPad ?
+	if( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
+		if( CC_CONTENT_SCALE_FACTOR() == 2 )
+			[tex setResolutionType:kCCResolutioniPadRetinaDisplay];
+		else
+			[tex setResolutionType:kCCResolutioniPad];
+	}
+	// iPhone ?
+	else
+	{
+		if( CC_CONTENT_SCALE_FACTOR() == 2 )
+			[tex setResolutionType:kCCResolutioniPhoneRetinaDisplay];
+		else
+			[tex setResolutionType:kCCResolutioniPhone];
+	}
+#endif
+	
+	[self setTexture:tex];
+	[tex release];
+	
+	CGRect rect = CGRectZero;
+	rect.size = [texture_ contentSize];
+	[self setTextureRect: rect];
 }
 @end

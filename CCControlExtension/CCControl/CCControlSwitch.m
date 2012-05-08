@@ -124,7 +124,7 @@
         switchSprite_.position      = ccp (switchSprite_.contentSize.width / 2, switchSprite_.contentSize.height / 2);
         [self addChild:switchSprite_];
         
-        self.isRelativeAnchorPoint  = YES;
+        self.ignoreAnchorPointForPosition  = NO;
         self.anchorPoint            = ccp (0.5f, 0.5f);
         self.contentSize            = [switchSprite_ contentSize];
     }

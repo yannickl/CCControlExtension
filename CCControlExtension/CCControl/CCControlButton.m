@@ -99,7 +99,7 @@ enum
         self.preferedSize                   = CGSizeZero;
         
         // Set the default anchor point
-        self.isRelativeAnchorPoint          = YES;
+        self.ignoreAnchorPointForPosition          = NO;
         self.anchorPoint                    = ccp (0.5f, 0.5f);
         
         // Set the nodes    

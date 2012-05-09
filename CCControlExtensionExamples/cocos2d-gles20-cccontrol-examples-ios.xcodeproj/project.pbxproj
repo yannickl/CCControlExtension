@@ -216,6 +216,8 @@
 		C2DC0CA1155065C0001670DC /* switch-off.png in Resources */ = {isa = PBXBuildFile; fileRef = C2DC0C97155065C0001670DC /* switch-off.png */; };
 		C2DC0CA2155065C0001670DC /* switch-thumb-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = C2DC0C98155065C0001670DC /* switch-thumb-hd.png */; };
 		C2DC0CA3155065C0001670DC /* switch-thumb-ipadhd.png in Resources */ = {isa = PBXBuildFile; fileRef = C2DC0C99155065C0001670DC /* switch-thumb-ipadhd.png */; };
+		E38095941559124100A1C4BB /* CCActionCatmullRom.m in Sources */ = {isa = PBXBuildFile; fileRef = E38095911559124100A1C4BB /* CCActionCatmullRom.m */; };
+		E38095951559124100A1C4BB /* CCNode+Debug.m in Sources */ = {isa = PBXBuildFile; fileRef = E38095931559124100A1C4BB /* CCNode+Debug.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -575,6 +577,10 @@
 		C2DC0C97155065C0001670DC /* switch-off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "switch-off.png"; sourceTree = "<group>"; };
 		C2DC0C98155065C0001670DC /* switch-thumb-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "switch-thumb-hd.png"; sourceTree = "<group>"; };
 		C2DC0C99155065C0001670DC /* switch-thumb-ipadhd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "switch-thumb-ipadhd.png"; sourceTree = "<group>"; };
+		E38095901559124100A1C4BB /* CCActionCatmullRom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCActionCatmullRom.h; sourceTree = "<group>"; };
+		E38095911559124100A1C4BB /* CCActionCatmullRom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCActionCatmullRom.m; sourceTree = "<group>"; };
+		E38095921559124100A1C4BB /* CCNode+Debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CCNode+Debug.h"; sourceTree = "<group>"; };
+		E38095931559124100A1C4BB /* CCNode+Debug.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CCNode+Debug.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -970,6 +976,10 @@
 		C2B0910B1533962700007ECC /* cocos2d */ = {
 			isa = PBXGroup;
 			children = (
+				E38095901559124100A1C4BB /* CCActionCatmullRom.h */,
+				E38095911559124100A1C4BB /* CCActionCatmullRom.m */,
+				E38095921559124100A1C4BB /* CCNode+Debug.h */,
+				E38095931559124100A1C4BB /* CCNode+Debug.m */,
 				C2B0910C1533962700007ECC /* CCAction.h */,
 				C2B0910D1533962700007ECC /* CCAction.m */,
 				C2B0910E1533962700007ECC /* CCActionCamera.h */,
@@ -1546,6 +1556,8 @@
 				C227EA6B153436A20030DD7E /* CCControlSwitchMask.fsh in Sources */,
 				C227EA6E153436C70030DD7E /* CCControlSwitch.m in Sources */,
 				C227EA7B153439640030DD7E /* CCControlSwitchTest.m in Sources */,
+				E38095941559124100A1C4BB /* CCActionCatmullRom.m in Sources */,
+				E38095951559124100A1C4BB /* CCNode+Debug.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

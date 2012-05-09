@@ -99,7 +99,7 @@ enum
         self.preferedSize                   = CGSizeZero;
         
         // Set the default anchor point
-        self.isRelativeAnchorPoint          = YES;
+        self.ignoreAnchorPointForPosition          = NO;
         self.anchorPoint                    = ccp (0.5f, 0.5f);
         
         // Set the nodes    
@@ -122,6 +122,8 @@ enum
         [self setTitleColor:[label color]           forState:CCControlStateNormal];
         [self setTitleLabel:label                   forState:CCControlStateNormal];
         [self setBackgroundSprite:backgroundsprite  forState:CCControlStateNormal];
+        
+        self.labelAnchorPoint = ccp (0.5f, 0.5f);
         
         // Layout update
         [self needsLayout];
@@ -209,6 +211,18 @@ enum
     preferedSize_   = preferedSize;
     
     [self needsLayout];
+}
+
+- (void) setLabelAnchorPoint:(CGPoint)labelAnchorPoint
+{
+    labelAnchorPoint_ = labelAnchorPoint;
+    
+    titleLabel_.anchorPoint = labelAnchorPoint;
+}
+
+- (CGPoint) labelAnchorPoint
+{
+    return labelAnchorPoint_;
 }
 
 #pragma mark -
@@ -435,6 +449,9 @@ enum
     // Hide the background and the label
     titleLabel_.visible         = NO;
     backgroundSprite_.visible   = NO;
+    
+    // Update anchor points of all labels
+    self.labelAnchorPoint = labelAnchorPoint_;
     
     // Update the label to match with the current state
     if (currentTitle_)

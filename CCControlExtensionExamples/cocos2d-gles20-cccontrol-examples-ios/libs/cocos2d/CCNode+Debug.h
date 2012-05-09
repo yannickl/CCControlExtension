@@ -1,8 +1,7 @@
 /*
  * cocos2d for iPhone: http://www.cocos2d-iphone.org
  *
- * Copyright (c) 2008-2010 Ricardo Quesada
- * Copyright (c) 2011 Zynga Inc.
+ * Copyright (c) 2012 Zynga Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,25 +20,12 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
- *
  */
 
+#import "CCNode.h"
 
-#import "CCScene.h"
-#import "Support/CGPointExtension.h"
-#import "CCDirector.h"
+@interface CCNode (Debug)
 
+-(void) walkSceneGraph:(NSUInteger)level;
 
-@implementation CCScene
--(id) init
-{
-	if( (self=[super init]) ) {
-		CGSize s = [[CCDirector sharedDirector] winSize];
-		self.ignoreAnchorPointForPosition = YES;
-		anchorPoint_ = ccp(0.5f, 0.5f);
-		[self setContentSize:s];
-	}
-
-	return self;
-}
 @end

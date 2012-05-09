@@ -124,7 +124,7 @@
 
 -(NSString*) description
 {
-	return [NSString stringWithFormat:@"<%@ = %08X | Tag = %i>", [self class], self, tag_ ];
+	return [NSString stringWithFormat:@"<%@ = %p | Tag = %i>", [self class], self, tag_ ];
 }
 
 -(void)dealloc
@@ -393,7 +393,7 @@
 
 	if( ! [textureAtlas_ resizeCapacity:quantity] ) {
 		// serious problems
-		CCLOG(@"cocos2d: WARNING: Not enough memory to resize the atlas");
+		CCLOGWARN(@"cocos2d: WARNING: Not enough memory to resize the atlas");
 		NSAssert(NO,@"XXX: CCParticleBatchNode #increaseAtlasCapacity SHALL handle this assert");
 	}
 }

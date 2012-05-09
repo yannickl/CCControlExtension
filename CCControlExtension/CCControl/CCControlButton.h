@@ -53,6 +53,7 @@
     NSMutableDictionary                     *titleColorDispatchTable_;
     NSMutableDictionary                     *titleLabelDispatchTable_;
     NSMutableDictionary                     *backgroundSpriteDispatchTable_;
+    CGPoint labelAnchorPoint_;
 }
 #pragma mark Configuring Background Image Size
 /** Adjust the background image. YES by default. If the property is set to NO, the 
@@ -72,6 +73,8 @@
 @property (nonatomic, assign) CGSize preferedSize;
 /** Scale the button up when it is touched, default is YES. */
 @property (nonatomic, assign) BOOL zoomOnTouchDown;
+/** The anchorPoint of the label, default is (0.5,0.5) */
+@property (nonatomic, assign) CGPoint labelAnchorPoint;
 
 #pragma mark Constructors - Initializers
 

@@ -1,8 +1,7 @@
 /*
  * cocos2d for iPhone: http://www.cocos2d-iphone.org
  *
- * Copyright (c) 2008-2010 Ricardo Quesada
- * Copyright (c) 2011 Zynga Inc.
+ * Copyright (c) 2012 Zynga Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,25 +20,49 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
- *
  */
 
-
-#import "CCScene.h"
-#import "Support/CGPointExtension.h"
-#import "CCDirector.h"
+#import "CCNode+Debug.h"
 
 
-@implementation CCScene
--(id) init
+@implementation CCNode (Debug)
+
+-(void) walkSceneGraph:(NSUInteger)level
 {
-	if( (self=[super init]) ) {
-		CGSize s = [[CCDirector sharedDirector] winSize];
-		self.ignoreAnchorPointForPosition = YES;
-		anchorPoint_ = ccp(0.5f, 0.5f);
-		[self setContentSize:s];
-	}
+	char buf[20];
+	int i=0;
+	for( i=0; i<level+1; i++)
+		buf[i] = '-';
+	buf[i] = 0;
+	
 
-	return self;
+	if(children_) {
+		
+		[self sortAllChildren];
+		
+		ccArray *arrayData = children_->data;
+		NSUInteger i = 0;
+		
+		// draw children zOrder < 0
+		for( ; i < arrayData->num; i++ ) {
+			CCNode *child = arrayData->arr[i];
+			if ( [child zOrder] < 0 )
+				[child walkSceneGraph:level+1];
+			else
+				break;
+		}
+		
+		// self draw
+		NSLog(@"walk tree: %s> %@ %p", buf, self, self);
+		
+		// draw children zOrder >= 0
+		for( ; i < arrayData->num; i++ ) {
+			CCNode *child =  arrayData->arr[i];
+			[child walkSceneGraph:level+1];
+		}
+		
+	} else
+		NSLog(@"walk tree: %s> %@ %p", buf, self, self);
+	
 }
 @end

@@ -462,7 +462,10 @@ enum
     currentTitleColor_          = [self titleColorForState:state_];
     
     self.titleLabel             = [self titleLabelForState:state_];
-    titleLabel_.string          = currentTitle_;
+    if (currentTitle_)
+    {
+        titleLabel_.string          = currentTitle_;
+    }
     titleLabel_.color           = currentTitleColor_;
     titleLabel_.position        = ccp (self.contentSize.width / 2, self.contentSize.height / 2);
     

@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C227EA6B153436A20030DD7E /* CCControlSwitchMask.fsh in Sources */ = {isa = PBXBuildFile; fileRef = C227EA6A153436A20030DD7E /* CCControlSwitchMask.fsh */; };
 		C227EA6E153436C70030DD7E /* CCControlSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = C227EA6D153436C70030DD7E /* CCControlSwitch.m */; };
 		C227EA6F153438100030DD7E /* CCControlSwitchMask.fsh in Resources */ = {isa = PBXBuildFile; fileRef = C227EA6A153436A20030DD7E /* CCControlSwitchMask.fsh */; };
 		C227EA7B153439640030DD7E /* CCControlSwitchTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C227EA75153439640030DD7E /* CCControlSwitchTest.m */; };
@@ -1553,7 +1552,6 @@
 				C2B092561533962700007ECC /* vec2.c in Sources */,
 				C2B092571533962700007ECC /* vec3.c in Sources */,
 				C2B092581533962700007ECC /* vec4.c in Sources */,
-				C227EA6B153436A20030DD7E /* CCControlSwitchMask.fsh in Sources */,
 				C227EA6E153436C70030DD7E /* CCControlSwitch.m in Sources */,
 				C227EA7B153439640030DD7E /* CCControlSwitchTest.m in Sources */,
 				E38095941559124100A1C4BB /* CCActionCatmullRom.m in Sources */,

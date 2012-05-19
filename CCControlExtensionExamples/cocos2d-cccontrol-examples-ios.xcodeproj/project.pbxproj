@@ -101,6 +101,14 @@
 		C27D3DB91528C4DD004EF65F /* LICENSE_CCControlExtention.txt in Resources */ = {isa = PBXBuildFile; fileRef = C27D3DAE1528C4DD004EF65F /* LICENSE_CCControlExtention.txt */; };
 		C2887FB5145B1BBD00199251 /* CCControlScene.m in Sources */ = {isa = PBXBuildFile; fileRef = C2887FB4145B1BBD00199251 /* CCControlScene.m */; };
 		C2887FD2145B1EB200199251 /* CCControlSceneManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C2887FD1145B1EB200199251 /* CCControlSceneManager.m */; };
+		C290A5971567D25E00BF10B3 /* CCControlStepper.m in Sources */ = {isa = PBXBuildFile; fileRef = C290A5961567D25E00BF10B3 /* CCControlStepper.m */; };
+		C290A5A31567D2DE00BF10B3 /* CCControlStepperTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C290A59B1567D2DE00BF10B3 /* CCControlStepperTest.m */; };
+		C290A5A41567D2DE00BF10B3 /* stepper-minus-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = C290A59D1567D2DE00BF10B3 /* stepper-minus-hd.png */; };
+		C290A5A51567D2DE00BF10B3 /* stepper-minus-ipadhd.png in Resources */ = {isa = PBXBuildFile; fileRef = C290A59E1567D2DE00BF10B3 /* stepper-minus-ipadhd.png */; };
+		C290A5A61567D2DE00BF10B3 /* stepper-minus.png in Resources */ = {isa = PBXBuildFile; fileRef = C290A59F1567D2DE00BF10B3 /* stepper-minus.png */; };
+		C290A5A71567D2DE00BF10B3 /* stepper-plus-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = C290A5A01567D2DE00BF10B3 /* stepper-plus-hd.png */; };
+		C290A5A81567D2DE00BF10B3 /* stepper-plus-ipadhd.png in Resources */ = {isa = PBXBuildFile; fileRef = C290A5A11567D2DE00BF10B3 /* stepper-plus-ipadhd.png */; };
+		C290A5A91567D2DE00BF10B3 /* stepper-plus.png in Resources */ = {isa = PBXBuildFile; fileRef = C290A5A21567D2DE00BF10B3 /* stepper-plus.png */; };
 		C290E51C14D448DE003DE439 /* sliderThumb.png in Resources */ = {isa = PBXBuildFile; fileRef = C290E51914D448DE003DE439 /* sliderThumb.png */; };
 		C290E51D14D448DE003DE439 /* sliderProgress.png in Resources */ = {isa = PBXBuildFile; fileRef = C290E51A14D448DE003DE439 /* sliderProgress.png */; };
 		C290E51E14D448DE003DE439 /* sliderTrack.png in Resources */ = {isa = PBXBuildFile; fileRef = C290E51B14D448DE003DE439 /* sliderTrack.png */; };
@@ -391,6 +399,16 @@
 		C2887FB4145B1BBD00199251 /* CCControlScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CCControlScene.m; path = Mains/CCControlScene.m; sourceTree = "<group>"; };
 		C2887FD0145B1EB100199251 /* CCControlSceneManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CCControlSceneManager.h; path = Mains/CCControlSceneManager.h; sourceTree = "<group>"; };
 		C2887FD1145B1EB200199251 /* CCControlSceneManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CCControlSceneManager.m; path = Mains/CCControlSceneManager.m; sourceTree = "<group>"; };
+		C290A5951567D25E00BF10B3 /* CCControlStepper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCControlStepper.h; sourceTree = "<group>"; };
+		C290A5961567D25E00BF10B3 /* CCControlStepper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCControlStepper.m; sourceTree = "<group>"; };
+		C290A59A1567D2DE00BF10B3 /* CCControlStepperTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCControlStepperTest.h; sourceTree = "<group>"; };
+		C290A59B1567D2DE00BF10B3 /* CCControlStepperTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCControlStepperTest.m; sourceTree = "<group>"; };
+		C290A59D1567D2DE00BF10B3 /* stepper-minus-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "stepper-minus-hd.png"; sourceTree = "<group>"; };
+		C290A59E1567D2DE00BF10B3 /* stepper-minus-ipadhd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "stepper-minus-ipadhd.png"; sourceTree = "<group>"; };
+		C290A59F1567D2DE00BF10B3 /* stepper-minus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "stepper-minus.png"; sourceTree = "<group>"; };
+		C290A5A01567D2DE00BF10B3 /* stepper-plus-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "stepper-plus-hd.png"; sourceTree = "<group>"; };
+		C290A5A11567D2DE00BF10B3 /* stepper-plus-ipadhd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "stepper-plus-ipadhd.png"; sourceTree = "<group>"; };
+		C290A5A21567D2DE00BF10B3 /* stepper-plus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "stepper-plus.png"; sourceTree = "<group>"; };
 		C290E51914D448DE003DE439 /* sliderThumb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sliderThumb.png; sourceTree = "<group>"; };
 		C290E51A14D448DE003DE439 /* sliderProgress.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sliderProgress.png; sourceTree = "<group>"; };
 		C290E51B14D448DE003DE439 /* sliderTrack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sliderTrack.png; sourceTree = "<group>"; };
@@ -781,6 +799,8 @@
 				C27D3DA21528C4DD004EF65F /* CCControlSaturationBrightnessPicker.m */,
 				C27D3DA31528C4DD004EF65F /* CCControlSlider.h */,
 				C27D3DA41528C4DD004EF65F /* CCControlSlider.m */,
+				C290A5951567D25E00BF10B3 /* CCControlStepper.h */,
+				C290A5961567D25E00BF10B3 /* CCControlStepper.m */,
 				C21404991534450700ACFB89 /* CCControlSwitch.h */,
 				C214049A1534450700ACFB89 /* CCControlSwitch.m */,
 			);
@@ -809,6 +829,29 @@
 				C2887FD1145B1EB200199251 /* CCControlSceneManager.m */,
 			);
 			name = Mains;
+			sourceTree = "<group>";
+		};
+		C290A5991567D2DE00BF10B3 /* CCControlStepperTest */ = {
+			isa = PBXGroup;
+			children = (
+				C290A59C1567D2DE00BF10B3 /* Resources */,
+				C290A59A1567D2DE00BF10B3 /* CCControlStepperTest.h */,
+				C290A59B1567D2DE00BF10B3 /* CCControlStepperTest.m */,
+			);
+			path = CCControlStepperTest;
+			sourceTree = "<group>";
+		};
+		C290A59C1567D2DE00BF10B3 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				C290A59D1567D2DE00BF10B3 /* stepper-minus-hd.png */,
+				C290A59E1567D2DE00BF10B3 /* stepper-minus-ipadhd.png */,
+				C290A59F1567D2DE00BF10B3 /* stepper-minus.png */,
+				C290A5A01567D2DE00BF10B3 /* stepper-plus-hd.png */,
+				C290A5A11567D2DE00BF10B3 /* stepper-plus-ipadhd.png */,
+				C290A5A21567D2DE00BF10B3 /* stepper-plus.png */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		C290E52414D466CA003DE439 /* MenuImages */ = {
@@ -1140,6 +1183,7 @@
 				C2D0FB321472E62100FE4DCE /* CCControlButtonTest */,
 				C2A0F06D14D58FE200696B8A /* CCControlColourPicker */,
 				C2D0FB371472E62100FE4DCE /* CCControlSliderTest */,
+				C290A5991567D2DE00BF10B3 /* CCControlStepperTest */,
 				C29E061D153475E600249EB1 /* CCControlSwitchTest */,
 			);
 			name = Examples;
@@ -1262,6 +1306,12 @@
 				C2DC0CB615507097001670DC /* switch-on-ipadhd .png in Resources */,
 				C2DC0CB715507097001670DC /* switch-thumb-hd.png in Resources */,
 				C2DC0CB815507097001670DC /* switch-thumb-ipadhd.png in Resources */,
+				C290A5A41567D2DE00BF10B3 /* stepper-minus-hd.png in Resources */,
+				C290A5A51567D2DE00BF10B3 /* stepper-minus-ipadhd.png in Resources */,
+				C290A5A61567D2DE00BF10B3 /* stepper-minus.png in Resources */,
+				C290A5A71567D2DE00BF10B3 /* stepper-plus-hd.png in Resources */,
+				C290A5A81567D2DE00BF10B3 /* stepper-plus-ipadhd.png in Resources */,
+				C290A5A91567D2DE00BF10B3 /* stepper-plus.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1383,6 +1433,8 @@
 				C27D3DB71528C4DD004EF65F /* Utils.m in Sources */,
 				C214049B1534450700ACFB89 /* CCControlSwitch.m in Sources */,
 				C29E0625153475E600249EB1 /* CCControlSwitchTest.m in Sources */,
+				C290A5971567D25E00BF10B3 /* CCControlStepper.m in Sources */,
+				C290A5A31567D2DE00BF10B3 /* CCControlStepperTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

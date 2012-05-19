@@ -98,6 +98,14 @@
 		C27D3DE01528C7B7004EF65F /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = C27D3DD41528C7B7004EF65F /* Utils.m */; };
 		C27D3DE11528C7B7004EF65F /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = C27D3DD61528C7B7004EF65F /* README.md */; };
 		C27D3DE21528C7B7004EF65F /* LICENSE_CCControlExtention.txt in Resources */ = {isa = PBXBuildFile; fileRef = C27D3DD71528C7B7004EF65F /* LICENSE_CCControlExtention.txt */; };
+		C290A5B01567D75100BF10B3 /* CCControlStepper.m in Sources */ = {isa = PBXBuildFile; fileRef = C290A5AF1567D75100BF10B3 /* CCControlStepper.m */; };
+		C290A5BC1567D76400BF10B3 /* CCControlStepperTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C290A5B41567D76400BF10B3 /* CCControlStepperTest.m */; };
+		C290A5BD1567D76400BF10B3 /* stepper-minus-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = C290A5B61567D76400BF10B3 /* stepper-minus-hd.png */; };
+		C290A5BE1567D76400BF10B3 /* stepper-minus-ipadhd.png in Resources */ = {isa = PBXBuildFile; fileRef = C290A5B71567D76400BF10B3 /* stepper-minus-ipadhd.png */; };
+		C290A5BF1567D76400BF10B3 /* stepper-minus.png in Resources */ = {isa = PBXBuildFile; fileRef = C290A5B81567D76400BF10B3 /* stepper-minus.png */; };
+		C290A5C01567D76400BF10B3 /* stepper-plus-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = C290A5B91567D76400BF10B3 /* stepper-plus-hd.png */; };
+		C290A5C11567D76400BF10B3 /* stepper-plus-ipadhd.png in Resources */ = {isa = PBXBuildFile; fileRef = C290A5BA1567D76400BF10B3 /* stepper-plus-ipadhd.png */; };
+		C290A5C21567D76400BF10B3 /* stepper-plus.png in Resources */ = {isa = PBXBuildFile; fileRef = C290A5BB1567D76400BF10B3 /* stepper-plus.png */; };
 		C29BE98513FAA7E4009B7468 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C29BE98413FAA7E4009B7468 /* QuartzCore.framework */; };
 		C29BE98713FAA7E4009B7468 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C29BE98613FAA7E4009B7468 /* OpenGL.framework */; };
 		C29BE98913FAA7E4009B7468 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C29BE98813FAA7E4009B7468 /* OpenAL.framework */; };
@@ -354,6 +362,16 @@
 		C27D3DD51528C7B7004EF65F /* CCControlExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCControlExtension.h; sourceTree = "<group>"; };
 		C27D3DD61528C7B7004EF65F /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		C27D3DD71528C7B7004EF65F /* LICENSE_CCControlExtention.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = LICENSE_CCControlExtention.txt; path = ../../LICENSE_CCControlExtention.txt; sourceTree = "<group>"; };
+		C290A5AE1567D75100BF10B3 /* CCControlStepper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCControlStepper.h; sourceTree = "<group>"; };
+		C290A5AF1567D75100BF10B3 /* CCControlStepper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCControlStepper.m; sourceTree = "<group>"; };
+		C290A5B31567D76400BF10B3 /* CCControlStepperTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCControlStepperTest.h; sourceTree = "<group>"; };
+		C290A5B41567D76400BF10B3 /* CCControlStepperTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCControlStepperTest.m; sourceTree = "<group>"; };
+		C290A5B61567D76400BF10B3 /* stepper-minus-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "stepper-minus-hd.png"; sourceTree = "<group>"; };
+		C290A5B71567D76400BF10B3 /* stepper-minus-ipadhd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "stepper-minus-ipadhd.png"; sourceTree = "<group>"; };
+		C290A5B81567D76400BF10B3 /* stepper-minus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "stepper-minus.png"; sourceTree = "<group>"; };
+		C290A5B91567D76400BF10B3 /* stepper-plus-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "stepper-plus-hd.png"; sourceTree = "<group>"; };
+		C290A5BA1567D76400BF10B3 /* stepper-plus-ipadhd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "stepper-plus-ipadhd.png"; sourceTree = "<group>"; };
+		C290A5BB1567D76400BF10B3 /* stepper-plus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "stepper-plus.png"; sourceTree = "<group>"; };
 		C29BE98013FAA7E4009B7468 /* cocos2d-cccontrol-examples-mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "cocos2d-cccontrol-examples-mac.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C29BE98413FAA7E4009B7468 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		C29BE98613FAA7E4009B7468 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
@@ -702,6 +720,8 @@
 				C27D3DCB1528C7B7004EF65F /* CCControlSaturationBrightnessPicker.m */,
 				C27D3DCC1528C7B7004EF65F /* CCControlSlider.h */,
 				C27D3DCD1528C7B7004EF65F /* CCControlSlider.m */,
+				C290A5AE1567D75100BF10B3 /* CCControlStepper.h */,
+				C290A5AF1567D75100BF10B3 /* CCControlStepper.m */,
 				C29E062F15347A0F00249EB1 /* CCControlSwitch.h */,
 				C29E063015347A0F00249EB1 /* CCControlSwitch.m */,
 			);
@@ -719,6 +739,29 @@
 				C27D3DD41528C7B7004EF65F /* Utils.m */,
 			);
 			path = Utils;
+			sourceTree = "<group>";
+		};
+		C290A5B21567D76400BF10B3 /* CCControlStepperTest */ = {
+			isa = PBXGroup;
+			children = (
+				C290A5B51567D76400BF10B3 /* Resources */,
+				C290A5B31567D76400BF10B3 /* CCControlStepperTest.h */,
+				C290A5B41567D76400BF10B3 /* CCControlStepperTest.m */,
+			);
+			path = CCControlStepperTest;
+			sourceTree = "<group>";
+		};
+		C290A5B51567D76400BF10B3 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				C290A5B61567D76400BF10B3 /* stepper-minus-hd.png */,
+				C290A5B71567D76400BF10B3 /* stepper-minus-ipadhd.png */,
+				C290A5B81567D76400BF10B3 /* stepper-minus.png */,
+				C290A5B91567D76400BF10B3 /* stepper-plus-hd.png */,
+				C290A5BA1567D76400BF10B3 /* stepper-plus-ipadhd.png */,
+				C290A5BB1567D76400BF10B3 /* stepper-plus.png */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		C29BE97513FAA7E3009B7468 = {
@@ -969,6 +1012,7 @@
 				C2A0F0C714D59CEE00696B8A /* CCControlButtonTest */,
 				C2A0F0AD14D59CB400696B8A /* CCControlColourPicker */,
 				C2A0F0D614D59D0400696B8A /* CCControlSliderTest */,
+				C290A5B21567D76400BF10B3 /* CCControlStepperTest */,
 				C29E063315347A2400249EB1 /* CCControlSwitchTest */,
 			);
 			path = Test;
@@ -1101,6 +1145,12 @@
 				C29E063D15347A2400249EB1 /* switch-off.png in Resources */,
 				C29E063E15347A2400249EB1 /* switch-on.png in Resources */,
 				C29E063F15347A2400249EB1 /* switch-thumb.png in Resources */,
+				C290A5BD1567D76400BF10B3 /* stepper-minus-hd.png in Resources */,
+				C290A5BE1567D76400BF10B3 /* stepper-minus-ipadhd.png in Resources */,
+				C290A5BF1567D76400BF10B3 /* stepper-minus.png in Resources */,
+				C290A5C01567D76400BF10B3 /* stepper-plus-hd.png in Resources */,
+				C290A5C11567D76400BF10B3 /* stepper-plus-ipadhd.png in Resources */,
+				C290A5C21567D76400BF10B3 /* stepper-plus.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1212,6 +1262,8 @@
 				C27D3DE01528C7B7004EF65F /* Utils.m in Sources */,
 				C29E063115347A0F00249EB1 /* CCControlSwitch.m in Sources */,
 				C29E063B15347A2400249EB1 /* CCControlSwitchTest.m in Sources */,
+				C290A5B01567D75100BF10B3 /* CCControlStepper.m in Sources */,
+				C290A5BC1567D76400BF10B3 /* CCControlStepperTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

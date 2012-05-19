@@ -32,6 +32,13 @@ The CCControlSwitch is an implementation of the UISwitch for Cocos2D for iPhone.
 The CCControlSwitch class declares a property and a method to control its on/off state. As with CCControlSlider, when the user manipulates the switch control ("flips" it) an UIControlEventValueChanged event is generated.
 You can customize the appearance of the switch by changing the on/off background sprites and label.
 
+* CCControlStepper:
+
+![CCControlStepper](http://github.com/YannickL/CCControlExtension/raw/master/screenshots/stepper.png)
+
+The CCControlStepper is an implementation of the UIStepper for Cocos2D for iPhone.
+The CCControlStepper class provides a user interface for incrementing or decrementing a value. It displays two buttons, one with a minus (ваг) symbol and one with a plus (в+г) symbol.
+
 Forthcoming
 =====================
 

@@ -11,6 +11,7 @@ Screenshots
 ![](http://github.com/YannickL/CCControlExtension/raw/master/screenshots/colorpicker.png)
 ![](http://github.com/YannickL/CCControlExtension/raw/master/screenshots/switch.png)
 ![](http://github.com/YannickL/CCControlExtension/raw/master/screenshots/button.png)
+![](http://github.com/YannickL/CCControlExtension/raw/master/screenshots/stepper.png)
 
 How to use it
 ====================

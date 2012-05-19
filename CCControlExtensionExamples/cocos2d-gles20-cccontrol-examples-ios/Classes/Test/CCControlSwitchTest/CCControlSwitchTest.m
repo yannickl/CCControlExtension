@@ -29,6 +29,9 @@
 @interface CCControlSwitchTest ()
 @property (nonatomic, strong) CCLabelTTF *displayValueLabel;
 
+/** Creates and returns a new CCControlSwitch. */
+- (CCControlSwitch *)newControlSwitch;
+
 /** Callback for the change value. */
 - (void)valueChanged:(CCControlSwitch *)sender;
 
@@ -65,20 +68,15 @@
         layer_width += background.contentSize.width;
         
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
-        self.displayValueLabel  = [CCLabelTTF labelWithString:@"#color" fontName:@"HelveticaNeue-Bold" fontSize:30];
+        self.displayValueLabel  = [CCLabelTTF labelWithString:@"on" fontName:@"HelveticaNeue-Bold" fontSize:30];
 #elif __MAC_OS_X_VERSION_MAX_ALLOWED
-        self.displayValueLabel  = [CCLabelTTF labelWithString:@"#color" fontName:@"Marker Felt" fontSize:30];
+        self.displayValueLabel  = [CCLabelTTF labelWithString:@"on" fontName:@"Marker Felt" fontSize:30];
 #endif
         displayValueLabel.position = background.position;
         [layer addChild:displayValueLabel];
         
         // Create the switch
-        CCControlSwitch *switchControl      = [CCControlSwitch switchWithMaskSprite:[CCSprite spriteWithFile:@"switch-mask.png"] 
-                                                                           onSprite:[CCSprite spriteWithFile:@"switch-on.png"]
-                                                                          offSprite:[CCSprite spriteWithFile:@"switch-off.png"]
-                                                                        thumbSprite:[CCSprite spriteWithFile:@"switch-thumb.png"]
-                                                                            onLabel:[CCLabelTTF labelWithString:@"On" fontName:@"Arial-BoldMT" fontSize:16]
-                                                                           offLabel:[CCLabelTTF labelWithString:@"Off" fontName:@"Arial-BoldMT" fontSize:16]];
+        CCControlSwitch *switchControl      = [self newControlSwitch];
         switchControl.position               = ccp (layer_width + 10 + switchControl.contentSize.width / 2, 0);
         [layer addChild:switchControl];
 
@@ -98,6 +96,16 @@
 #pragma mark CCControlSwitchTest Public Methods
 
 #pragma mark CCControlSwitchTest Private Methods
+
+- (CCControlSwitch *)newControlSwitch
+{
+    return [CCControlSwitch switchWithMaskSprite:[CCSprite spriteWithFile:@"switch-mask.png"] 
+                                        onSprite:[CCSprite spriteWithFile:@"switch-on.png"]
+                                       offSprite:[CCSprite spriteWithFile:@"switch-off.png"]
+                                     thumbSprite:[CCSprite spriteWithFile:@"switch-thumb.png"]
+                                         onLabel:[CCLabelTTF labelWithString:@"On" fontName:@"Arial-BoldMT" fontSize:16]
+                                        offLabel:[CCLabelTTF labelWithString:@"Off" fontName:@"Arial-BoldMT" fontSize:16]];
+}
 
 - (void)valueChanged:(CCControlSwitch *)sender
 {

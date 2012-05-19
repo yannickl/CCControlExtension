@@ -24,7 +24,7 @@
  *
  */
 
-#import "CCControlExtension.h"
+#import "CCControl.h"
 
 @class CCControlSwitchSprite;
 

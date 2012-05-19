@@ -24,7 +24,6 @@
  *
  */
 
-#import "cocos2d.h"
 #import "CCControl.h"
 
 /** @class CCControlSlider Slider control for Cocos2D. */

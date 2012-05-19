@@ -64,8 +64,9 @@ static CCControlSceneManager *sharedInstance = nil;
                          @"CCControlSliderTest",
                          @"CCControlColourPickerTest",
                          @"CCControlSwitchTest",
-                         @"CCControlButtonTest_HelloVariableSize",
+                         @"CCControlStepperTest",
                          @"CCControlButtonTest_Event",
+                         @"CCControlButtonTest_HelloVariableSize",
                          @"CCControlButtonTest_Styling",
                          nil];
     }

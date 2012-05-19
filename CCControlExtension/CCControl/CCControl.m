@@ -299,14 +299,16 @@
 {
     CGPoint touchLocation   = [touch locationInView:[touch view]];                      // Get the touch position
     touchLocation           = [[CCDirector sharedDirector] convertToGL:touchLocation];  // Convert the position to GL space
-    touchLocation           = [[self parent] convertToNodeSpace:touchLocation];         // Convert to the node space of this class
+    touchLocation           = [self convertToNodeSpace:touchLocation];                  // Convert to the node space of this class
     
     return touchLocation;
 }
 
 - (BOOL)isTouchInside:(UITouch *)touch
 {
-    CGPoint touchLocation   = [self touchLocation:touch];
+    CGPoint touchLocation   = [touch locationInView:[touch view]];                      // Get the touch position
+    touchLocation           = [[CCDirector sharedDirector] convertToGL:touchLocation];  // Convert the position to GL space
+    touchLocation           = [[self parent] convertToNodeSpace:touchLocation];         // Convert to the node space of this class
 
     return CGRectContainsPoint([self boundingBox], touchLocation);
 }
@@ -316,14 +318,15 @@
 - (CGPoint)eventLocation:(NSEvent *)event
 {
     CGPoint eventLocation   = [[CCDirector sharedDirector] convertEventToGL:event];
-    eventLocation           = [[self parent] convertToNodeSpace:eventLocation];
+    eventLocation           = [self convertToNodeSpace:eventLocation];
     
     return eventLocation;
 }
 
 - (BOOL)isMouseInside:(NSEvent *)event
 {
-    CGPoint eventLocation   = [self eventLocation:event];
+    CGPoint eventLocation   = [[CCDirector sharedDirector] convertEventToGL:event];
+    eventLocation           = [[self parent] convertToNodeSpace:eventLocation];
 
     return CGRectContainsPoint([self boundingBox], eventLocation);
 }

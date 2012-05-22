@@ -189,6 +189,19 @@
 
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 
+- (BOOL)isTouchInside:(UITouch *)touch
+{
+    CGPoint touchLocation   = [touch locationInView:[touch view]];
+    touchLocation           = [[CCDirector sharedDirector] convertToGL:touchLocation];
+    touchLocation           = [[self parent] convertToNodeSpace:touchLocation];
+    
+    CGRect rect             = [self boundingBox];
+    rect.size.width         += thumbSprite_.contentSize.width;
+    rect.origin.x           -= thumbSprite_.contentSize.width / 2;
+    
+    return CGRectContainsPoint(rect, touchLocation);
+}
+
 - (CGPoint)locationFromTouch:(UITouch *)touch
 {
     CGPoint touchLocation   = [touch locationInView:[touch view]];                      // Get the touch position

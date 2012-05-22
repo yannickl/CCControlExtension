@@ -225,6 +225,18 @@
 
 #ifdef __MAC_OS_X_VERSION_MAX_ALLOWED
 
+- (BOOL)isMouseInside:(NSEvent *)event
+{
+    CGPoint eventLocation   = [[CCDirector sharedDirector] convertEventToGL:event];
+    eventLocation           = [[self parent] convertToNodeSpace:eventLocation];
+    
+    CGRect rect             = [self boundingBox];
+    rect.size.width         += thumbSprite_.contentSize.width;
+    rect.origin.x           -= thumbSprite_.contentSize.width / 2;
+    
+    return CGRectContainsPoint(rect, eventLocation);
+}
+
 - (CGPoint)locationFromEvent:(NSEvent *)event
 {
 	CGPoint eventLocation   = [[CCDirector sharedDirector] convertEventToGL:event];

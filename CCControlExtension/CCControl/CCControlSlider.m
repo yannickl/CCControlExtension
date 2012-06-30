@@ -156,7 +156,8 @@
     // Stretches content proportional to newLevel
     CGRect textureRect          = progressSprite_.textureRect;
     textureRect                 = CGRectMake(textureRect.origin.x, textureRect.origin.y, pos.x, textureRect.size.height);
-    progressSprite_.textureRect = textureRect;
+    CGRect textureRectInPixels  = CC_RECT_POINTS_TO_PIXELS(textureRect);
+    [progressSprite_ setTextureRectInPixels:textureRectInPixels rotated:progressSprite_.textureRectRotated untrimmedSize:textureRectInPixels.size];
 	
     [self sendActionsForControlEvents:CCControlEventValueChanged];    
 }

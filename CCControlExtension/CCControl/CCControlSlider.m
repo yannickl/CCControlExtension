@@ -143,7 +143,7 @@
     {
 		value           = maximumValue_;
     }
-
+    
     value_              = value;
 	
     [self needsLayout];
@@ -320,8 +320,8 @@
     
     // Stretches content proportional to newLevel
     CGRect textureRect          = progressSprite_.textureRect;
-    textureRect                 = CGRectMake(textureRect.origin.x, textureRect.origin.y, pos.x, textureRect.size.height);
-    progressSprite_.textureRect = textureRect;
+    textureRect = CGRectMake(textureRect.origin.x, textureRect.origin.y, pos.x, textureRect.size.height);
+    [progressSprite_ setTextureRect:textureRect rotated:progressSprite_.textureRectRotated untrimmedSize:textureRect.size];
 }
 
 #pragma mark CCControlSlider Private Methods

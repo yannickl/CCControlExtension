@@ -61,22 +61,22 @@
 + (id)sliderWithBackgroundFile:(NSString *)backgroundname progressFile:(NSString *)progressname thumbFile:(NSString *)thumbname
 {
     // Prepare background for slider
-	CCSprite *backgroundSprite      = [CCSprite spriteWithFile:backgroundname];
+    CCSprite *backgroundSprite  = [CCSprite spriteWithFile:backgroundname];
 	
     // Prepare progress for slider
-    CCSprite *progressSprite        = [CCSprite spriteWithFile:progressname];
+    CCSprite *progressSprite    = [CCSprite spriteWithFile:progressname];
     
 	// Prepare thumb for slider
-    CCSprite *thumbSprite = [CCSprite spriteWithFile:thumbname];
+    CCSprite *thumbSprite       = [CCSprite spriteWithFile:thumbname];
     
-	return [self sliderWithBackgroundSprite:backgroundSprite 
+    return [self sliderWithBackgroundSprite:backgroundSprite 
                              progressSprite:progressSprite
                                 thumbSprite:thumbSprite];
 }
 
 + (id)sliderWithBackgroundSprite:(CCSprite *)backgroundSprite progressSprite:(CCSprite *)pogressSprite thumbSprite:(CCSprite *)thumbSprite
 {
-	return [[[self alloc] initWithBackgroundSprite:backgroundSprite
+    return [[[self alloc] initWithBackgroundSprite:backgroundSprite
                                     progressSprite:pogressSprite
                                        thumbSprite:thumbSprite] autorelease];
 }
@@ -84,8 +84,8 @@
 // Designated init
 - (id)initWithBackgroundSprite:(CCSprite *)backgroundSprite progressSprite:(CCSprite *)progressSprite thumbSprite:(CCSprite *)thumbSprite  
 {  
-	if ((self = [super init]))  
-	{
+    if ((self = [super init]))  
+    {
         NSAssert(backgroundSprite,  @"Background sprite must be not nil");
         NSAssert(progressSprite,    @"Progress sprite must be not nil");
         NSAssert(thumbSprite,       @"Thumb sprite must be not nil");
@@ -118,8 +118,8 @@
         minimumValue_                   = 0.0f;
         maximumValue_                   = 1.0f;
         self.value                      = minimumValue_;
-	}  
-	return self;  
+    }  
+    return self;  
 }
 
 #pragma mark Properties
@@ -252,7 +252,7 @@
 
 - (CGPoint)locationFromEvent:(NSEvent *)event
 {
-	CGPoint eventLocation   = [[CCDirector sharedDirector] convertEventToGL:event];
+    CGPoint eventLocation   = [[CCDirector sharedDirector] convertEventToGL:event];
     eventLocation           = [self convertToNodeSpace:eventLocation];
     
     if (eventLocation.x < 0)
@@ -320,7 +320,7 @@
     
     // Stretches content proportional to newLevel
     CGRect textureRect          = progressSprite_.textureRect;
-    textureRect = CGRectMake(textureRect.origin.x, textureRect.origin.y, pos.x, textureRect.size.height);
+    textureRect                 = CGRectMake(textureRect.origin.x, textureRect.origin.y, pos.x, textureRect.size.height);
     [progressSprite_ setTextureRect:textureRect rotated:progressSprite_.textureRectRotated untrimmedSize:textureRect.size];
 }
 

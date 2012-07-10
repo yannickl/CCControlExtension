@@ -27,6 +27,7 @@
     
 @protected
     CGRect              spriteRect;
+    BOOL                spriteFrameRotated_;
     CGRect              capInsetsInternal_;
     BOOL                positionsAreDirty_;
     

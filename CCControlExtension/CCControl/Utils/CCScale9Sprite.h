@@ -27,6 +27,7 @@
     
 @protected
     CGRect              spriteRect;
+    BOOL                spriteFrameRotated_;
     CGRect              capInsetsInternal_;
     BOOL                positionsAreDirty_;
     
@@ -40,6 +41,7 @@
     CCSprite            *bottomLeft;
     CCSprite            *bottom;
     CCSprite            *bottomRight;
+    BOOL                spritesGenerated_;
     
     // texture RGBA
     GLubyte             opacity_;

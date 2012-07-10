@@ -22,7 +22,7 @@ enum positions
 @interface CCScale9Sprite ()
 
 - (id)initWithBatchNode:(CCSpriteBatchNode *)batchnode rect:(CGRect)rect capInsets:(CGRect)capInsets;
-- (void)updateWithBatchNode:(CCSpriteBatchNode*)batchnode rect:(CGRect)rect capInsets:(CGRect)capInsets;
+- (void)updateWithBatchNode:(CCSpriteBatchNode*)batchnode rect:(CGRect)rect rotated:(BOOL)rotated capInsets:(CGRect)capInsets;
 - (void)updatePosition;
 
 @end
@@ -57,18 +57,23 @@ enum positions
 
 #pragma mark Constructor - Initializers
 
-- (id)initWithBatchNode:(CCSpriteBatchNode *)batchnode rect:(CGRect)rect capInsets:(CGRect)capInsets
+- (id)initWithBatchNode:(CCSpriteBatchNode *)batchnode rect:(CGRect)rect rotated:(BOOL)rotated capInsets:(CGRect)capInsets
 {
     if ((self = [super init]))
     {
         if (batchnode)
         {
-            [self updateWithBatchNode:batchnode rect:rect capInsets:capInsets];
+            [self updateWithBatchNode:batchnode rect:rect rotated:rotated capInsets:capInsets];
             anchorPoint_        = ccp(0.5f, 0.5f);
         }
         positionsAreDirty_ = YES;
     }
     return self;
+}
+
+- (id)initWithBatchNode:(CCSpriteBatchNode *)batchnode rect:(CGRect)rect capInsets:(CGRect)capInsets
+{
+    return [self initWithBatchNode:batchnode rect:rect rotated:NO capInsets:capInsets];
 }
 
 - (id)initWithFile:(NSString *)file rect:(CGRect)rect capInsets:(CGRect)capInsets
@@ -127,7 +132,7 @@ enum positions
     
     CCSpriteBatchNode *batchnode = [CCSpriteBatchNode batchNodeWithTexture:spriteFrame.texture capacity:9];
     
-    return [self initWithBatchNode:batchnode rect:spriteFrame.rect capInsets:capInsets];
+    return [self initWithBatchNode:batchnode rect:spriteFrame.rect rotated:spriteFrame.rotated capInsets:capInsets];
 }
 
 + (id)spriteWithSpriteFrame:(CCSpriteFrame *)spriteFrame capInsets:(CGRect)capInsets
@@ -178,16 +183,16 @@ enum positions
     return [self initWithBatchNode:NULL rect:CGRectZero capInsets:CGRectZero];
 }
 
-- (void) updateWithBatchNode:(CCSpriteBatchNode*)batchnode rect:(CGRect)rect capInsets:(CGRect)capInsets
+- (void) updateWithBatchNode:(CCSpriteBatchNode*)batchnode rect:(CGRect)rect rotated:(BOOL)rotated capInsets:(CGRect)capInsets
 {
     // Release old sprites
     [self removeAllChildrenWithCleanup:YES];
     
-    [topLeft        release];
+    [centre         release];
     [top            release];
+    [topLeft        release];
     [topRight       release];
     [left           release];
-    [centre         release];
     [right          release];
     [bottomLeft     release];
     [bottom         release];
@@ -202,6 +207,7 @@ enum positions
     [scale9Image removeAllChildrenWithCleanup:YES];
     
     capInsets_          = capInsets;
+    spriteFrameRotated_ = rotated;
     
     // If there is no given rect
     if (CGRectEqualToRect(rect, CGRectZero))
@@ -218,109 +224,223 @@ enum positions
     preferedSize_       = originalSize_;
     capInsetsInternal_  = capInsets;
     
-    // If there is no specified center region
-    if (CGRectEqualToRect(capInsetsInternal_, CGRectZero))
-    {
-        // Apply the 3x3 grid format
-        capInsetsInternal_  = CGRectMake(rect.origin.x + originalSize_.width / 3, 
-                                         rect.origin.y + originalSize_.height / 3, 
-                                         originalSize_.width / 3,
-                                         originalSize_.height / 3);
-    }
-    
     // Get the image edges
     float l = rect.origin.x;
     float t = rect.origin.y;
     float h = rect.size.height;
     float w = rect.size.width;
     
+    // If there is no specified center region
+    if (CGRectEqualToRect(capInsetsInternal_, CGRectZero))
+    {
+        // Apply the 3x3 grid format
+        if (rotated)
+        {
+            capInsetsInternal_ = CGRectMake(l+h/3, t+w/3, w/3, h/3);
+        }
+        else
+        {
+            capInsetsInternal_  = CGRectMake(l+w/3, t+h/3, w/3, h/3);
+        }
+    }
+    
     //
     // Set up the image
     //
     
-    // Centre
-    centre      = [[CCSprite alloc] initWithTexture:scale9Image.texture rect:capInsetsInternal_];
-    [scale9Image addChild:centre z:0 tag:pCentre];
     
-    // Top
-    top         = [[CCSprite alloc]
-                   initWithTexture:scale9Image.texture
-                   rect:CGRectMake(capInsetsInternal_.origin.x,
-                                   t,
-                                   capInsetsInternal_.size.width,
-                                   capInsetsInternal_.origin.y - t)
-                   ];
-    [scale9Image addChild:top z:1 tag:pTop];
-    
-    // Bottom
-    bottom      = [[CCSprite alloc]
-                   initWithTexture:scale9Image.texture
-                   rect:CGRectMake(capInsetsInternal_.origin.x,
-                                   capInsetsInternal_.origin.y + capInsetsInternal_.size.height,
-                                   capInsetsInternal_.size.width,
-                                   h - (capInsetsInternal_.origin.y - t + capInsetsInternal_.size.height))
-                   ];
-    [scale9Image addChild:bottom z:1 tag:pBottom];
-    
-    // Left
-    left        = [[CCSprite alloc]
-                   initWithTexture:scale9Image.texture
-                   rect:CGRectMake(l,
-                                   capInsetsInternal_.origin.y,
-                                   capInsetsInternal_.origin.x - l,
-                                   capInsetsInternal_.size.height)
-                   ];
-    [scale9Image addChild:left z:1 tag:pLeft];
-    
-    // Right
-    right       = [[CCSprite alloc]
-                   initWithTexture:scale9Image.texture
-                   rect:CGRectMake(capInsetsInternal_.origin.x + capInsetsInternal_.size.width,
-                                   capInsetsInternal_.origin.y,
-                                   w - (capInsetsInternal_.origin.x - l + capInsetsInternal_.size.width),
-                                   capInsetsInternal_.size.height)
-                   ];
-    [scale9Image addChild:right z:1 tag:pRight];
-    
-    // Top left
-    topLeft     = [[CCSprite alloc]
-                   initWithTexture:scale9Image.texture
-                   rect:CGRectMake(l,
-                                   t,
-                                   capInsetsInternal_.origin.x - l,
-                                   capInsetsInternal_.origin.y - t)
-                   ];
-    [scale9Image addChild:topLeft z:2 tag:pTopLeft];
-    
-    // Top right
-    topRight    = [[CCSprite alloc]
-                   initWithTexture:scale9Image.texture
-                   rect:CGRectMake(capInsetsInternal_.origin.x + capInsetsInternal_.size.width,
-                                   t,
-                                   w - (capInsetsInternal_.origin.x - l + capInsetsInternal_.size.width),
-                                   capInsetsInternal_.origin.y - t)
-                   ];
-    [scale9Image addChild:topRight z:2 tag:pTopRight];
-    
-    // Bottom left
-    bottomLeft  = [[CCSprite alloc]
-                   initWithTexture:scale9Image.texture
-                   rect:CGRectMake(l,
-                                   capInsetsInternal_.origin.y + capInsetsInternal_.size.height,
-                                   capInsetsInternal_.origin.x - l,
-                                   h - (capInsetsInternal_.origin.y - t + capInsetsInternal_.size.height))
-                   ];
-    [scale9Image addChild:bottomLeft z:2 tag:pBottomLeft];
-    
-    // Bottom right
-    bottomRight     = [[CCSprite alloc]
+    if (rotated)
+    {
+        // Sprite frame is rotated
+        
+        // Centre
+        centre      = [[CCSprite alloc] initWithTexture:scale9Image.texture rect:capInsetsInternal_ rotated:YES];
+        [scale9Image addChild:centre z:0 tag:pCentre];
+        
+        // Bottom
+        bottom         = [[CCSprite alloc]
+                       initWithTexture:scale9Image.texture
+                       rect:CGRectMake(l,
+                                       capInsetsInternal_.origin.y,
+                                       capInsetsInternal_.size.width,
+                                       capInsetsInternal_.origin.x - l)
+                       rotated:rotated
+                       ];
+        [scale9Image addChild:bottom z:1 tag:pBottom];
+        
+        // Top
+        top      = [[CCSprite alloc]
+                       initWithTexture:scale9Image.texture
+                       rect:CGRectMake(capInsetsInternal_.origin.x + capInsetsInternal_.size.height,
+                                       capInsetsInternal_.origin.y,
+                                       capInsetsInternal_.size.width,
+                                       h - capInsetsInternal_.size.height - (capInsetsInternal_.origin.x - l))
+                       rotated:rotated
+                       ];
+        [scale9Image addChild:top z:1 tag:pTop];
+        
+        // Right
+        right        = [[CCSprite alloc]
+                       initWithTexture:scale9Image.texture
+                       rect:CGRectMake(capInsetsInternal_.origin.x,
+                                       capInsetsInternal_.origin.y+capInsetsInternal_.size.width,
+                                       w - (capInsetsInternal_.origin.y-t)-capInsetsInternal_.size.width,
+                                       capInsetsInternal_.size.height)
+                       rotated:rotated
+                       ];
+        [scale9Image addChild:right z:1 tag:pRight];
+        
+        // Left
+        left       = [[CCSprite alloc]
+                       initWithTexture:scale9Image.texture
+                       rect:CGRectMake(capInsetsInternal_.origin.x,
+                                       t,
+                                       capInsetsInternal_.origin.y - t,
+                                       capInsetsInternal_.size.height)
+                       rotated:rotated
+                       ];
+        [scale9Image addChild:left z:1 tag:pLeft];
+        
+        // Top right
+        topRight     = [[CCSprite alloc]
+                       initWithTexture:scale9Image.texture
+                       rect:CGRectMake(capInsetsInternal_.origin.x + capInsetsInternal_.size.height,
+                                       capInsetsInternal_.origin.y + capInsetsInternal_.size.width,
+                                       w - (capInsetsInternal_.origin.y-t)-capInsetsInternal_.size.width,
+                                       h - capInsetsInternal_.size.height - (capInsetsInternal_.origin.x - l))
+                       rotated:rotated
+                       ];
+        [scale9Image addChild:topRight z:2 tag:pTopRight];
+        
+        // Top left
+        topLeft    = [[CCSprite alloc]
+                       initWithTexture:scale9Image.texture
+                       rect:CGRectMake(capInsetsInternal_.origin.x + capInsetsInternal_.size.height,
+                                       t,
+                                       capInsetsInternal_.origin.y - t,
+                                       h - capInsetsInternal_.size.height - (capInsetsInternal_.origin.x - l))
+                       rotated:rotated
+                       ];
+        [scale9Image addChild:topLeft z:2 tag:pTopLeft];
+        
+        // Bottom right
+        bottomRight  = [[CCSprite alloc]
+                       initWithTexture:scale9Image.texture
+                       rect:CGRectMake(l,
+                                       capInsetsInternal_.origin.y + capInsetsInternal_.size.width,
+                                       w - (capInsetsInternal_.origin.y-t)-capInsetsInternal_.size.width,
+                                       capInsetsInternal_.origin.x - l)
+                       rotated:rotated
+                       ];
+        [scale9Image addChild:bottomRight z:2 tag:pBottomRight];
+        
+        // Bottom left
+        bottomLeft     = [[CCSprite alloc]
+                           initWithTexture:scale9Image.texture
+                           rect:CGRectMake(l,
+                                           t,
+                                           capInsetsInternal_.origin.y - t,
+                                           capInsetsInternal_.origin.x - l)
+                           rotated:rotated
+                           ];
+        [scale9Image addChild:bottomLeft z:2 tag:pBottomLeft];
+    }
+    else
+    {
+        // Sprite frame is not rotated
+        
+        // Centre
+        centre      = [[CCSprite alloc] initWithTexture:scale9Image.texture rect:capInsetsInternal_ rotated:rotated];
+        [scale9Image addChild:centre z:0 tag:pCentre];
+        
+        // Top
+        top         = [[CCSprite alloc]
+                       initWithTexture:scale9Image.texture
+                       rect:CGRectMake(capInsetsInternal_.origin.x,
+                                       t,
+                                       capInsetsInternal_.size.width,
+                                       capInsetsInternal_.origin.y - t)
+                       rotated:rotated
+                       ];
+        [scale9Image addChild:top z:1 tag:pTop];
+        
+        // Bottom
+        bottom      = [[CCSprite alloc]
+                       initWithTexture:scale9Image.texture
+                       rect:CGRectMake(capInsetsInternal_.origin.x,
+                                       capInsetsInternal_.origin.y + capInsetsInternal_.size.height,
+                                       capInsetsInternal_.size.width,
+                                       h - (capInsetsInternal_.origin.y - t + capInsetsInternal_.size.height))
+                       rotated:rotated
+                       ];
+        [scale9Image addChild:bottom z:1 tag:pBottom];
+        
+        // Left
+        left        = [[CCSprite alloc]
+                       initWithTexture:scale9Image.texture
+                       rect:CGRectMake(l,
+                                       capInsetsInternal_.origin.y,
+                                       capInsetsInternal_.origin.x - l,
+                                       capInsetsInternal_.size.height)
+                       rotated:rotated
+                       ];
+        [scale9Image addChild:left z:1 tag:pLeft];
+        
+        // Right
+        right       = [[CCSprite alloc]
                        initWithTexture:scale9Image.texture
                        rect:CGRectMake(capInsetsInternal_.origin.x + capInsetsInternal_.size.width,
-                                       capInsetsInternal_.origin.y + capInsetsInternal_.size.height,
+                                       capInsetsInternal_.origin.y,
                                        w - (capInsetsInternal_.origin.x - l + capInsetsInternal_.size.width),
-                                       h - (capInsetsInternal_.origin.y - t + capInsetsInternal_.size.height))
+                                       capInsetsInternal_.size.height)
+                       rotated:rotated
                        ];
-    [scale9Image addChild:bottomRight z:2 tag:pBottomRight];
+        [scale9Image addChild:right z:1 tag:pRight];
+        
+        // Top left
+        topLeft     = [[CCSprite alloc]
+                       initWithTexture:scale9Image.texture
+                       rect:CGRectMake(l,
+                                       t,
+                                       capInsetsInternal_.origin.x - l,
+                                       capInsetsInternal_.origin.y - t)
+                       rotated:rotated
+                       ];
+        [scale9Image addChild:topLeft z:2 tag:pTopLeft];
+        
+        // Top right
+        topRight    = [[CCSprite alloc]
+                       initWithTexture:scale9Image.texture
+                       rect:CGRectMake(capInsetsInternal_.origin.x + capInsetsInternal_.size.width,
+                                       t,
+                                       w - (capInsetsInternal_.origin.x - l + capInsetsInternal_.size.width),
+                                       capInsetsInternal_.origin.y - t)
+                       rotated:rotated
+                       ];
+        [scale9Image addChild:topRight z:2 tag:pTopRight];
+        
+        // Bottom left
+        bottomLeft  = [[CCSprite alloc]
+                       initWithTexture:scale9Image.texture
+                       rect:CGRectMake(l,
+                                       capInsetsInternal_.origin.y + capInsetsInternal_.size.height,
+                                       capInsetsInternal_.origin.x - l,
+                                       h - (capInsetsInternal_.origin.y - t + capInsetsInternal_.size.height))
+                       rotated:rotated
+                       ];
+        [scale9Image addChild:bottomLeft z:2 tag:pBottomLeft];
+        
+        // Bottom right
+        bottomRight     = [[CCSprite alloc]
+                           initWithTexture:scale9Image.texture
+                           rect:CGRectMake(capInsetsInternal_.origin.x + capInsetsInternal_.size.width,
+                                           capInsetsInternal_.origin.y + capInsetsInternal_.size.height,
+                                           w - (capInsetsInternal_.origin.x - l + capInsetsInternal_.size.width),
+                                           h - (capInsetsInternal_.origin.y - t + capInsetsInternal_.size.height))
+                           rotated:rotated
+                           ];
+        [scale9Image addChild:bottomRight z:2 tag:pBottomRight];
+    }
     
     [self setContentSize:rect.size];
     [self addChild:scale9Image];
@@ -426,7 +546,7 @@ enum positions
 - (void)setSpriteFrame:(CCSpriteFrame *)spriteFrame
 {
     CCSpriteBatchNode *batchnode = [CCSpriteBatchNode batchNodeWithTexture:spriteFrame.texture capacity:9];
-    [self updateWithBatchNode:batchnode rect:spriteFrame.rect capInsets:CGRectZero];
+    [self updateWithBatchNode:batchnode rect:spriteFrame.rect rotated:spriteFrame.rotated capInsets:CGRectZero];
     
     // Reset insets
     insetLeft_      = 0;
@@ -438,7 +558,7 @@ enum positions
 - (void)setCapInsets:(CGRect)capInsets
 {
     CGSize contentSize = contentSize_;
-    [self updateWithBatchNode:scale9Image rect:spriteRect capInsets:capInsets];
+    [self updateWithBatchNode:scale9Image rect:spriteRect rotated:spriteFrameRotated_ capInsets:capInsets];
     [self setContentSize:contentSize];
 }
 
@@ -451,10 +571,20 @@ enum positions
     }
     else
     {
-        insets = CGRectMake(insetLeft_,
-                            insetTop_,
-                            spriteRect.size.width-insetLeft_-insetRight_,
-                            spriteRect.size.height-insetTop_-insetBottom_);
+        if (spriteFrameRotated_)
+        {
+            insets = CGRectMake(spriteRect.origin.x + insetBottom_,
+                                spriteRect.origin.y + insetLeft_,
+                                spriteRect.size.width-insetRight_-insetLeft_,
+                                spriteRect.size.height-insetTop_-insetBottom_);
+        }
+        else
+        {
+            insets = CGRectMake(spriteRect.origin.x + insetLeft_,
+                                spriteRect.origin.y + insetTop_,
+                                spriteRect.size.width-insetLeft_-insetRight_,
+                                spriteRect.size.height-insetTop_-insetBottom_);
+        }
     }
     [self setCapInsets:insets];
 }

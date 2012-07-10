@@ -185,6 +185,9 @@ enum positions
 
 - (void) updateWithBatchNode:(CCSpriteBatchNode*)batchnode rect:(CGRect)rect rotated:(BOOL)rotated capInsets:(CGRect)capInsets
 {
+    GLubyte opacity = opacity_;
+    ccColor3B color = color_;
+    
     // Release old sprites
     [self removeAllChildrenWithCleanup:YES];
     
@@ -444,6 +447,14 @@ enum positions
     
     [self setContentSize:rect.size];
     [self addChild:scale9Image];
+    
+    if (spritesGenerated_)
+    {
+        // Restore color and opacity
+        self.opacity = opacity;
+        self.color = color;
+    }
+    spritesGenerated_ = YES;
 }
 
 #pragma mark Properties

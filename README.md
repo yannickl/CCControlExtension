@@ -29,7 +29,7 @@ Contributors
 =====================
  * Yannick Loriot (http://yannickloriot.com/) - Lead developer
  * Viktor Lidholt (http://cocosbuilder.com/) - Integration with CocosBuilder
- * Lionel Paolini (http://lionel-pao.blogspot.fr/) - Logos creation
+ * Lionel Paolini (http://lionel-pao.blogspot.fr/) - Logos/Splashscreen creation
 
 License
 ====================

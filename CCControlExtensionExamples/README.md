@@ -48,4 +48,4 @@ Forthcoming
 License
 ====================
 As well as Cocos2D 2.0 for iPhone, these examples are licensed under the MIT License. 
-You can download cocos2d-iphone here: https://github.com/cocos2d/cocos2d-iphone/tree/gles20
+You can download cocos2d-iphone here: https://github.com/cocos2d/cocos2d-iphone/tree/master-v2

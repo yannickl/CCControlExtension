@@ -25,10 +25,19 @@ There are various [examples][] to understand how to use controls and the possibi
 
 For more informations you can check [my blog][].
   
+Contributors
+=====================
+ * Yannick Loriot (http://yannickloriot.com/)
+   - Lead developer
+ * Viktor Lidholt (http://cocosbuilder.com/)
+   - Integration of the CCControl/CCControlButton/CCScale9Sprite in CocosBuilder
+ * Lionel Paolini (http://lionel-pao.blogspot.fr/)
+   - Logos creation
+
 License
 ====================
 As well as Cocos2D 2.0 for iPhone, CCControlExtension is licensed under the MIT License. 
-You can download cocos2d-iphone here: https://github.com/cocos2d/cocos2d-iphone/tree/gles20
+You can download cocos2d-iphone here: https://github.com/cocos2d/cocos2d-iphone/tree/master-v2
 
 Build & Runtime Requirements
 ====================

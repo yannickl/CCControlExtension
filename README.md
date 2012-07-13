@@ -27,12 +27,9 @@ For more informations you can check [my blog][].
   
 Contributors
 =====================
- * Yannick Loriot (http://yannickloriot.com/)
-   - Lead developer
- * Viktor Lidholt (http://cocosbuilder.com/)
-   - Integration of the CCControl/CCControlButton/CCScale9Sprite in CocosBuilder
- * Lionel Paolini (http://lionel-pao.blogspot.fr/)
-   - Logos creation
+ * Yannick Loriot (http://yannickloriot.com/) - Lead developer
+ * Viktor Lidholt (http://cocosbuilder.com/) - Integration with CocosBuilder
+ * Lionel Paolini (http://lionel-pao.blogspot.fr/) - Logos creation
 
 License
 ====================

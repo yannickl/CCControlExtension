@@ -12,6 +12,7 @@ Screenshots
 ![](http://github.com/YannickL/CCControlExtension/raw/master/screenshots/switch.png)
 ![](http://github.com/YannickL/CCControlExtension/raw/master/screenshots/button.png)
 ![](http://github.com/YannickL/CCControlExtension/raw/master/screenshots/stepper.png)
+![](http://github.com/YannickL/CCControlExtension/raw/master/screenshots/potentiometer.png)
 
 How to use it
 ====================

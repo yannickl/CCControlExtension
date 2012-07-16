@@ -36,7 +36,7 @@ You can customize the appearance of the switch by changing the on/off background
 ![CCControlStepper](http://github.com/YannickL/CCControlExtension/raw/master/screenshots/stepper.png)
 
 The CCControlStepper is an implementation of the UIStepper for Cocos2D for iPhone.
-The CCControlStepper class provides a user interface for incrementing or decrementing a value. It displays two buttons, one with a minus (���) symbol and one with a plus (�+�) symbol.
+The CCControlStepper class provides a user interface for incrementing or decrementing a value. It displays two buttons, one with a minus ("-") symbol and one with a plus ("+") symbol.
 
  * CCControlPotentiometer:
 

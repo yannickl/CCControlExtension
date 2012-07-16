@@ -25,11 +25,6 @@ The `CCControlExtension.h` includes all the already made controls such as button
 There are various [examples][] to understand how to use controls and the possibilities they offer.
 
 For more informations you can check [my blog][].
-  
-Contributors
-=====================
- * Yannick Loriot (http://yannickloriot.com/) - Lead developer
- * Lionel Paolini (http://lionel-pao.blogspot.fr/) - Logos/Splashscreen designer
 
 License
 ====================

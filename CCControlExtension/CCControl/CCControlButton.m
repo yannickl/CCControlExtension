@@ -411,6 +411,8 @@ enum
 
 - (void)setBackgroundSprite:(CCScale9Sprite *)sprite forState:(CCControlState)state
 {
+    CGSize oldPreferedSize = preferedSize_;
+    
     NSNumber *stateNumber                       = [NSNumber numberWithLong:state];
     
     CCScale9Sprite *previousBackgroundSprite    = [backgroundSpriteDispatchTable_ objectForKey:stateNumber];
@@ -426,6 +428,12 @@ enum
     
     if (preferedSize_.width != 0 || preferedSize_.height != 0)
     {
+        if (CGSizeEqualToSize(oldPreferedSize, preferedSize_))
+        {
+            // Force update of preferred size
+            [sprite setPreferedSize:CGSizeMake(oldPreferedSize.width+1, oldPreferedSize.height+1)];
+        }
+        
         [sprite setPreferedSize:preferedSize_];
     }
     

@@ -222,6 +222,12 @@
 {
     enabled_        = enabled;
     
+    if(enabled_) {
+        state_ = CCControlStateNormal;
+    } else {
+        state_ = CCControlStateDisabled;
+    }
+    
     [self needsLayout];
 }
 

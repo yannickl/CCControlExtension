@@ -1,9 +1,9 @@
 //
 //  AppDelegate.m
-//  cocos2d-2
+//  CControlExtensionExample
 //
-//  Created by Kim Upjohn on 04/03/12.
-//  Copyright __MyCompanyName__ 2012. All rights reserved.
+//  Created by Yannick Loriot on 04/03/12.
+//  Copyright Yannick Loriot 2012. All rights reserved.
 //
 
 #import "cocos2d.h"

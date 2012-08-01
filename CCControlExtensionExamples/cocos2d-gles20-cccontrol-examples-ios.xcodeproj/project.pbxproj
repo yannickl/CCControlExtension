@@ -1770,6 +1770,7 @@
 				INFOPLIST_FILE = "cocos2d-gles20-cccontrol-examples-ios/Resources/Info.plist";
 				OTHER_LDFLAGS = "-lz";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "\"cocos2d-gles20-cccontrol-examples-ios/libs/kazmath/include\"";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1785,6 +1786,7 @@
 				INFOPLIST_FILE = "cocos2d-gles20-cccontrol-examples-ios/Resources/Info.plist";
 				OTHER_LDFLAGS = "-lz";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "\"cocos2d-gles20-cccontrol-examples-ios/libs/kazmath/include\"";
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;
 			};

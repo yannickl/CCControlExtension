@@ -110,6 +110,8 @@ typedef void (^CCControlBlock) (id sender, CCControlEvent event);
 @property(nonatomic, getter = isSelected) BOOL selected;
 /** A Boolean value that determines whether the control is highlighted. */
 @property(nonatomic, getter = isHighlighted) BOOL highlighted;
+/** True if all of the controls parents are visible */
+@property(nonatomic,readonly) BOOL hasVisibleParents;
 
 #pragma mark CCControl - Preparing and Sending Action Messages
 

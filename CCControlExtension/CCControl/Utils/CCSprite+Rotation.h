@@ -1,5 +1,5 @@
 /*
- * CCControlExtension.h
+ * CCSprite+Rotation.h
  *
  * Copyright 2012 Yannick Loriot.
  * http://yannickloriot.com
@@ -23,19 +23,13 @@
  * THE SOFTWARE.
  *
  */
+#import "CCSprite.h"
 
-#ifndef CCControlExtension_h
-#define CCControlExtension_h
+@interface CCSprite (Rotation)
 
-#import "CCScale9Sprite.h"
-#import "CCSprite+Rotation.h"
+/** Initializes an sprite with a texture and a rect in points, optionally rotated.
+ The offset will be (0,0).
+ */
+- (id)initWithTexture:(CCTexture2D *)texture rect:(CGRect)rect rotated:(BOOL)rotated;
 
-#import "CCControl.h"
-#import "CCControlColourPicker.h"
-#import "CCControlButton.h"
-#import "CCControlPotentiometer.h"
-#import "CCControlSlider.h"
-#import "CCControlStepper.h"
-#import "CCControlSwitch.h"
-
-#endif
+@end

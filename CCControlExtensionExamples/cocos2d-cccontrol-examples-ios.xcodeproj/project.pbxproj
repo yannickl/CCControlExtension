@@ -213,6 +213,7 @@
 		F4539B2915B3320700ACFE96 /* potentiometerTrack-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F4539B1D15B3320700ACFE96 /* potentiometerTrack-ipad.png */; };
 		F4539B2A15B3320700ACFE96 /* potentiometerTrack-ipadhd.png in Resources */ = {isa = PBXBuildFile; fileRef = F4539B1E15B3320700ACFE96 /* potentiometerTrack-ipadhd.png */; };
 		F4539B2B15B3320700ACFE96 /* potentiometerTrack.png in Resources */ = {isa = PBXBuildFile; fileRef = F4539B1F15B3320700ACFE96 /* potentiometerTrack.png */; };
+		F4FBB0CE15E2A0A200004945 /* CCSprite+Rotation.m in Sources */ = {isa = PBXBuildFile; fileRef = F4FBB0CD15E2A0A200004945 /* CCSprite+Rotation.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -560,6 +561,8 @@
 		F4539B1D15B3320700ACFE96 /* potentiometerTrack-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "potentiometerTrack-ipad.png"; sourceTree = "<group>"; };
 		F4539B1E15B3320700ACFE96 /* potentiometerTrack-ipadhd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "potentiometerTrack-ipadhd.png"; sourceTree = "<group>"; };
 		F4539B1F15B3320700ACFE96 /* potentiometerTrack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = potentiometerTrack.png; sourceTree = "<group>"; };
+		F4FBB0CC15E2A0A200004945 /* CCSprite+Rotation.h */ = {isa = PBXFileReference; fileEncoding = 4; path = "CCSprite+Rotation.h"; sourceTree = "<group>"; };
+		F4FBB0CD15E2A0A200004945 /* CCSprite+Rotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CCSprite+Rotation.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -844,6 +847,8 @@
 				C27D3DA71528C4DD004EF65F /* CCColourUtils.m */,
 				C27D3DA81528C4DD004EF65F /* CCScale9Sprite.h */,
 				C27D3DA91528C4DD004EF65F /* CCScale9Sprite.m */,
+				F4FBB0CC15E2A0A200004945 /* CCSprite+Rotation.h */,
+				F4FBB0CD15E2A0A200004945 /* CCSprite+Rotation.m */,
 				C27D3DAA1528C4DD004EF65F /* Utils.h */,
 				C27D3DAB1528C4DD004EF65F /* Utils.m */,
 			);
@@ -1539,6 +1544,7 @@
 				C290A5A31567D2DE00BF10B3 /* CCControlStepperTest.m in Sources */,
 				F4539AFF15B211AB00ACFE96 /* CCControlPotentiometerTest.m in Sources */,
 				F4539B0715B2132200ACFE96 /* CCControlPotentiometer.m in Sources */,
+				F4FBB0CE15E2A0A200004945 /* CCSprite+Rotation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

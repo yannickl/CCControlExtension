@@ -1,5 +1,5 @@
 /*
- * CCControlExtension.h
+ * CCSprite+Rotation.m
  *
  * Copyright 2012 Yannick Loriot.
  * http://yannickloriot.com
@@ -24,18 +24,21 @@
  *
  */
 
-#ifndef CCControlExtension_h
-#define CCControlExtension_h
-
-#import "CCScale9Sprite.h"
 #import "CCSprite+Rotation.h"
 
-#import "CCControl.h"
-#import "CCControlColourPicker.h"
-#import "CCControlButton.h"
-#import "CCControlPotentiometer.h"
-#import "CCControlSlider.h"
-#import "CCControlStepper.h"
-#import "CCControlSwitch.h"
+@implementation CCSprite (Rotation)
 
-#endif
+- (id)initWithTexture:(CCTexture2D *)texture rect:(CGRect)rect rotated:(BOOL)rotated
+{
+    NSAssert(texture!=nil, @"Invalid texture for sprite");
+    
+	// IMPORTANT: [self init] and not [super init];
+	if( (self = [self init]) )
+	{
+		[self setTexture:texture];
+		[self setTextureRectInPixels:CC_RECT_POINTS_TO_PIXELS(rect) rotated:rotated untrimmedSize:rect.size];
+	}
+	return self;
+}
+
+@end

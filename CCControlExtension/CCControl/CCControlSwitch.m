@@ -292,8 +292,8 @@
         
         // Set up the mask with the Mask shader
         self.maskTexture        = [maskSprite texture];
-        self.shaderProgram      = [[CCGLProgram alloc] initWithVertexShaderFilename:@"PositionTextureColor.vsh"
-                                                             fragmentShaderFilename:@"CCControlSwitchMask.fsh"];
+        self.shaderProgram      = [[[CCGLProgram alloc] initWithVertexShaderFilename:@"PositionTextureColor.vsh"
+                                                             fragmentShaderFilename:@"CCControlSwitchMask.fsh"] autorelease];
         CHECK_GL_ERROR_DEBUG();
         
         [shaderProgram_ addAttribute:kCCAttributeNamePosition   index:kCCVertexAttrib_Position];

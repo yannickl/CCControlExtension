@@ -30,7 +30,7 @@
 @property (nonatomic, strong) CCLabelTTF *displayValueLabel;
 
 /** Creates and returns a new CCControlSwitch. */
-- (CCControlSwitch *)newControlSwitch;
+- (CCControlSwitch *)makeControlSwitch;
 
 /** Callback for the change value. */
 - (void)valueChanged:(CCControlSwitch *)sender;
@@ -76,7 +76,7 @@
         [layer addChild:displayValueLabel];
         
         // Create the switch
-        CCControlSwitch *switchControl      = [self newControlSwitch];
+        CCControlSwitch *switchControl      = [self makeControlSwitch];
         switchControl.position               = ccp (layer_width + 10 + switchControl.contentSize.width / 2, 0);
         [layer addChild:switchControl];
 
@@ -97,7 +97,7 @@
 
 #pragma mark CCControlSwitchTest Private Methods
 
-- (CCControlSwitch *)newControlSwitch
+- (CCControlSwitch *)makeControlSwitch
 {
     return [CCControlSwitch switchWithMaskSprite:[CCSprite spriteWithFile:@"switch-mask.png"] 
                                         onSprite:[CCSprite spriteWithFile:@"switch-on.png"]

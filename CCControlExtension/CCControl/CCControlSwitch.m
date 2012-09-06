@@ -110,7 +110,7 @@
         NSAssert(thumbSprite,   @"thumbSprite must not be nil.");
         
         on_                         = YES;
-
+        
         switchSprite_               = [[CCControlSwitchSprite alloc] initWithMaskSprite:maskSprite 
                                                                                onSprite:onSprite
                                                                               offSprite:offSprite 
@@ -142,12 +142,20 @@
 - (void)setOn:(BOOL)isOn animated:(BOOL)animated
 {
     on_     = isOn;
-
-    [switchSprite_ runAction:
-     [CCActionTween actionWithDuration:0.2f 
-                                   key:@"sliderXPosition" 
-                                  from:switchSprite_.sliderXPosition
-                                    to:(on_) ? switchSprite_.onPosition : switchSprite_.offPosition]];
+    
+    double internalOffset   = (isOn) ? switchSprite_.onPosition : switchSprite_.offPosition;
+    
+    if (animated)
+    {
+        [switchSprite_ runAction:
+         [CCActionTween actionWithDuration:0.2f 
+                                       key:@"sliderXPosition" 
+                                      from:switchSprite_.sliderXPosition
+                                        to:internalOffset]];
+    } else
+    {
+        switchSprite_.sliderXPosition   = internalOffset;
+    }
     
     [self sendActionsForControlEvents:CCControlEventValueChanged];
 }
@@ -155,7 +163,7 @@
 - (void)setEnabled:(BOOL)enabled
 {
     enabled_                            = enabled;
-
+    
     switchSprite_.opacity               = (enabled) ? 255.0f : 128.0f;
 }
 
@@ -377,7 +385,7 @@
         offLabel_.position  = ccp(offSprite_.position.x + thumbSprite_.contentSize.width / 6,
                                   offSprite_.contentSize.height / 2);
     }
-
+    
     CCRenderTexture *inRT   = [CCRenderTexture renderTextureWithWidth:maskSprite_.contentSize.width 
                                                                height:maskSprite_.contentSize.height];
     
@@ -398,7 +406,7 @@
     CCSprite *inSprite      = inRT.sprite;
     inSprite.position       = maskSprite_.position;
     inSprite.blendFunc      = (ccBlendFunc){GL_DST_ALPHA, GL_ZERO};
-
+    
     CCRenderTexture *rt     = [CCRenderTexture renderTextureWithWidth:maskSprite_.contentSize.width 
                                                                height:maskSprite_.contentSize.height];
     
@@ -407,7 +415,7 @@
     [inSprite           visit];
     [thumbSprite_       visit];
     [rt                 end];
-
+    
     self.texture            = rt.sprite.texture;
     self.flipY              = YES;
 }

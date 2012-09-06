@@ -80,6 +80,7 @@
                                                                             onLabel:[CCLabelTTF labelWithString:@"On" fontName:@"Arial-BoldMT" fontSize:16]
                                                                            offLabel:[CCLabelTTF labelWithString:@"Off" fontName:@"Arial-BoldMT" fontSize:16]];
         switchControl.position               = ccp (layer_width + 10 + switchControl.contentSize.width / 2, 0);
+        [switchControl setOn:NO animated:NO];
         [layer addChild:switchControl];
 
         [switchControl addTarget:self action:@selector(valueChanged:) forControlEvents:CCControlEventValueChanged];

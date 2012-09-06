@@ -28,7 +28,6 @@
 #define CCControlExtension_h
 
 #import "CCScale9Sprite.h"
-#import "CCSprite+Rotation.h"
 
 #import "CCControl.h"
 #import "CCControlColourPicker.h"

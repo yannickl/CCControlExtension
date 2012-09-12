@@ -30,7 +30,7 @@
 @property (nonatomic, strong) CCLabelTTF *displayValueLabel;
 
 /** Creates and returns a new ControlStepper. */
-- (CCControlStepper *)newControlStepper;
+- (CCControlStepper *)makeControlStepper;
 
 /** Callback for the change value. */
 - (void)valueChanged:(CCControlStepper *)sender;
@@ -75,7 +75,7 @@
         
         layer_width                 += background.contentSize.width;
         
-        CCControlStepper *stepper   = [self newControlStepper];
+        CCControlStepper *stepper   = [self makeControlStepper];
         stepper.position            = ccp (layer_width + 10 + stepper.contentSize.width / 2, 0);
         [stepper addTarget:self action:@selector(valueChanged:) forControlEvents:CCControlEventValueChanged];
         [layer addChild:stepper];
@@ -97,7 +97,7 @@
 
 #pragma mark CCControlStepperTest Private Methods
 
-- (CCControlStepper *)newControlStepper
+- (CCControlStepper *)makeControlStepper
 {
     CCSprite *minusSprite       = [CCSprite spriteWithFile:@"stepper-minus.png"];
     CCSprite *plusSprite        = [CCSprite spriteWithFile:@"stepper-plus.png"];

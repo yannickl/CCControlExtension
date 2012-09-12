@@ -145,13 +145,22 @@
 
 - (void)setOn:(BOOL)isOn animated:(BOOL)animated
 {
-    on_     = isOn;
+    on_                     = isOn;
 
-    [switchSprite_ runAction:
-     [CCActionTween actionWithDuration:0.2f 
-                                   key:@"sliderXPosition" 
-                                  from:switchSprite_.sliderXPosition
-                                    to:(on_) ? switchSprite_.onPosition : switchSprite_.offPosition]];
+    double internalOffset   = (isOn) ? switchSprite_.onPosition : switchSprite_.offPosition;
+    
+    if (animated)
+    {
+        [switchSprite_ runAction:
+         [CCActionTween actionWithDuration:0.2f 
+                                       key:@"sliderXPosition" 
+                                      from:switchSprite_.sliderXPosition
+                                        to:internalOffset]];
+    } else
+    {
+        switchSprite_.sliderXPosition   = internalOffset;
+    }
+
     
     [self sendActionsForControlEvents:CCControlEventValueChanged];
 }

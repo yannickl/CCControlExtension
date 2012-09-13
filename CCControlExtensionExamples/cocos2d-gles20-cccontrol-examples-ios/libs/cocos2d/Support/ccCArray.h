@@ -477,10 +477,11 @@ static inline void ccCArrayFullRemoveArray(ccCArray *arr, ccCArray *minusArr)
 //used by mergesortL
 static inline void pointerswap(void* a, void* b, size_t width)
 {
-    void* tmp;
-    tmp = *(void**)a;
+#ifndef __clang_analyzer__
+    void* tmp = *(void**)a;
     *(void**)a = *(void**)b;
     *(void**)b = tmp;
+#endif
 }
 
 // iterative mergesort arrd on

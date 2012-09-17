@@ -223,9 +223,7 @@
     CGPoint eventLocation   = [self eventLocation:event];
 	
     // Check the touch position on the slider
-    [self checkSliderPosition:eventLocation];
-    
-    return NO;
+    return [self checkSliderPosition:eventLocation];
 }
 
 - (BOOL)ccMouseDragged:(NSEvent *)event

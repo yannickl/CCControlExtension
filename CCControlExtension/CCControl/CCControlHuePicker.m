@@ -151,8 +151,11 @@
 
 - (BOOL)checkSliderPosition:(CGPoint)location
 {
+    // compute the distance between the current location and the center
+    double distance = sqrt(pow (location.x + 10, 2) + pow(location.y, 2));
+    
     // check that the touch location is within the bounding rectangle before sending updates
-	if (CGRectContainsPoint(background_.boundingBox, location))
+	if (160 > distance && distance > 118)
     {
         [self updateSliderPosition:location];
         
@@ -203,9 +206,7 @@
 	CGPoint eventLocation   = [self eventLocation:event];
 
     // Check the touch position on the slider
-    [self checkSliderPosition:eventLocation];
-
-    return NO;
+    return [self checkSliderPosition:eventLocation];
 }
 
 
@@ -220,8 +221,7 @@
 	CGPoint eventLocation   = [self eventLocation:event];
 	
     // Check the touch position on the slider
-    [self checkSliderPosition:eventLocation];
-    return NO;
+    return [self checkSliderPosition:eventLocation];
 }
 
 #endif

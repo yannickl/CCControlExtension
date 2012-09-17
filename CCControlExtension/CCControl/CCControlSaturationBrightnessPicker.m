@@ -154,7 +154,7 @@
     float dist              = sqrtf(dx*dx+dy*dy);
     
     // check that the touch location is within the bounding rectangle before sending updates
-	if (dist <= background.boundingBox.size.width*.5)
+	if (dist <= background.boundingBox.size.width * 0.5f)
     {
         [self updateSliderPosition:location];
         
@@ -214,9 +214,7 @@
 	CGPoint eventLocation   = [self eventLocation:event];
 	
     // Check the touch position on the slider
-    [self checkSliderPosition:eventLocation];
-    
-    return NO;
+    return [self checkSliderPosition:eventLocation];
 }
 
 - (BOOL)ccMouseDragged:(NSEvent *)event

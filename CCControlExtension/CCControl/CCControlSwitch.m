@@ -25,6 +25,7 @@
  */
 
 #import "CCControlSwitch.h"
+#import "ARCMacro.h"
 
 #pragma mark CCControlSwitchSprite - Interface 
 
@@ -89,9 +90,9 @@
 
 - (void)dealloc
 {
-    [switchSprite_  release];
+    SAFE_ARC_RELEASE(switchSprite_);
     
-    [super          dealloc];
+    SAFE_ARC_SUPER_DEALLOC();
 }
 
 - (id)initWithMaskSprite:(CCSprite *)maskSprite onSprite:(CCSprite *)onSprite offSprite:(CCSprite *)offSprite thumbSprite:(CCSprite *)thumbSprite
@@ -101,7 +102,7 @@
 
 + (id)switchWithMaskSprite:(CCSprite *)maskSprite onSprite:(CCSprite *)onSprite offSprite:(CCSprite *)offSprite thumbSprite:(CCSprite *)thumbSprite
 {
-    return [[[self alloc] initWithMaskSprite:maskSprite onSprite:onSprite offSprite:offSprite thumbSprite:thumbSprite] autorelease];
+    return SAFE_ARC_AUTORELEASE([[self alloc] initWithMaskSprite:maskSprite onSprite:onSprite offSprite:offSprite thumbSprite:thumbSprite]);
 }
 
 - (id)initWithMaskSprite:(CCSprite *)maskSprite onSprite:(CCSprite *)onSprite offSprite:(CCSprite *)offSprite thumbSprite:(CCSprite *)thumbSprite onLabel:(CCNode<CCLabelProtocol, CCRGBAProtocol> *)onLabel offLabel:(CCNode<CCLabelProtocol, CCRGBAProtocol> *)offLabel
@@ -133,7 +134,7 @@
 
 + (id)switchWithMaskSprite:(CCSprite *)maskSprite onSprite:(CCSprite *)onSprite offSprite:(CCSprite *)offSprite thumbSprite:(CCSprite *)thumbSprite onLabel:(CCNode<CCLabelProtocol, CCRGBAProtocol> *)onLabel offLabel:(CCNode<CCLabelProtocol, CCRGBAProtocol> *)offLabel
 {
-    return [[[self alloc] initWithMaskSprite:maskSprite onSprite:onSprite offSprite:offSprite thumbSprite:thumbSprite onLabel:onLabel offLabel:offLabel] autorelease];
+    return SAFE_ARC_AUTORELEASE([[self alloc] initWithMaskSprite:maskSprite onSprite:onSprite offSprite:offSprite thumbSprite:thumbSprite onLabel:onLabel offLabel:offLabel]);
 }
 
 #pragma mark Properties
@@ -266,14 +267,14 @@
 
 - (void)dealloc
 {
-    [onSprite_      release];
-    [offSprite_     release];
-    [thumbSprite_   release];
-    [onLabel_       release];
-    [offLabel_      release];
-    [maskTexture_   release];
+    SAFE_ARC_RELEASE(onSprite_);
+    SAFE_ARC_RELEASE(offSprite_);
+    SAFE_ARC_RELEASE(thumbSprite_);
+    SAFE_ARC_RELEASE(onLabel_);
+    SAFE_ARC_RELEASE(offLabel_);
+    SAFE_ARC_RELEASE(maskTexture_);
     
-    [super          dealloc];
+    SAFE_ARC_SUPER_DEALLOC();
 }
 
 - (id)init
@@ -301,8 +302,8 @@
         
         // Set up the mask with the Mask shader
         self.maskTexture        = [maskSprite texture];
-        self.shaderProgram      = [[[CCGLProgram alloc] initWithVertexShaderFilename:@"PositionTextureColor.vsh"
-                                                             fragmentShaderFilename:@"CCControlSwitchMask.fsh"] autorelease];
+        self.shaderProgram      = SAFE_ARC_AUTORELEASE([[CCGLProgram alloc] initWithVertexShaderFilename:@"PositionTextureColor.vsh"
+                                                             fragmentShaderFilename:@"CCControlSwitchMask.fsh"]);
         CHECK_GL_ERROR_DEBUG();
         
         [shaderProgram_ addAttribute:kCCAttributeNamePosition   index:kCCVertexAttrib_Position];

@@ -25,10 +25,11 @@
  */
 
 #import "CCControlPotentiometer.h"
+#import "ARCMacro.h"
 
 @interface CCControlPotentiometer () 
-@property (nonatomic, retain) CCSprite          *thumbSprite;
-@property (nonatomic, retain) CCProgressTimer   *progressTimer;
+@property (nonatomic, strong) CCSprite          *thumbSprite;
+@property (nonatomic, strong) CCProgressTimer   *progressTimer;
 @property (nonatomic, assign) CGPoint           previousLocation;
 
 /** Factorize the event dispath into these methods. */
@@ -56,10 +57,10 @@
 
 - (void)dealloc
 {
-    [thumbSprite_       release];
-    [progressTimer_     release];
+    SAFE_ARC_RELEASE(thumbSprite_);
+    SAFE_ARC_RELEASE(progressTimer_);
     
-    [super              dealloc];
+    SAFE_ARC_SUPER_DEALLOC();
 }
 
 + (id)potentiometerWithTrackFile:(NSString *)backgroundFile progressFile:(NSString *)progressFile thumbFile:(NSString *)thumbFile
@@ -74,7 +75,7 @@
     CCProgressTimer *progressTimer  = [CCProgressTimer progressWithSprite:[CCSprite spriteWithFile:progressFile]];
     //progressTimer.type              = kCCProgressTimerTypeRadialCW;
 
-    return [[[self alloc] initWithTrackSprite:backgroundSprite progressSprite:progressTimer thumbSprite:thumbSprite] autorelease];
+    return SAFE_ARC_AUTORELEASE([[self alloc] initWithTrackSprite:backgroundSprite progressSprite:progressTimer thumbSprite:thumbSprite]);
 }
 
 - (id)initWithTrackSprite:(CCSprite *)trackSprite progressSprite:(CCProgressTimer *)progressTimer thumbSprite:(CCSprite *)thumbSprite

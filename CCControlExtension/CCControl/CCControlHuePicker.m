@@ -29,10 +29,11 @@
 
 #import "CCControlHuePicker.h"
 #import "Utils.h"
+#import "ARCMacro.h"
 
 @interface CCControlHuePicker ()
-@property (nonatomic, retain) CCSprite    *background;
-@property (nonatomic, retain) CCSprite    *slider;
+@property (nonatomic, strong) CCSprite    *background;
+@property (nonatomic, strong) CCSprite    *slider;
 @property (nonatomic, assign) CGPoint     startPos;
 
 - (void)updateSliderPosition:(CGPoint)location;
@@ -51,10 +52,10 @@
 {
     [self removeAllChildrenWithCleanup:YES];
     
-    [background_ release];
-    [slider_ release];
+    SAFE_ARC_RELEASE(background_);
+    SAFE_ARC_RELEASE(slider_);
     
-	[super dealloc];
+	SAFE_ARC_SUPER_DEALLOC();
 }
 
 - (id)initWithTarget:(id)target withPos:(CGPoint)pos

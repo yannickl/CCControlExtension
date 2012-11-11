@@ -5,6 +5,7 @@
 //
 
 #import "CCScale9Sprite.h"
+#import "ARCMacro.h"
 
 enum positions
 {
@@ -41,18 +42,18 @@ enum positions
 
 - (void)dealloc
 {
-    [topLeft        release];
-    [top            release];
-    [topRight       release];
-    [left           release];
-    [centre         release];
-    [right          release];
-    [bottomLeft     release];
-    [bottom         release];
-    [bottomRight    release];
-    [scale9Image    release];
+    SAFE_ARC_RELEASE(topLeft);
+    SAFE_ARC_RELEASE(top);
+    SAFE_ARC_RELEASE(topRight);
+    SAFE_ARC_RELEASE(left);
+    SAFE_ARC_RELEASE(centre);
+    SAFE_ARC_RELEASE(right);
+    SAFE_ARC_RELEASE(bottomLeft);
+    SAFE_ARC_RELEASE(bottom);
+    SAFE_ARC_RELEASE(bottomRight);
+    SAFE_ARC_RELEASE(scale9Image);
     
-    [super          dealloc];
+    SAFE_ARC_SUPER_DEALLOC();
 }
 
 #pragma mark Constructor - Initializers
@@ -87,7 +88,7 @@ enum positions
 
 + (id)spriteWithFile:(NSString *)file rect:(CGRect)rect capInsets:(CGRect)capInsets
 {
-    return [[[self alloc] initWithFile:file rect:rect capInsets:capInsets] autorelease];
+    return SAFE_ARC_AUTORELEASE([[self alloc] initWithFile:file rect:rect capInsets:capInsets]);
 }
 
 - (id)initWithFile:(NSString *)file rect:(CGRect)rect
@@ -99,7 +100,7 @@ enum positions
 
 + (id)spriteWithFile:(NSString *)file rect:(CGRect)rect
 {
-    return [[[self alloc] initWithFile:file rect:rect] autorelease];
+    return SAFE_ARC_AUTORELEASE([[self alloc] initWithFile:file rect:rect]);
 }
 
 - (id)initWithFile:(NSString *)file capInsets:(CGRect)capInsets
@@ -111,7 +112,7 @@ enum positions
 
 + (id)spriteWithFile:(NSString *)file capInsets:(CGRect)capInsets
 {
-    return [[[self alloc] initWithFile:file capInsets:capInsets] autorelease];
+    return SAFE_ARC_AUTORELEASE([[self alloc] initWithFile:file capInsets:capInsets]);
 }
 
 - (id)initWithFile:(NSString *)file
@@ -123,7 +124,7 @@ enum positions
 
 + (id)spriteWithFile:(NSString *)file
 {
-    return [[[self alloc] initWithFile:file] autorelease];
+    return SAFE_ARC_AUTORELEASE([[self alloc] initWithFile:file]);
 }
 
 - (id)initWithSpriteFrame:(CCSpriteFrame *)spriteFrame capInsets:(CGRect)capInsets
@@ -137,7 +138,7 @@ enum positions
 
 + (id)spriteWithSpriteFrame:(CCSpriteFrame *)spriteFrame capInsets:(CGRect)capInsets
 {
-    return [[[self alloc] initWithSpriteFrame:spriteFrame capInsets:capInsets] autorelease];
+    return SAFE_ARC_AUTORELEASE([[self alloc] initWithSpriteFrame:spriteFrame capInsets:capInsets]);
 }
 
 - (id)initWithSpriteFrame:(CCSpriteFrame *)spriteFrame
@@ -149,7 +150,7 @@ enum positions
 
 + (id)spriteWithSpriteFrame:(CCSpriteFrame *)spriteFrame
 {
-    return [[[self alloc] initWithSpriteFrame:spriteFrame] autorelease];
+    return SAFE_ARC_AUTORELEASE([[self alloc] initWithSpriteFrame:spriteFrame]);
 }
 
 - (id)initWithSpriteFrameName:(NSString *)spriteFrameName capInsets:(CGRect)capInsets
@@ -163,7 +164,7 @@ enum positions
 
 + (id)spriteWithSpriteFrameName:(NSString *)spriteFrameName capInsets:(CGRect)capInsets
 {
-    return [[[self alloc] initWithSpriteFrameName:spriteFrameName capInsets:capInsets] autorelease];
+    return SAFE_ARC_AUTORELEASE([[self alloc] initWithSpriteFrameName:spriteFrameName capInsets:capInsets]);
 }
 
 - (id)initWithSpriteFrameName:(NSString *)spriteFrameName
@@ -175,7 +176,7 @@ enum positions
 
 + (id)spriteWithSpriteFrameName:(NSString *)spriteFrameName
 {
-    return [[[self alloc] initWithSpriteFrameName:spriteFrameName] autorelease];
+    return SAFE_ARC_AUTORELEASE([[self alloc] initWithSpriteFrameName:spriteFrameName]);
 }
 
 - (id)init
@@ -191,20 +192,20 @@ enum positions
     // Release old sprites
     [self removeAllChildrenWithCleanup:YES];
     
-    [centre         release];
-    [top            release];
-    [topLeft        release];
-    [topRight       release];
-    [left           release];
-    [right          release];
-    [bottomLeft     release];
-    [bottom         release];
-    [bottomRight    release];
+    SAFE_ARC_RELEASE(centre);
+    SAFE_ARC_RELEASE(top);
+    SAFE_ARC_RELEASE(topLeft);
+    SAFE_ARC_RELEASE(topRight);
+    SAFE_ARC_RELEASE(left);
+    SAFE_ARC_RELEASE(right);
+    SAFE_ARC_RELEASE(bottomLeft);
+    SAFE_ARC_RELEASE(bottom);
+    SAFE_ARC_RELEASE(bottomRight);
     
     if (scale9Image != batchnode)
     {
-        [scale9Image release];
-        scale9Image = [batchnode retain];
+        SAFE_ARC_RELEASE(scale9Image);
+        scale9Image = SAFE_ARC_RETAIN(batchnode);
     }
     
     [scale9Image removeAllChildrenWithCleanup:YES];
@@ -629,7 +630,7 @@ enum positions
 
 - (CCScale9Sprite *)resizableSpriteWithCapInsets:(CGRect)capInsets
 {
-    return [[[CCScale9Sprite alloc] initWithBatchNode:scale9Image rect:spriteRect capInsets:capInsets] autorelease];
+    return SAFE_ARC_AUTORELEASE([[CCScale9Sprite alloc] initWithBatchNode:scale9Image rect:spriteRect capInsets:capInsets]);
 }
 
 #pragma mark -

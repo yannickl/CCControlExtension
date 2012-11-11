@@ -32,12 +32,13 @@
 #import "CCControlSaturationBrightnessPicker.h"
 #import "CCControlHuePicker.h"
 #import "Utils.h"
+#import "ARCMacro.h"
 
 @interface CCControlColourPicker ()
 @property (nonatomic, assign) HSV                                   hsv;
-@property (nonatomic, retain) CCSprite                              *background;
-@property (nonatomic, retain) CCControlSaturationBrightnessPicker   *colourPicker;
-@property (nonatomic, retain) CCControlHuePicker                    *huePicker;
+@property (nonatomic, strong) CCSprite                              *background;
+@property (nonatomic, strong) CCControlSaturationBrightnessPicker   *colourPicker;
+@property (nonatomic, strong) CCControlHuePicker                    *huePicker;
 
 - (void)updateControlPicker;
 - (void)updateHueAndControlPicker;
@@ -60,7 +61,7 @@
     huePicker_      = nil;
     colourPicker_   = nil;
     
-    [super          dealloc];
+    SAFE_ARC_SUPER_DEALLOC();
 }
 
 - (id)init
@@ -138,7 +139,7 @@
 
 + (id)colorPicker
 {
-    return [[[self alloc] init] autorelease];
+    return SAFE_ARC_AUTORELEASE([[self alloc] init]);
 }
 
 - (void)setColor:(ccColor3B)color

@@ -27,6 +27,7 @@
 #import "CCControlButton.h"
 
 #import "CCScale9Sprite.h"
+#import "ARCMacro.h"
 
 enum
 {
@@ -37,13 +38,13 @@ enum
 /** Flag to know if the button is currently pushed.  */
 @property (nonatomic, getter = isPushed) BOOL pushed;
 /** Table of correspondence between the state and its title. */
-@property (nonatomic, retain) NSMutableDictionary *titleDispatchTable;
+@property (nonatomic, strong) NSMutableDictionary *titleDispatchTable;
 /** Table of correspondence between the state and its title color. */
-@property (nonatomic, retain) NSMutableDictionary *titleColorDispatchTable;
+@property (nonatomic, strong) NSMutableDictionary *titleColorDispatchTable;
 /** Table of correspondence between the state and its title label. */
-@property (nonatomic, retain) NSMutableDictionary *titleLabelDispatchTable;
+@property (nonatomic, strong) NSMutableDictionary *titleLabelDispatchTable;
 /** Table of correspondence between the state and the background sprite. */
-@property (nonatomic, retain) NSMutableDictionary *backgroundSpriteDispatchTable;
+@property (nonatomic, strong) NSMutableDictionary *backgroundSpriteDispatchTable;
 
 @end
 
@@ -63,15 +64,15 @@ enum
 
 - (void)dealloc
 {
-    [backgroundSpriteDispatchTable_ release];
-    [titleLabelDispatchTable_       release];
-    [titleColorDispatchTable_       release];
-    [titleDispatchTable_            release];
-    [backgroundSprite_              release];
-    [titleLabel_                    release];
-    [currentTitle_                  release];
+    SAFE_ARC_RELEASE(backgroundSpriteDispatchTable_);
+    SAFE_ARC_RELEASE(titleLabelDispatchTable_);
+    SAFE_ARC_RELEASE(titleColorDispatchTable_);
+    SAFE_ARC_RELEASE(titleDispatchTable_);
+    SAFE_ARC_RELEASE(backgroundSprite_);
+    SAFE_ARC_RELEASE(titleLabel_);
+    SAFE_ARC_RELEASE(currentTitle_);
     
-    [super                          dealloc];
+    SAFE_ARC_SUPER_DEALLOC();
 }
 
 #pragma mark -
@@ -79,8 +80,8 @@ enum
 
 - (id)init
 {
-    return [self initWithLabel:[CCLabelTTF labelWithString:@"" fontName:@"Helvetica" fontSize:12] 
-              backgroundSprite:[[[CCScale9Sprite alloc] init] autorelease]];
+    return [self initWithLabel:[CCLabelTTF labelWithString:@"" fontName:@"Helvetica" fontSize:12]
+              backgroundSprite:SAFE_ARC_AUTORELEASE([[CCScale9Sprite alloc] init])];
 }
 
 - (id)initWithLabel:(CCNode<CCLabelProtocol,CCRGBAProtocol> *)label backgroundSprite:(CCScale9Sprite *)backgroundsprite
@@ -133,7 +134,7 @@ enum
 
 + (id)buttonWithLabel:(CCNode<CCLabelProtocol,CCRGBAProtocol> *)label backgroundSprite:(CCScale9Sprite *)backgroundsprite
 {
-    return [[[self alloc] initWithLabel:label backgroundSprite:backgroundsprite] autorelease];
+    return SAFE_ARC_AUTORELEASE([[self alloc] initWithLabel:label backgroundSprite:backgroundsprite]);
 }
 
 - (id)initWithTitle:(NSString *)title fontName:(NSString *)fontName fontSize:(NSUInteger)fontsize
@@ -145,7 +146,7 @@ enum
 
 + (id)buttonWithTitle:(NSString *)title fontName:(NSString *)fontName fontSize:(NSUInteger)fontsize
 {
-    return [[[self alloc] initWithTitle:title fontName:fontName fontSize:fontsize] autorelease];
+    return SAFE_ARC_AUTORELEASE([[self alloc] initWithTitle:title fontName:fontName fontSize:fontsize]);
 }
 
 /** Initializes a button with a sprite in background. */
@@ -158,7 +159,7 @@ enum
 
 + (id)buttonWithBackgroundSprite:(CCScale9Sprite *)sprite
 {
-    return [[[self alloc] initWithBackgroundSprite:sprite] autorelease];
+    return SAFE_ARC_AUTORELEASE([[self alloc] initWithBackgroundSprite:sprite]);
 }
 
 #pragma mark Properties
@@ -464,9 +465,9 @@ enum
     // Update the label to match with the current state
     if (currentTitle_)
     {
-        [currentTitle_ release], currentTitle_ = nil;
+        SAFE_ARC_RELEASE(currentTitle_), currentTitle_ = nil;
     }
-    currentTitle_               = [[self titleForState:state_] retain];
+    currentTitle_               = SAFE_ARC_RETAIN([self titleForState:state_]);
     currentTitleColor_          = [self titleColorForState:state_];
     
     self.titleLabel             = [self titleLabelForState:state_];

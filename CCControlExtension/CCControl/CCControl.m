@@ -25,6 +25,7 @@
  */
 
 #import "CCControl.h"
+#import "ARCMacro.h"
 
 @interface CCControl ()
 /** 
@@ -32,12 +33,12 @@
  * target-actions pairs. For each CCButtonEvents a list of NSInvocation
  * (which contains the target-action pair) is linked.
  */
-@property (nonatomic, retain) NSMutableDictionary *dispatchTable;
+@property (nonatomic, strong) NSMutableDictionary *dispatchTable;
 /** 
  * Table of connection between the CCControlEvents and their associated
  * blocks. For each CCButtonEvents a list of blocks is linked.
  */
-@property (nonatomic, retain) NSMutableDictionary *dispatchBlockTable;
+@property (nonatomic, strong) NSMutableDictionary *dispatchBlockTable;
 
 /**
  * Adds a target and action for a particular event to an internal dispatch 
@@ -123,10 +124,10 @@
 
 - (void)dealloc
 {
-    [dispatchBlockTable_    release];
-    [dispatchTable_         release];
+    SAFE_ARC_RELEASE(dispatchBlockTable_);
+    SAFE_ARC_RELEASE(dispatchTable_);
     
-    [super                  dealloc];
+    SAFE_ARC_SUPER_DEALLOC();
 }
 
 - (id)init
@@ -468,9 +469,9 @@
     if (block)
     {
         // Think to copy and release the block
-        CCControlBlock currentBlock = [block copy];
+        CCControlBlock currentBlock = SAFE_ARC_BLOCK_COPY(block);
         [dispatchBlockTable_ setObject:currentBlock forKey:controlEventKey];
-        [currentBlock release];
+        SAFE_ARC_BLOCK_RELEASE(currentBlock);
     } else
     {
         [dispatchBlockTable_ removeObjectForKey:controlEventKey];

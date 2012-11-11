@@ -25,6 +25,7 @@
  */
 
 #import "CCControlStepper.h"
+#import "ARCMacro.h"
 
 #define CCControlStepperLabelColorEnabled   ccc3(55, 55, 55)
 #define CCControlStepperLabelColorDisabled  ccc3(147, 147, 147)
@@ -39,10 +40,10 @@
 #define kAutorepeatIncreaseTimeIncrement    12
 
 @interface CCControlStepper ()
-@property (nonatomic, retain) CCSprite      *minusSprite;
-@property (nonatomic, retain) CCSprite      *plusSprite;
-@property (nonatomic, retain) CCLabelTTF    *minusLabel;
-@property (nonatomic, retain) CCLabelTTF    *plusLabel;
+@property (nonatomic, strong) CCSprite      *minusSprite;
+@property (nonatomic, strong) CCSprite      *plusSprite;
+@property (nonatomic, strong) CCLabelTTF    *minusLabel;
+@property (nonatomic, strong) CCLabelTTF    *plusLabel;
 
 /** Update the layout of the stepper with the given touch location. */
 - (void)updateLayoutUsingTouchLocation:(CGPoint)location;
@@ -76,12 +77,12 @@
 {
     [self unscheduleAllSelectors];
     
-    [minusSprite_   release];
-    [plusSprite_    release];
-    [minusLabel_    release];
-    [plusLabel_     release];
+    SAFE_ARC_RELEASE(minusSprite_);
+    SAFE_ARC_RELEASE(plusSprite_);
+    SAFE_ARC_RELEASE(minusLabel_);
+    SAFE_ARC_RELEASE(plusLabel_);
     
-    [super          dealloc];
+    SAFE_ARC_SUPER_DEALLOC();
 }
 
 - (id)initWithMinusSprite:(CCSprite *)minusSprite plusSprite:(CCSprite *)plusSprite
@@ -132,7 +133,7 @@
 
 + (id)stepperWithMinusSprite:(CCSprite *)minusSprite plusSprite:(CCSprite *)plusSprite
 {
-    return [[[self alloc] initWithMinusSprite:minusSprite plusSprite:plusSprite] autorelease];
+    return SAFE_ARC_AUTORELEASE([[self alloc] initWithMinusSprite:minusSprite plusSprite:plusSprite]);
 }
 
 #pragma mark Properties

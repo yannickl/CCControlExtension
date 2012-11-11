@@ -143,20 +143,25 @@
     float angle             = atan2f(dy, dx);
     float angleDeg          = CC_RADIANS_TO_DEGREES(angle) + 180.0f;
     
-    // use the position / slider width to determin the percentage the dragger is at
+    // Use the position / slider width to determin the percentage the dragger is at
     self.hue                = angleDeg;
     
-	// send CCControl callback
+	// Send CCControl callback
     [self sendActionsForControlEvents:CCControlEventValueChanged];
 }
 
 - (BOOL)checkSliderPosition:(CGPoint)location
 {
-    // compute the distance between the current location and the center
+    // Compute the distance between the current location and the center
     double distance = sqrt(pow (location.x + 10, 2) + pow(location.y, 2));
     
-    // check that the touch location is within the bounding rectangle before sending updates
-	if (160 > distance && distance > 118)
+    // Check that the touch location is within the bounding rectangle before sending updates
+#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+    if ((UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone && (78 > distance && distance > 56))
+        || (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad && (160 > distance && distance > 118)))
+#else
+    if (160 > distance && distance > 118)
+#endif
     {
         [self updateSliderPosition:location];
         

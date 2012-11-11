@@ -1,6 +1,7 @@
 CCControlExtension
 =================
 CCControlExtension is an open-source library which provides a lot of convenient control objects for Cocos2D for iPhone and Mac such as buttons, sliders or many more...
+It is ARC compatible.
 
 All these controls are subclasses of CCControl, which is inspired by the UIControl API from the UIKit of CocoaTouch. The main goal of CCControl is to simplify the creation of control objects in Cocos2D by providing an interface and a base implementation ala UIKit. I.e that this class manages the target-action pair registration and dispatches them to their targets when events occur.
 For iOS 4.0 or later and Snow Leopard the CCControl also uses the power of blocks to dispatch the events. 
@@ -34,7 +35,7 @@ You can download cocos2d-for-iphone here: https://github.com/cocos2d/cocos2d-iph
 Build & Runtime Requirements
 ====================
 
-  * Xcode 3.2.3 (or newer)
+  * Xcode 4.0 (or newer)
   * iOS 3.0 or newer for iOS games
   * Snow Leopard (v10.5) or newer for Mac games
 

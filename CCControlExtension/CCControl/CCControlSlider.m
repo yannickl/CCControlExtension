@@ -25,11 +25,12 @@
  */
 
 #import "CCControlSlider.h"
+#import "ARCMacro.h"
 
 @interface CCControlSlider () 
-@property (nonatomic, retain) CCSprite *thumbSprite;
-@property (nonatomic, retain) CCSprite *progressSprite;
-@property (nonatomic, retain) CCSprite *backgroundSprite;
+@property (nonatomic, strong) CCSprite *thumbSprite;
+@property (nonatomic, strong) CCSprite *progressSprite;
+@property (nonatomic, strong) CCSprite *backgroundSprite;
 
 /** Factorize the event dispath into these methods. */
 - (void)sliderBegan:(CGPoint)location;
@@ -51,11 +52,11 @@
 
 - (void)dealloc
 {
-    [thumbSprite_       release];
-    [progressSprite_    release];
-    [backgroundSprite_  release];
+    SAFE_ARC_RELEASE(thumbSprite_);
+    SAFE_ARC_RELEASE(progressSprite_);
+    SAFE_ARC_RELEASE(backgroundSprite_);
     
-    [super dealloc];
+    SAFE_ARC_SUPER_DEALLOC();
 }
 
 + (id)sliderWithBackgroundFile:(NSString *)backgroundname progressFile:(NSString *)progressname thumbFile:(NSString *)thumbname
@@ -76,9 +77,9 @@
 
 + (id)sliderWithBackgroundSprite:(CCSprite *)backgroundSprite progressSprite:(CCSprite *)pogressSprite thumbSprite:(CCSprite *)thumbSprite
 {
-    return [[[self alloc] initWithBackgroundSprite:backgroundSprite
+    return SAFE_ARC_AUTORELEASE([[self alloc] initWithBackgroundSprite:backgroundSprite
                                     progressSprite:pogressSprite
-                                       thumbSprite:thumbSprite] autorelease];
+                                       thumbSprite:thumbSprite]);
 }
 
 // Designated init

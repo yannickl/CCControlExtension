@@ -213,6 +213,7 @@
 		F4539B2915B3320700ACFE96 /* potentiometerTrack-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F4539B1D15B3320700ACFE96 /* potentiometerTrack-ipad.png */; };
 		F4539B2A15B3320700ACFE96 /* potentiometerTrack-ipadhd.png in Resources */ = {isa = PBXBuildFile; fileRef = F4539B1E15B3320700ACFE96 /* potentiometerTrack-ipadhd.png */; };
 		F4539B2B15B3320700ACFE96 /* potentiometerTrack.png in Resources */ = {isa = PBXBuildFile; fileRef = F4539B1F15B3320700ACFE96 /* potentiometerTrack.png */; };
+		F4C9D4AA165057780070EFC9 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F4C9D4A9165057780070EFC9 /* Default-568h@2x.png */; };
 		F4FBB0CE15E2A0A200004945 /* CCSprite+Rotation.m in Sources */ = {isa = PBXBuildFile; fileRef = F4FBB0CD15E2A0A200004945 /* CCSprite+Rotation.m */; };
 /* End PBXBuildFile section */
 
@@ -561,7 +562,9 @@
 		F4539B1D15B3320700ACFE96 /* potentiometerTrack-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "potentiometerTrack-ipad.png"; sourceTree = "<group>"; };
 		F4539B1E15B3320700ACFE96 /* potentiometerTrack-ipadhd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "potentiometerTrack-ipadhd.png"; sourceTree = "<group>"; };
 		F4539B1F15B3320700ACFE96 /* potentiometerTrack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = potentiometerTrack.png; sourceTree = "<group>"; };
-		F4FBB0CC15E2A0A200004945 /* CCSprite+Rotation.h */ = {isa = PBXFileReference; fileEncoding = 4; path = "CCSprite+Rotation.h"; sourceTree = "<group>"; };
+		F4C9D4A5165050FA0070EFC9 /* ARCMacro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCMacro.h; sourceTree = "<group>"; };
+		F4C9D4A9165057780070EFC9 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "Resources/Default-568h@2x.png"; sourceTree = "<group>"; };
+		F4FBB0CC15E2A0A200004945 /* CCSprite+Rotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CCSprite+Rotation.h"; sourceTree = "<group>"; };
 		F4FBB0CD15E2A0A200004945 /* CCSprite+Rotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CCSprite+Rotation.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -843,6 +846,7 @@
 		C27D3DA51528C4DD004EF65F /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				F4C9D4A5165050FA0070EFC9 /* ARCMacro.h */,
 				C27D3DA61528C4DD004EF65F /* CCColourUtils.h */,
 				C27D3DA71528C4DD004EF65F /* CCColourUtils.m */,
 				C27D3DA81528C4DD004EF65F /* CCScale9Sprite.h */,
@@ -964,6 +968,7 @@
 				C290E52414D466CA003DE439 /* MenuImages */,
 				C29BEADB13FAA7FE009B7468 /* Default.png */,
 				F4539AEB15B0706000ACFE96 /* Default-Landscape~ipad.png */,
+				F4C9D4A9165057780070EFC9 /* Default-568h@2x.png */,
 				F4539AEC15B0706000ACFE96 /* Default@2x.png */,
 				C29BEADD13FAA7FE009B7468 /* fps_images.png */,
 				C29BEADF13FAA7FE009B7468 /* Icon-72.png */,
@@ -1419,6 +1424,7 @@
 				F4539B2915B3320700ACFE96 /* potentiometerTrack-ipad.png in Resources */,
 				F4539B2A15B3320700ACFE96 /* potentiometerTrack-ipadhd.png in Resources */,
 				F4539B2B15B3320700ACFE96 /* potentiometerTrack.png in Resources */,
+				F4C9D4AA165057780070EFC9 /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

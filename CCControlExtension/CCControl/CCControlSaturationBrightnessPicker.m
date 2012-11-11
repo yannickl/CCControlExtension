@@ -29,6 +29,7 @@
 
 #import "CCControlSaturationBrightnessPicker.h"
 #import "Utils.h"
+#import "ARCMacro.h"
 
 @interface CCControlSaturationBrightnessPicker ()
 
@@ -50,7 +51,7 @@
     shadow      = nil;
     slider      = nil;
     
-	[super dealloc];
+	SAFE_ARC_SUPER_DEALLOC();
 }
 
 - (id)initWithTarget:(id)target withPos:(CGPoint)pos

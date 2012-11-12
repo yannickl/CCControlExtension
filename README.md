@@ -1,11 +1,13 @@
 CCControlExtension
 =================
-CCControlExtension is an open-source library which provides a lot of convenient control objects for __Cocos2D v2.0__ for iPhone and Mac such as buttons, sliders or many more... It is ARC compatible (e.g for use with Kobold2D).
+CCControlExtension is an open-source library which provides a lot of convenient control objects for __Cocos2D v2.0__ for iPhone and Mac such as buttons, sliders or many more...
 
 All these controls are subclasses of CCControl, which is inspired by the UIControl API from the UIKit of CocoaTouch. The main goal of CCControl is to simplify the creation of control objects in Cocos2D by providing an interface and a base implementation ala UIKit. I.e that this class manages the target-action pair registration and dispatches them to their targets when events occur.
 The CCControl extensions also uses the power of blocks to dispatch the events in addition to the target/action pair. 
 
-![](http://github.com/YannickL/CCControlExtension/raw/master/screenshots/cccontrolextension.png)
+*Note: It is ARC compatible (e.g for use with Kobold2D)*
+
+![](http://github.com/YannickL/CCControlExtension/raw/master-v2/screenshots/cccontrolextension.png)
 
 How to use it
 ====================

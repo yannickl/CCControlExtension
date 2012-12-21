@@ -465,7 +465,7 @@ enum
     // Update the label to match with the current state
     if (currentTitle_)
     {
-        SAFE_ARC_RELEASE(currentTitle_), currentTitle_ = nil;
+        SAFE_ARC_RELEASE(currentTitle_);
     }
     currentTitle_               = SAFE_ARC_RETAIN([self titleForState:state_]);
     currentTitleColor_          = [self titleColorForState:state_];

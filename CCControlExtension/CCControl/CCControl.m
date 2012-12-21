@@ -411,7 +411,8 @@
     // If the selector accept the sender as third argument
     if ([sig numberOfArguments] >= 3)
     {
-        [invocation setArgument:&self atIndex:2];
+        CCControl *me   = self;
+        [invocation setArgument:&me atIndex:2];
     }
     
     // If the selector accept the CCControlEvent as fourth argument

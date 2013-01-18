@@ -39,6 +39,7 @@
 @public    
     BOOL                                    adjustBackgroundImage_;
     BOOL                                    zoomOnTouchDown_;
+    float                                   marginLR_, marginTB_;
     
     NSString                                *currentTitle_;
     ccColor3B                               currentTitleColor_;
@@ -75,6 +76,8 @@
 @property (nonatomic, assign) BOOL zoomOnTouchDown;
 /** The anchorPoint of the label, default is (0.5,0.5) */
 @property (nonatomic, assign) CGPoint labelAnchorPoint;
+/** The margins */
+@property (nonatomic, assign) float marginLR, marginTB;
 
 #pragma mark Constructors - Initializers
 

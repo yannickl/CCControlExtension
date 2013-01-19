@@ -39,6 +39,7 @@
 @public
     BOOL                                    adjustBackgroundImage_;
     BOOL                                    zoomOnTouchDown_;
+    float                                   marginLR_, marginTB_;
     
     NSString                                *currentTitle_;
     ccColor3B                               currentTitleColor_;
@@ -72,6 +73,9 @@
 @property (nonatomic, strong) CCScale9Sprite *backgroundSprite;
 /** The prefered size of the button, if label is larger it will be expanded. */
 @property (nonatomic, assign) CGSize preferedSize;
+/** The margins. By default the values of marginLR and marginTB are,
+ respectively, equals to CCControlButtonMarginLR and CCControlButtonMarginTB. */
+@property (nonatomic, assign) float marginLR, marginTB;
 
 #pragma mark Constructors - Initializers
 

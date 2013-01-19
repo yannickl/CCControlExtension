@@ -61,6 +61,8 @@ enum
 @synthesize zoomOnTouchDown                 = zoomOnTouchDown_;
 @synthesize currentTitle                    = currentTitle_;
 @synthesize currentTitleColor               = currentTitleColor_;
+@synthesize marginLR                        = marginLR_;
+@synthesize marginTB                        = marginTB_;
 
 - (void)dealloc
 {
@@ -115,6 +117,10 @@ enum
         self.color                          = ccc3(255, 255, 255);
         self.opacity                        = 255.0f;
         self.opacityModifyRGB               = YES;
+        
+        // Set the default margins
+        self.marginLR                       = CCControlButtonMarginLR;
+        self.marginTB                       = CCControlButtonMarginTB;
         
         // Initialize the dispatch table
         [self setTitle:[label string]           forState:CCControlStateNormal];
@@ -206,6 +212,18 @@ enum
         preferedSize_               = preferedSize;
     }
 
+    [self needsLayout];
+}
+
+- (void)setMarginLR:(float)marginLR
+{
+    marginLR_   = marginLR;
+    [self needsLayout]; 
+}
+
+- (void)setMarginTB:(float)marginTB
+{
+    marginTB_   = marginTB;
     [self needsLayout];
 }
 
@@ -420,7 +438,7 @@ enum
     {
         // Add the margins
         [backgroundSprite_ setContentSize:
-         CGSizeMake(titleLabelSize.width + CCControlButtonMarginLR * 2, titleLabelSize.height + CCControlButtonMarginTB * 2)];
+         CGSizeMake(titleLabelSize.width + marginLR_ * 2, titleLabelSize.height + marginTB_ * 2)];
     } else
     {
         CGSize preferedSize     = [backgroundSprite_ preferedSize];

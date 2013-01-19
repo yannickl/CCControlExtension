@@ -6,20 +6,23 @@ Lead developer:
 People/companies who were/are contributing code to CCControlExtension (alphabetically ordered):
 
 * Chris Wilson (http://sketchshare.co.uk/)
-    Added CCControlColourPicker
+    [NEW] CCControlColourPicker
 
 * Lionel Paolini (http://lionel-pao.blogspot.fr/)
-    Added logo and the splashscreen
+    [NEW] logo and the splashscreen
+
+* Sébastien Dabet (https://github.com/sdabet)
+    [ADD] MarginLR and MarginTB properties for the CCControlButton
 
 * Stewart Hamilton (http://sketchshare.co.uk/)
-    Added CCControlColourPicker
+    [NEW] CCControlColourPicker
 
 * Viktor Lidholt (http://www.cocosbuilder.com/)
-    Integration with CocosBuilder
+    [NEW] Integration with CocosBuilder:
        CCControl, CCControlButton, CCScale9Sprite
-    Added setters/getters for spriteFrame, insetLeft, insetTop, insetRight, insetBottom in CCScale9Sprite
-    Added support for rotated sprite frames in CCScale9Sprite
-    Added turning on/off zoom effect in CCControlButton
-    Added setters/getters for labelAnchorPoint, preferedSize in the CCControlButton
-    Fixed incorrect positioning for insets in CCControlButton
+    [ADD] Setters/getters for spriteFrame, insetLeft, insetTop, insetRight, insetBottom in CCScale9Sprite
+    [ADD] Support for rotated sprite frames in CCScale9Sprite
+    [ADD] Turning on/off zoom effect in CCControlButton
+    [ADD] Setters/getters for labelAnchorPoint, preferedSize in the CCControlButton
+    [FIX] Positioning for insets in CCControlButton
     

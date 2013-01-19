@@ -61,7 +61,6 @@ enum
 @synthesize currentTitleColor               = currentTitleColor_;
 @synthesize zoomOnTouchDown                 = zoomOnTouchDown_;
 @synthesize preferedSize                    = preferedSize_;
-
 @synthesize marginLR                        = marginLR_;
 @synthesize marginTB                        = marginTB_;
 
@@ -103,7 +102,7 @@ enum
         self.preferedSize                   = CGSizeZero;
         
         // Set the default anchor point
-        self.ignoreAnchorPointForPosition          = NO;
+        self.ignoreAnchorPointForPosition   = NO;
         self.anchorPoint                    = ccp (0.5f, 0.5f);
         
         // Set the nodes    
@@ -127,10 +126,10 @@ enum
         [self setTitleLabel:label                   forState:CCControlStateNormal];
         [self setBackgroundSprite:backgroundsprite  forState:CCControlStateNormal];
         
-        self.labelAnchorPoint = ccp (0.5f, 0.5f);
+        self.labelAnchorPoint               = ccp (0.5f, 0.5f);
         
-        self.marginLR = CCControlButtonMarginLR;
-        self.marginTB = CCControlButtonMarginTB;
+        self.marginLR                       = CCControlButtonMarginLR;
+        self.marginTB                       = CCControlButtonMarginTB;
         
         // Layout update
         [self needsLayout];
@@ -459,13 +458,13 @@ enum
 
 - (void)setMarginLR:(float)marginLR
 {
-    marginLR_ = marginLR;
+    marginLR_   = marginLR;
     [self needsLayout];
 }
 
 - (void)setMarginTB:(float)marginTB
 {
-    marginTB_ = marginTB;
+    marginTB_   = marginTB;
     [self needsLayout];
 }
 

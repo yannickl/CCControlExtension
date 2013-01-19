@@ -54,7 +54,7 @@
     NSMutableDictionary                     *titleColorDispatchTable_;
     NSMutableDictionary                     *titleLabelDispatchTable_;
     NSMutableDictionary                     *backgroundSpriteDispatchTable_;
-    CGPoint labelAnchorPoint_;
+    CGPoint                                 labelAnchorPoint_;
 }
 #pragma mark Configuring Background Image Size
 /** Adjust the background image. YES by default. If the property is set to NO, the 
@@ -76,7 +76,8 @@
 @property (nonatomic, assign) BOOL zoomOnTouchDown;
 /** The anchorPoint of the label, default is (0.5,0.5) */
 @property (nonatomic, assign) CGPoint labelAnchorPoint;
-/** The margins */
+/** The margins. By default the values of marginLR and marginTB are,
+ respectively, equals to CCControlButtonMarginLR and CCControlButtonMarginTB. */
 @property (nonatomic, assign) float marginLR, marginTB;
 
 #pragma mark Constructors - Initializers

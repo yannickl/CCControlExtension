@@ -62,6 +62,9 @@ enum
 @synthesize zoomOnTouchDown                 = zoomOnTouchDown_;
 @synthesize preferedSize                    = preferedSize_;
 
+@synthesize marginLR                        = marginLR_;
+@synthesize marginTB                        = marginTB_;
+
 - (void)dealloc
 {
     SAFE_ARC_RELEASE(backgroundSpriteDispatchTable_);
@@ -125,6 +128,9 @@ enum
         [self setBackgroundSprite:backgroundsprite  forState:CCControlStateNormal];
         
         self.labelAnchorPoint = ccp (0.5f, 0.5f);
+        
+        self.marginLR = CCControlButtonMarginLR;
+        self.marginTB = CCControlButtonMarginTB;
         
         // Layout update
         [self needsLayout];
@@ -451,6 +457,18 @@ enum
     [self setBackgroundSprite:sprite forState:state];
 }
 
+- (void)setMarginLR:(float)marginLR
+{
+    marginLR_ = marginLR;
+    [self needsLayout];
+}
+
+- (void)setMarginTB:(float)marginTB
+{
+    marginTB_ = marginTB;
+    [self needsLayout];
+}
+
 #pragma mark CCButton Private Methods
 
 - (void)needsLayout
@@ -490,7 +508,7 @@ enum
     {
         // Add the margins
         [backgroundSprite_ setContentSize:
-         CGSizeMake(titleLabelSize.width + CCControlButtonMarginLR * 2, titleLabelSize.height + CCControlButtonMarginTB * 2)];
+         CGSizeMake(titleLabelSize.width + marginLR_ * 2, titleLabelSize.height + marginTB_ * 2)];
     } else
     {
         CGSize preferedSize     = [backgroundSprite_ preferedSize];

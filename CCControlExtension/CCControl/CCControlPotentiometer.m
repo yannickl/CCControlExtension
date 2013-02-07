@@ -201,7 +201,7 @@
 - (BOOL)isMouseInside:(NSEvent *)event
 {
     CGPoint eventLocation   = [self eventLocation:event];
-    float distance          = [self distanceBetweenPoint:progressTimer_.position andPoint:eventLocation];
+    float distance          = [self distanceBetweenPoint:_progressTimer.position andPoint:eventLocation];
     
     return distance < MIN(self.contentSize.width / 2, self.contentSize.height / 2);
 }

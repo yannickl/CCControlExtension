@@ -236,6 +236,7 @@
 		F420A86315B3396A00A5F4BD /* potentiometerTrack-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F420A85615B3396A00A5F4BD /* potentiometerTrack-ipad.png */; };
 		F420A86415B3396A00A5F4BD /* potentiometerTrack-ipadhd.png in Resources */ = {isa = PBXBuildFile; fileRef = F420A85715B3396A00A5F4BD /* potentiometerTrack-ipadhd.png */; };
 		F420A86515B3396A00A5F4BD /* potentiometerTrack.png in Resources */ = {isa = PBXBuildFile; fileRef = F420A85815B3396A00A5F4BD /* potentiometerTrack.png */; };
+		F471E2E816C430A40097AD5A /* ccCArray.m in Sources */ = {isa = PBXBuildFile; fileRef = F471E2E716C430A40097AD5A /* ccCArray.m */; };
 		F4DD0E4A165061A900088443 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F4DD0E49165061A900088443 /* Default-568h@2x.png */; };
 		F4F5778615B063010013C51E /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F4F5778315B063010013C51E /* Default-Landscape~ipad.png */; };
 		F4F5778915B067320013C51E /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F4F5778815B067320013C51E /* Default@2x.png */; };
@@ -625,6 +626,7 @@
 		F420A85615B3396A00A5F4BD /* potentiometerTrack-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "potentiometerTrack-ipad.png"; sourceTree = "<group>"; };
 		F420A85715B3396A00A5F4BD /* potentiometerTrack-ipadhd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "potentiometerTrack-ipadhd.png"; sourceTree = "<group>"; };
 		F420A85815B3396A00A5F4BD /* potentiometerTrack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = potentiometerTrack.png; sourceTree = "<group>"; };
+		F471E2E716C430A40097AD5A /* ccCArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ccCArray.m; sourceTree = "<group>"; };
 		F4DD0E451650614200088443 /* ARCMacro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCMacro.h; sourceTree = "<group>"; };
 		F4DD0E49165061A900088443 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "Resources/Default-568h@2x.png"; sourceTree = "<group>"; };
 		F4F5778315B063010013C51E /* Default-Landscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-Landscape~ipad.png"; path = "Resources/Default-Landscape~ipad.png"; sourceTree = "<group>"; };
@@ -1250,11 +1252,12 @@
 		C2B091AE1533962700007ECC /* Support */ = {
 			isa = PBXGroup;
 			children = (
+				F471E2E716C430A40097AD5A /* ccCArray.m */,
 				C2B091AF1533962700007ECC /* base64.c */,
 				C2B091B01533962700007ECC /* base64.h */,
 				C2B091B11533962700007ECC /* CCArray.h */,
-				C2B091B21533962700007ECC /* CCArray.m */,
 				C2B091B31533962700007ECC /* ccCArray.h */,
+				C2B091B21533962700007ECC /* CCArray.m */,
 				C2B091B41533962700007ECC /* CCFileUtils.h */,
 				C2B091B51533962700007ECC /* CCFileUtils.m */,
 				C2B091B61533962700007ECC /* CCProfiling.h */,
@@ -1718,6 +1721,7 @@
 				C259696A15657C4C009C82DB /* CCControlStepper.m in Sources */,
 				F420A84715B3394900A5F4BD /* CCControlPotentiometer.m in Sources */,
 				F420A85915B3396A00A5F4BD /* CCControlPotentiometerTest.m in Sources */,
+				F471E2E816C430A40097AD5A /* ccCArray.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

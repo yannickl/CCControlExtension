@@ -54,6 +54,9 @@
  *
  */
 
+// CCLOGERROR is no longer supported.
+#define CCLOGERROR CCLOGWARN
+
 // ccTypes.h
 enum {
 #ifdef __CC_PLATFORM_IOS
@@ -224,6 +227,17 @@ DEPRECATED_ATTRIBUTE @interface MacView : CCGLView
 // new: initWithAnimation:
 -(id) initWithDuration:(ccTime)duration animation:(CCAnimation*)animation restoreOriginalFrame:(BOOL)restoreOriginalFrame DEPRECATED_ATTRIBUTE;
 @end
+
+@interface CCSequence (Deprecated)
+// new: actionWithArray
++(id) actionsWithArray: (NSArray*) actions DEPRECATED_ATTRIBUTE;
+@end
+
+@interface CCSpawn (Deprecated)
+// new: actionWithArray
++(id) actionsWithArray: (NSArray*) actions DEPRECATED_ATTRIBUTE;
+@end
+
 
 @interface CCRenderTexture (Deprecated)
 // new: saveToFile:

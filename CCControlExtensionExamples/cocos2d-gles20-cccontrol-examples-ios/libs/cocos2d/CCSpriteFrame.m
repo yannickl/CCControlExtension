@@ -102,17 +102,15 @@
 
 - (NSString*) description
 {
-	return [NSString stringWithFormat:@"<%@ = %p | Texture=%@, Rect = (%.2f,%.2f,%.2f,%.2f)> rotated:%d", [self class], self,
+	return [NSString stringWithFormat:@"<%@ = %p | Texture=%@, Rect = (%.2f,%.2f,%.2f,%.2f)> rotated:%d offset=(%.2f,%.2f)", [self class], self,
 			textureFilename_,
 			rect_.origin.x,
 			rect_.origin.y,
 			rect_.size.width,
 			rect_.size.height,
-			rotated_ //,
-            //offsetInPixels_.x,
-            //offsetInPixels_.y,
-            //originalSizeInPixels_.width,
-            //originalSizeInPixels_.height
+			rotated_,
+            offsetInPixels_.x,
+            offsetInPixels_.y
 			];
 }
 

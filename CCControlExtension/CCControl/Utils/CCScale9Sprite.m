@@ -577,7 +577,7 @@ enum positions
         id<CCRGBAProtocol> item;
         CCARRAY_FOREACH(self.children, item)
         {
-            if ([item conformsToProtocol:@protocol(CCRGBAProtocol)] && [item respondsToSelector:@selector(updateDisplayedColor:)])
+            if ([item conformsToProtocol:@protocol(CCRGBAProtocol)])
             {
                 [item updateDisplayedColor:_displayedColor];
             }

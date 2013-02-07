@@ -30,15 +30,15 @@
 @interface CCControlSlider : CCControl 
 {  
 @public
-	float       value_; 
-    float       minimumValue_;
-    float       maximumValue_;
+	float       _value;
+    float       _minimumValue;
+    float       _maximumValue;
     
 @protected
 	// Weak links to children
-	CCSprite    *thumbSprite_;
-    CCSprite    *progressSprite_;
-	CCSprite    *backgroundSprite_;
+	CCSprite    *_thumbSprite;
+    CCSprite    *_progressSprite;
+	CCSprite    *_backgroundSprite;
 }  
 /** Contains the receiver’s current value. */
 @property (nonatomic, assign) float value; 

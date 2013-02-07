@@ -32,10 +32,10 @@
 @interface CCControlSwitch : CCControl
 {
 @public
-    BOOL                    on_;
+    BOOL                    _on;
     
 @protected
-    CCControlSwitchSprite   *switchSprite_;
+    CCControlSwitchSprite   *_switchSprite;
 }
 /** A Boolean value that determines the off/on state of the switch. */
 @property (nonatomic, getter = isOn) BOOL on;

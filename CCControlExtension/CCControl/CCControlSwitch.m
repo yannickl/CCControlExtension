@@ -32,19 +32,19 @@
 @interface CCControlSwitchSprite : CCSprite
 {
 @public
-    CGFloat                                 sliderXPosition_;
-    CGFloat                                 onPosition_;
-    CGFloat                                 offPosition_;
+    CGFloat                                 _sliderXPosition;
+    CGFloat                                 _onPosition;
+    CGFloat                                 _offPosition;
     
-    CCTexture2D                             *maskTexture_;
-    GLuint                                  textureLocation_;
-    GLuint                                  maskLocation_;
+    CCTexture2D                             *_maskTexture;
+    GLuint                                  _textureLocation;
+    GLuint                                  _maskLocation;
     
-    CCSprite                                *onSprite_;
-    CCSprite                                *offSprite_;
-    CCSprite                                *thumbSprite_;
-    CCNode<CCLabelProtocol, CCRGBAProtocol> *onLabel_;
-    CCNode<CCLabelProtocol, CCRGBAProtocol> *offLabel_;
+    CCSprite                                *_onSprite;
+    CCSprite                                *_offSprite;
+    CCSprite                                *_thumbSprite;
+    CCNode<CCLabelProtocol, CCRGBAProtocol> *_onLabel;
+    CCNode<CCLabelProtocol, CCRGBAProtocol> *_offLabel;
 }
 /** Contains the position (in x-axis) of the slider inside the receiver. */
 @property (nonatomic, assign) CGFloat                                   sliderXPosition;
@@ -83,14 +83,14 @@
 @end
 
 @implementation CCControlSwitch
-@synthesize switchSprite            = switchSprite_;
-@synthesize initialTouchXPosition   = initialTouchXPosition_;
-@synthesize moved                   = moved_;
-@synthesize on                      = on_;
+@synthesize switchSprite            = _switchSprite;
+@synthesize initialTouchXPosition   = _initialTouchXPosition;
+@synthesize moved                   = _moved;
+@synthesize on                      = _on;
 
 - (void)dealloc
 {
-    SAFE_ARC_RELEASE(switchSprite_);
+    SAFE_ARC_RELEASE(_switchSprite);
     
     SAFE_ARC_SUPER_DEALLOC();
 }
@@ -114,20 +114,20 @@
         NSAssert(offSprite,     @"offSprite must not be nil.");
         NSAssert(thumbSprite,   @"thumbSprite must not be nil.");
         
-        on_                         = YES;
+        _on                         = YES;
 
-        switchSprite_               = [[CCControlSwitchSprite alloc] initWithMaskSprite:maskSprite 
+        _switchSprite               = [[CCControlSwitchSprite alloc] initWithMaskSprite:maskSprite 
                                                                                onSprite:onSprite
                                                                               offSprite:offSprite 
                                                                             thumbSprite:thumbSprite 
                                                                                 onLabel:onLabel 
                                                                                offLabel:offLabel];
-        switchSprite_.position      = ccp (switchSprite_.contentSize.width / 2, switchSprite_.contentSize.height / 2);
-        [self addChild:switchSprite_];
+        _switchSprite.position      = ccp (_switchSprite.contentSize.width / 2, _switchSprite.contentSize.height / 2);
+        [self addChild:_switchSprite];
         
         self.ignoreAnchorPointForPosition  = NO;
         self.anchorPoint            = ccp (0.5f, 0.5f);
-        self.contentSize            = [switchSprite_ contentSize];
+        self.contentSize            = [_switchSprite contentSize];
     }
     return self;
 }
@@ -146,20 +146,20 @@
 
 - (void)setOn:(BOOL)isOn animated:(BOOL)animated
 {
-    on_                     = isOn;
+    _on                     = isOn;
 
-    double internalOffset   = (isOn) ? switchSprite_.onPosition : switchSprite_.offPosition;
+    double internalOffset   = (isOn) ? _switchSprite.onPosition : _switchSprite.offPosition;
     
     if (animated)
     {
-        [switchSprite_ runAction:
+        [_switchSprite runAction:
          [CCActionTween actionWithDuration:0.2f 
                                        key:@"sliderXPosition" 
-                                      from:switchSprite_.sliderXPosition
+                                      from:_switchSprite.sliderXPosition
                                         to:internalOffset]];
     } else
     {
-        switchSprite_.sliderXPosition   = internalOffset;
+        _switchSprite.sliderXPosition   = internalOffset;
     }
 
     
@@ -170,7 +170,7 @@
 {
     _enabled                            = enabled;
 
-    switchSprite_.opacity               = (enabled) ? 255.0f : 128.0f;
+    _switchSprite.opacity               = (enabled) ? 255.0f : 128.0f;
 }
 
 #pragma mark CCTargetedTouch Delegate Methods
@@ -194,14 +194,14 @@
         return NO;
     }
     
-    moved_                          = NO;
+    _moved                          = NO;
     
     CGPoint location                = [self locationFromTouch:touch];
     
-    initialTouchXPosition_          = location.x - switchSprite_.sliderXPosition;
+    _initialTouchXPosition          = location.x - _switchSprite.sliderXPosition;
     
-    switchSprite_.thumbSprite.color = ccGRAY;
-    [switchSprite_ needsLayout];
+    _switchSprite.thumbSprite.color = ccGRAY;
+    [_switchSprite needsLayout];
     
     return YES;
 }
@@ -209,22 +209,22 @@
 - (void)ccTouchMoved:(UITouch *)touch withEvent:(UIEvent *)event
 {
     CGPoint location    = [self locationFromTouch:touch];
-    location            = ccp (location.x - initialTouchXPosition_, 0);
+    location            = ccp (location.x - _initialTouchXPosition, 0);
     
-    moved_              = YES;
+    _moved              = YES;
     
-    [switchSprite_ setSliderXPosition:location.x];
+    [_switchSprite setSliderXPosition:location.x];
 }
 
 - (void)ccTouchEnded:(UITouch *)touch withEvent:(UIEvent *)event
 {
     CGPoint location   = [self locationFromTouch:touch];
     
-    switchSprite_.thumbSprite.color  = ccWHITE;
+    _switchSprite.thumbSprite.color  = ccWHITE;
     
     if ([self hasMoved])
     {
-        [self setOn:!(location.x < switchSprite_.contentSize.width / 2) animated:YES];
+        [self setOn:!(location.x < _switchSprite.contentSize.width / 2) animated:YES];
     } else
     {
         [self setOn:![self isOn] animated:YES];
@@ -235,11 +235,11 @@
 {
     CGPoint location   = [self locationFromTouch:touch];
     
-    switchSprite_.thumbSprite.color  = ccWHITE;
+    _switchSprite.thumbSprite.color  = ccWHITE;
     
     if ([self hasMoved])
     {
-        [self setOn:!(location.x < switchSprite_.contentSize.width / 2) animated:YES];
+        [self setOn:!(location.x < _switchSprite.contentSize.width / 2) animated:YES];
     } else
     {
         [self setOn:![self isOn] animated:YES];
@@ -253,26 +253,26 @@
 #pragma mark - CCControlSwitchSprite Implementation
 
 @implementation CCControlSwitchSprite
-@synthesize maskTexture         = maskTexture_;
-@synthesize textureLocation     = textureLocation_;
-@synthesize maskLocation        = maskLocation_;
-@synthesize onSprite            = onSprite_;
-@synthesize offSprite           = offSprite_;
-@synthesize thumbSprite         = thumbSprite_;
-@synthesize onLabel             = onLabel_;
-@synthesize offLabel            = offLabel_;
-@synthesize sliderXPosition     = sliderXPosition_;
-@synthesize onPosition          = onPosition_;
-@synthesize offPosition         = offPosition_;
+@synthesize maskTexture         = _maskTexture;
+@synthesize textureLocation     = _textureLocation;
+@synthesize maskLocation        = _maskLocation;
+@synthesize onSprite            = _onSprite;
+@synthesize offSprite           = _offSprite;
+@synthesize thumbSprite         = _thumbSprite;
+@synthesize onLabel             = _onLabel;
+@synthesize offLabel            = _offLabel;
+@synthesize sliderXPosition     = _sliderXPosition;
+@synthesize onPosition          = _onPosition;
+@synthesize offPosition         = _offPosition;
 
 - (void)dealloc
 {
-    SAFE_ARC_RELEASE(onSprite_);
-    SAFE_ARC_RELEASE(offSprite_);
-    SAFE_ARC_RELEASE(thumbSprite_);
-    SAFE_ARC_RELEASE(onLabel_);
-    SAFE_ARC_RELEASE(offLabel_);
-    SAFE_ARC_RELEASE(maskTexture_);
+    SAFE_ARC_RELEASE(_onSprite);
+    SAFE_ARC_RELEASE(_offSprite);
+    SAFE_ARC_RELEASE(_thumbSprite);
+    SAFE_ARC_RELEASE(_onLabel);
+    SAFE_ARC_RELEASE(_offLabel);
+    SAFE_ARC_RELEASE(_maskTexture);
     
     SAFE_ARC_SUPER_DEALLOC();
 }
@@ -288,9 +288,9 @@
     if ((self = [super initWithTexture:[maskSprite texture]]))
     {
         // Sets the default values
-        onPosition_             = 0;
-        offPosition_            = -onSprite.contentSize.width + thumbSprite.contentSize.width / 2;
-        sliderXPosition_        = onPosition_; 
+        _onPosition             = 0;
+        _offPosition            = -onSprite.contentSize.width + thumbSprite.contentSize.width / 2;
+        _sliderXPosition        = _onPosition;
         
         self.onSprite           = onSprite;
         self.offSprite          = offSprite;
@@ -298,7 +298,7 @@
         self.onLabel            = onLabel;
         self.offLabel           = offLabel;
         
-        [self addChild:thumbSprite_];
+        [self addChild:thumbSprite];
         
         // Set up the mask with the Mask shader
         self.maskTexture        = [maskSprite texture];
@@ -306,22 +306,27 @@
                                                              fragmentShaderFilename:@"CCControlSwitchMask.fsh"]);
         CHECK_GL_ERROR_DEBUG();
         
-        [shaderProgram_ addAttribute:kCCAttributeNamePosition   index:kCCVertexAttrib_Position];
-        [shaderProgram_ addAttribute:kCCAttributeNameColor      index:kCCVertexAttrib_Color];
-        [shaderProgram_ addAttribute:kCCAttributeNameTexCoord   index:kCCVertexAttrib_TexCoords];
+        [self.shaderProgram addAttribute:kCCAttributeNamePosition   index:kCCVertexAttrib_Position];
+        [self.shaderProgram addAttribute:kCCAttributeNameColor      index:kCCVertexAttrib_Color];
+        [self.shaderProgram addAttribute:kCCAttributeNameTexCoord   index:kCCVertexAttrib_TexCoords];
         CHECK_GL_ERROR_DEBUG();
         
-        [shaderProgram_ link];
+        [self.shaderProgram link];
         CHECK_GL_ERROR_DEBUG();
         
-        [shaderProgram_ updateUniforms];
+        [self.shaderProgram updateUniforms];
         CHECK_GL_ERROR_DEBUG();                
         
-        self.textureLocation    = glGetUniformLocation( shaderProgram_->program_, "u_texture");
-        self.maskLocation       = glGetUniformLocation( shaderProgram_->program_, "u_mask");
+#if COCOS2D_VERSION >= 0x00020100
+        GLuint program          = [self.shaderProgram program];
+#else
+        GLuint program          = self.shaderProgram->program_;
+#endif
+        self.textureLocation    = glGetUniformLocation(program, "u_texture");
+        self.maskLocation       = glGetUniformLocation(program, "u_mask");
         CHECK_GL_ERROR_DEBUG();
         
-        self.contentSize        = [maskTexture_ contentSize];
+        self.contentSize        = [_maskTexture contentSize];
         
         [self needsLayout];
     }
@@ -334,18 +339,23 @@
     
     ccGLEnableVertexAttribs(kCCVertexAttribFlag_PosColorTex);
     ccGLBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    [shaderProgram_ setUniformForModelViewProjectionMatrix];
+#if COCOS2D_VERSION >= 0x00020100
+    [self.shaderProgram setUniformsForBuiltins];
+#else
+    [self.shaderProgram setUniformForModelViewProjectionMatrix];
+#endif
     
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture( GL_TEXTURE_2D, [texture_ name] );
-    glUniform1i(textureLocation_, 0);
+    glBindTexture( GL_TEXTURE_2D, [self.texture name] );
+    glUniform1i(_textureLocation, 0);
     
     glActiveTexture(GL_TEXTURE1);
-    glBindTexture( GL_TEXTURE_2D, [maskTexture_ name] );
-    glUniform1i(maskLocation_, 1);
+    glBindTexture( GL_TEXTURE_2D, [_maskTexture name] );
+    glUniform1i(_maskLocation, 1);
     
-#define kQuadSize sizeof(quad_.bl)
-    long offset = (long)&quad_;
+    ccV3F_C4B_T2F_Quad current_quad = [self quad];
+    #define kQuadSize sizeof(current_quad.bl)
+    long offset = (long)&current_quad;
     
     // vertex
     NSInteger diff = offsetof( ccV3F_C4B_T2F, vertices);
@@ -365,38 +375,38 @@
 
 - (void)needsLayout
 {
-    onSprite_.position      = ccp(onSprite_.contentSize.width / 2 + sliderXPosition_,
-                                                            onSprite_.contentSize.height / 2);
-    offSprite_.position     = ccp(onSprite_.contentSize.width + offSprite_.contentSize.width / 2 + sliderXPosition_, 
-                                                            offSprite_.contentSize.height / 2);
-    thumbSprite_.position   = ccp(onSprite_.contentSize.width + sliderXPosition_,
-                                                            maskTexture_.contentSize.height / 2);
+    _onSprite.position      = ccp(_onSprite.contentSize.width / 2 + _sliderXPosition,
+                                                            _onSprite.contentSize.height / 2);
+    _offSprite.position     = ccp(_onSprite.contentSize.width + _offSprite.contentSize.width / 2 + _sliderXPosition,
+                                                            _offSprite.contentSize.height / 2);
+    _thumbSprite.position   = ccp(_onSprite.contentSize.width + _sliderXPosition,
+                                                            _maskTexture.contentSize.height / 2);
     
-    if (onLabel_)
+    if (_onLabel)
     {
-        onLabel_.position   = ccp(onSprite_.position.x - thumbSprite_.contentSize.width / 6,
-                                  onSprite_.contentSize.height / 2);
+        _onLabel.position   = ccp(_onSprite.position.x - _thumbSprite.contentSize.width / 6,
+                                  _onSprite.contentSize.height / 2);
     }
-    if (offLabel_)
+    if (_offLabel)
     {
-        offLabel_.position  = ccp(offSprite_.position.x + thumbSprite_.contentSize.width / 6,
-                                  offSprite_.contentSize.height / 2);
+        _offLabel.position  = ccp(_offSprite.position.x + _thumbSprite.contentSize.width / 6,
+                                  _offSprite.contentSize.height / 2);
     }
     
-    CCRenderTexture *rt     = [CCRenderTexture renderTextureWithWidth:maskTexture_.contentSize.width 
-                                                               height:maskTexture_.contentSize.height];
+    CCRenderTexture *rt     = [CCRenderTexture renderTextureWithWidth:_maskTexture.contentSize.width
+                                                               height:_maskTexture.contentSize.height];
     
     [rt                 begin];
     [self.onSprite      visit];        
     [self.offSprite     visit]; 
     
-    if (onLabel_)
+    if (_onLabel)
     {
-        [onLabel_       visit];
+        [_onLabel       visit];
     }
-    if (offLabel_)
+    if (_offLabel)
     {
-        [offLabel_      visit];
+        [_offLabel      visit];
     }
     
     [rt                 end];
@@ -407,29 +417,29 @@
 
 - (void)setSliderXPosition:(CGFloat)sliderXPosition
 {
-    if (sliderXPosition <= offPosition_)
+    if (sliderXPosition <= _offPosition)
     {
         // Off
-        sliderXPosition = offPosition_;
-    } else if (sliderXPosition >= onPosition_)
+        sliderXPosition = _offPosition;
+    } else if (sliderXPosition >= _onPosition)
     {
         // On
-        sliderXPosition = onPosition_;
+        sliderXPosition = _onPosition;
     }
     
-    sliderXPosition_    = sliderXPosition;
+    _sliderXPosition    = sliderXPosition;
     
     [self needsLayout];
 }
 
 - (CGFloat)onSideWidth
 {
-    return onSprite_.contentSize.width;
+    return _onSprite.contentSize.width;
 }
 
 - (CGFloat)offSideWidth
 {
-    return offSprite_.contentSize.height;
+    return _offSprite.contentSize.height;
 }
 
 @end

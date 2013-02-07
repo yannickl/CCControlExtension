@@ -37,24 +37,24 @@
 @interface CCControlButton : CCControl
 {
 @public    
-    BOOL                                    adjustBackgroundImage_;
-    BOOL                                    zoomOnTouchDown_;
-    float                                   marginLR_, marginTB_;
+    BOOL                                    _adjustBackgroundImage;
+    BOOL                                    _zoomOnTouchDown;
+    float                                   _marginLR, _marginTB;
     
-    NSString                                *currentTitle_;
-    ccColor3B                               currentTitleColor_;
-    CCNode<CCLabelProtocol, CCRGBAProtocol> *titleLabel_;
-    CCScale9Sprite                          *backgroundSprite_;
-    CGSize                                  preferedSize_;
+    NSString                                *_currentTitle;
+    ccColor3B                               _currentTitleColor;
+    CCNode<CCLabelProtocol, CCRGBAProtocol> *_titleLabel;
+    CCScale9Sprite                          *_backgroundSprite;
+    CGSize                                  _preferedSize;
     
 @protected
-    BOOL                                    pushed_;
+    BOOL                                    _pushed;
     
-    NSMutableDictionary                     *titleDispatchTable_;
-    NSMutableDictionary                     *titleColorDispatchTable_;
-    NSMutableDictionary                     *titleLabelDispatchTable_;
-    NSMutableDictionary                     *backgroundSpriteDispatchTable_;
-    CGPoint                                 labelAnchorPoint_;
+    NSMutableDictionary                     *_titleDispatchTable;
+    NSMutableDictionary                     *_titleColorDispatchTable;
+    NSMutableDictionary                     *_titleLabelDispatchTable;
+    NSMutableDictionary                     *_backgroundSpriteDispatchTable;
+    CGPoint                                 _labelAnchorPoint;
 }
 #pragma mark Configuring Background Image Size
 /** Adjust the background image. YES by default. If the property is set to NO, the 

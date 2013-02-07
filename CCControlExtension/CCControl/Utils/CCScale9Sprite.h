@@ -16,37 +16,37 @@
 @interface CCScale9Sprite : CCNode <CCRGBAProtocol>
 {
 @public
-    CGSize              originalSize_;
-    CGSize              preferedSize_;
-    CGRect              capInsets_;
+    CGSize              _originalSize;
+    CGSize              _preferedSize;
+    CGRect              _capInsets;
     
-    float               insetLeft_;
-    float               insetTop_;
-    float               insetRight_;
-    float               insetBottom_;
+    float               _insetLeft;
+    float               _insetTop;
+    float               _insetRight;
+    float               _insetBottom;
     
 @protected
-    CGRect              spriteRect;
-    BOOL                spriteFrameRotated_;
-    CGRect              capInsetsInternal_;
-    BOOL                positionsAreDirty_;
+    CGRect              _spriteRect;
+    BOOL                _spriteFrameRotated;
+    CGRect              _capInsetsInternal;
+    BOOL                _positionsAreDirty;
     
-    CCSpriteBatchNode   *scale9Image;
-    CCSprite            *topLeft;
-    CCSprite            *top;
-    CCSprite            *topRight;
-    CCSprite            *left;
-    CCSprite            *centre;
-    CCSprite            *right;
-    CCSprite            *bottomLeft;
-    CCSprite            *bottom;
-    CCSprite            *bottomRight;
-    BOOL                spritesGenerated_;
+    CCSpriteBatchNode   *_scale9Image;
+    CCSprite            *_topLeft;
+    CCSprite            *_top;
+    CCSprite            *_topRight;
+    CCSprite            *_left;
+    CCSprite            *_centre;
+    CCSprite            *_right;
+    CCSprite            *_bottomLeft;
+    CCSprite            *_bottom;
+    CCSprite            *_bottomRight;
+    BOOL                _spritesGenerated;
     
     // texture RGBA
-    GLubyte             opacity_;
-    ccColor3B           color_;
-    BOOL                opacityModifyRGB_;
+    GLubyte             _opacity, _displayedOpacity, _realOpacity;
+	ccColor3B           _color, _displayedColor, _realColor;
+	BOOL                _opacityModifyRGB, _cascadeOpacityEnabled, _cascadeColorEnabled;
 }
 /** Original sprite's size. */
 @property (nonatomic, readonly) CGSize originalSize;
@@ -69,10 +69,18 @@
 
 /** Conforms to CocosNodeRGBA protocol. */
 @property (nonatomic, readwrite) GLubyte opacity;
+/** Conforms to CCRGBAProtocol (v2.1) protocol. */
+@property (nonatomic, readonly) GLubyte displayedOpacity;
 /** Conforms to CocosNodeRGBA protocol. */
 @property (nonatomic, readwrite) ccColor3B color;
+/** Conforms to CCRGBAProtocol (v2.1) protocol. */
+@property (nonatomic, readonly) ccColor3B displayedColor;
 /** Conforms to CocosNodeRGBA protocol. */
 @property (nonatomic, getter = doesOpacityModifyRGB) BOOL opacityModifyRGB;
+/** Conforms to CCRGBAProtocol (v2.1) protocol. */
+@property (nonatomic, getter = isCascadeColorEnabled) BOOL cascadeColorEnabled;
+/** Conforms to CCRGBAProtocol (v2.1) protocol. */
+@property (nonatomic, getter = isCascadeOpacityEnabled) BOOL cascadeOpacityEnabled;
 
 #pragma mark Constructor - Initializers
 

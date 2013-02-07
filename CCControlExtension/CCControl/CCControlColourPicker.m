@@ -46,20 +46,20 @@
 @end
 
 @implementation CCControlColourPicker
-@synthesize hsv             = hsv_;
-@synthesize background      = background_;
-@synthesize colourPicker    = colourPicker_;
-@synthesize huePicker       = huePicker_;
+@synthesize hsv             = _hsv;
+@synthesize background      = _background;
+@synthesize colourPicker    = _colourPicker;
+@synthesize huePicker       = _huePicker;
 
 - (void)dealloc
 {    
-    [background_    removeFromParentAndCleanup:YES];
-    [huePicker_     removeFromParentAndCleanup:YES];
-    [colourPicker_  removeFromParentAndCleanup:YES];
+    [_background    removeFromParentAndCleanup:YES];
+    [_huePicker     removeFromParentAndCleanup:YES];
+    [_colourPicker  removeFromParentAndCleanup:YES];
 
-    background_     = nil;
-    huePicker_      = nil;
-    colourPicker_   = nil;
+    _background     = nil;
+    _huePicker      = nil;
+    _colourPicker   = nil;
     
     SAFE_ARC_SUPER_DEALLOC();
 }
@@ -91,16 +91,16 @@
         //[spriteSheet.texture generateMipmap];
         
         // Init default color
-        hsv_.h                          = 0;
-        hsv_.s                          = 0;
-        hsv_.v                          = 0;
+        _hsv.h                          = 0;
+        _hsv.s                          = 0;
+        _hsv.v                          = 0;
         
         // Add image
-        background_                     = [Utils addSprite:@"menuColourPanelBackground.png" 
+        _background                     = [Utils addSprite:@"menuColourPanelBackground.png" 
                                                   toTarget:spriteSheet 
                                                    withPos:CGPointZero andAnchor:ccp(0.5f, 0.5f)];
-        CGPoint backgroundPointZero     = ccpSub(background_.position, ccp (background_.contentSize.width / 2, 
-                                                                            background_.contentSize.height / 2));
+        CGPoint backgroundPointZero     = ccpSub(_background.position, ccp (_background.contentSize.width / 2, 
+                                                                            _background.contentSize.height / 2));
         
         // Setup panels
         CGFloat hueShift                = 16;
@@ -114,25 +114,25 @@
         }
 #endif
         
-        huePicker_                      = [[CCControlHuePicker alloc] initWithTarget:spriteSheet 
+        _huePicker                      = [[CCControlHuePicker alloc] initWithTarget:spriteSheet 
                                                                              withPos:ccp(backgroundPointZero.x + hueShift, 
                                                                                          backgroundPointZero.y + hueShift)];
-        colourPicker_                   = [[CCControlSaturationBrightnessPicker alloc] initWithTarget:spriteSheet 
+        _colourPicker                   = [[CCControlSaturationBrightnessPicker alloc] initWithTarget:spriteSheet
                                                                           withPos:ccp(backgroundPointZero.x + colourShift, 
                                                                                       backgroundPointZero.y + colourShift)];
         
         // Setup events
-		[huePicker_ addTarget:self action:@selector(hueSliderValueChanged:) forControlEvents:CCControlEventValueChanged];
-		[colourPicker_ addTarget:self action:@selector(colourSliderValueChanged:) forControlEvents:CCControlEventValueChanged];
+		[_huePicker addTarget:self action:@selector(hueSliderValueChanged:) forControlEvents:CCControlEventValueChanged];
+		[_colourPicker addTarget:self action:@selector(colourSliderValueChanged:) forControlEvents:CCControlEventValueChanged];
         
         // Set defaults
         [self updateHueAndControlPicker];
         
-        [self addChild:huePicker_];
-        [self addChild:colourPicker_];
+        [self addChild:_huePicker];
+        [self addChild:_colourPicker];
         
         // Set content size
-        [self setContentSize:[background_ contentSize]];
+        [self setContentSize:[_background contentSize]];
 	}
 	return self;
 }
@@ -152,7 +152,7 @@
     rgba.b      = color.b / 255.0f;
     rgba.a      = 1.0f;
     
-    hsv_        = [CCColourUtils HSVfromRGB:rgba];
+    _hsv        = [CCColourUtils HSVfromRGB:rgba];
 
     [self updateHueAndControlPicker];
 }
@@ -161,8 +161,8 @@
 {
     super.enabled           = enabled;
     
-    huePicker_.enabled      = enabled;
-    colourPicker_.enabled   = enabled;
+    _huePicker.enabled      = enabled;
+    _colourPicker.enabled   = enabled;
 }
 
 #pragma mark -
@@ -172,25 +172,25 @@
 
 - (void)updateControlPicker
 {
-    [huePicker_ setHue:hsv_.h];
-    [colourPicker_ updateWithHSV:hsv_];
+    [_huePicker setHue:_hsv.h];
+    [_colourPicker updateWithHSV:_hsv];
 }
 
 - (void)updateHueAndControlPicker
 {
-    [huePicker_ setHue:hsv_.h];
-    [colourPicker_ updateWithHSV:hsv_];
-    [colourPicker_ updateDraggerWithHSV:hsv_];
+    [_huePicker setHue:_hsv.h];
+    [_colourPicker updateWithHSV:_hsv];
+    [_colourPicker updateDraggerWithHSV:_hsv];
 }
 
 #pragma mark - Callback Methods
 
 - (void)hueSliderValueChanged:(CCControlHuePicker *)sender
 {
-    hsv_.h      = sender.hue;
+    _hsv.h      = sender.hue;
 
     // Update the value
-    RGBA rgb    = [CCColourUtils RGBfromHSV:hsv_];
+    RGBA rgb    = [CCColourUtils RGBfromHSV:_hsv];
     _color      = ccc3(rgb.r * 255.0f, rgb.g * 255.0f, rgb.b * 255.0f);
     
 	// Send CCControl callback
@@ -200,11 +200,11 @@
 
 - (void)colourSliderValueChanged:(CCControlSaturationBrightnessPicker *)sender
 {
-    hsv_.s      = sender.saturation;
-    hsv_.v      = sender.brightness;
+    _hsv.s      = sender.saturation;
+    _hsv.v      = sender.brightness;
 
     // Update the value
-    RGBA rgb    = [CCColourUtils RGBfromHSV:hsv_];
+    RGBA rgb    = [CCColourUtils RGBfromHSV:_hsv];
     _color      = ccc3(rgb.r * 255.0f, rgb.g * 255.0f, rgb.b * 255.0f);
     
     // Send CCControl callback

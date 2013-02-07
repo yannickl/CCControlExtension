@@ -302,8 +302,14 @@
         
         // Set up the mask with the Mask shader
         self.maskTexture        = [maskSprite texture];
+        
         self.shaderProgram      = SAFE_ARC_AUTORELEASE([[CCGLProgram alloc] initWithVertexShaderFilename:@"PositionTextureColor.vsh"
                                                              fragmentShaderFilename:@"CCControlSwitchMask.fsh"]);
+#if COCOS2D_VERSION >= 0x00020100
+        GLuint program          = [self.shaderProgram program];
+#else
+        GLuint program          = self.shaderProgram->program_;
+#endif
         CHECK_GL_ERROR_DEBUG();
         
         [self.shaderProgram addAttribute:kCCAttributeNamePosition   index:kCCVertexAttrib_Position];
@@ -317,11 +323,6 @@
         [self.shaderProgram updateUniforms];
         CHECK_GL_ERROR_DEBUG();                
         
-#if COCOS2D_VERSION >= 0x00020100
-        GLuint program          = [self.shaderProgram program];
-#else
-        GLuint program          = self.shaderProgram->program_;
-#endif
         self.textureLocation    = glGetUniformLocation(program, "u_texture");
         self.maskLocation       = glGetUniformLocation(program, "u_mask");
         CHECK_GL_ERROR_DEBUG();

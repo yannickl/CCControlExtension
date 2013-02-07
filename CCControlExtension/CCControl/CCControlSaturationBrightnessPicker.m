@@ -43,22 +43,22 @@
 @end
 
 @implementation CCControlSaturationBrightnessPicker
-@synthesize background  = background_;
-@synthesize overlay     = overlay_;
-@synthesize shadow      = shadow_;
-@synthesize slider      = slider_;
+@synthesize background  = _background;
+@synthesize overlay     = _overlay;
+@synthesize shadow      = _shadow;
+@synthesize slider      = _slider;
 
-@synthesize saturation  = saturation_;
-@synthesize brightness  = brightness_;
+@synthesize saturation  = _saturation;
+@synthesize brightness  = _brightness;
 
 - (void)dealloc
 {
     [self removeAllChildrenWithCleanup:YES];
     
-    background_ = nil;
-    overlay_    = nil;
-    shadow_     = nil;
-    slider_     = nil;
+    _background = nil;
+    _overlay    = nil;
+    _shadow     = nil;
+    _slider     = nil;
     
 	SAFE_ARC_SUPER_DEALLOC();
 }
@@ -68,14 +68,14 @@
     if ((self = [super init]))
     {
         // Add sprites
-        background_     = [Utils addSprite:@"colourPickerBackground.png" toTarget:target withPos:pos andAnchor:ccp(0, 0)];
-        overlay_        = [Utils addSprite:@"colourPickerOverlay.png" toTarget:target withPos:pos andAnchor:ccp(0, 0)];
-        shadow_         = [Utils addSprite:@"colourPickerShadow.png" toTarget:target withPos:pos andAnchor:ccp(0, 0)];
-        slider_         = [Utils addSprite:@"colourPicker.png" toTarget:target withPos:pos andAnchor:ccp(0.5f, 0.5f)];
+        _background     = [Utils addSprite:@"colourPickerBackground.png" toTarget:target withPos:pos andAnchor:ccp(0, 0)];
+        _overlay        = [Utils addSprite:@"colourPickerOverlay.png" toTarget:target withPos:pos andAnchor:ccp(0, 0)];
+        _shadow         = [Utils addSprite:@"colourPickerShadow.png" toTarget:target withPos:pos andAnchor:ccp(0, 0)];
+        _slider         = [Utils addSprite:@"colourPicker.png" toTarget:target withPos:pos andAnchor:ccp(0.5f, 0.5f)];
         
-        startPos        = pos;                                  // starting position of the colour picker
-        boxPos          = 35;                                   // starting position of the virtual box area for picking a colour
-        boxSize         = background_.contentSize.width / 2;    // the size (width and height) of the virtual box for picking a colour from
+        _startPos        = pos;                                  // starting position of the colour picker
+        _boxPos         = 35;                                   // starting position of the virtual box area for picking a colour
+        _boxSize        = _background.contentSize.width / 2;    // the size (width and height) of the virtual box for picking a colour from
     }
     return self;
 }
@@ -84,7 +84,7 @@
 {
     super.enabled   = enabled;
     
-    slider_.opacity = enabled ? 255.0f : 128.0f;
+    _slider.opacity = enabled ? 255.0f : 128.0f;
 }
 
 #pragma mark - 
@@ -99,15 +99,15 @@
     
     RGBA rgb            = [CCColourUtils RGBfromHSV:hsvTemp];
     
-    background_.color   = ccc3(rgb.r * 255.0f, rgb.g * 255.0f, rgb.b * 255.0f);
+    _background.color   = ccc3(rgb.r * 255.0f, rgb.g * 255.0f, rgb.b * 255.0f);
 }
 
 - (void)updateDraggerWithHSV:(HSV)hsv
 {
     // Set the position of the slider to the correct saturation and brightness
     CGPoint pos	= CGPointMake(
-                              startPos.x + boxPos + (boxSize*(1 - hsv.s)),
-                              startPos.y + boxPos + (boxSize*hsv.v));
+                              _startPos.x + _boxPos + (_boxSize*(1 - hsv.s)),
+                              _startPos.y + _boxPos + (_boxSize*hsv.v));
     
     // update
     [self updateSliderPosition:pos];
@@ -120,8 +120,8 @@
     // Clamp the position of the icon within the circle
     
     // Get the center point of the bkgd image
-    float centerX           = startPos.x + background_.boundingBox.size.width * 0.5f;
-    float centerY           = startPos.y + background_.boundingBox.size.height * 0.5f;
+    float centerX           = _startPos.x + _background.boundingBox.size.width * 0.5f;
+    float centerY           = _startPos.y + _background.boundingBox.size.height * 0.5f;
     
     // Work out the distance difference between the location and center
     float dx                = sliderPosition.x - centerX;
@@ -132,7 +132,7 @@
     float angle             = atan2f(dy, dx);
     
     // Set the limit to the slider movement within the colour picker
-    float limit             = background_.boundingBox.size.width * 0.5f;
+    float limit             = _background.boundingBox.size.width * 0.5f;
     
     // Check distance doesn't exceed the bounds of the circle
     if (dist > limit)
@@ -142,18 +142,18 @@
     }
     
     // Set the position of the dragger
-    slider_.position        = sliderPosition;
+    _slider.position        = sliderPosition;
     
     
     // Clamp the position within the virtual box for colour selection
-    if (sliderPosition.x < startPos.x + boxPos)						sliderPosition.x = startPos.x + boxPos;
-    else if (sliderPosition.x > startPos.x + boxPos + boxSize - 1)	sliderPosition.x = startPos.x + boxPos + boxSize - 1;
-    if (sliderPosition.y < startPos.y + boxPos)						sliderPosition.y = startPos.y + boxPos;
-    else if (sliderPosition.y > startPos.y + boxPos + boxSize)		sliderPosition.y = startPos.y + boxPos + boxSize;
+    if (sliderPosition.x < _startPos.x + _boxPos)						sliderPosition.x = _startPos.x + _boxPos;
+    else if (sliderPosition.x > _startPos.x + _boxPos + _boxSize - 1)	sliderPosition.x = _startPos.x + _boxPos + _boxSize - 1;
+    if (sliderPosition.y < _startPos.y + _boxPos)						sliderPosition.y = _startPos.y + _boxPos;
+    else if (sliderPosition.y > _startPos.y + _boxPos + _boxSize)		sliderPosition.y = _startPos.y + _boxPos + _boxSize;
     
     // Use the position / slider width to determin the percentage the dragger is at
-    self.saturation         = 1 - ABS((startPos.x + boxPos - sliderPosition.x)/boxSize);
-    self.brightness         = ABS((startPos.y + boxPos - sliderPosition.y)/boxSize);
+    self.saturation         = 1 - ABS((_startPos.x + _boxPos - sliderPosition.x)/_boxSize);
+    self.brightness         = ABS((_startPos.y + _boxPos - sliderPosition.y)/_boxSize);
 }
 
 -(BOOL)checkSliderPosition:(CGPoint)location
@@ -161,8 +161,8 @@
     // Clamp the position of the icon within the circle
     
     // get the center point of the bkgd image
-    float centerX           = startPos.x + background_.boundingBox.size.width * 0.5f;
-    float centerY           = startPos.y + background_.boundingBox.size.height * 0.5f;
+    float centerX           = _startPos.x + _background.boundingBox.size.width * 0.5f;
+    float centerY           = _startPos.y + _background.boundingBox.size.height * 0.5f;
     
     // work out the distance difference between the location and center
     float dx                = location.x - centerX;
@@ -170,7 +170,7 @@
     float dist              = sqrtf(dx*dx + dy*dy);
     
     // check that the touch location is within the bounding rectangle before sending updates
-    if (dist <= background_.boundingBox.size.width * 0.5f)
+    if (dist <= _background.boundingBox.size.width * 0.5f)
     {
         [self updateSliderPosition:location];
         

@@ -33,13 +33,13 @@
 @interface CCControlHuePicker : CCControl
 {
 @public
-    CGFloat     hue_;
-    CGFloat     huePercentage_;     // The percentage of the dragger position on the slider
+    CGFloat     _hue;
+    CGFloat     _huePercentage;     // The percentage of the dragger position on the slider
     
 @protected
-    CCSprite    *background_;
-    CCSprite    *slider_;
-    CGPoint     startPos_;
+    CCSprite    *_background;
+    CCSprite    *_slider;
+    CGPoint     _startPos;
 }
 /** Contains the receiver’s current hue value (between 0 and 360 degree). */
 @property (nonatomic, assign) CGFloat   hue;

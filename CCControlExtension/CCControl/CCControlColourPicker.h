@@ -38,11 +38,11 @@
 @interface CCControlColourPicker : CCControl
 {
 @protected
-    HSV                                 hsv_;
+    HSV                                 _hsv;
     
-    CCSprite                            *background_;
-    CCControlSaturationBrightnessPicker *colourPicker_;
-    CCControlHuePicker                  *huePicker_;
+    CCSprite                            *_background;
+    CCControlSaturationBrightnessPicker *_colourPicker;
+    CCControlHuePicker                  *_huePicker;
 }
 
 #pragma mark - Constuctors - Initializers

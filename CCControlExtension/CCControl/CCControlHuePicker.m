@@ -42,18 +42,18 @@
 @end
     
 @implementation CCControlHuePicker
-@synthesize background      = background_;
-@synthesize slider          = slider_;
-@synthesize startPos        = startPos_;
-@synthesize hue             = hue_;
-@synthesize huePercentage   = huePercentage_;
+@synthesize background      = _background;
+@synthesize slider          = _slider;
+@synthesize startPos        = _startPos;
+@synthesize hue             = _hue;
+@synthesize huePercentage   = _huePercentage;
 
 - (void)dealloc
 {
     [self removeAllChildrenWithCleanup:YES];
     
-    SAFE_ARC_RELEASE(background_);
-    SAFE_ARC_RELEASE(slider_);
+    SAFE_ARC_RELEASE(_background);
+    SAFE_ARC_RELEASE(_slider);
     
 	SAFE_ARC_SUPER_DEALLOC();
 }
@@ -66,20 +66,20 @@
         self.background     = [Utils addSprite:@"huePickerBackground.png" toTarget:target withPos:pos andAnchor:ccp(0, 0)];
         self.slider         = [Utils addSprite:@"colourPicker.png" toTarget:target withPos:pos andAnchor:ccp(0.5f, 0.5f)];
         
-        slider_.position    = ccp(pos.x, pos.y + background_.boundingBox.size.height * 0.5f);
+        _slider.position    = ccp(pos.x, pos.y + _background.boundingBox.size.height * 0.5f);
         
-        startPos_           = pos;
+        _startPos           = pos;
         
         // Sets the default value
-        hue_                = 0.0f;
-        huePercentage_      = 0.0f;
+        _hue                = 0.0f;
+        _huePercentage      = 0.0f;
     }
     return self;
 }
 
 - (void)setHue:(CGFloat)hueValue
 {
-    hue_                = hueValue;
+    _hue                = hueValue;
     
     // Set the position of the slider to the correct hue
     // We need to divide it by 360 as its taken as an angle in degrees
@@ -91,34 +91,34 @@
 
 - (void)setHuePercentage:(CGFloat)hueValueInPercent_
 {
-    huePercentage_          = hueValueInPercent_;
-    hue_                    = hueValueInPercent_ * 360.0f;
+    _huePercentage          = hueValueInPercent_;
+    _hue                    = hueValueInPercent_ * 360.0f;
     
     // Clamp the position of the icon within the circle
-    CGRect backgroundBox    = background_.boundingBox;
+    CGRect backgroundBox    = _background.boundingBox;
     
     // Get the center point of the background image
-    float centerX           = startPos_.x + backgroundBox.size.width * 0.5f;
-    float centerY           = startPos_.y + backgroundBox.size.height * 0.5f;
+    float centerX           = _startPos.x + backgroundBox.size.width * 0.5f;
+    float centerY           = _startPos.y + backgroundBox.size.height * 0.5f;
     
     // Work out the limit to the distance of the picker when moving around the hue bar
     float limit             = backgroundBox.size.width * 0.5f - 15.0f;
     
     // Update angle
-    float angleDeg          = huePercentage_ * 360.0f - 180.0f;
+    float angleDeg          = _huePercentage * 360.0f - 180.0f;
     float angle             = CC_DEGREES_TO_RADIANS(angleDeg);
     
     // Set new position of the slider
     float x                 = centerX + limit * cosf(angle);
     float y                 = centerY + limit * sinf(angle);
-    slider_.position        = ccp(x, y);
+    _slider.position        = ccp(x, y);
 }
 
 - (void)setEnabled:(BOOL)enabled
 {
     super.enabled   = enabled;
     
-    slider_.opacity = enabled ? 255.0f : 128.0f;
+    _slider.opacity = enabled ? 255.0f : 128.0f;
 }
 
 #pragma mark -
@@ -129,11 +129,11 @@
 - (void)updateSliderPosition:(CGPoint)location
 {
     // Clamp the position of the icon within the circle
-    CGRect backgroundBox    = background_.boundingBox;
+    CGRect backgroundBox    = _background.boundingBox;
     
     // get the center point of the background image
-    float centerX           = startPos_.x + backgroundBox.size.width * 0.5f;
-    float centerY           = startPos_.y + backgroundBox.size.height * 0.5f;
+    float centerX           = _startPos.x + backgroundBox.size.width * 0.5f;
+    float centerY           = _startPos.y + backgroundBox.size.height * 0.5f;
     
     // Work out the distance difference between the location and center
     float dx                = location.x - centerX;

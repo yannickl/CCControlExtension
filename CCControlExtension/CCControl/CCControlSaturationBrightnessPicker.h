@@ -34,17 +34,17 @@
 @interface CCControlSaturationBrightnessPicker : CCControl
 {
 @public
-    CGFloat     saturation_, brightness_;
+    CGFloat     _saturation, _brightness;
     
 @protected
-    CCSprite    *background_;
-    CCSprite    *overlay_;
-    CCSprite    *shadow_;
-    CCSprite    *slider_;
-    CGPoint     startPos;
+    CCSprite    *_background;
+    CCSprite    *_overlay;
+    CCSprite    *_shadow;
+    CCSprite    *_slider;
+    CGPoint     _startPos;
     
-    int         boxPos;
-    int         boxSize;
+    int         _boxPos;
+    int         _boxSize;
 }
 /** Contains the receiver’s current saturation value. */
 @property (nonatomic, assign) CGFloat saturation;

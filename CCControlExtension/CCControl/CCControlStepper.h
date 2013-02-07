@@ -36,24 +36,24 @@ typedef enum
 @interface CCControlStepper : CCControl
 {
 @public
-    double                  value_;
-    BOOL                    continuous_;
-    BOOL                    autorepeat_;
-    BOOL                    wraps_;
-    double                  minimumValue_;
-    double                  maximumValue_;
-    double                  stepValue_;
+    double                  _value;
+    BOOL                    _continuous;
+    BOOL                    _autorepeat;
+    BOOL                    _wraps;
+    double                  _minimumValue;
+    double                  _maximumValue;
+    double                  _stepValue;
         
 @protected
     // Weak links to children
-	CCSprite                *minusSprite_;
-    CCSprite                *plusSprite_;
-    CCLabelTTF              *minusLabel_;
-    CCLabelTTF              *plusLabel_;
+	CCSprite                *_minusSprite;
+    CCSprite                *_plusSprite;
+    CCLabelTTF              *_minusLabel;
+    CCLabelTTF              *_plusLabel;
     
-    BOOL                    touchInsideFlag_;
-    CCControlStepperPart    touchedPart_;
-    NSInteger               autorepeatCount_;
+    BOOL                    _touchInsideFlag;
+    CCControlStepperPart    _touchedPart;
+    NSInteger               _autorepeatCount;
 }
 /** The numeric value of the stepper. */
 @property (nonatomic) double value;

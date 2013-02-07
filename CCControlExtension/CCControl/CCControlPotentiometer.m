@@ -48,17 +48,17 @@
 @end
 
 @implementation CCControlPotentiometer
-@synthesize value               = value_;
-@synthesize minimumValue        = minimumValue_;
-@synthesize maximumValue        = maximumValue_;
-@synthesize thumbSprite         = thumbSprite_;
-@synthesize progressTimer       = progressTimer_;
+@synthesize value               = _value;
+@synthesize minimumValue        = _minimumValue;
+@synthesize maximumValue        = _maximumValue;
+@synthesize thumbSprite         = _thumbSprite;
+@synthesize progressTimer       = _progressTimer;
 @synthesize previousLocation;
 
 - (void)dealloc
 {
-    SAFE_ARC_RELEASE(thumbSprite_);
-    SAFE_ARC_RELEASE(progressTimer_);
+    SAFE_ARC_RELEASE(_thumbSprite);
+    SAFE_ARC_RELEASE(_progressTimer);
     
     SAFE_ARC_SUPER_DEALLOC();
 }
@@ -84,18 +84,18 @@
     {
         self.progressTimer      = progressTimer;
         self.thumbSprite        = thumbSprite;
-        thumbSprite.position    = progressTimer_.position;
+        thumbSprite.position    = _progressTimer.position;
         
-        [self addChild:thumbSprite z:2];
-        [self addChild:progressTimer_ z:1];
+        [self addChild:_thumbSprite z:2];
+        [self addChild:_progressTimer z:1];
         [self addChild:trackSprite];
         
         self.contentSize        = trackSprite.contentSize;
         
         // Init default values
-        minimumValue_           = 0.0f;
-        maximumValue_           = 1.0f;
-        self.value              = minimumValue_;
+        _minimumValue           = 0.0f;
+        _maximumValue           = 1.0f;
+        self.value              = _minimumValue;
     }
     return self;
 }
@@ -106,54 +106,54 @@
 {
     super.enabled               = enabled;
     
-    thumbSprite_.opacity        = (enabled) ? 255.0f : 128.0f;
+    _thumbSprite.opacity        = (enabled) ? 255.0f : 128.0f;
 }
 
 - (void)setValue:(float)value
 {
     // set new value with sentinel
-    if (value < minimumValue_)
+    if (value < _minimumValue)
     {
-        value                   = minimumValue_;
+        value                   = _minimumValue;
     }
 	
-    if (value > maximumValue_) 
+    if (value > _maximumValue) 
     {
-        value                   = maximumValue_;
+        value                   = _maximumValue;
     }
     
-    value_                      = value;
+    _value                      = value;
     
     // Update thumb and progress position for new value
-    float percent               = (value - minimumValue_) / (maximumValue_ - minimumValue_);
-    progressTimer_.percentage   = percent * 100.0f;
-    thumbSprite_.rotation       = percent * 360.0f;
+    float percent               = (value - _minimumValue) / (_maximumValue - _minimumValue);
+    _progressTimer.percentage   = percent * 100.0f;
+    _thumbSprite.rotation       = percent * 360.0f;
     
     [self sendActionsForControlEvents:CCControlEventValueChanged];    
 }
 
 - (void)setMinimumValue:(float)minimumValue
 {
-    minimumValue_       = minimumValue;
+    _minimumValue       = minimumValue;
     
-    if (minimumValue_ >= maximumValue_)
+    if (_minimumValue >= _maximumValue)
     {
-        maximumValue_   = minimumValue_ + 1.0f;
+        _maximumValue   = _minimumValue + 1.0f;
     }
     
-    self.value          = maximumValue_;
+    self.value          = _maximumValue;
 }
 
 - (void)setMaximumValue:(float)maximumValue
 {
-    maximumValue_       = maximumValue;
+    _maximumValue       = maximumValue;
     
-    if (maximumValue_ <= minimumValue_)
+    if (_maximumValue <= _minimumValue)
     {
-        minimumValue_   = maximumValue_ - 1.0f;
+        _minimumValue   = _maximumValue - 1.0f;
     }
     
-    self.value          = minimumValue_;
+    self.value          = _minimumValue;
 }
 
 #pragma mark CCTargetedTouch Delegate Methods
@@ -164,7 +164,7 @@
 {
     CGPoint touchLocation   = [self touchLocation:touch];
     
-    float distance          = [self distanceBetweenPoint:progressTimer_.position andPoint:touchLocation];
+    float distance          = [self distanceBetweenPoint:_progressTimer.position andPoint:touchLocation];
 
     return distance < MIN(self.contentSize.width / 2, self.contentSize.height / 2);
 }
@@ -289,9 +289,9 @@
 
 - (void)potentiometerMoved:(CGPoint)location
 {
-    CGFloat angle       = [self angleInDegreesBetweenLineFromPoint:progressTimer_.position
+    CGFloat angle       = [self angleInDegreesBetweenLineFromPoint:_progressTimer.position
                                                            toPoint:location 
-                                                   toLineFromPoint:progressTimer_.position 
+                                                   toLineFromPoint:_progressTimer.position
                                                            toPoint:previousLocation];
     
     // fix value, if the 12 o'clock position is between location and previousLocation
@@ -304,7 +304,7 @@
         angle += 360;
     }
 
-    self.value          += angle / 360.0f * (maximumValue_ - minimumValue_);
+    self.value          += angle / 360.0f * (_maximumValue - _minimumValue);
     
     previousLocation    = location;
 }

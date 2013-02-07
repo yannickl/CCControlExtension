@@ -30,13 +30,13 @@
 @interface CCControlPotentiometer : CCControl
 {
 @public
-    float           value_; 
-    float           minimumValue_;
-    float           maximumValue_;
+    float           _value;
+    float           _minimumValue;
+    float           _maximumValue;
     
 @protected
-    CCSprite        *thumbSprite_;
-    CCProgressTimer *progressTimer_;
+    CCSprite        *_thumbSprite;
+    CCProgressTimer *_progressTimer;
 }
 /** Contains the receiver’s current value. */
 @property (nonatomic, assign) float value; 

@@ -37,7 +37,7 @@ enum positions
 @synthesize insetRight              = _insetRight;
 @synthesize preferedSize            = _preferedSize;
 
-// RGBAProtocol (v2.1)
+// CCRGBAProtocol (v2.1)
 @synthesize opacity                 = _opacity;
 @synthesize displayedOpacity        = _displayedOpacity;
 @synthesize color                   = _color;
@@ -516,7 +516,7 @@ enum positions
     _preferedSize           = preferedSize;
 }
 
-#pragma mark SpriteRGBA
+#pragma mark CCRGBAProtocol
 
 - (void)setColor:(ccColor3B)color
 {

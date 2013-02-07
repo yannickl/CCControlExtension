@@ -77,28 +77,38 @@ typedef void (^CCControlBlock) (id sender, CCControlEvent event);
 @interface CCControl : CCLayer <CCRGBAProtocol>
 {
 @public
-    GLubyte             opacity_;
-    ccColor3B           color_;
-    BOOL                opacityModifyRGB_;
+    // CCRGBAProtocol
+    GLubyte             _opacity, _displayedOpacity, _realOpacity;
+	ccColor3B           _color, _displayedColor, _realColor;
+	BOOL                _opacityModifyRGB, _cascadeOpacityEnabled, _cascadeColorEnabled;
     
-    NSInteger           defaultTouchPriority_;
+    NSInteger           _defaultTouchPriority;
     
-    CCControlState      state_;
+    CCControlState      _state;
     
-    BOOL                enabled_;
-    BOOL                selected_;
-    BOOL                highlighted_;
+    BOOL                _enabled;
+    BOOL                _selected;
+    BOOL                _highlighted;
     
 @private
-    NSMutableDictionary *dispatchTable_;
-    NSMutableDictionary *dispatchBlockTable_;
+    NSMutableDictionary *_dispatchTable;
+    NSMutableDictionary *_dispatchBlockTable;
 }
 /** Conforms to CCRGBAProtocol protocol. */
 @property (nonatomic, readwrite) GLubyte opacity;
+/** Conforms to CCRGBAProtocol (v2.1) protocol. */
+@property (nonatomic, readonly) GLubyte displayedOpacity;
 /** Conforms to CCRGBAProtocol protocol. */
 @property (nonatomic, readwrite) ccColor3B color;
-/** Conforms to CocosNodeRGBA protocol. */
+/** Conforms to CCRGBAProtocol (v2.1) protocol. */
+@property (nonatomic, readonly) ccColor3B displayedColor;
+/** Conforms to CCRGBAProtocol protocol. */
 @property (nonatomic, getter = doesOpacityModifyRGB) BOOL opacityModifyRGB;
+/** Conforms to CCRGBAProtocol (v2.1) protocol. */
+@property (nonatomic, getter = isCascadeColorEnabled) BOOL cascadeColorEnabled;
+/** Conforms to CCRGBAProtocol (v2.1) protocol. */
+@property (nonatomic, getter = isCascadeOpacityEnabled) BOOL cascadeOpacityEnabled;
+
 /** Changes the priority of the button. The lower the number, the higher the
  priority. */
 @property (nonatomic, assign) NSInteger defaultTouchPriority;

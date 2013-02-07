@@ -171,7 +171,7 @@ enum
 
 - (void)setHighlighted:(BOOL)highlighted
 {
-    highlighted_        = highlighted;
+    _highlighted        = highlighted;
     
     CCAction *action    = [self getActionByTag:kZoomActionTag];
     if (action)
@@ -260,7 +260,7 @@ enum
     }
     
     // If the current state if equal to the given state we update the layout
-    if (state_ == state)
+    if (_state == state)
     {
         [self needsLayout];
     }
@@ -296,7 +296,7 @@ enum
     [titleColorDispatchTable_ setObject:colorValue forKey:stateNumber];
     
     // If the current state if equal to the given state we update the layout
-    if (state_ == state)
+    if (_state == state)
     {
         [self needsLayout];
     }
@@ -333,7 +333,7 @@ enum
     [self addChild:label z:1];
     
     // If the current state if equal to the given state we update the layout
-    if (state_ == state)
+    if (_state == state)
     {
         [self needsLayout];
     }
@@ -444,7 +444,7 @@ enum
     }
     
     // If the current state if equal to the given state we update the layout
-    if (state_ == state)
+    if (_state == state)
     {
         [self needsLayout];
     }
@@ -484,10 +484,10 @@ enum
     {
         SAFE_ARC_RELEASE(currentTitle_);
     }
-    currentTitle_               = SAFE_ARC_RETAIN([self titleForState:state_]);
-    currentTitleColor_          = [self titleColorForState:state_];
+    currentTitle_               = SAFE_ARC_RETAIN([self titleForState:_state]);
+    currentTitleColor_          = [self titleColorForState:_state];
     
-    self.titleLabel             = [self titleLabelForState:state_];
+    self.titleLabel             = [self titleLabelForState:_state];
     if (currentTitle_)
     {
         titleLabel_.string          = currentTitle_;
@@ -496,7 +496,7 @@ enum
     titleLabel_.position        = ccp (self.contentSize.width / 2, self.contentSize.height / 2);
     
     // Update the background sprite
-    self.backgroundSprite       = [self backgroundSpriteForState:state_];
+    self.backgroundSprite       = [self backgroundSpriteForState:_state];
     backgroundSprite_.position  = ccp (self.contentSize.width / 2, self.contentSize.height / 2);
 
     // Get the title label size
@@ -551,7 +551,7 @@ enum
 		return NO;
 	}
     
-    state_              = CCControlStateHighlighted;
+    _state              = CCControlStateHighlighted;
     pushed_             = YES;
     self.highlighted    = YES;
     
@@ -576,7 +576,7 @@ enum
     BOOL isTouchMoveInside = [self isTouchInside:touch];
     if (isTouchMoveInside && ![self isHighlighted])
     {
-        state_ = CCControlStateHighlighted;
+        _state = CCControlStateHighlighted;
         
         [self setHighlighted:YES];
         
@@ -586,7 +586,7 @@ enum
         [self sendActionsForControlEvents:CCControlEventTouchDragInside];
     } else if (!isTouchMoveInside && [self isHighlighted])
     {
-        state_ = CCControlStateNormal;
+        _state = CCControlStateNormal;
         
         [self setHighlighted:NO];
         
@@ -599,7 +599,7 @@ enum
 
 - (void)ccTouchEnded:(UITouch *)touch withEvent:(UIEvent *)event
 {
-    state_              = CCControlStateNormal;
+    _state              = CCControlStateNormal;
     pushed_             = NO;
     self.highlighted    = NO;
     
@@ -614,7 +614,7 @@ enum
 
 - (void)ccTouchCancelled:(UITouch *)touch withEvent:(UIEvent *)event
 {
-    state_              = CCControlStateNormal;
+    _state              = CCControlStateNormal;
     pushed_             = NO;
     self.highlighted    = NO;
     

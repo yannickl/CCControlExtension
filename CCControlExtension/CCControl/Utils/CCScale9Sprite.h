@@ -25,6 +25,11 @@
     float               _insetRight;
     float               _insetBottom;
     
+    // CCRGBAProtocol
+    GLubyte             _opacity, _displayedOpacity, _realOpacity;
+	ccColor3B           _color, _displayedColor, _realColor;
+	BOOL                _opacityModifyRGB, _cascadeOpacityEnabled, _cascadeColorEnabled;
+    
 @protected
     CGRect              _spriteRect;
     BOOL                _spriteFrameRotated;
@@ -42,11 +47,6 @@
     CCSprite            *_bottom;
     CCSprite            *_bottomRight;
     BOOL                _spritesGenerated;
-    
-    // texture RGBA
-    GLubyte             _opacity, _displayedOpacity, _realOpacity;
-	ccColor3B           _color, _displayedColor, _realColor;
-	BOOL                _opacityModifyRGB, _cascadeOpacityEnabled, _cascadeColorEnabled;
 }
 /** Original sprite's size. */
 @property (nonatomic, readonly) CGSize originalSize;
@@ -67,15 +67,15 @@
 /** Sets the bottom side inset */
 @property(nonatomic, assign) float insetBottom;
 
-/** Conforms to CocosNodeRGBA protocol. */
+/** Conforms to CCRGBAProtocol protocol. */
 @property (nonatomic, readwrite) GLubyte opacity;
 /** Conforms to CCRGBAProtocol (v2.1) protocol. */
 @property (nonatomic, readonly) GLubyte displayedOpacity;
-/** Conforms to CocosNodeRGBA protocol. */
+/** Conforms to CCRGBAProtocol protocol. */
 @property (nonatomic, readwrite) ccColor3B color;
 /** Conforms to CCRGBAProtocol (v2.1) protocol. */
 @property (nonatomic, readonly) ccColor3B displayedColor;
-/** Conforms to CocosNodeRGBA protocol. */
+/** Conforms to CCRGBAProtocol protocol. */
 @property (nonatomic, getter = doesOpacityModifyRGB) BOOL opacityModifyRGB;
 /** Conforms to CCRGBAProtocol (v2.1) protocol. */
 @property (nonatomic, getter = isCascadeColorEnabled) BOOL cascadeColorEnabled;

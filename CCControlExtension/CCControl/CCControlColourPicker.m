@@ -144,7 +144,7 @@
 
 - (void)setColor:(ccColor3B)color
 {
-    color_      = color;
+    _color      = color;
     
     RGBA rgba;
     rgba.r      = color.r / 255.0f;
@@ -191,7 +191,7 @@
 
     // Update the value
     RGBA rgb    = [CCColourUtils RGBfromHSV:hsv_];
-    color_      = ccc3(rgb.r * 255.0f, rgb.g * 255.0f, rgb.b * 255.0f);
+    _color      = ccc3(rgb.r * 255.0f, rgb.g * 255.0f, rgb.b * 255.0f);
     
 	// Send CCControl callback
 	[self sendActionsForControlEvents:CCControlEventValueChanged];
@@ -205,7 +205,7 @@
 
     // Update the value
     RGBA rgb    = [CCColourUtils RGBfromHSV:hsv_];
-    color_      = ccc3(rgb.r * 255.0f, rgb.g * 255.0f, rgb.b * 255.0f);
+    _color      = ccc3(rgb.r * 255.0f, rgb.g * 255.0f, rgb.b * 255.0f);
     
     // Send CCControl callback
     [self sendActionsForControlEvents:CCControlEventValueChanged];

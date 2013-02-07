@@ -168,7 +168,7 @@
 
 - (void)setEnabled:(BOOL)enabled
 {
-    enabled_                            = enabled;
+    _enabled                            = enabled;
 
     switchSprite_.opacity               = (enabled) ? 255.0f : 128.0f;
 }

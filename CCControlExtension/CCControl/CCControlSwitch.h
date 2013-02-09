@@ -26,16 +26,11 @@
 
 #import "CCControl.h"
 
-@class CCControlSwitchSprite;
-
 /** @class CCControlSwitch Switch control for Cocos2D. */
 @interface CCControlSwitch : CCControl
 {
 @public
     BOOL                    _on;
-    
-@protected
-    CCControlSwitchSprite   *_switchSprite;
 }
 /** A Boolean value that determines the off/on state of the switch. */
 @property (nonatomic, getter = isOn) BOOL on;

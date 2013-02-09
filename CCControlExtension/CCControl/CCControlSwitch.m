@@ -27,6 +27,10 @@
 #import "CCControlSwitch.h"
 #import "ARCMacro.h"
 
+#if COCOS2D_VERSION >= 0x00020100
+#import "ccControlShaders.h"
+#endif
+
 #pragma mark CCControlSwitchSprite - Interface 
 
 @interface CCControlSwitchSprite : CCSprite
@@ -302,12 +306,18 @@
         
         // Set up the mask with the Mask shader
         self.maskTexture        = [maskSprite texture];
+      
+        // Position Texture Color shader
         
-        self.shaderProgram      = SAFE_ARC_AUTORELEASE([[CCGLProgram alloc] initWithVertexShaderFilename:@"PositionTextureColor.vsh"
-                                                             fragmentShaderFilename:@"CCControlSwitchMask.fsh"]);
+
+        
 #if COCOS2D_VERSION >= 0x00020100
+        self.shaderProgram      = [[CCGLProgram alloc] initWithVertexShaderByteArray:ccPositionTextureColor_vert
+                                                             fragmentShaderByteArray:ccControlSwitchMask_frag];
         GLuint program          = [self.shaderProgram program];
 #else
+        self.shaderProgram      = SAFE_ARC_AUTORELEASE([[CCGLProgram alloc] initWithVertexShaderFilename:@"PositionTextureColor.vsh"
+                                                                                  fragmentShaderFilename:@"CCControlSwitchMask.fsh"]);
         GLuint program          = self.shaderProgram->program_;
 #endif
         CHECK_GL_ERROR_DEBUG();

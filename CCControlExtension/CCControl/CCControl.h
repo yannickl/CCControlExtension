@@ -175,6 +175,16 @@ typedef void (^CCControlBlock) (id sender, CCControlEvent event);
  */
 - (void)setBlock:(CCControlBlock)block forControlEvents:(CCControlEvent)controlEvents;
 
+/**
+ * Returns a boolean value that indicates whether a location is inside the bounds
+ * of the receiver.
+ *
+ * @param location A CGPoint that represents a location.
+ *
+ * @return YES whether a location is inside the receiver’s rect.
+ */
+- (BOOL)isPointInside:(CGPoint)location;
+
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 
 /**

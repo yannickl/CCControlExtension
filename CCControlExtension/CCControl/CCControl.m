@@ -296,6 +296,11 @@
 {
 }
 
+- (BOOL)isPointInside:(CGPoint)location
+{
+    return CGRectContainsPoint([self boundingBox], location);
+}
+
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 
 - (CGPoint)touchLocation:(UITouch *)touch
@@ -313,7 +318,7 @@
     touchLocation           = [[CCDirector sharedDirector] convertToGL:touchLocation];  // Convert the position to GL space
     touchLocation           = [[self parent] convertToNodeSpace:touchLocation];         // Convert to the node space of this class
     
-    return CGRectContainsPoint([self boundingBox], touchLocation);
+    return [self isPointInside:touchLocation];
 }
 
 #elif __MAC_OS_X_VERSION_MAX_ALLOWED
@@ -331,7 +336,7 @@
     CGPoint eventLocation = [[CCDirector sharedDirector] convertEventToGL:event];
     eventLocation = [[self parent] convertToNodeSpace:eventLocation];
 
-    return CGRectContainsPoint([self boundingBox], eventLocation);
+    return [self isPointInside:eventLocation];
 }
 
 #endif

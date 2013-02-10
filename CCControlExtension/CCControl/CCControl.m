@@ -401,7 +401,7 @@
     CGPoint eventLocation   = [[CCDirector sharedDirector] convertEventToGL:event];
     eventLocation           = [[self parent] convertToNodeSpace:eventLocation];
 
-    return [self isPointInside:touchLocation];
+    return [self isPointInside:eventLocation];
 }
 
 #endif

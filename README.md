@@ -29,7 +29,7 @@ You can download cocos2d-iphone here: https://github.com/cocos2d/cocos2d-iphone/
 Build & Runtime Requirements
 ====================
 
-  * Xcode 4 or newer (LLVM 3.0 or newer)
+  * Xcode 4.2 or newer (LLVM 3.0 or newer)
   * iOS 4.0 or newer for iOS games
   * Mac OS X 10.6 or newer for Mac games
 

@@ -28,7 +28,9 @@
 
 @class CCControlSwitchSprite;
 
-/** @class CCControlSwitch Switch control for Cocos2D. */
+/** 
+ * @class CCControlSwitch Switch control for Cocos2D.
+ */
 @interface CCControlSwitch : CCControl
 {
 @public

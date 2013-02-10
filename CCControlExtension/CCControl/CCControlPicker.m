@@ -34,21 +34,20 @@
     SAFE_ARC_SUPER_DEALLOC();
 }
 
-/** Initializes a picker the background and the selection sprite. */
-- (id)initWithBackgroundSprite:(CCSprite *)backgroundSprite selectionSprite:(CCSprite *)selectionSprite
+- (id)initWithForegroundSprite:(CCSprite *)foregroundSprite selectionSprite:(CCSprite *)selectionSprite
 {
     if ((self = [super init]))
     {
-        NSAssert(backgroundSprite,   @"Background sprite must be not nil");
+        NSAssert(foregroundSprite,   @"Foreground sprite must be not nil");
         NSAssert(selectionSprite,    @"Selection sprite must be not nil");
         
         self.ignoreAnchorPointForPosition   = NO;
-        self.contentSize                    = backgroundSprite.contentSize;
+        self.contentSize                    = foregroundSprite.contentSize;
         self.anchorPoint                    = ccp(0.5f, 0.5f);
         
         CGPoint center                      = ccp (self.contentSize.width / 2, self.contentSize.height /2);
-        backgroundSprite.position           = center;
-        [self addChild:backgroundSprite z:0];
+        foregroundSprite.position           = center;
+        [self addChild:foregroundSprite z:0];
         
         selectionSprite.position            = center;
         [self addChild:selectionSprite z:2];
@@ -82,6 +81,12 @@
 #pragma mark Properties
 
 #pragma mark - CCControlPicker Public Methods
+
+- (void)reloadComponent
+{
+    
+}
+
 #pragma mark - CCControlPicker Private Methods
 
 #pragma mark -

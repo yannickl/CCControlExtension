@@ -33,6 +33,10 @@ typedef enum
     kCCControlStepperPartNone,
 } CCControlStepperPart;
 
+/**
+ * @class CCControlStepper A stepper control provides a user interface for 
+ * incrementing or decrementing a value.
+ */
 @interface CCControlStepper : CCControl
 {
 @public
@@ -45,7 +49,7 @@ typedef enum
     double                  _stepValue;
         
 @protected
-    // Weak links to children
+    // Weak links to childrens
 	CCSprite                *_minusSprite;
     CCSprite                *_plusSprite;
     CCLabelTTF              *_minusLabel;
@@ -72,7 +76,9 @@ typedef enum
 
 #pragma mark Contructors - Initializers
 
+/** Initializes a stepper with a minus and plus sprites. */
 - (id)initWithMinusSprite:(CCSprite *)minusSprite plusSprite:(CCSprite *)plusSprite;
+/** Creates a stepper with a minus and plus sprites. */
 + (id)stepperWithMinusSprite:(CCSprite *)minusSprite plusSprite:(CCSprite *)plusSprite;
 
 #pragma mark - Public Methods

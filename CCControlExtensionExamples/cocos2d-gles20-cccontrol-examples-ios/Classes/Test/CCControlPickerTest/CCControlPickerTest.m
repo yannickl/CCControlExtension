@@ -36,7 +36,7 @@
         
         CCSprite *background    = [CCSprite spriteWithFile:@"pickerBackground.png"];
         CCSprite *selection     = [CCSprite spriteWithFile:@"pickerSelection.png"];
-        CCControlPicker *picker = [[CCControlPicker alloc] initWithBackgroundSprite:background selectionSprite:selection];
+        CCControlPicker *picker = [[CCControlPicker alloc] initWithForegroundSprite:background selectionSprite:selection];
         picker.anchorPoint      = ccp (0.5f, 0.5f);
         picker.position         = ccp (screenSize.width / 2, screenSize.height / 2);
         [self addChild:picker z:0];

@@ -9,10 +9,9 @@
 #import "cocos2d.h"
 
 #import "AppDelegate.h"
-#import "CCControlSceneManager.h"
+#import "IntroLayer.h"
 
 @implementation AppController
-
 @synthesize window=window_, navController=navController_, director=director_;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -53,17 +52,6 @@
 	if( ! [director_ enableRetinaDisplay:YES] )
 		CCLOG(@"Retina Display Not supported");
     
-	// Create a Navigation Controller with the Director
-	navController_ = [[UINavigationController alloc] initWithRootViewController:director_];
-	navController_.navigationBarHidden = YES;
-    
-	// set the Navigation Controller as the root view controller
-    //	[window_ setRootViewController:rootViewController_];
-	[window_ setRootViewController:navController_];
-    
-	// make main window visible
-	[window_ makeKeyAndVisible];
-    
 	// Default texture format for PNG/BMP/TIFF/JPEG/GIF images
 	// It can be RGBA8888, RGBA4444, RGB5_A1, RGB565
 	// You can change anytime.
@@ -82,12 +70,20 @@
 	// Assume that PVR images have premultiplied alpha
 	[CCTexture2D PVRImagesHavePremultipliedAlpha:YES];
 
-    // Retrieve the scene manager
-    CCControlSceneManager *sceneManager = [CCControlSceneManager sharedControlSceneManager];
+	// And add the scene to the stack. The director will run it when it automatically when the view is displayed.
+	[director_ pushScene:[IntroLayer scene]];
     
-	// and add the scene to the stack. The director will run it when it automatically when the view is displayed.
-	[director_ pushScene:[sceneManager currentControlScene]]; 
-
+	// Create a Navigation Controller with the Director
+	navController_ = [[UINavigationController alloc] initWithRootViewController:director_];
+	navController_.navigationBarHidden = YES;
+    
+	// set the Navigation Controller as the root view controller
+    //	[window_ setRootViewController:rootViewController_];
+	[window_ setRootViewController:navController_];
+    
+	// make main window visible
+	[window_ makeKeyAndVisible];
+    
 	return YES;
 }
 

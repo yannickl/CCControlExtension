@@ -26,22 +26,49 @@
 
 #import "CCControlPickerTest.h"
 
+@interface CCControlPickerTest ()
+@property (nonatomic, strong) NSArray   *source;
+
+@end
+
 @implementation CCControlPickerTest
+@synthesize source  = _source;
+
+- (void)dealloc
+{
+    [_source release];
+    
+    [super dealloc];
+}
 
 - (id)init
 {
 	if ((self = [super init]))
     {
-        CGSize screenSize = [[CCDirector sharedDirector] winSize];
+        CGSize screenSize       = [[CCDirector sharedDirector] winSize];
+        self.source             = [NSArray arrayWithObjects:@"toto", @"tata", @"titi", nil];
         
         CCSprite *background    = [CCSprite spriteWithFile:@"pickerBackground.png"];
         CCSprite *selection     = [CCSprite spriteWithFile:@"pickerSelection.png"];
         CCControlPicker *picker = [[CCControlPicker alloc] initWithForegroundSprite:background selectionSprite:selection];
         picker.anchorPoint      = ccp (0.5f, 0.5f);
         picker.position         = ccp (screenSize.width / 2, screenSize.height / 2);
+        picker.dataSource       = self;
         [self addChild:picker z:0];
 	}
 	return self;
+}
+
+#pragma mark - CCControlPicker DataSource Methods
+
+- (NSUInteger)numberOfRowsInPickerControl:(CCControlPicker *)pickerControl
+{
+    return [_source count];
+}
+
+- (NSString *)pickerControl:(CCControlPicker *)pickerControl titleForRow:(NSUInteger)row
+{
+    return [_source objectAtIndex:row];
 }
 
 @end

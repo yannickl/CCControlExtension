@@ -27,17 +27,27 @@
 #import "CCControlPicker.h"
 #import "ARCMacro.h"
 
+#define CCControlPickerDefaultRowHeight 44 //px
+
 @interface CCControlPicker ()
 @property (nonatomic, strong) UIPanGestureRecognizer    *panRecognizer;
+@property (nonatomic, strong) NSMutableArray            *cells;
+@property (nonatomic, assign) NSInteger                selectedRow;
+
+- (void)needsLayoutWithRowNumber:(NSUInteger)rowNumber;
 
 @end
 
 @implementation CCControlPicker
 @synthesize panRecognizer   = _panRecognizer;
+@synthesize cells           = _cells;
+@synthesize selectedRow     = _selectedRow;
+@synthesize dataSource      = _dataSource;
 
 - (void)dealloc
 {
     SAFE_ARC_RELEASE(_panRecognizer);
+    SAFE_ARC_RELEASE(_cells);
     
     SAFE_ARC_SUPER_DEALLOC();
 }
@@ -52,6 +62,8 @@
         self.ignoreAnchorPointForPosition   = NO;
         self.contentSize                    = foregroundSprite.contentSize;
         self.anchorPoint                    = ccp(0.5f, 0.5f);
+        self.cells                          = [NSMutableArray array];
+        self.selectedRow                    = 0;
         
         CGPoint center                      = ccp (self.contentSize.width / 2, self.contentSize.height /2);
         foregroundSprite.position           = center;
@@ -73,6 +85,8 @@
     _panRecognizer.maximumNumberOfTouches   = 1;
     
     [[[CCDirector sharedDirector] view] addGestureRecognizer:_panRecognizer];
+    
+    [self reloadComponent];
 }
 
 - (void)onExit
@@ -109,12 +123,52 @@
 
 #pragma mark - CCControlPicker Public Methods
 
+- (double)rowHeight
+{
+    return CCControlPickerDefaultRowHeight;
+}
+
+- (NSUInteger)numberOfRows
+{
+    return 0;
+}
+
 - (void)reloadComponent
+{
+    if (_dataSource)
+    {
+        [self needsLayoutWithRowNumber:[_dataSource numberOfRowsInPickerControl:self]];
+    }
+    
+    [self needsLayoutWithRowNumber:0];
+}
+
+- (void)selectRow:(NSInteger)row animated:(BOOL)animated
 {
     
 }
 
+- (NSInteger)selectedRow
+{
+    return _selectedRow;
+}
+
 #pragma mark - CCControlPicker Private Methods
+
+- (void)needsLayoutWithRowNumber:(NSUInteger)rowNumber
+{
+    for (NSUInteger i = 0; i < rowNumber; i++)
+    {
+        CCLabelTTF *lab = [CCLabelTTF labelWithString:[_dataSource pickerControl:self titleForRow:i]
+                                           dimensions:CGSizeMake(self.contentSize.width, 30)
+                                           hAlignment:UITextAlignmentCenter
+                                             fontName:@"Arial"
+                                             fontSize:25];
+        lab.color       = ccWHITE;
+        lab.position    = ccp (self.contentSize.width / 2, self.contentSize.height / 2);
+        [self addChild:lab z:1];
+    }
+}
 
 #pragma mark -
 #pragma mark CCTargetedTouch Delegate Methods

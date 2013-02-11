@@ -26,6 +26,6 @@
 
 #import "CCControlScene.h"
 
-@interface CCControlPickerTest : CCControlScene
+@interface CCControlPickerTest : CCControlScene <CCControlPickerDataSource>
 
 @end

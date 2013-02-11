@@ -23,7 +23,7 @@
 	<key>--project-name</key>
 	<string>CCControlExtension</string>
 	<key>--project-version</key>
-	<string>1.0</string>
+	<string>2.0</string>
 	<key>--docset-feed-url</key>
 	<string>http://yannickloriot.com/library/ios/cccontrolextension/%DOCSETATOMFILENAME</string>
 	<key>--docset-package-url</key>

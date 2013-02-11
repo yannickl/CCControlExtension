@@ -29,12 +29,17 @@
 
 
 #import "CCControl.h"
-
 #import "CCColourUtils.h"
 
 @class CCControlSaturationBrightnessPicker;
 @class CCControlHuePicker;
 
+/**
+ * Colour Picker control for Cocos2D.
+ *
+ * The color picker is a block-level element and is 353x334 pixels large.
+ * You can control the position by styling your placeholder.
+ */
 @interface CCControlColourPicker : CCControl
 {
 @protected
@@ -46,10 +51,17 @@
 }
 
 #pragma mark - Constuctors - Initializers
+/** @name Create ColourPickers */
 
 /** Creates a color picker control object. */
 + (id)colorPicker;
 
 #pragma mark - Public Methods
+
+#pragma mark Getting the Color
+/** @name Getting the Color */
+
+/** The current color of the picker. */
+@property (nonatomic, readwrite) ccColor3B color;
 
 @end

@@ -26,7 +26,14 @@
 
 #import "CCControl.h"
 
-/** @class CCControlSlider Slider control for Cocos2D. */
+/**
+ * Slider control for Cocos2D.
+ *
+ * A CCControlSlider object is a visual control used to select a single
+ * value from a continuous range of values. An indicator, or thumb, notes
+ * the current value of the slider and can be moved by the user to change 
+ * the setting.
+ */
 @interface CCControlSlider : CCControl 
 {  
 @public
@@ -39,9 +46,12 @@
 	CCSprite    *_thumbSprite;
     CCSprite    *_progressSprite;
 	CCSprite    *_backgroundSprite;
-}  
+}
+/** @name Accessing the Slider’s Value */
 /** Contains the receiver’s current value. */
-@property (nonatomic, assign) float value; 
+@property (nonatomic, assign) float value;
+
+/** @name Accessing the Slider’s Value Limits */
 /** Contains the minimum value of the receiver. 
  * The default value of this property is 0.0. */
 @property (nonatomic, assign) float minimumValue;
@@ -50,10 +60,13 @@
 @property (nonatomic, assign) float maximumValue;
 
 #pragma mark Contructors - Initializers
+/** @name Creating Sliders */
 
 /** 
  * Creates slider with a background filename, a progress filename and a 
  * thumb image filename.
+ *
+ * @see sliderWithBackgroundSprite:progressSprite:thumbSprite:
  */
 + (id)sliderWithBackgroundFile:(NSString *)bgFile progressFile:(NSString *)progressFile thumbFile:(NSString *)thumbFile;
 

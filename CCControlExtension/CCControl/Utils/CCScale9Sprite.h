@@ -12,6 +12,11 @@
 
 /**
  * A 9-slice sprite for cocos2d.
+ *
+ * 9-slice scaling allows you to specify how scaling is applied
+ * to specific areas of a sprite. With 9-slice scaling (3x3 grid),
+ * you can ensure that the sprite does not become distorted when
+ * scaled.
  */
 @interface CCScale9Sprite : CCNode <CCRGBAProtocol>
 {
@@ -48,10 +53,13 @@
     CCSprite            *_bottomRight;
     BOOL                _spritesGenerated;
 }
+/** @name Setting the Default Sizes */
 /** Original sprite's size. */
 @property (nonatomic, readonly) CGSize originalSize;
 /** Prefered sprite's size. By default the prefered size is the original size. */
 @property (nonatomic, assign) CGSize preferedSize;
+
+/** @name 3x3 Grid Attributes */
 /** 
  * The end-cap insets. 
  * On a non-resizeable sprite, this property is set to CGRectZero; the sprite 
@@ -67,6 +75,7 @@
 /** Sets the bottom side inset */
 @property(nonatomic, assign) float insetBottom;
 
+/** @name RGBA Protocol Properties */
 /** Conforms to CCRGBAProtocol protocol. */
 @property (nonatomic, readwrite) GLubyte opacity;
 /** Conforms to CCRGBAProtocol (v2.1) protocol. */
@@ -83,6 +92,7 @@
 @property (nonatomic, getter = isCascadeOpacityEnabled) BOOL cascadeOpacityEnabled;
 
 #pragma mark Constructor - Initializers
+/** @name Create 9-Scale Sprites */
 
 /**
  * Initializes a 9-slice sprite with a texture file, a delimitation zone and
@@ -254,6 +264,7 @@
 + (id)spriteWithSpriteFrameName:(NSString *)spriteFrameName;
 
 #pragma mark Public Methods
+/** @name Modifying the 3x3 Grid */
 
 /**
  * Creates and returns a new sprite object with the specified cap insets.
@@ -265,11 +276,12 @@
  */
 - (CCScale9Sprite *)resizableSpriteWithCapInsets:(CGRect)capInsets;
 
+/** @name Changing the Appearance */
 /**
  * Sets the sprite frame used to display the 9-slice sprite.
  *
  * @param spriteFrame The new sprite frame.
  */
-- (void) setSpriteFrame:(CCSpriteFrame*) spriteFrame;
+- (void)setSpriteFrame:(CCSpriteFrame *)spriteFrame;
 
 @end

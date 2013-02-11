@@ -27,20 +27,27 @@
 #import "CCControl.h"
 
 /**
- * @class CCControlPicker Picker control for Cocos2D.
+ * Picker control for Cocos2D.
+ *
  * The CCControlPicker class implements objects, called picker controls, that
  * use a spinning-wheel or slot-machine metaphor to show one set of values.
  * Users select values by rotating the wheels so that the desired row of values
  * aligns with a selection indicator.
  */
-@interface CCControlPicker : CCControl
+@interface CCControlPicker : CCControl <UIGestureRecognizerDelegate>
+{
+}
 
 #pragma mark Contructors - Initializers
+/** @name Create Pickers */
 
 /** Initializes a picker the foreground and the selection sprite. */
 - (id)initWithForegroundSprite:(CCSprite *)foregroundSprite selectionSprite:(CCSprite *)selectionSprite;
 
 #pragma mark - Public Methods
+
+#pragma mark Reloading the View Picker
+/** @name Reloading the View Picker */
 
 /**
  * Reloads the component of the picker control.

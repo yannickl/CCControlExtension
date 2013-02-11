@@ -27,10 +27,18 @@
 #import "CCControlPicker.h"
 #import "ARCMacro.h"
 
+@interface CCControlPicker ()
+@property (nonatomic, strong) UIPanGestureRecognizer    *panRecognizer;
+
+@end
+
 @implementation CCControlPicker
+@synthesize panRecognizer   = _panRecognizer;
 
 - (void)dealloc
 {
+    SAFE_ARC_RELEASE(_panRecognizer);
+    
     SAFE_ARC_SUPER_DEALLOC();
 }
 
@@ -53,6 +61,25 @@
         [self addChild:selectionSprite z:2];
     }
     return self;
+}
+
+- (void)onEnter
+{
+    [super onEnter];
+    
+    self.panRecognizer                      = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panAction:)];
+    _panRecognizer.delegate                 = self;
+    _panRecognizer.minimumNumberOfTouches   = 1;
+    _panRecognizer.maximumNumberOfTouches   = 1;
+    
+    [[[CCDirector sharedDirector] view] addGestureRecognizer:_panRecognizer];
+}
+
+- (void)onExit
+{
+    [[[CCDirector sharedDirector] view] addGestureRecognizer:_panRecognizer];
+    
+    [super onExit];
 }
 
 - (void)visit
@@ -92,13 +119,30 @@
 #pragma mark -
 #pragma mark CCTargetedTouch Delegate Methods
 
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
-
 - (BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event
 {
     return NO;
 }
 
-#endif
+#pragma mark - UIGestureRecognizer Delegate Methods
+
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)recognizer
+{
+    CGPoint gestureLocation = [recognizer locationInView:recognizer.view];
+    gestureLocation         = [[CCDirector sharedDirector] convertToGL:gestureLocation];
+    gestureLocation         = [[self parent] convertToNodeSpace:gestureLocation];
+    
+    if ([self isPointInside:gestureLocation])
+    {
+        return YES;
+    }
+    
+    return NO;
+}
+
+- (void)panAction:(UIGestureRecognizer *)recognizer
+{
+    NSLog(@"here");
+}
 
 @end

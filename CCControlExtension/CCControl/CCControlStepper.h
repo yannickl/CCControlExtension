@@ -34,7 +34,7 @@ typedef enum
 } CCControlStepperPart;
 
 /**
- * @class CCControlStepper A stepper control provides a user interface for 
+ * CCControlStepper is a stepper control provides a user interface for 
  * incrementing or decrementing a value.
  */
 @interface CCControlStepper : CCControl
@@ -59,8 +59,11 @@ typedef enum
     CCControlStepperPart    _touchedPart;
     NSInteger               _autorepeatCount;
 }
+/** @name Accessing the Stepper’s Value */
 /** The numeric value of the stepper. */
 @property (nonatomic) double value;
+
+/** @name Configuring the Stepper */
 /** The continuous vs. noncontinuous state of the stepper. */
 @property (nonatomic, getter=isContinuous) BOOL continuous;
 /** The automatic vs. nonautomatic repeat state of the stepper. */
@@ -75,10 +78,18 @@ typedef enum
 @property (nonatomic) double stepValue;
 
 #pragma mark Contructors - Initializers
+/** @name Creating Steppers */
 
-/** Initializes a stepper with a minus and plus sprites. */
+/**
+ * Initializes a stepper with a minus and plus sprites.
+ */
 - (id)initWithMinusSprite:(CCSprite *)minusSprite plusSprite:(CCSprite *)plusSprite;
-/** Creates a stepper with a minus and plus sprites. */
+
+/**
+ * Creates a stepper with a minus and plus sprites.
+ *
+ * @see initWithMinusSprite:plusSprite:
+ */
 + (id)stepperWithMinusSprite:(CCSprite *)minusSprite plusSprite:(CCSprite *)plusSprite;
 
 #pragma mark - Public Methods

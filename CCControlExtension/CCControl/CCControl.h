@@ -55,24 +55,25 @@ enum
 };
 typedef NSUInteger CCControlState;
 
-/** Defines the CCControl block type. 
+/** 
+ * Defines the CCControl block type.
  *
  * @param sender The sender object- that is call the block.
  * @param event The event which is fired.
  */
 typedef void (^CCControlBlock) (id sender, CCControlEvent event);
 
-/*
- * @class
- * CCControl is inspired by the UIControl API class from the UIKit library of 
- * CocoaTouch. It provides a base class for control CCSprites such as CCButton 
- * or CCSlider that convey user intent to the application.
+/**
+ * CCControl is inspired by the UIControl API class from the UIKit library of
+ * CocoaTouch. It provides a base class for Cocos2D control such as CCControlButton 
+ * or CCControlSlider that convey user intent to the application.
  *
- * The goal of CCControl is to define an interface and base implementation for 
+ * The goal of CCControl is to define an interface and a base implementation for 
  * preparing action messages and initially dispatching them to their targets when
  * certain events occur.
  *
- * To use the CCControl you have to subclass it.
+ * To use the CCControl class you have to subclass it and implement your own 
+ * behavior.
  */
 @interface CCControl : CCLayer <CCRGBAProtocol>
 {
@@ -94,6 +95,7 @@ typedef void (^CCControlBlock) (id sender, CCControlEvent event);
     NSMutableDictionary *_dispatchTable;
     NSMutableDictionary *_dispatchBlockTable;
 }
+/** @name RGBA Protocol Properties */
 /** Conforms to CCRGBAProtocol protocol. */
 @property (nonatomic, readwrite) GLubyte opacity;
 /** Conforms to CCRGBAProtocol (v2.1) protocol. */
@@ -109,6 +111,7 @@ typedef void (^CCControlBlock) (id sender, CCControlEvent event);
 /** Conforms to CCRGBAProtocol (v2.1) protocol. */
 @property (nonatomic, getter = isCascadeOpacityEnabled) BOOL cascadeOpacityEnabled;
 
+/** @name Object Attributes */
 /** Changes the priority of the button. The lower the number, the higher the
  priority. */
 @property (nonatomic, assign) NSInteger defaultTouchPriority;
@@ -123,7 +126,9 @@ typedef void (^CCControlBlock) (id sender, CCControlEvent event);
 /** True if all of the controls parents are visible */
 @property(nonatomic,readonly) BOOL hasVisibleParents;
 
+
 #pragma mark CCControl - Preparing and Sending Action Messages
+/** @name Preparing and Sending Action Messages */
 
 /**
  * Sends action messages for the given control events.
@@ -162,7 +167,9 @@ typedef void (^CCControlBlock) (id sender, CCControlEvent event);
  */
 - (void)removeTarget:(id)target action:(SEL)action forControlEvents:(CCControlEvent)controlEvents;
 
+
 #pragma mark CCControl - Preparing Blocks
+/** @name Preparing Blocks */
 
 /**
  * Sets a block for a particular event (or events) to an internal dispatch 
@@ -174,6 +181,10 @@ typedef void (^CCControlBlock) (id sender, CCControlEvent event);
  * action message is sent. See "CCControlEvent" for bitmask constants.
  */
 - (void)setBlock:(CCControlBlock)block forControlEvents:(CCControlEvent)controlEvents;
+
+
+#pragma mark - Tracking Touches and Redrawing Controls
+/** @name Tracking Touches and Redrawing Controls */
 
 /**
  * Returns a boolean value that indicates whether a location is inside the bounds
@@ -190,6 +201,11 @@ typedef void (^CCControlBlock) (id sender, CCControlEvent event);
 /**
  * Returns a point corresponding to the touh location converted into the 
  * control space coordinates.
+ *
+ * @param touch A UITouch object that represents a touch.
+ *
+ * @return A point specifying the location of the touch in the current control
+ * context.
  */
 - (CGPoint)touchLocation:(UITouch *)touch;
 
@@ -207,6 +223,11 @@ typedef void (^CCControlBlock) (id sender, CCControlEvent event);
 /**
  * Returns a point corresponding to the event location converted into the
  * control space coordinates.
+ *
+ * @param event An NSEvent object representing the event.
+ *
+ * @return A point specifying the location of the event in the current control
+ * context.
  */
 - (CGPoint)eventLocation:(NSEvent *)event;
 

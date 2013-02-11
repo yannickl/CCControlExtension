@@ -32,7 +32,9 @@
 #import "CCControl.h"
 #import "CCControlButton.h"
 #import "CCControlColourPicker.h"
-#import "CCControlPicker.h"
+#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+    #import "CCControlPicker.h"
+#endif
 #import "CCControlPotentiometer.h"
 #import "CCControlSlider.h"
 #import "CCControlStepper.h"

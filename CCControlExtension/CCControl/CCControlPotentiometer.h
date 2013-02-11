@@ -26,7 +26,14 @@
 
 #import "CCControl.h"
 
-/** @class CCControlPotentiometer Potentiometer control for Cocos2D. */
+/** 
+ * Potentiometer control for Cocos2D.
+ *
+ * A CCControlPotentiometer object is a visual control used to select a 
+ * single value in a circular motion from a continuous range of values.
+ * An indicator notes the current value of the potentiometer and can be
+ * moved by the user to change the setting.
+ */
 @interface CCControlPotentiometer : CCControl
 {
 @public
@@ -38,8 +45,11 @@
     CCSprite        *_thumbSprite;
     CCProgressTimer *_progressTimer;
 }
+/** @name Accessing the Potentiometer’s Value */
 /** Contains the receiver’s current value. */
-@property (nonatomic, assign) float value; 
+@property (nonatomic, assign) float value;
+
+/** @name Accessing the Potentiometer’s Value Limits */
 /** Contains the minimum value of the receiver. 
  * The default value of this property is 0.0. */
 @property (nonatomic, assign) float minimumValue;
@@ -48,11 +58,7 @@
 @property (nonatomic, assign) float maximumValue;
 
 #pragma mark Contructors - Initializers
-
-/** 
- * Creates potentiometer with a track filename and a progress filename.
- */
-+ (id)potentiometerWithTrackFile:(NSString *)backgroundFile progressFile:(NSString *)progressFile thumbFile:(NSString *)thumbFile;
+/** @name Creating Potentiometers */
 
 /** 
  * Initializes a potentiometer with a track sprite and a progress bar.
@@ -61,6 +67,13 @@
  * @param progressSprite CCProgressTimer, that is used as a progress bar.
  */
 - (id)initWithTrackSprite:(CCSprite *)trackSprite progressSprite:(CCProgressTimer *)progressTimer thumbSprite:(CCSprite *)thumbSprite;
+
+/**
+ * Creates potentiometer with a track filename and a progress filename.
+ *
+ * @see initWithTrackSprite:progressSprite:thumbSprite:
+ */
++ (id)potentiometerWithTrackFile:(NSString *)backgroundFile progressFile:(NSString *)progressFile thumbFile:(NSString *)thumbFile;
 
 #pragma mark - Public Methods
 

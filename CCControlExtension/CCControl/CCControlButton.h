@@ -26,14 +26,20 @@
 
 #import "CCControl.h"
 
-/* Define the button margin for Left/Right edge */
+/** Define the button margin for Left/Right edge */
 #define CCControlButtonMarginLR 8 // px
-/* Define the button margin for Top/Bottom edge */
+/** Define the button margin for Top/Bottom edge */
 #define CCControlButtonMarginTB 2 // px
 
 @class CCScale9Sprite;
 
-/** @class CCControlButton Button control for Cocos2D. */
+/**
+ * Button control for Cocos2D.
+ *
+ * A button intercepts touch events and sends an action message to a
+ * target object when tapped. Methods for setting the target and action
+ * are inherited from CCControl.
+ */
 @interface CCControlButton : CCControl
 {
 @public    
@@ -56,12 +62,9 @@
     NSMutableDictionary                     *_backgroundSpriteDispatchTable;
     CGPoint                                 _labelAnchorPoint;
 }
-#pragma mark Configuring Background Image Size
 /** Adjust the background image. YES by default. If the property is set to NO, the 
  background will use the prefered size of the background image. */
 @property (nonatomic, getter = doesAdjustBackgroundImage) BOOL adjustBackgroundImage;
-
-#pragma mark Getting the Current State
 /** The current title that is displayed on the button. */
 @property(nonatomic, readonly, strong) NSString *currentTitle;
 /** The current color used to display the title. */
@@ -81,6 +84,7 @@
 @property (nonatomic, assign) float marginLR, marginTB;
 
 #pragma mark Constructors - Initializers
+/** @name Creating Buttons */
 
 /** Initializes a button with a label in foreground and a sprite in background. */
 - (id)initWithLabel:(CCNode<CCLabelProtocol, CCRGBAProtocol> *)label backgroundSprite:(CCScale9Sprite *)backgroundsprite;
@@ -101,6 +105,9 @@
 + (id)buttonWithBackgroundSprite:(CCScale9Sprite *)sprite;
 
 #pragma mark - Public Methods
+
+#pragma mark Configuring/Getting the Button Title
+/** @name Configuring/Getting the Button Title */
 
 /**
  * Returns the title used for a state.
@@ -207,6 +214,9 @@
  */
 - (float) titleTTFSizeForState:(CCControlState)state;
 
+#pragma mark Configuring/Getting Button Background Presentation
+/** @name Configuring/Getting Button Background Presentation */
+
 /**
  * Returns the background sprite used for a state.
  *
@@ -232,4 +242,5 @@
  * in "CCControlState".
  */
 - (void)setBackgroundSpriteFrame:(CCSpriteFrame*)spriteFrame forState:(CCControlState)state;
+
 @end

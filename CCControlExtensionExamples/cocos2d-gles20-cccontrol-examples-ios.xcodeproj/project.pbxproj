@@ -15,8 +15,6 @@
 		C234FFBE15264B9300141008 /* CCControl.m in Sources */ = {isa = PBXBuildFile; fileRef = C234FFA915264B9300141008 /* CCControl.m */; };
 		C234FFBF15264B9300141008 /* CCControlButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C234FFAB15264B9300141008 /* CCControlButton.m */; };
 		C234FFC015264B9300141008 /* CCControlColourPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = C234FFAD15264B9300141008 /* CCControlColourPicker.m */; };
-		C234FFC115264B9300141008 /* CCControlHuePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = C234FFAF15264B9300141008 /* CCControlHuePicker.m */; };
-		C234FFC215264B9300141008 /* CCControlSaturationBrightnessPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = C234FFB115264B9300141008 /* CCControlSaturationBrightnessPicker.m */; };
 		C234FFC315264B9300141008 /* CCControlSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = C234FFB315264B9300141008 /* CCControlSlider.m */; };
 		C234FFC415264B9300141008 /* CCColourUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C234FFB615264B9300141008 /* CCColourUtils.m */; };
 		C234FFC515264B9300141008 /* CCScale9Sprite.m in Sources */ = {isa = PBXBuildFile; fileRef = C234FFB815264B9300141008 /* CCScale9Sprite.m */; };
@@ -268,10 +266,6 @@
 		C234FFAB15264B9300141008 /* CCControlButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCControlButton.m; sourceTree = "<group>"; };
 		C234FFAC15264B9300141008 /* CCControlColourPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCControlColourPicker.h; sourceTree = "<group>"; };
 		C234FFAD15264B9300141008 /* CCControlColourPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCControlColourPicker.m; sourceTree = "<group>"; };
-		C234FFAE15264B9300141008 /* CCControlHuePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCControlHuePicker.h; sourceTree = "<group>"; };
-		C234FFAF15264B9300141008 /* CCControlHuePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCControlHuePicker.m; sourceTree = "<group>"; };
-		C234FFB015264B9300141008 /* CCControlSaturationBrightnessPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCControlSaturationBrightnessPicker.h; sourceTree = "<group>"; };
-		C234FFB115264B9300141008 /* CCControlSaturationBrightnessPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCControlSaturationBrightnessPicker.m; sourceTree = "<group>"; };
 		C234FFB215264B9300141008 /* CCControlSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCControlSlider.h; sourceTree = "<group>"; };
 		C234FFB315264B9300141008 /* CCControlSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCControlSlider.m; sourceTree = "<group>"; };
 		C234FFB515264B9300141008 /* CCColourUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCColourUtils.h; sourceTree = "<group>"; };
@@ -744,10 +738,6 @@
 				C234FFAB15264B9300141008 /* CCControlButton.m */,
 				C234FFAC15264B9300141008 /* CCControlColourPicker.h */,
 				C234FFAD15264B9300141008 /* CCControlColourPicker.m */,
-				C234FFAE15264B9300141008 /* CCControlHuePicker.h */,
-				C234FFAF15264B9300141008 /* CCControlHuePicker.m */,
-				C234FFB015264B9300141008 /* CCControlSaturationBrightnessPicker.h */,
-				C234FFB115264B9300141008 /* CCControlSaturationBrightnessPicker.m */,
 				F420A84515B3394900A5F4BD /* CCControlPotentiometer.h */,
 				F420A84615B3394900A5F4BD /* CCControlPotentiometer.m */,
 				C234FFB215264B9300141008 /* CCControlSlider.h */,
@@ -1680,8 +1670,6 @@
 				C234FFBE15264B9300141008 /* CCControl.m in Sources */,
 				C234FFBF15264B9300141008 /* CCControlButton.m in Sources */,
 				C234FFC015264B9300141008 /* CCControlColourPicker.m in Sources */,
-				C234FFC115264B9300141008 /* CCControlHuePicker.m in Sources */,
-				C234FFC215264B9300141008 /* CCControlSaturationBrightnessPicker.m in Sources */,
 				C234FFC315264B9300141008 /* CCControlSlider.m in Sources */,
 				C234FFC415264B9300141008 /* CCColourUtils.m in Sources */,
 				C234FFC515264B9300141008 /* CCScale9Sprite.m in Sources */,

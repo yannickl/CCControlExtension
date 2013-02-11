@@ -27,31 +27,51 @@
 #import "CCControl.h"
 
 /**
- * @class CCControlSwitch Switch control for Cocos2D.
+ * CCControlSwitch is a switch control for Cocos2D.
+ *
+ * The CCControlSwitch class is useful to create and manage On/Off buttons,
+ * like for example, in the option menus for volume as example.
  */
 @interface CCControlSwitch : CCControl
 {
 @public
     BOOL                    _on;
 }
-/** A Boolean value that determines the off/on state of the switch. */
-@property (nonatomic, getter = isOn) BOOL on;
 
 #pragma mark Contructors - Initializers
+/** @name Creating Switches */
 
-/** Initializes a switch with a mask sprite, on/off sprites for on/off states and a thumb sprite. */
+/**
+ * Initializes a switch with a mask sprite, on/off sprites for on/off states and a thumb sprite.
+ */
 - (id)initWithMaskSprite:(CCSprite *)maskSprite onSprite:(CCSprite *)onSprite offSprite:(CCSprite *)offSprite thumbSprite:(CCSprite *)thumbSprite;
 
-/** Creates a switch with a mask sprite, on/off sprites for on/off states and a thumb sprite. */
+/** 
+ * Creates a switch with a mask sprite, on/off sprites for on/off states and a thumb sprite.
+ *
+ * @see initWithMaskSprite:onSprite:offSprite:thumbSprite:
+ */
 + (id)switchWithMaskSprite:(CCSprite *)maskSprite onSprite:(CCSprite *)onSprite offSprite:(CCSprite *)offSprite thumbSprite:(CCSprite *)thumbSprite;
 
-/** Initializes a switch with a mask sprite, on/off sprites for on/off states, a thumb sprite and an on/off labels. */
+/** 
+ * Initializes a switch with a mask sprite, on/off sprites for on/off states, a thumb sprite and an on/off labels. 
+ */
 - (id)initWithMaskSprite:(CCSprite *)maskSprite onSprite:(CCSprite *)onSprite offSprite:(CCSprite *)offSprite thumbSprite:(CCSprite *)thumbSprite onLabel:(CCNode<CCLabelProtocol, CCRGBAProtocol> *)onLabel offLabel:(CCNode<CCLabelProtocol, CCRGBAProtocol> *)offLabel;
 
-/** Creates a switch with a mask sprite, on/off sprites for on/off states, a thumb sprite and an on/off labels. */
+/**
+ * Creates a switch with a mask sprite, on/off sprites for on/off states, a thumb sprite and an on/off labels.
+ *
+ * @see initWithMaskSprite:onSprite:offSprite:thumbSprite:onLabel:offLabel:
+ */
 + (id)switchWithMaskSprite:(CCSprite *)maskSprite onSprite:(CCSprite *)onSprite offSprite:(CCSprite *)offSprite thumbSprite:(CCSprite *)thumbSprite onLabel:(CCNode<CCLabelProtocol, CCRGBAProtocol> *)onLabel offLabel:(CCNode<CCLabelProtocol, CCRGBAProtocol> *)offLabel;
 
 #pragma mark - Public Methods
+
+#pragma mark Setting the Off/On State
+/** @name Setting the Off/On State */
+
+/** A Boolean value that determines the off/on state of the switch. */
+@property (nonatomic, getter = isOn) BOOL on;
 
 /**
  * Set the state of the switch to On or Off, optionally animating the transition.

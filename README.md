@@ -19,7 +19,7 @@ How to use it
 The `CCControlExtension.h` includes all the already made controls such as button, slider, switch, colour picker, etc.
 There are various [examples][] to understand how to use controls and the possibilities they offer.
 
-For more informations you can check [my blog][].
+For more informations you can check [my blog][] and the [api documentation].
 
 License
 ====================
@@ -45,3 +45,4 @@ How to get the source
 
 [my blog]: http://yannickloriot.com/2011/08/create-a-control-object-with-cocos2d-for-iphone/
 [examples]: https://github.com/YannickL/CCControlExtension/tree/master/CCControlExamples
+[api documentation]: http://yannickloriot.com/library/ios/cccontrolextension/

@@ -3,17 +3,17 @@
  *
  * Copyright 2011 Yannick Loriot.
  * http://yannickloriot.com
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -27,10 +27,11 @@
 #import "CCControlSlider.h"
 #import "ARCMacro.h"
 
-@interface CCControlSlider () 
+@interface CCControlSlider ()
 @property (nonatomic, strong) CCSprite  *thumbSprite;
 @property (nonatomic, strong) CCSprite  *progressSprite;
 @property (nonatomic, strong) CCSprite  *backgroundSprite;
+@property (nonatomic, assign) float     animatedValue;
 
 /** Factorize the event dispath into these methods. */
 - (void)sliderBegan:(CGPoint)location;
@@ -40,12 +41,16 @@
 /** Returns the value for the given location. */
 - (float)valueForLocation:(CGPoint)location;
 
+/** Layout the slider with the given value. */
+- (void)layoutWithValue:(float)value;
+
 @end
 
 @implementation CCControlSlider
 @synthesize thumbSprite         = _thumbSprite;
 @synthesize progressSprite      = _progressSprite;
 @synthesize backgroundSprite    = _backgroundSprite;
+@synthesize animatedValue       = _animatedValue;
 @synthesize value               = _value;
 @synthesize minimumValue        = _minimumValue;
 @synthesize maximumValue        = _maximumValue;
@@ -70,7 +75,7 @@
 	// Prepare thumb for slider
     CCSprite *thumbSprite       = [CCSprite spriteWithFile:thumbname];
     
-    return [self sliderWithBackgroundSprite:backgroundSprite 
+    return [self sliderWithBackgroundSprite:backgroundSprite
                              progressSprite:progressSprite
                                 thumbSprite:thumbSprite];
 }
@@ -78,14 +83,14 @@
 + (id)sliderWithBackgroundSprite:(CCSprite *)backgroundSprite progressSprite:(CCSprite *)pogressSprite thumbSprite:(CCSprite *)thumbSprite
 {
     return SAFE_ARC_AUTORELEASE([[self alloc] initWithBackgroundSprite:backgroundSprite
-                                    progressSprite:pogressSprite
-                                       thumbSprite:thumbSprite]);
+                                                        progressSprite:pogressSprite
+                                                           thumbSprite:thumbSprite]);
 }
 
 // Designated init
-- (id)initWithBackgroundSprite:(CCSprite *)backgroundSprite progressSprite:(CCSprite *)progressSprite thumbSprite:(CCSprite *)thumbSprite  
-{  
-    if ((self = [super init]))  
+- (id)initWithBackgroundSprite:(CCSprite *)backgroundSprite progressSprite:(CCSprite *)progressSprite thumbSprite:(CCSprite *)thumbSprite
+{
+    if ((self = [super init]))
     {
         NSAssert(backgroundSprite,  @"Background sprite must be not nil");
         NSAssert(progressSprite,    @"Progress sprite must be not nil");
@@ -101,7 +106,7 @@
         CGRect maxRect                  = CGRectUnion([_backgroundSprite boundingBox], [_thumbSprite boundingBox]);
         self.contentSize                = CGSizeMake(maxRect.size.width, maxRect.size.height);
         
-		// Add the slider background 
+		// Add the slider background
         _backgroundSprite.anchorPoint   = ccp (0.5f, 0.5f);
 		_backgroundSprite.position      = ccp(self.contentSize.width / 2, self.contentSize.height / 2);
 		[self addChild:_backgroundSprite];
@@ -119,8 +124,8 @@
         _minimumValue                   = 0.0f;
         _maximumValue                   = 1.0f;
         self.value                      = _minimumValue;
-    }  
-    return self;  
+    }
+    return self;
 }
 
 #pragma mark Properties
@@ -134,22 +139,12 @@
 
 - (void)setValue:(float)value
 {
-	// set new value with sentinel
-    if (value < _minimumValue)
-    {
-		value           = _minimumValue;
-    }
-	
-    if (value > _maximumValue) 
-    {
-		value           = _maximumValue;
-    }
-    
-    _value              = value;
-	
-    [self needsLayout];
-    
-    [self sendActionsForControlEvents:CCControlEventValueChanged];
+    [self setValue:value animated:NO];
+}
+
+- (void)setAnimatedValue:(float)animatedValue
+{
+    [self layoutWithValue:animatedValue];
 }
 
 - (void)setMinimumValue:(float)minimumValue
@@ -312,17 +307,30 @@
 
 - (void)needsLayout
 {
-    // Update thumb position for new value
-    float percent               = (_value - _minimumValue) / (_maximumValue - _minimumValue);
+    [self layoutWithValue:_value];
+}
+
+- (void)setValue:(float)value animated:(BOOL)animated
+{
+    // Set new value with sentinel
+    if (value < _minimumValue)
+		value           = _minimumValue;
+	
+    if (value > _maximumValue)
+		value           = _maximumValue;
     
-    CGPoint pos                 = _thumbSprite.position;
-    pos.x                       = percent * _backgroundSprite.contentSize.width;
-    _thumbSprite.position       = pos;
+    if (animated)
+    {
+        [self runAction:
+         [CCEaseInOut actionWithAction:[CCActionTween actionWithDuration:0.2f key:@"animatedValue" from:_value to:value]
+                                  rate:1.5f]];
+    } else
+    {
+        [self layoutWithValue:value];
+    }
     
-    // Stretches content proportional to newLevel
-    CGRect textureRect          = _progressSprite.textureRect;
-    textureRect                 = CGRectMake(textureRect.origin.x, textureRect.origin.y, pos.x, textureRect.size.height);
-    [_progressSprite setTextureRect:textureRect rotated:_progressSprite.textureRectRotated untrimmedSize:textureRect.size];
+    _value              = value;
+    [self sendActionsForControlEvents:CCControlEventValueChanged];
 }
 
 #pragma mark CCControlSlider Private Methods
@@ -354,6 +362,21 @@
 {
     float percent           = location.x / _backgroundSprite.contentSize.width;
     return _minimumValue + percent * (_maximumValue - _minimumValue);
+}
+
+- (void)layoutWithValue:(float)value
+{
+    // Update thumb position for new value
+    float percent               = (value - _minimumValue) / (_maximumValue - _minimumValue);
+    
+    CGPoint pos                 = _thumbSprite.position;
+    pos.x                       = percent * _backgroundSprite.contentSize.width;
+    _thumbSprite.position       = pos;
+    
+    // Stretches content proportional to newLevel
+    CGRect textureRect          = _progressSprite.textureRect;
+    textureRect                 = CGRectMake(textureRect.origin.x, textureRect.origin.y, pos.x, textureRect.size.height);
+    [_progressSprite setTextureRect:textureRect rotated:_progressSprite.textureRectRotated untrimmedSize:textureRect.size];
 }
 
 @end

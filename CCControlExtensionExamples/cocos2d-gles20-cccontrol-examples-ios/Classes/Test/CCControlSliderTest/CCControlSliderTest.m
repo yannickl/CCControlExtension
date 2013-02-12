@@ -68,7 +68,7 @@
         // When the value of the slider will change, the given selector will be call
 		[slider addTarget:self action:@selector(valueChanged:) forControlEvents:CCControlEventValueChanged];
 
-		[self addChild:slider];	
+		[self addChild:slider z:0 tag:1];
 	}
 	return self;
 }

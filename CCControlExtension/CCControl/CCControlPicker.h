@@ -36,6 +36,7 @@ typedef enum
 } CCControlPickerOrientation;
 
 @protocol CCControlPickerDataSource;
+@protocol CCControlPickerDelegate;
 
 /**
  * Picker control for Cocos2D.
@@ -46,14 +47,6 @@ typedef enum
  * aligns with a selection indicator.
  */
 @interface CCControlPicker : CCControl <UIGestureRecognizerDelegate>
-/** @name Specifying the Data Source */
-/**
- * @abstract The data source for the control picker.
- * @discussion The data source must adopt the CCControlPickerDataSource
- * protocol and implement the required methods to return the number of
- * rows in each component.
- */
-@property(nonatomic, assign) id<CCControlPickerDataSource> dataSource;
 
 #pragma mark Contructors - Initializers
 /** @name Create Pickers */
@@ -106,8 +99,52 @@ typedef enum
  * Returns the index of the selected row.
  * @return A zero-indexed number identifying the selected row , or -1 
  * if no row is selected.
+ * @see selectRow:animated:
  */
 - (NSInteger)selectedRow;
+
+#pragma mark Managing the Behavior of the Control Picker
+/** @name Managing the Behavior of the Control Picker */
+
+/**
+ * @abstract The swipe orientation of the picker.
+ * @discussion The orientation constrains the swipe direction.
+ * E.g if the orientation is set to CCControlPickerOrientationVertical
+ * the element can move in vertical only.
+ * 
+ * The default value for this property is CCControlPickerOrientationVertical.
+ */
+@property (nonatomic, assign) CCControlPickerOrientation swipeOrientation;
+
+/**
+ * @abstract The looping vs. nonlooping state of the picker.
+ * @discussion If YES, the picker will display the data source as a
+ * loop. I.e that when the end of the source is reached the picker
+ * will display the first element.
+ *
+ * The default value for this property is NO.
+ */
+@property (nonatomic, getter = isLooping) BOOL looping;
+
+#pragma mark Specifying the Delegate
+/** @name Specifying the Delegate */
+/**
+ * @abstract The delegate for the control picker.
+ * @discussion The delegate must adopt the CCControlPickerDelegate protocol
+ * and implement the required methods to respond to new selections or
+ * deselections.
+ */
+@property(nonatomic, assign) id<CCControlPickerDelegate> delegate;
+
+#pragma mark Specifying the Data Source
+/** @name Specifying the Data Source */
+/**
+ * @abstract The data source for the control picker.
+ * @discussion The data source must adopt the CCControlPickerDataSource
+ * protocol and implement the required methods to return the number of
+ * rows in each component.
+ */
+@property(nonatomic, assign) id<CCControlPickerDataSource> dataSource;
 
 @end
 
@@ -147,3 +184,19 @@ typedef enum
 - (NSString *)pickerControl:(CCControlPicker *)pickerControl titleForRow:(NSUInteger)row;
 
 @end
+
+#pragma mark - CCControlPickerDelegate
+
+/**
+ * The delegate of a CCControlPicker object must adopt this protocol and
+ * implement at least some of its methods to provide the control picker with
+ * the data it needs to construct itself.
+ *
+ * Typically the delegate implements optional methods to respond to new 
+ * selections or deselections of component rows.
+ *
+ * See CCControlPicker Class Reference for a discussion of components, rows,
+ * row content, and row selection.
+ */
+@protocol CCControlPickerDelegate <NSObject>
+@end;

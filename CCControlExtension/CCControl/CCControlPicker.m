@@ -29,7 +29,7 @@
 
 #define CCControlPickerFriction         0.75f   // Between 0 and 1
 #define CCControlPickerDefaultRowWidth  100     //px
-#define CCControlPickerDefaultRowHeight 44      //px
+#define CCControlPickerDefaultRowHeight 34      //px
 
 @interface CCControlPicker ()
 // Scroll Animation
@@ -42,7 +42,6 @@
 @property (nonatomic, strong) NSMutableArray                *cells;
 @property (nonatomic, assign) NSInteger                     selectedRow;
 @property (nonatomic, assign) CGSize                        rowSize;
-@property (nonatomic, assign) CCControlPickerOrientation    orientation;
 
 - (void)needsLayoutWithRowNumber:(NSUInteger)rowNumber;
 
@@ -56,7 +55,9 @@
 @synthesize cellLayer           = _cellLayer;
 @synthesize cells               = _cells;
 @synthesize selectedRow         = _selectedRow;
-@synthesize orientation         = _orientation;
+@synthesize swipeOrientation    = _swipeOrientation;
+@synthesize looping             = _looping;
+@synthesize delegate            = _delegate;
 @synthesize dataSource          = _dataSource;
 
 - (void)dealloc
@@ -80,10 +81,12 @@
         self.contentSize                    = foregroundSprite.contentSize;
         self.anchorPoint                    = ccp(0.5f, 0.5f);
         self.cells                          = [NSMutableArray array];
-        self.selectedRow                    = 0;
-        self.rowSize                        = CGSizeMake(CCControlPickerDefaultRowWidth,
+        
+        _selectedRow                        = -1;
+        _rowSize                            = CGSizeMake(CCControlPickerDefaultRowWidth,
                                                          CCControlPickerDefaultRowHeight);
-        self.orientation                    = CCControlPickerOrientationVertical;
+        _swipeOrientation                   = CCControlPickerOrientationVertical;
+        _looping                            = NO;
         
         CGPoint center                      = ccp (self.contentSize.width / 2, self.contentSize.height /2);
         foregroundSprite.position           = center;
@@ -141,19 +144,23 @@
     if (![self isDecelerating])
         return;
     
-    CGPoint tranlation  = ccp (_velocity.y * delta, _velocity.y * delta);
-
-    if (_velocity.y <= 0.001 && _velocity.y >= -0.001)
+    if (_velocity.y <= 0.01 && _velocity.y >= -0.01)
     {
         _decelerating   = NO;
-    } else
-    {
-        _velocity           = ccp(_velocity.x * CCControlPickerFriction, _velocity.y * CCControlPickerFriction);
-        
-        CGPoint position    = _cellLayer.position;
-        position.y          -= tranlation.y;
-        _cellLayer.position = position;
+        return;
     }
+    
+    CGPoint tranlation  = ccp (_velocity.x * delta, _velocity.y * delta);
+    CGPoint position    = _cellLayer.position;
+    if (_swipeOrientation == CCControlPickerOrientationVertical)
+        position.y      -= tranlation.y;
+    else
+        position.x      -= tranlation.x;
+    _cellLayer.position = position;
+    
+    // Update the new velocity
+    _velocity           = ccp(_velocity.x * CCControlPickerFriction,
+                              _velocity.y * CCControlPickerFriction);
 }
 
 #pragma mark Properties
@@ -206,7 +213,7 @@
         [_cellLayer addChild:lab z:1];
         
         CGPoint position        = ccp (self.contentSize.width / 2, self.contentSize.height / 2);
-        if (_orientation == CCControlPickerOrientationVertical)
+        if (_swipeOrientation == CCControlPickerOrientationVertical)
         {
             position.y          += _rowSize.height * i;
         } else
@@ -244,14 +251,20 @@
     touchLocation           = [[CCDirector sharedDirector] convertToGL:touchLocation];
     touchLocation           = [[self parent] convertToNodeSpace:touchLocation];
     
+    // Update the cell layer position
     CGPoint cellPosition    = _cellLayer.position;
-    cellPosition.y          -= _previousLocation.y - touchLocation.y;
+    if (_swipeOrientation == CCControlPickerOrientationVertical)
+        cellPosition.y      -= _previousLocation.y - touchLocation.y;
+    else
+        cellPosition.x      -= _previousLocation.x - touchLocation.x;
     _cellLayer.position     = cellPosition;
     
+    // Compute the current velocity
     double delta_time       = [[NSDate date] timeIntervalSinceDate:_previousDate];
     CGPoint delta_position  = ccpSub(_previousLocation, touchLocation);
     _velocity               = ccp(delta_position.x / delta_time, delta_position.y / delta_time);
     
+    // Update the previous location and date
     _previousLocation       = touchLocation;
     self.previousDate       = [NSDate date];
 }

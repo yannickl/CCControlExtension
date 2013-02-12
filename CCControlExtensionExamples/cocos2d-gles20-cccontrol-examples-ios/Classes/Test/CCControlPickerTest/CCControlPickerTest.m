@@ -54,6 +54,8 @@
         picker.anchorPoint      = ccp (0.5f, 0.5f);
         picker.position         = ccp (screenSize.width / 2, screenSize.height / 2);
         picker.dataSource       = self;
+        picker.delegate         = self;
+        picker.swipeOrientation = CCControlPickerOrientationVertical;
         [self addChild:picker z:0];
 	}
 	return self;
@@ -70,5 +72,7 @@
 {
     return [_source objectAtIndex:row];
 }
+
+#pragma mark - CCControlPicker Delegate Methods
 
 @end

@@ -28,7 +28,7 @@
 #import "ARCMacro.h"
 
 #define CCControlPickerFriction         0.75f   // Between 0 and 1
-#define CCControlPickerDefaultRowWidth  100     //px
+#define CCControlPickerDefaultRowWidth  65      //px
 #define CCControlPickerDefaultRowHeight 34      //px
 
 @interface CCControlPicker ()
@@ -36,12 +36,14 @@
 @property (nonatomic, getter = isDecelerating) BOOL         decelerating;
 @property (nonatomic, assign) CGPoint                       previousLocation;
 @property (nonatomic, assign) CGPoint                       velocity;
+@property (nonatomic, assign) CGRect                        limitBounds;
 @property (nonatomic, strong) NSDate                        *previousDate;
 // Picker
 @property (nonatomic, strong) CCLayer                       *cellLayer;
 @property (nonatomic, strong) NSMutableArray                *cells;
+@property (nonatomic, assign) NSUInteger                    cachedRowCount;
 @property (nonatomic, assign) NSInteger                     selectedRow;
-@property (nonatomic, assign) CGSize                        rowSize;
+@property (nonatomic, assign) CGSize                        cacheRowSize;
 
 - (void)needsLayoutWithRowNumber:(NSUInteger)rowNumber;
 
@@ -51,9 +53,11 @@
 @synthesize decelerating        = _decelerating;
 @synthesize previousLocation    = _previousLocation;
 @synthesize velocity            = _velocity;
+@synthesize limitBounds         = _limitBounds;
 @synthesize previousDate        = _previousDate;
 @synthesize cellLayer           = _cellLayer;
 @synthesize cells               = _cells;
+@synthesize cachedRowCount      = _cachedRowCount;
 @synthesize selectedRow         = _selectedRow;
 @synthesize swipeOrientation    = _swipeOrientation;
 @synthesize looping             = _looping;
@@ -82,8 +86,9 @@
         self.anchorPoint                    = ccp(0.5f, 0.5f);
         self.cells                          = [NSMutableArray array];
         
+        _cachedRowCount                     = 0;
         _selectedRow                        = -1;
-        _rowSize                            = CGSizeMake(CCControlPickerDefaultRowWidth,
+        _cacheRowSize                       = CGSizeMake(CCControlPickerDefaultRowWidth,
                                                          CCControlPickerDefaultRowHeight);
         _swipeOrientation                   = CCControlPickerOrientationVertical;
         _looping                            = NO;
@@ -93,6 +98,7 @@
         [self addChild:foregroundSprite z:0];
         
         self.cellLayer                      = [CCLayer node];
+        _cellLayer.anchorPoint              = ccp(0, 0);
         [self addChild:_cellLayer z:1];
         
         selectionSprite.position            = center;
@@ -169,7 +175,7 @@
 
 - (CGSize)rowSize
 {
-    return _rowSize;
+    return _cacheRowSize;
 }
 
 - (NSUInteger)numberOfRows
@@ -179,12 +185,12 @@
 
 - (void)reloadComponent
 {
-    if (_dataSource)
-    {
-        [self needsLayoutWithRowNumber:[_dataSource numberOfRowsInPickerControl:self]];
-    }
+    _cachedRowCount        = 0;
     
-    [self needsLayoutWithRowNumber:0];
+    if (_dataSource)
+        _cachedRowCount     = [_dataSource numberOfRowsInPickerControl:self];
+    
+    [self needsLayoutWithRowNumber:_cachedRowCount];
 }
 
 - (void)selectRow:(NSInteger)row animated:(BOOL)animated
@@ -204,24 +210,31 @@
     for (NSUInteger i = 0; i < rowNumber; i++)
     {
         CCLabelTTF *lab         = [CCLabelTTF labelWithString:[_dataSource pickerControl:self titleForRow:i]
-                                           dimensions:_rowSize
+                                           dimensions:_cacheRowSize
                                            hAlignment:UITextAlignmentCenter
                                              fontName:@"Arial"
                                              fontSize:10];
         lab.verticalAlignment   = kCCVerticalTextAlignmentCenter;
         lab.color               = ccWHITE;
+        lab.anchorPoint         = ccp(0, 0);
         [_cellLayer addChild:lab z:1];
         
-        CGPoint position        = ccp (self.contentSize.width / 2, self.contentSize.height / 2);
+        CGPoint position        = ccp (0, 0);
         if (_swipeOrientation == CCControlPickerOrientationVertical)
         {
-            position.y          += _rowSize.height * i;
+            position.y          += (_cacheRowSize.height - _cacheRowSize.height * i);
         } else
         {
-            position.x          += _rowSize.width * i;
+            position.x          += (0 + _cacheRowSize.width * i);
         }
         lab.position            = position;
     }
+    
+    // Defines the limit bounds for non-circular picker
+    _limitBounds    = CGRectMake(_cacheRowSize.width * (_cachedRowCount - 1) * -1,
+                                 0,
+                                 0,
+                                 _cacheRowSize.height * (_cachedRowCount - 1));
 }
 
 #pragma mark -
@@ -245,6 +258,22 @@
     return YES;
 }
 
+- (double)computeTranslation:(double)tranlation forAxisValue:(double)axis minBounds:(double)min maxBounds:(double)max
+{
+    // If the picker is not circular we check if we have reached an edge
+    if (![self isLooping] && (axis <= min || axis >= max))
+    {
+        double d1       = ABS(min - axis);
+        double d2       = ABS(max - axis);
+
+        double friction = exp(MIN(d1, d2) / 25.0f) + 1.0f;
+
+        return tranlation / friction;
+    }
+    
+    return tranlation;
+}
+
 - (void)ccTouchMoved:(UITouch *)touch withEvent:(UIEvent *)event
 {
     CGPoint touchLocation   = [touch locationInView:[touch view]];
@@ -254,9 +283,18 @@
     // Update the cell layer position
     CGPoint cellPosition    = _cellLayer.position;
     if (_swipeOrientation == CCControlPickerOrientationVertical)
-        cellPosition.y      -= _previousLocation.y - touchLocation.y;
-    else
-        cellPosition.x      -= _previousLocation.x - touchLocation.x;
+    {
+        cellPosition.y      -= [self computeTranslation:(_previousLocation.y - touchLocation.y)
+                                           forAxisValue:cellPosition.y
+                                              minBounds:_limitBounds.origin.y
+                                              maxBounds:_limitBounds.size.height];
+    } else
+    {
+        cellPosition.x      -= [self computeTranslation:(_previousLocation.x - touchLocation.x)
+                                           forAxisValue:cellPosition.x
+                                              minBounds:_limitBounds.origin.x
+                                              maxBounds:_limitBounds.size.width];
+    }
     _cellLayer.position     = cellPosition;
     
     // Compute the current velocity

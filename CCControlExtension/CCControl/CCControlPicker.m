@@ -27,7 +27,7 @@
 #import "CCControlPicker.h"
 #import "ARCMacro.h"
 
-#define CCControlPickerFriction         0.75f   // Between 0 and 1
+#define CCControlPickerFriction         0.70f   // Between 0 and 1
 #define CCControlPickerDefaultRowWidth  65      //px
 #define CCControlPickerDefaultRowHeight 34      //px
 
@@ -45,7 +45,15 @@
 @property (nonatomic, assign) NSInteger                     selectedRow;
 @property (nonatomic, assign) CGSize                        cacheRowSize;
 
-- (void)needsLayoutWithRowNumber:(NSUInteger)rowNumber;
+/** Layout the picker with the number given row count. */
+- (void)needsLayoutWithRowCount:(NSUInteger)rowCount;
+
+/** Returns YES whether the given value is out of the given bounds. */
+- (BOOL)isValue:(double)value outOfMinBound:(double)min maxBound:(double)max;
+
+/** Returns the translation to apply using the given axis location
+ * value and the bounds of the control picker. */
+- (double)adjustTranslation:(double)tranlation forAxisValue:(double)axis usingMinBound:(double)min maxBound:(double)max;
 
 @end
 
@@ -150,23 +158,32 @@
     if (![self isDecelerating])
         return;
     
-    if (_velocity.y <= 0.01 && _velocity.y >= -0.01)
+    if (_velocity.y <= 0.05 && _velocity.y >= -0.05)
     {
-        _decelerating   = NO;
+        _decelerating       = NO;
         return;
     }
     
-    CGPoint tranlation  = ccp (_velocity.x * delta, _velocity.y * delta);
-    CGPoint position    = _cellLayer.position;
+    CGPoint tranlation      = ccp (_velocity.x * delta, _velocity.y * delta);
+    CGPoint cellPosition    = _cellLayer.position;
     if (_swipeOrientation == CCControlPickerOrientationVertical)
-        position.y      -= tranlation.y;
-    else
-        position.x      -= tranlation.x;
-    _cellLayer.position = position;
+    {
+        cellPosition.y      -= [self adjustTranslation:tranlation.y
+                                          forAxisValue:cellPosition.y
+                                         usingMinBound:_limitBounds.origin.y
+                                              maxBound:_limitBounds.size.height];
+    } else
+    {
+        cellPosition.x      -= [self adjustTranslation:tranlation.x
+                                          forAxisValue:cellPosition.x
+                                         usingMinBound:_limitBounds.origin.x
+                                              maxBound:_limitBounds.size.width];
+    }
+    _cellLayer.position     = cellPosition;
     
     // Update the new velocity
-    _velocity           = ccp(_velocity.x * CCControlPickerFriction,
-                              _velocity.y * CCControlPickerFriction);
+    _velocity               = ccp(_velocity.x * CCControlPickerFriction,
+                                  _velocity.y * CCControlPickerFriction);
 }
 
 #pragma mark Properties
@@ -190,7 +207,7 @@
     if (_dataSource)
         _cachedRowCount     = [_dataSource numberOfRowsInPickerControl:self];
     
-    [self needsLayoutWithRowNumber:_cachedRowCount];
+    [self needsLayoutWithRowCount:_cachedRowCount];
 }
 
 - (void)selectRow:(NSInteger)row animated:(BOOL)animated
@@ -205,15 +222,15 @@
 
 #pragma mark - CCControlPicker Private Methods
 
-- (void)needsLayoutWithRowNumber:(NSUInteger)rowNumber
+- (void)needsLayoutWithRowCount:(NSUInteger)rowCount
 {
-    for (NSUInteger i = 0; i < rowNumber; i++)
+    for (NSUInteger i = 0; i < rowCount; i++)
     {
         CCLabelTTF *lab         = [CCLabelTTF labelWithString:[_dataSource pickerControl:self titleForRow:i]
-                                           dimensions:_cacheRowSize
-                                           hAlignment:UITextAlignmentCenter
-                                             fontName:@"Arial"
-                                             fontSize:10];
+                                                   dimensions:_cacheRowSize
+                                                   hAlignment:UITextAlignmentCenter
+                                                     fontName:@"Arial"
+                                                     fontSize:10];
         lab.verticalAlignment   = kCCVerticalTextAlignmentCenter;
         lab.color               = ccWHITE;
         lab.anchorPoint         = ccp(0, 0);
@@ -237,6 +254,27 @@
                                  _cacheRowSize.height * (_cachedRowCount - 1));
 }
 
+- (BOOL)isValue:(double)value outOfMinBound:(double)min maxBound:(double)max
+{
+    return  (value <= min || max <= value);
+}
+
+- (double)adjustTranslation:(double)tranlation forAxisValue:(double)axis usingMinBound:(double)min maxBound:(double)max
+{
+    // If the picker is not circular we check if we have reached an edge
+    if (![self isLooping] && [self isValue:axis outOfMinBound:min maxBound:max])
+    {
+        double d1       = ABS(min - axis);
+        double d2       = ABS(max - axis);
+        
+        double friction = exp(MIN(d1, d2) / 30.0f) + 1.0f;
+        
+        return tranlation / friction;
+    }
+    
+    return tranlation;
+}
+
 #pragma mark -
 #pragma mark CCTargetedTouch Delegate Methods
 
@@ -245,7 +283,7 @@
     if (![self isTouchInside:touch])
         return NO;
     
-    CGPoint touchLocation   = [touch locationInView:[touch view]];                     
+    CGPoint touchLocation   = [touch locationInView:[touch view]];
     touchLocation           = [[CCDirector sharedDirector] convertToGL:touchLocation];
     touchLocation           = [[self parent] convertToNodeSpace:touchLocation];
     
@@ -258,22 +296,6 @@
     return YES;
 }
 
-- (double)computeTranslation:(double)tranlation forAxisValue:(double)axis minBounds:(double)min maxBounds:(double)max
-{
-    // If the picker is not circular we check if we have reached an edge
-    if (![self isLooping] && (axis <= min || axis >= max))
-    {
-        double d1       = ABS(min - axis);
-        double d2       = ABS(max - axis);
-
-        double friction = exp(MIN(d1, d2) / 25.0f) + 1.0f;
-
-        return tranlation / friction;
-    }
-    
-    return tranlation;
-}
-
 - (void)ccTouchMoved:(UITouch *)touch withEvent:(UIEvent *)event
 {
     CGPoint touchLocation   = [touch locationInView:[touch view]];
@@ -284,16 +306,16 @@
     CGPoint cellPosition    = _cellLayer.position;
     if (_swipeOrientation == CCControlPickerOrientationVertical)
     {
-        cellPosition.y      -= [self computeTranslation:(_previousLocation.y - touchLocation.y)
-                                           forAxisValue:cellPosition.y
-                                              minBounds:_limitBounds.origin.y
-                                              maxBounds:_limitBounds.size.height];
+        cellPosition.y      -= [self adjustTranslation:(_previousLocation.y - touchLocation.y)
+                                          forAxisValue:cellPosition.y
+                                         usingMinBound:_limitBounds.origin.y
+                                              maxBound:_limitBounds.size.height];
     } else
     {
-        cellPosition.x      -= [self computeTranslation:(_previousLocation.x - touchLocation.x)
-                                           forAxisValue:cellPosition.x
-                                              minBounds:_limitBounds.origin.x
-                                              maxBounds:_limitBounds.size.width];
+        cellPosition.x      -= [self adjustTranslation:(_previousLocation.x - touchLocation.x)
+                                          forAxisValue:cellPosition.x
+                                         usingMinBound:_limitBounds.origin.x
+                                              maxBound:_limitBounds.size.width];
     }
     _cellLayer.position     = cellPosition;
     

@@ -48,8 +48,14 @@
 /** Layout the picker with the number given row count. */
 - (void)needsLayoutWithRowCount:(NSUInteger)rowCount;
 
+/** Returns the row number at the closest location. */
+- (NSUInteger)rowNumberAtLocation:(CGPoint)location;
+
 /** Returns YES whether the given value is out of the given bounds. */
 - (BOOL)isValue:(double)value outOfMinBound:(double)min maxBound:(double)max;
+
+/** Apply the given translation to the given position and return it. */
+- (CGPoint)positionWithTranslation:(CGPoint)translation forLayerPosition:(CGPoint)position;
 
 /** Returns the translation to apply using the given axis location
  * value and the bounds of the control picker. */
@@ -91,7 +97,7 @@
         self.decelerating                   = NO;
         self.ignoreAnchorPointForPosition   = NO;
         self.contentSize                    = foregroundSprite.contentSize;
-        self.anchorPoint                    = ccp(0.5f, 0.5f);
+        self.anchorPoint                    = ccp(0.8f, 0.8f);
         self.cells                          = [NSMutableArray array];
         
         _cachedRowCount                     = 0;
@@ -158,28 +164,17 @@
     if (![self isDecelerating])
         return;
     
-    if (_velocity.y <= 0.05 && _velocity.y >= -0.05)
+    if (_velocity.y <= 30.0f && _velocity.y >= -30.0f)
     {
-        _decelerating       = NO;
+        _decelerating           = NO;
+        
+        NSUInteger rowNumber    = [self rowNumberAtLocation:_cellLayer.position];
+        [self selectRow:rowNumber animated:YES];
         return;
     }
     
     CGPoint tranlation      = ccp (_velocity.x * delta, _velocity.y * delta);
-    CGPoint cellPosition    = _cellLayer.position;
-    if (_swipeOrientation == CCControlPickerOrientationVertical)
-    {
-        cellPosition.y      -= [self adjustTranslation:tranlation.y
-                                          forAxisValue:cellPosition.y
-                                         usingMinBound:_limitBounds.origin.y
-                                              maxBound:_limitBounds.size.height];
-    } else
-    {
-        cellPosition.x      -= [self adjustTranslation:tranlation.x
-                                          forAxisValue:cellPosition.x
-                                         usingMinBound:_limitBounds.origin.x
-                                              maxBound:_limitBounds.size.width];
-    }
-    _cellLayer.position     = cellPosition;
+    _cellLayer.position     = [self positionWithTranslation:tranlation forLayerPosition:_cellLayer.position];
     
     // Update the new velocity
     _velocity               = ccp(_velocity.x * CCControlPickerFriction,
@@ -210,9 +205,22 @@
     [self needsLayoutWithRowCount:_cachedRowCount];
 }
 
-- (void)selectRow:(NSInteger)row animated:(BOOL)animated
+- (void)selectRow:(NSUInteger)row animated:(BOOL)animated
 {
-    
+    CGPoint dest;
+    if ([self isLooping])
+    {
+        
+    } else
+    {
+        if (_swipeOrientation == CCControlPickerOrientationVertical)
+            dest    = ccp(0, _cacheRowSize.height * row);
+        else
+            dest    = ccp(_cacheRowSize.width * row, 0);
+        
+        [_cellLayer runAction:
+         [CCEaseSineInOut actionWithAction:[CCMoveTo actionWithDuration:0.2f position:dest]]];
+    }
 }
 
 - (NSInteger)selectedRow
@@ -239,10 +247,10 @@
         CGPoint position        = ccp (0, 0);
         if (_swipeOrientation == CCControlPickerOrientationVertical)
         {
-            position.y          += (_cacheRowSize.height - _cacheRowSize.height * i);
+            position.y          = (_cacheRowSize.height - _cacheRowSize.height * i);
         } else
         {
-            position.x          += (0 + _cacheRowSize.width * i);
+            position.x          = (0 + _cacheRowSize.width * i);
         }
         lab.position            = position;
     }
@@ -254,9 +262,52 @@
                                  _cacheRowSize.height * (_cachedRowCount - 1));
 }
 
+- (NSUInteger)rowNumberAtLocation:(CGPoint)location
+{
+    if ([self isLooping])
+    {
+        return 0;
+    } else
+    {
+        if (_swipeOrientation == CCControlPickerOrientationVertical)
+        {
+            if (location.y < _limitBounds.origin.y)
+                return 0;
+            else if (location.y > _limitBounds.size.height)
+                return _cachedRowCount - 1;
+            else
+                return round(location.y / _cacheRowSize.height);
+        } else
+        {
+            if (location.x < _limitBounds.origin.x)
+                return 0;
+            else if (location.x > _limitBounds.size.width)
+                return _cachedRowCount - 1;
+            else
+                return round(location.x / _cacheRowSize.width);
+        }
+    }
+}
+
 - (BOOL)isValue:(double)value outOfMinBound:(double)min maxBound:(double)max
 {
     return  (value <= min || max <= value);
+}
+
+- (CGPoint)positionWithTranslation:(CGPoint)translation forLayerPosition:(CGPoint)position
+{
+    if (_swipeOrientation == CCControlPickerOrientationVertical)
+        position.y      -= [self adjustTranslation:translation.y
+                                      forAxisValue:position.y
+                                     usingMinBound:_limitBounds.origin.y
+                                          maxBound:_limitBounds.size.height];
+    else
+        position.x      -= [self adjustTranslation:translation.x
+                                      forAxisValue:position.x
+                                     usingMinBound:_limitBounds.origin.x
+                                          maxBound:_limitBounds.size.width];
+    
+    return position;
 }
 
 - (double)adjustTranslation:(double)tranlation forAxisValue:(double)axis usingMinBound:(double)min maxBound:(double)max
@@ -293,6 +344,10 @@
     _previousLocation       = location;
     self.previousDate       = [NSDate date];
     
+    // Update the cell layer position
+    CGPoint translation     = ccpSub(_previousLocation, touchLocation);
+    _cellLayer.position     = [self positionWithTranslation:translation forLayerPosition:_cellLayer.position];
+    
     return YES;
 }
 
@@ -303,21 +358,8 @@
     touchLocation           = [[self parent] convertToNodeSpace:touchLocation];
     
     // Update the cell layer position
-    CGPoint cellPosition    = _cellLayer.position;
-    if (_swipeOrientation == CCControlPickerOrientationVertical)
-    {
-        cellPosition.y      -= [self adjustTranslation:(_previousLocation.y - touchLocation.y)
-                                          forAxisValue:cellPosition.y
-                                         usingMinBound:_limitBounds.origin.y
-                                              maxBound:_limitBounds.size.height];
-    } else
-    {
-        cellPosition.x      -= [self adjustTranslation:(_previousLocation.x - touchLocation.x)
-                                          forAxisValue:cellPosition.x
-                                         usingMinBound:_limitBounds.origin.x
-                                              maxBound:_limitBounds.size.width];
-    }
-    _cellLayer.position     = cellPosition;
+    CGPoint translation     = ccpSub(_previousLocation, touchLocation);
+    _cellLayer.position     = [self positionWithTranslation:translation forLayerPosition:_cellLayer.position];
     
     // Compute the current velocity
     double delta_time       = [[NSDate date] timeIntervalSinceDate:_previousDate];

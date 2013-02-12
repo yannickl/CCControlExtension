@@ -93,7 +93,7 @@ typedef enum
  * (component) to the new value; if you specify NO, the new selection
  * is shown immediately.
  */
-- (void)selectRow:(NSInteger)row animated:(BOOL)animated;
+- (void)selectRow:(NSUInteger)row animated:(BOOL)animated;
 
 /**
  * Returns the index of the selected row.

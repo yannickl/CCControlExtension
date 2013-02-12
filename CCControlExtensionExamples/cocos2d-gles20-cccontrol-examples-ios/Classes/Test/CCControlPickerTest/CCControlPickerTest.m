@@ -46,7 +46,7 @@
 	if ((self = [super init]))
     {
         CGSize screenSize       = [[CCDirector sharedDirector] winSize];
-        self.source             = [NSArray arrayWithObjects:@"toto", @"tata", @"titi", nil];
+        self.source             = [NSArray arrayWithObjects:@"1", @"2", @"3", @"4", @"5", nil];
         
         CCSprite *background    = [CCSprite spriteWithFile:@"pickerBackground.png"];
         CCSprite *selection     = [CCSprite spriteWithFile:@"pickerSelection.png"];

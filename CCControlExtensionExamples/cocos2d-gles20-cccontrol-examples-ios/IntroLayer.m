@@ -62,6 +62,6 @@
     // Retrieve the scene manager
     CCControlSceneManager *sceneManager = [CCControlSceneManager sharedControlSceneManager];
     
-	[[CCDirector sharedDirector] replaceScene:[CCTransitionCrossFade transitionWithDuration:0.5f scene:[sceneManager currentControlScene]]];
+	[[CCDirector sharedDirector] replaceScene:[CCTransitionCrossFade transitionWithDuration:0.2f scene:[sceneManager currentControlScene]]];
 }
 @end

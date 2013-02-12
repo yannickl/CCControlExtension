@@ -27,26 +27,42 @@
 #import "CCControlPicker.h"
 #import "ARCMacro.h"
 
-#define CCControlPickerDefaultRowHeight 44 //px
+#define CCControlPickerFriction         0.75f   // Between 0 and 1
+#define CCControlPickerDefaultRowWidth  100     //px
+#define CCControlPickerDefaultRowHeight 44      //px
 
 @interface CCControlPicker ()
-@property (nonatomic, strong) UIPanGestureRecognizer    *panRecognizer;
-@property (nonatomic, strong) NSMutableArray            *cells;
-@property (nonatomic, assign) NSInteger                selectedRow;
+// Scroll Animation
+@property (nonatomic, getter = isDecelerating) BOOL         decelerating;
+@property (nonatomic, assign) CGPoint                       previousLocation;
+@property (nonatomic, assign) CGPoint                       velocity;
+@property (nonatomic, strong) NSDate                        *previousDate;
+// Picker
+@property (nonatomic, strong) CCLayer                       *cellLayer;
+@property (nonatomic, strong) NSMutableArray                *cells;
+@property (nonatomic, assign) NSInteger                     selectedRow;
+@property (nonatomic, assign) CGSize                        rowSize;
+@property (nonatomic, assign) CCControlPickerOrientation    orientation;
 
 - (void)needsLayoutWithRowNumber:(NSUInteger)rowNumber;
 
 @end
 
 @implementation CCControlPicker
-@synthesize panRecognizer   = _panRecognizer;
-@synthesize cells           = _cells;
-@synthesize selectedRow     = _selectedRow;
-@synthesize dataSource      = _dataSource;
+@synthesize decelerating        = _decelerating;
+@synthesize previousLocation    = _previousLocation;
+@synthesize velocity            = _velocity;
+@synthesize previousDate        = _previousDate;
+@synthesize cellLayer           = _cellLayer;
+@synthesize cells               = _cells;
+@synthesize selectedRow         = _selectedRow;
+@synthesize orientation         = _orientation;
+@synthesize dataSource          = _dataSource;
 
 - (void)dealloc
 {
-    SAFE_ARC_RELEASE(_panRecognizer);
+    SAFE_ARC_RELEASE(_previousDate);
+    SAFE_ARC_RELEASE(_cellLayer);
     SAFE_ARC_RELEASE(_cells);
     
     SAFE_ARC_SUPER_DEALLOC();
@@ -59,15 +75,22 @@
         NSAssert(foregroundSprite,   @"Foreground sprite must be not nil");
         NSAssert(selectionSprite,    @"Selection sprite must be not nil");
         
+        self.decelerating                   = NO;
         self.ignoreAnchorPointForPosition   = NO;
         self.contentSize                    = foregroundSprite.contentSize;
         self.anchorPoint                    = ccp(0.5f, 0.5f);
         self.cells                          = [NSMutableArray array];
         self.selectedRow                    = 0;
+        self.rowSize                        = CGSizeMake(CCControlPickerDefaultRowWidth,
+                                                         CCControlPickerDefaultRowHeight);
+        self.orientation                    = CCControlPickerOrientationVertical;
         
         CGPoint center                      = ccp (self.contentSize.width / 2, self.contentSize.height /2);
         foregroundSprite.position           = center;
         [self addChild:foregroundSprite z:0];
+        
+        self.cellLayer                      = [CCLayer node];
+        [self addChild:_cellLayer z:1];
         
         selectionSprite.position            = center;
         [self addChild:selectionSprite z:2];
@@ -79,26 +102,20 @@
 {
     [super onEnter];
     
-    self.panRecognizer                      = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panAction:)];
-    _panRecognizer.delegate                 = self;
-    _panRecognizer.minimumNumberOfTouches   = 1;
-    _panRecognizer.maximumNumberOfTouches   = 1;
-    
-    [[[CCDirector sharedDirector] view] addGestureRecognizer:_panRecognizer];
+    [self scheduleUpdate];
     
     [self reloadComponent];
 }
 
 - (void)onExit
 {
-    [[[CCDirector sharedDirector] view] addGestureRecognizer:_panRecognizer];
+    [self unscheduleUpdate];
     
     [super onExit];
 }
 
 - (void)visit
 {
-    
 	if (!self.visible)
 		return;
     
@@ -119,13 +136,33 @@
 	glDisable(GL_SCISSOR_TEST);
 }
 
+- (void)update:(ccTime)delta
+{
+    if (![self isDecelerating])
+        return;
+    
+    CGPoint tranlation  = ccp (_velocity.y * delta, _velocity.y * delta);
+
+    if (_velocity.y <= 0.001 && _velocity.y >= -0.001)
+    {
+        _decelerating   = NO;
+    } else
+    {
+        _velocity           = ccp(_velocity.x * CCControlPickerFriction, _velocity.y * CCControlPickerFriction);
+        
+        CGPoint position    = _cellLayer.position;
+        position.y          -= tranlation.y;
+        _cellLayer.position = position;
+    }
+}
+
 #pragma mark Properties
 
 #pragma mark - CCControlPicker Public Methods
 
-- (double)rowHeight
+- (CGSize)rowSize
 {
-    return CCControlPickerDefaultRowHeight;
+    return _rowSize;
 }
 
 - (NSUInteger)numberOfRows
@@ -159,14 +196,24 @@
 {
     for (NSUInteger i = 0; i < rowNumber; i++)
     {
-        CCLabelTTF *lab = [CCLabelTTF labelWithString:[_dataSource pickerControl:self titleForRow:i]
-                                           dimensions:CGSizeMake(self.contentSize.width, 30)
+        CCLabelTTF *lab         = [CCLabelTTF labelWithString:[_dataSource pickerControl:self titleForRow:i]
+                                           dimensions:_rowSize
                                            hAlignment:UITextAlignmentCenter
                                              fontName:@"Arial"
-                                             fontSize:25];
-        lab.color       = ccWHITE;
-        lab.position    = ccp (self.contentSize.width / 2, self.contentSize.height / 2);
-        [self addChild:lab z:1];
+                                             fontSize:10];
+        lab.verticalAlignment   = kCCVerticalTextAlignmentCenter;
+        lab.color               = ccWHITE;
+        [_cellLayer addChild:lab z:1];
+        
+        CGPoint position        = ccp (self.contentSize.width / 2, self.contentSize.height / 2);
+        if (_orientation == CCControlPickerOrientationVertical)
+        {
+            position.y          += _rowSize.height * i;
+        } else
+        {
+            position.x          += _rowSize.width * i;
+        }
+        lab.position            = position;
     }
 }
 
@@ -175,28 +222,48 @@
 
 - (BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event
 {
-    return NO;
+    if (![self isTouchInside:touch])
+        return NO;
+    
+    CGPoint touchLocation   = [touch locationInView:[touch view]];                     
+    touchLocation           = [[CCDirector sharedDirector] convertToGL:touchLocation];
+    touchLocation           = [[self parent] convertToNodeSpace:touchLocation];
+    
+    CGPoint location        = touchLocation;
+    
+    _decelerating           = NO;
+    _previousLocation       = location;
+    self.previousDate       = [NSDate date];
+    
+    return YES;
 }
 
-#pragma mark - UIGestureRecognizer Delegate Methods
-
-- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)recognizer
+- (void)ccTouchMoved:(UITouch *)touch withEvent:(UIEvent *)event
 {
-    CGPoint gestureLocation = [recognizer locationInView:recognizer.view];
-    gestureLocation         = [[CCDirector sharedDirector] convertToGL:gestureLocation];
-    gestureLocation         = [[self parent] convertToNodeSpace:gestureLocation];
+    CGPoint touchLocation   = [touch locationInView:[touch view]];
+    touchLocation           = [[CCDirector sharedDirector] convertToGL:touchLocation];
+    touchLocation           = [[self parent] convertToNodeSpace:touchLocation];
     
-    if ([self isPointInside:gestureLocation])
-    {
-        return YES;
-    }
+    CGPoint cellPosition    = _cellLayer.position;
+    cellPosition.y          -= _previousLocation.y - touchLocation.y;
+    _cellLayer.position     = cellPosition;
     
-    return NO;
+    double delta_time       = [[NSDate date] timeIntervalSinceDate:_previousDate];
+    CGPoint delta_position  = ccpSub(_previousLocation, touchLocation);
+    _velocity               = ccp(delta_position.x / delta_time, delta_position.y / delta_time);
+    
+    _previousLocation       = touchLocation;
+    self.previousDate       = [NSDate date];
 }
 
-- (void)panAction:(UIGestureRecognizer *)recognizer
+- (void)ccTouchEnded:(UITouch *)touch withEvent:(UIEvent *)event
 {
-    NSLog(@"here");
+    _decelerating           = YES;
+}
+
+- (void)ccTouchCancelled:(UITouch *)touch withEvent:(UIEvent *)event
+{
+    [self ccTouchEnded:touch withEvent:event];
 }
 
 @end

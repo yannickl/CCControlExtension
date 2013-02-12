@@ -70,16 +70,23 @@
 #pragma mark Setting the Off/On State
 /** @name Setting the Off/On State */
 
-/** A Boolean value that determines the off/on state of the switch. */
+/**
+ * @abstract A Boolean value that determines the off/on state of the switch.
+ * @discussion This property allows you to retrieve and set (without animation)
+ * a value determining whether the CCControlSwitch object is on or off.
+ */
 @property (nonatomic, getter = isOn) BOOL on;
 
 /**
- * Set the state of the switch to On or Off, optionally animating the transition.
+ * @abstract Set the state of the switch to On or Off, optionally animating the
+ * transition.
  *
  * @param isOn YES if the switch should be turned to the On position; NO if it 
  * should be turned to the Off position. If the switch is already in the 
  * designated position, nothing happens.
  * @param animated YES to animate the “flipping” of the switch; otherwise NO.
+ * @discussion Setting the switch to either position does result in an action
+ * message being sent.
  */
 - (void)setOn:(BOOL)isOn animated:(BOOL)animated;
 

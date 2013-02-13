@@ -28,8 +28,8 @@
 #import "ARCMacro.h"
 
 #define CCControlPickerFriction         0.70f   // Between 0 and 1
-#define CCControlPickerDefaultRowWidth  65      //px
-#define CCControlPickerDefaultRowHeight 34      //px
+#define CCControlPickerDefaultRowWidth  35      //px
+#define CCControlPickerDefaultRowHeight 35      //px
 
 @interface CCControlPicker ()
 // Scroll Animation
@@ -48,11 +48,11 @@
 /** Layout the picker with the number given row count. */
 - (void)needsLayoutWithRowCount:(NSUInteger)rowCount;
 
-/** Returns the row number at the closest location. */
-- (NSUInteger)rowNumberAtLocation:(CGPoint)location;
-
 /** Returns YES whether the given value is out of the given bounds. */
 - (BOOL)isValue:(double)value outOfMinBound:(double)min maxBound:(double)max;
+
+/** Returns the row number at the closest location. */
+- (NSUInteger)rowNumberAtLocation:(CGPoint)location;
 
 /** Apply the given translation to the given position and return it. */
 - (CGPoint)positionWithTranslation:(CGPoint)translation forLayerPosition:(CGPoint)position;
@@ -112,7 +112,6 @@
         [self addChild:foregroundSprite z:0];
         
         self.cellLayer                      = [CCLayer node];
-        _cellLayer.anchorPoint              = ccp(0, 0);
         [self addChild:_cellLayer z:1];
         
         selectionSprite.position            = center;
@@ -139,24 +138,24 @@
 
 - (void)visit
 {
-	if (!self.visible)
-		return;
-    
-	glEnable(GL_SCISSOR_TEST);
-    
-    CGRect scissorRect  = [self boundingBox];
-    
-	scissorRect         = CGRectMake(scissorRect.origin.x * CC_CONTENT_SCALE_FACTOR(),
-                                     scissorRect.origin.y * CC_CONTENT_SCALE_FACTOR(),
-                                     scissorRect.size.width * CC_CONTENT_SCALE_FACTOR(),
-                                     scissorRect.size.height * CC_CONTENT_SCALE_FACTOR());
-    
-	glScissor(scissorRect.origin.x, scissorRect.origin.y,
-			  scissorRect.size.width, scissorRect.size.height);
+	/*if (!self.visible)
+     return;
+     
+     glEnable(GL_SCISSOR_TEST);
+     
+     CGRect scissorRect  = [self boundingBox];
+     
+     scissorRect         = CGRectMake(scissorRect.origin.x * CC_CONTENT_SCALE_FACTOR(),
+     scissorRect.origin.y * CC_CONTENT_SCALE_FACTOR(),
+     scissorRect.size.width * CC_CONTENT_SCALE_FACTOR(),
+     scissorRect.size.height * CC_CONTENT_SCALE_FACTOR());
+     
+     glScissor(scissorRect.origin.x, scissorRect.origin.y,
+     scissorRect.size.width, scissorRect.size.height);*/
     
 	[super visit];
     
-	glDisable(GL_SCISSOR_TEST);
+	//glDisable(GL_SCISSOR_TEST);
 }
 
 - (void)update:(ccTime)delta
@@ -200,34 +199,28 @@
     _cachedRowCount        = 0;
     
     if (_dataSource)
-        _cachedRowCount     = [_dataSource numberOfRowsInPickerControl:self];
+        _cachedRowCount     = [_dataSource numberOfRowsInControlPicker:self];
     
     [self needsLayoutWithRowCount:_cachedRowCount];
 }
 
 - (void)selectRow:(NSUInteger)row animated:(BOOL)animated
 {
-    CGPoint dest;
-    if ([self isLooping])
-    {
-        
-    } else
-    {
-        if (_swipeOrientation == CCControlPickerOrientationVertical)
-            dest    = ccp(0, _cacheRowSize.height * row);
-        else
-            dest    = ccp(_cacheRowSize.width * row, 0);
-        
-        [_cellLayer runAction:[CCEaseInOut actionWithAction:
-         [CCEaseElasticOut actionWithAction:[CCMoveTo actionWithDuration:0.4f position:dest] period:0.02f] rate:1.0f]];
-    }
+    CGPoint dest = _cellLayer.position;
+
+    if (_swipeOrientation == CCControlPickerOrientationVertical)
+        dest.y  = _cacheRowSize.height * row;
+    else
+        dest.x  = -_cacheRowSize.width * row;
+
+    [_cellLayer runAction:[CCEaseInOut actionWithAction:
+                           [CCEaseElasticOut actionWithAction:
+                            [CCMoveTo actionWithDuration:0.4f position:dest] period:0.02f] rate:1.0f]];
     
     _selectedRow    = row;
     
-    if (_delegate && [_delegate respondsToSelector:@selector(pickerView:didSelectRow:)])
-    {
-        [_delegate pickerView:self didSelectRow:row];
-    }
+    if (_delegate && [_delegate respondsToSelector:@selector(controlPicker:didSelectRow:)])
+        [_delegate controlPicker:self didSelectRow:row];
 }
 
 - (NSInteger)selectedRow
@@ -239,63 +232,92 @@
 
 - (void)needsLayoutWithRowCount:(NSUInteger)rowCount
 {
+    CGPoint center  = ccp (self.contentSize.width / 2, self.contentSize.height /2);
+
     for (NSUInteger i = 0; i < rowCount; i++)
     {
-        CCLabelTTF *lab         = [CCLabelTTF labelWithString:[_dataSource pickerControl:self titleForRow:i]
+        CCLabelTTF *lab         = [CCLabelTTF labelWithString:[_dataSource controlPicker:self titleForRow:i]
                                                    dimensions:_cacheRowSize
                                                    hAlignment:UITextAlignmentCenter
                                                      fontName:@"Arial-BoldMT"
                                                      fontSize:15];
         lab.verticalAlignment   = kCCVerticalTextAlignmentCenter;
         lab.color               = ccWHITE;
-        lab.anchorPoint         = ccp(0, 0);
+        lab.anchorPoint         = ccp(0.5f, 0.5f);
         [_cellLayer addChild:lab z:1];
         
-        CGPoint position        = ccp (0, 0);
+        CGPoint position        = center;
         if (_swipeOrientation == CCControlPickerOrientationVertical)
-        {
-            position.y          = (_cacheRowSize.height - _cacheRowSize.height * i);
-        } else
-        {
-            position.x          = (0 + _cacheRowSize.width * i);
-        }
+            position.y          += -_cacheRowSize.height * i;
+        else
+            position.x          += _cacheRowSize.width * i;
         lab.position            = position;
     }
     
+    if ([self isLooping])
+    {
+        CCLabelTTF *lab_sub         = [CCLabelTTF labelWithString:[_dataSource controlPicker:self titleForRow:(rowCount - 1)]
+                                                   dimensions:_cacheRowSize
+                                                   hAlignment:UITextAlignmentCenter
+                                                     fontName:@"Arial-BoldMT"
+                                                     fontSize:15];
+        lab_sub.verticalAlignment   = kCCVerticalTextAlignmentCenter;
+        lab_sub.color               = ccWHITE;
+        lab_sub.anchorPoint         = ccp(0.5f, 0.5f);
+        [_cellLayer addChild:lab_sub z:1];
+        
+        CCLabelTTF *lab_sub2        = [CCLabelTTF labelWithString:[_dataSource controlPicker:self titleForRow:(rowCount - 2)]
+                                                   dimensions:_cacheRowSize
+                                                   hAlignment:UITextAlignmentCenter
+                                                     fontName:@"Arial-BoldMT"
+                                                     fontSize:15];
+        lab_sub2.verticalAlignment  = kCCVerticalTextAlignmentCenter;
+        lab_sub2.color              = ccWHITE;
+        lab_sub2.anchorPoint        = ccp(0.5f, 0.5f);
+        [_cellLayer addChild:lab_sub2 z:1];
+        
+        CCLabelTTF *lab_ove         = [CCLabelTTF labelWithString:[_dataSource controlPicker:self titleForRow:0]
+                                                   dimensions:_cacheRowSize
+                                                   hAlignment:UITextAlignmentCenter
+                                                     fontName:@"Arial-BoldMT"
+                                                     fontSize:15];
+        lab_ove.verticalAlignment   = kCCVerticalTextAlignmentCenter;
+        lab_ove.color               = ccWHITE;
+        lab_ove.anchorPoint         = ccp(0.5f, 0.5f);
+        [_cellLayer addChild:lab_ove z:1];
+        
+        CCLabelTTF *lab_ove2        = [CCLabelTTF labelWithString:[_dataSource controlPicker:self titleForRow:1]
+                                                   dimensions:_cacheRowSize
+                                                   hAlignment:UITextAlignmentCenter
+                                                     fontName:@"Arial-BoldMT"
+                                                     fontSize:15];
+        lab_ove2.verticalAlignment  = kCCVerticalTextAlignmentCenter;
+        lab_ove2.color              = ccWHITE;
+        lab_ove2.anchorPoint        = ccp(0.5f, 0.5f);
+        [_cellLayer addChild:lab_ove2 z:1];
+        
+        if (_swipeOrientation == CCControlPickerOrientationVertical)
+        {
+            lab_sub2.position   = ccpAdd(center, ccp (0, _cacheRowSize.height * 2));
+            lab_sub.position    = ccpAdd(center, ccp (0, _cacheRowSize.height));
+            lab_ove.position    = ccpAdd(center, ccp (0, -_cacheRowSize.height * rowCount));
+            lab_ove2.position   = ccpAdd(center, ccp (0, -_cacheRowSize.height * (rowCount + 1)));
+        } else
+        {
+            lab_sub2.position   = ccpAdd(center, ccp (-_cacheRowSize.width * 2, 0));
+            lab_sub.position    = ccpAdd(center, ccp (-_cacheRowSize.width, 0));
+            lab_ove.position    = ccpAdd(center, ccp (_cacheRowSize.height * rowCount, 0));
+            lab_ove2.position   = ccpAdd(center, ccp (_cacheRowSize.height * (rowCount + 1), 0));
+        }
+    }
+    
     // Defines the limit bounds for non-circular picker
-    _limitBounds    = CGRectMake(_cacheRowSize.width * (_cachedRowCount - 1) * -1,
+    _limitBounds    = CGRectMake(-_cacheRowSize.width * (_cachedRowCount - 1),
                                  0,
                                  0,
                                  _cacheRowSize.height * (_cachedRowCount - 1));
-    
-    _selectedRow    = 0;
-}
 
-- (NSUInteger)rowNumberAtLocation:(CGPoint)location
-{
-    if ([self isLooping])
-    {
-        return 0;
-    } else
-    {
-        if (_swipeOrientation == CCControlPickerOrientationVertical)
-        {
-            if (location.y < _limitBounds.origin.y)
-                return 0;
-            else if (location.y > _limitBounds.size.height)
-                return _cachedRowCount - 1;
-            else
-                return round(location.y / _cacheRowSize.height);
-        } else
-        {
-            if (location.x < _limitBounds.origin.x)
-                return 0;
-            else if (location.x > _limitBounds.size.width)
-                return _cachedRowCount - 1;
-            else
-                return round(location.x / _cacheRowSize.width);
-        }
-    }
+    _selectedRow    = 0;
 }
 
 - (BOOL)isValue:(double)value outOfMinBound:(double)min maxBound:(double)max
@@ -303,18 +325,80 @@
     return  (value <= min || max <= value);
 }
 
+- (NSUInteger)rowNumberAtLocation:(CGPoint)location
+{
+    if (_swipeOrientation == CCControlPickerOrientationVertical)
+    {
+        if (location.y < _limitBounds.origin.y)
+            return 0;
+        else if (location.y >= _limitBounds.size.height)
+            return _cachedRowCount - 1;
+        else
+        {
+            NSUInteger row  = round(location.y / _cacheRowSize.height);
+            if (row == _cachedRowCount)
+                row         = 0;
+            
+            return row;
+        }
+    } else
+    {
+        if (location.x < _limitBounds.origin.x)
+            return _cachedRowCount - 1;
+        else if (location.x >= _limitBounds.size.width)
+            return 0;
+        else
+        {
+            NSUInteger row  = round(ABS(location.x) / _cacheRowSize.width);
+            if (row == _cachedRowCount)
+                row         = 0;
+            
+            return row;
+        }
+    }
+}
+
 - (CGPoint)positionWithTranslation:(CGPoint)translation forLayerPosition:(CGPoint)position
 {
     if (_swipeOrientation == CCControlPickerOrientationVertical)
+    {
         position.y      -= [self adjustTranslation:translation.y
                                       forAxisValue:position.y
                                      usingMinBound:_limitBounds.origin.y
                                           maxBound:_limitBounds.size.height];
-    else
+        
+        if ([self isLooping])
+        {
+            if (position.y < _limitBounds.origin.y)
+            {
+                double diff = _limitBounds.origin.y - position.y;
+                position.y  = _limitBounds.size.height + _cacheRowSize.height - diff;
+            } else if ((_limitBounds.size.height + _cacheRowSize.height) < position.y)
+            {
+                double diff = position.y - (_limitBounds.size.height + _cacheRowSize.height);
+                position.y  = _limitBounds.origin.y + diff;
+            }
+        }
+    } else
+    {
         position.x      -= [self adjustTranslation:translation.x
                                       forAxisValue:position.x
                                      usingMinBound:_limitBounds.origin.x
                                           maxBound:_limitBounds.size.width];
+        
+        if ([self isLooping])
+        {
+            if (position.x < _limitBounds.origin.x)
+            {
+                double diff = _limitBounds.origin.x - position.x;
+                position.x  = _limitBounds.size.width + _cacheRowSize.width - diff;
+            } else if ((_limitBounds.size.width + _cacheRowSize.width) < position.x)
+            {
+                double diff = position.x - (_limitBounds.size.width + _cacheRowSize.width);
+                position.x  = _limitBounds.origin.x + diff;
+            }
+        }
+    }
     
     return position;
 }
@@ -330,9 +414,10 @@
         double friction = exp(MIN(d1, d2) / 30.0f) + 1.0f;
         
         return tranlation / friction;
+    } else
+    {
+        return tranlation;
     }
-    
-    return tranlation;
 }
 
 #pragma mark -
@@ -342,6 +427,8 @@
 {
     if (![self isTouchInside:touch])
         return NO;
+    
+    [_cellLayer stopAllActions];
     
     CGPoint touchLocation   = [touch locationInView:[touch view]];
     touchLocation           = [[CCDirector sharedDirector] convertToGL:touchLocation];

@@ -166,22 +166,22 @@ typedef enum
 
 /**
  * Called by the picker control when it needs the number of rows. (required)
- * @param pickerControl The picker control requesting the data.
+ * @param controlPicker The picker control requesting the data.
  * @return The number of rows.
  */
-- (NSUInteger)numberOfRowsInPickerControl:(CCControlPicker *)pickerControl;
+- (NSUInteger)numberOfRowsInControlPicker:(CCControlPicker *)controlPicker;
 
 /** @name Setting the Content of Component Rows */
 
 /**
  * Called by the picker control when it needs the title to use for a given row.
- * @param pickerControl An object representing the picker control requesting
+ * @param controlPicker An object representing the picker control requesting
  * the data.
  * @param row A zero-indexed number identifying a row of component. Rows are
  * numbered top-to-bottom.
  * @return The string to use as the title of the indicated row.
  */
-- (NSString *)pickerControl:(CCControlPicker *)pickerControl titleForRow:(NSUInteger)row;
+- (NSString *)controlPicker:(CCControlPicker *)controlPicker titleForRow:(NSUInteger)row;
 
 @end
 
@@ -206,13 +206,13 @@ typedef enum
 /** @name Setting the Content of Component Rows */
 
 /**
- * @abstract Called by the picker view when it needs the view to use for a given row in a given component.
- * @param An object representing the picker view requesting the data.
+ * @abstract Called by the control picker when it needs the view to use for a given row in a given component.
+ * @param controlPicker An object representing the control picker requesting the data.
  * @param A zero-indexed number identifying a row of component. Rows are numbered top-to-bottom.
  * @param A view object that was previously used for this row, but is now hidden and cached by the picker view.
  * @discussion If the previously used view (the view parameter) is adequate, return that. If you return a different view, the previously used view is released. The picker view centers the returned view in the rectangle for row.
  */
-- (UIView *)pickerView:(CCControlPicker *)controlPicker viewForRow:(NSInteger)row reusingView:(UIView *)view;
+- (UIView *)controlPicker:(CCControlPicker *)controlPicker viewForRow:(NSInteger)row reusingView:(UIView *)view;
 
 #pragma mark Responding to Row Selection
 /** @name Responding to Row Selection */
@@ -226,6 +226,6 @@ typedef enum
  * uses the row index to access the value at the corresponding position
  * in the array used to construct the component.
  */
-- (void)pickerView:(CCControlPicker *)controlPicker didSelectRow:(NSInteger)row;
+- (void)controlPicker:(CCControlPicker *)controlPicker didSelectRow:(NSUInteger)row;
 
 @end;

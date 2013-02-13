@@ -46,7 +46,7 @@
 	if ((self = [super init]))
     {
         CGSize screenSize       = [[CCDirector sharedDirector] winSize];
-        self.source             = [NSArray arrayWithObjects:@"1", @"2", @"3", @"4", @"5", nil];
+        self.source             = [NSArray arrayWithObjects:@"0", @"1", @"2", @"3", @"4", @"5", nil];
         
         CCSprite *background    = [CCSprite spriteWithFile:@"pickerBackground.png"];
         CCSprite *selection     = [CCSprite spriteWithFile:@"pickerSelection.png"];
@@ -55,6 +55,7 @@
         picker.position         = ccp (screenSize.width / 2, screenSize.height / 2);
         picker.dataSource       = self;
         picker.delegate         = self;
+        picker.looping          = NO;
         picker.swipeOrientation = CCControlPickerOrientationVertical;
         [self addChild:picker z:0];
 	}
@@ -63,21 +64,21 @@
 
 #pragma mark - CCControlPicker DataSource Methods
 
-- (NSUInteger)numberOfRowsInPickerControl:(CCControlPicker *)pickerControl
+- (NSUInteger)numberOfRowsInControlPicker:(CCControlPicker *)controlPicker
 {
     return [_source count];
 }
 
-- (NSString *)pickerControl:(CCControlPicker *)pickerControl titleForRow:(NSUInteger)row
+- (NSString *)controlPicker:(CCControlPicker *)controlPicker titleForRow:(NSUInteger)row
 {
     return [_source objectAtIndex:row];
 }
 
 #pragma mark - CCControlPicker Delegate Methods
 
-- (void)pickerView:(CCControlPicker *)controlPicker didSelectRow:(NSInteger)row
+- (void)controlPicker:(CCControlPicker *)controlPicker didSelectRow:(NSUInteger)row
 {
-    
+    NSLog(@"pickerControl:didSelectRow: %d", row);
 }
 
 @end

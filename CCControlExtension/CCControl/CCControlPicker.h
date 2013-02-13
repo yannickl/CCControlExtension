@@ -170,10 +170,23 @@ typedef enum
  * CCControlPicker customization more easier.
  */
 @interface CCControlPickerRowNode : CCNode
-@property (nonatomic, strong) CCLabelTTF    *textLabel;
-@property (nonatomic, assign) ccColor4B     *backgroundColor;
 
+#pragma mark Contructors - Initializers
+/** @name Create Picker Row Nodes */
+
+/** Initializes a simple row node with the content title. */
 - (id)initWithTitle:(NSString *)title;
+/** Creates a simple row node with the content title. */
++ (id)rowWithTitle:(NSString *)title;
+
+#pragma mark Managing Text as Row Content
+/**
+ * @abstract Returns the label used for the main textual content of 
+ * the control picker row. (read-only)
+ * @discussion Holds the main label of the row. CCControlPickerRowNode
+ * adds an appropriate label when you create the row.
+ */
+@property (nonatomic, readonly) CCLabelTTF  *textLabel;
 
 @end
 

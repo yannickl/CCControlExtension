@@ -468,18 +468,14 @@
 #pragma mark - CCControlPickerRowNode
 
 @interface CCControlPickerRowNode ()
-@property (nonatomic, strong) CCLayerColor  *background;
 
 @end
 
 @implementation CCControlPickerRowNode
-@synthesize background          = _background;
-@synthesize textLabel           = _textLabel;
-@synthesize backgroundColor     = _backgroundColor;
+@synthesize textLabel               = _textLabel;
 
 - (void)dealloc
 {
-    SAFE_ARC_RELEASE(_background);
     SAFE_ARC_RELEASE(_textLabel);
     
     SAFE_ARC_SUPER_DEALLOC();
@@ -490,16 +486,12 @@
     if ((self = [super init]))
     {
         CGSize defaultSize              = CGSizeMake(CCControlPickerDefaultRowWidth, CCControlPickerDefaultRowHeight);
-        
-        self.background                 = [CCLayerColor layerWithColor:ccc4(255, 255, 255, 255)];
-        _background.contentSize         = defaultSize;
-        [self addChild:_background z:0];
-        
-        self.textLabel                  = [CCLabelTTF labelWithString:title
+
+        _textLabel                      = SAFE_ARC_RETAIN([CCLabelTTF labelWithString:title
                                                            dimensions:CGSizeMake(CCControlPickerDefaultRowWidth, CCControlPickerDefaultRowHeight)
                                                            hAlignment:UITextAlignmentCenter
                                                              fontName:@"Arial-BoldMT"
-                                                             fontSize:15];
+                                                             fontSize:15]);
         _textLabel.verticalAlignment    = kCCVerticalTextAlignmentCenter;
         _textLabel.color                = ccBLACK;
         _textLabel.anchorPoint          = ccp(0.5f, 0.5f);
@@ -510,5 +502,12 @@
     }
     return self;
 }
+
++ (id)rowWithTitle:(NSString *)title
+{
+    return [[[self alloc] initWithTitle:title] autorelease];
+}
+
+#pragma mark Properties
 
 @end

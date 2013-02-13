@@ -138,7 +138,7 @@
 
 - (void)visit
 {
-	/*if (!self.visible)
+	if (!self.visible)
      return;
      
      glEnable(GL_SCISSOR_TEST);
@@ -151,11 +151,11 @@
      scissorRect.size.height * CC_CONTENT_SCALE_FACTOR());
      
      glScissor(scissorRect.origin.x, scissorRect.origin.y,
-     scissorRect.size.width, scissorRect.size.height);*/
+     scissorRect.size.width, scissorRect.size.height);
     
 	[super visit];
     
-	//glDisable(GL_SCISSOR_TEST);
+	glDisable(GL_SCISSOR_TEST);
 }
 
 - (void)update:(ccTime)delta

@@ -51,6 +51,7 @@
         CCSprite *background    = [CCSprite spriteWithFile:@"pickerBackground.png"];
         CCSprite *selection     = [CCSprite spriteWithFile:@"pickerSelection.png"];
         CCControlPicker *picker = [[CCControlPicker alloc] initWithForegroundSprite:background selectionSprite:selection];
+        picker.backgroundNode   = [CCLayerColor layerWithColor:ccc4(255, 255, 255, 255)];
         picker.anchorPoint      = ccp (0.5f, 0.5f);
         picker.position         = ccp (screenSize.width / 2, screenSize.height / 2);
         picker.dataSource       = self;
@@ -69,9 +70,9 @@
     return [_source count];
 }
 
-- (NSString *)controlPicker:(CCControlPicker *)controlPicker titleForRow:(NSUInteger)row
+- (CCControlPickerRowNode *)controlPicker:(CCControlPicker *)controlPicker nodeForRow:(NSUInteger)row
 {
-    return [_source objectAtIndex:row];
+    return [[[CCControlPickerRowNode alloc] initWithTitle:[_source objectAtIndex:row]] autorelease];
 }
 
 #pragma mark - CCControlPicker Delegate Methods

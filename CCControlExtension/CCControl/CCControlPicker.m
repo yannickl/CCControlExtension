@@ -73,6 +73,7 @@
 @synthesize cells               = _cells;
 @synthesize cachedRowCount      = _cachedRowCount;
 @synthesize selectedRow         = _selectedRow;
+@synthesize backgroundNode      = _backgroundNode;
 @synthesize swipeOrientation    = _swipeOrientation;
 @synthesize looping             = _looping;
 @synthesize delegate            = _delegate;
@@ -83,6 +84,7 @@
     SAFE_ARC_RELEASE(_previousDate);
     SAFE_ARC_RELEASE(_cellLayer);
     SAFE_ARC_RELEASE(_cells);
+    SAFE_ARC_AUTORELEASE(_backgroundNode);
     
     SAFE_ARC_SUPER_DEALLOC();
 }
@@ -109,7 +111,7 @@
         
         CGPoint center                      = ccp (self.contentSize.width / 2, self.contentSize.height /2);
         foregroundSprite.position           = center;
-        [self addChild:foregroundSprite z:0];
+        [self addChild:foregroundSprite z:3];
         
         self.cellLayer                      = [CCLayer node];
         [self addChild:_cellLayer z:1];
@@ -139,19 +141,19 @@
 - (void)visit
 {
 	if (!self.visible)
-     return;
-     
-     glEnable(GL_SCISSOR_TEST);
-     
-     CGRect scissorRect  = [self boundingBox];
-     
-     scissorRect         = CGRectMake(scissorRect.origin.x * CC_CONTENT_SCALE_FACTOR(),
-     scissorRect.origin.y * CC_CONTENT_SCALE_FACTOR(),
-     scissorRect.size.width * CC_CONTENT_SCALE_FACTOR(),
-     scissorRect.size.height * CC_CONTENT_SCALE_FACTOR());
-     
-     glScissor(scissorRect.origin.x, scissorRect.origin.y,
-     scissorRect.size.width, scissorRect.size.height);
+        return;
+    
+    glEnable(GL_SCISSOR_TEST);
+    
+    CGRect scissorRect  = [self boundingBox];
+    
+    scissorRect         = CGRectMake(scissorRect.origin.x * CC_CONTENT_SCALE_FACTOR(),
+                                     scissorRect.origin.y * CC_CONTENT_SCALE_FACTOR(),
+                                     scissorRect.size.width * CC_CONTENT_SCALE_FACTOR(),
+                                     scissorRect.size.height * CC_CONTENT_SCALE_FACTOR());
+    
+    glScissor(scissorRect.origin.x, scissorRect.origin.y,
+              scissorRect.size.width, scissorRect.size.height);
     
 	[super visit];
     
@@ -182,6 +184,20 @@
 
 #pragma mark Properties
 
+- (void)setBackgroundNode:(CCNode *)backgroundNode
+{
+    if (_backgroundNode)
+    {
+        [self removeChild:_backgroundNode cleanup:YES];
+        SAFE_ARC_RELEASE(_backgroundNode);
+    }
+    
+    _backgroundNode = SAFE_ARC_RETAIN(backgroundNode);
+    
+    if (_backgroundNode)
+        [self addChild:_backgroundNode z:0];
+}
+
 #pragma mark - CCControlPicker Public Methods
 
 - (CGSize)rowSize
@@ -207,12 +223,12 @@
 - (void)selectRow:(NSUInteger)row animated:(BOOL)animated
 {
     CGPoint dest = _cellLayer.position;
-
+    
     if (_swipeOrientation == CCControlPickerOrientationVertical)
         dest.y  = _cacheRowSize.height * row;
     else
         dest.x  = -_cacheRowSize.width * row;
-
+    
     [_cellLayer runAction:[CCEaseInOut actionWithAction:
                            [CCEaseElasticOut actionWithAction:
                             [CCMoveTo actionWithDuration:0.4f position:dest] period:0.02f] rate:1.0f]];
@@ -233,67 +249,37 @@
 - (void)needsLayoutWithRowCount:(NSUInteger)rowCount
 {
     CGPoint center  = ccp (self.contentSize.width / 2, self.contentSize.height /2);
-
+    
     for (NSUInteger i = 0; i < rowCount; i++)
     {
-        CCLabelTTF *lab         = [CCLabelTTF labelWithString:[_dataSource controlPicker:self titleForRow:i]
-                                                   dimensions:_cacheRowSize
-                                                   hAlignment:UITextAlignmentCenter
-                                                     fontName:@"Arial-BoldMT"
-                                                     fontSize:15];
-        lab.verticalAlignment   = kCCVerticalTextAlignmentCenter;
-        lab.color               = ccWHITE;
-        lab.anchorPoint         = ccp(0.5f, 0.5f);
-        [_cellLayer addChild:lab z:1];
+        CCControlPickerRowNode *row = [_dataSource controlPicker:self nodeForRow:i];
+        row.anchorPoint             = ccp(0.5f, 0.5f);
+        [_cellLayer addChild:row z:1];
         
         CGPoint position        = center;
         if (_swipeOrientation == CCControlPickerOrientationVertical)
             position.y          += -_cacheRowSize.height * i;
         else
             position.x          += _cacheRowSize.width * i;
-        lab.position            = position;
+        row.position            = position;
     }
     
     if ([self isLooping])
     {
-        CCLabelTTF *lab_sub         = [CCLabelTTF labelWithString:[_dataSource controlPicker:self titleForRow:(rowCount - 1)]
-                                                   dimensions:_cacheRowSize
-                                                   hAlignment:UITextAlignmentCenter
-                                                     fontName:@"Arial-BoldMT"
-                                                     fontSize:15];
-        lab_sub.verticalAlignment   = kCCVerticalTextAlignmentCenter;
-        lab_sub.color               = ccWHITE;
-        lab_sub.anchorPoint         = ccp(0.5f, 0.5f);
+        CCControlPickerRowNode *lab_sub     = [_dataSource controlPicker:self nodeForRow:(rowCount - 1)];
+        lab_sub.anchorPoint                 = ccp(0.5f, 0.5f);
         [_cellLayer addChild:lab_sub z:1];
         
-        CCLabelTTF *lab_sub2        = [CCLabelTTF labelWithString:[_dataSource controlPicker:self titleForRow:(rowCount - 2)]
-                                                   dimensions:_cacheRowSize
-                                                   hAlignment:UITextAlignmentCenter
-                                                     fontName:@"Arial-BoldMT"
-                                                     fontSize:15];
-        lab_sub2.verticalAlignment  = kCCVerticalTextAlignmentCenter;
-        lab_sub2.color              = ccWHITE;
-        lab_sub2.anchorPoint        = ccp(0.5f, 0.5f);
+        CCControlPickerRowNode *lab_sub2    = [_dataSource controlPicker:self nodeForRow:(rowCount - 2)];
+        lab_sub2.anchorPoint                = ccp(0.5f, 0.5f);
         [_cellLayer addChild:lab_sub2 z:1];
         
-        CCLabelTTF *lab_ove         = [CCLabelTTF labelWithString:[_dataSource controlPicker:self titleForRow:0]
-                                                   dimensions:_cacheRowSize
-                                                   hAlignment:UITextAlignmentCenter
-                                                     fontName:@"Arial-BoldMT"
-                                                     fontSize:15];
-        lab_ove.verticalAlignment   = kCCVerticalTextAlignmentCenter;
-        lab_ove.color               = ccWHITE;
-        lab_ove.anchorPoint         = ccp(0.5f, 0.5f);
+        CCControlPickerRowNode *lab_ove     = [_dataSource controlPicker:self nodeForRow:0];
+        lab_ove.anchorPoint                 = ccp(0.5f, 0.5f);
         [_cellLayer addChild:lab_ove z:1];
         
-        CCLabelTTF *lab_ove2        = [CCLabelTTF labelWithString:[_dataSource controlPicker:self titleForRow:1]
-                                                   dimensions:_cacheRowSize
-                                                   hAlignment:UITextAlignmentCenter
-                                                     fontName:@"Arial-BoldMT"
-                                                     fontSize:15];
-        lab_ove2.verticalAlignment  = kCCVerticalTextAlignmentCenter;
-        lab_ove2.color              = ccWHITE;
-        lab_ove2.anchorPoint        = ccp(0.5f, 0.5f);
+        CCControlPickerRowNode *lab_ove2    = [_dataSource controlPicker:self nodeForRow:1];
+        lab_ove2.anchorPoint                = ccp(0.5f, 0.5f);
         [_cellLayer addChild:lab_ove2 z:1];
         
         if (_swipeOrientation == CCControlPickerOrientationVertical)
@@ -316,7 +302,7 @@
                                  0,
                                  0,
                                  _cacheRowSize.height * (_cachedRowCount - 1));
-
+    
     _selectedRow    = 0;
 }
 
@@ -475,6 +461,54 @@
 - (void)ccTouchCancelled:(UITouch *)touch withEvent:(UIEvent *)event
 {
     [self ccTouchEnded:touch withEvent:event];
+}
+
+@end
+
+#pragma mark - CCControlPickerRowNode
+
+@interface CCControlPickerRowNode ()
+@property (nonatomic, strong) CCLayerColor  *background;
+
+@end
+
+@implementation CCControlPickerRowNode
+@synthesize background          = _background;
+@synthesize textLabel           = _textLabel;
+@synthesize backgroundColor     = _backgroundColor;
+
+- (void)dealloc
+{
+    SAFE_ARC_RELEASE(_background);
+    SAFE_ARC_RELEASE(_textLabel);
+    
+    SAFE_ARC_SUPER_DEALLOC();
+}
+
+- (id)initWithTitle:(NSString *)title
+{
+    if ((self = [super init]))
+    {
+        CGSize defaultSize              = CGSizeMake(CCControlPickerDefaultRowWidth, CCControlPickerDefaultRowHeight);
+        
+        self.background                 = [CCLayerColor layerWithColor:ccc4(255, 255, 255, 255)];
+        _background.contentSize         = defaultSize;
+        [self addChild:_background z:0];
+        
+        self.textLabel                  = [CCLabelTTF labelWithString:title
+                                                           dimensions:CGSizeMake(CCControlPickerDefaultRowWidth, CCControlPickerDefaultRowHeight)
+                                                           hAlignment:UITextAlignmentCenter
+                                                             fontName:@"Arial-BoldMT"
+                                                             fontSize:15];
+        _textLabel.verticalAlignment    = kCCVerticalTextAlignmentCenter;
+        _textLabel.color                = ccBLACK;
+        _textLabel.anchorPoint          = ccp(0.5f, 0.5f);
+        _textLabel.position             = ccp (CCControlPickerDefaultRowWidth / 2, CCControlPickerDefaultRowHeight / 2);
+        [self addChild:_textLabel z:1];
+        
+        self.contentSize                = defaultSize;
+    }
+    return self;
 }
 
 @end

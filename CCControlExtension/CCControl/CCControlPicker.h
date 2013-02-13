@@ -56,6 +56,18 @@ typedef enum
 
 #pragma mark - Public Methods
 
+#pragma mark Changing the Picker’s Appearance
+/** @name Changing the Picker’s Appearance */
+
+/**
+ * @abstract Contains the node that is drawn on the background of the picker.
+ * @discussion The node you specify should fit within the bounding rectangle of
+ * the foreground sprite. If it does not, the node will be clip.
+ *
+ * This default value of this property is nil.
+ */
+@property (nonatomic, strong) CCNode    *backgroundNode;
+
 #pragma mark Getting the Dimensions of the Control Picker
 /** @name Getting the Dimensions of the Control Picker */
 /**
@@ -148,6 +160,23 @@ typedef enum
 
 @end
 
+#pragma mark - CCControlPickerRowNode
+
+/**
+ * The CCControlPickerNode class implements the row representation for
+ * the CCControlPicker.
+ *
+ * A row node implements some methods and callbacks to make the
+ * CCControlPicker customization more easier.
+ */
+@interface CCControlPickerRowNode : CCNode
+@property (nonatomic, strong) CCLabelTTF    *textLabel;
+@property (nonatomic, assign) ccColor4B     *backgroundColor;
+
+- (id)initWithTitle:(NSString *)title;
+
+@end
+
 #pragma mark - CCControlPickerDataSource
 
 /**
@@ -174,14 +203,13 @@ typedef enum
 /** @name Setting the Content of Component Rows */
 
 /**
- * Called by the picker control when it needs the title to use for a given row.
- * @param controlPicker An object representing the picker control requesting
- * the data.
+ * @abstract Called by the picker control when it needs the node to use for a given row.
+ * @param controlPicker An object representing the control picker requesting the data.
  * @param row A zero-indexed number identifying a row of component. Rows are
  * numbered top-to-bottom.
- * @return The string to use as the title of the indicated row.
+ * @return The node to use as the visual representation of the indicated row.
  */
-- (NSString *)controlPicker:(CCControlPicker *)controlPicker titleForRow:(NSUInteger)row;
+- (CCControlPickerRowNode *)controlPicker:(CCControlPicker *)controlPicker nodeForRow:(NSUInteger)row;
 
 @end
 
@@ -203,16 +231,6 @@ typedef enum
 @optional
 
 #pragma mark Setting the Content of Component Rows
-/** @name Setting the Content of Component Rows */
-
-/**
- * @abstract Called by the control picker when it needs the view to use for a given row in a given component.
- * @param controlPicker An object representing the control picker requesting the data.
- * @param A zero-indexed number identifying a row of component. Rows are numbered top-to-bottom.
- * @param A view object that was previously used for this row, but is now hidden and cached by the picker view.
- * @discussion If the previously used view (the view parameter) is adequate, return that. If you return a different view, the previously used view is released. The picker view centers the returned view in the rectangle for row.
- */
-- (UIView *)controlPicker:(CCControlPicker *)controlPicker viewForRow:(NSInteger)row reusingView:(UIView *)view;
 
 #pragma mark Responding to Row Selection
 /** @name Responding to Row Selection */

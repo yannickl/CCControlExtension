@@ -199,4 +199,33 @@ typedef enum
  * row content, and row selection.
  */
 @protocol CCControlPickerDelegate <NSObject>
+
+@optional
+
+#pragma mark Setting the Content of Component Rows
+/** @name Setting the Content of Component Rows */
+
+/**
+ * @abstract Called by the picker view when it needs the view to use for a given row in a given component.
+ * @param An object representing the picker view requesting the data.
+ * @param A zero-indexed number identifying a row of component. Rows are numbered top-to-bottom.
+ * @param A view object that was previously used for this row, but is now hidden and cached by the picker view.
+ * @discussion If the previously used view (the view parameter) is adequate, return that. If you return a different view, the previously used view is released. The picker view centers the returned view in the rectangle for row.
+ */
+- (UIView *)pickerView:(CCControlPicker *)controlPicker viewForRow:(NSInteger)row reusingView:(UIView *)view;
+
+#pragma mark Responding to Row Selection
+/** @name Responding to Row Selection */
+/**
+ * @abstract Called by the control picker when the user selects a row.
+ * @param controlPicker An object representing the control picker view 
+ * requesting the data.
+ * @param row A zero-indexed number identifying a row of component.
+ * Rows are numbered top-to-bottom.
+ * @discussion To determine what value the user selected, the delegate
+ * uses the row index to access the value at the corresponding position
+ * in the array used to construct the component.
+ */
+- (void)pickerView:(CCControlPicker *)controlPicker didSelectRow:(NSInteger)row;
+
 @end;

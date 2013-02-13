@@ -75,4 +75,9 @@
 
 #pragma mark - CCControlPicker Delegate Methods
 
+- (void)pickerView:(CCControlPicker *)controlPicker didSelectRow:(NSInteger)row
+{
+    
+}
+
 @end

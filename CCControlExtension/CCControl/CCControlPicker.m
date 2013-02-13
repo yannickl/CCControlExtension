@@ -218,8 +218,15 @@
         else
             dest    = ccp(_cacheRowSize.width * row, 0);
         
-        [_cellLayer runAction:
-         [CCEaseSineInOut actionWithAction:[CCMoveTo actionWithDuration:0.2f position:dest]]];
+        [_cellLayer runAction:[CCEaseInOut actionWithAction:
+         [CCEaseElasticOut actionWithAction:[CCMoveTo actionWithDuration:0.4f position:dest] period:0.02f] rate:1.0f]];
+    }
+    
+    _selectedRow    = row;
+    
+    if (_delegate && [_delegate respondsToSelector:@selector(pickerView:didSelectRow:)])
+    {
+        [_delegate pickerView:self didSelectRow:row];
     }
 }
 
@@ -237,8 +244,8 @@
         CCLabelTTF *lab         = [CCLabelTTF labelWithString:[_dataSource pickerControl:self titleForRow:i]
                                                    dimensions:_cacheRowSize
                                                    hAlignment:UITextAlignmentCenter
-                                                     fontName:@"Arial"
-                                                     fontSize:10];
+                                                     fontName:@"Arial-BoldMT"
+                                                     fontSize:15];
         lab.verticalAlignment   = kCCVerticalTextAlignmentCenter;
         lab.color               = ccWHITE;
         lab.anchorPoint         = ccp(0, 0);
@@ -260,6 +267,8 @@
                                  0,
                                  0,
                                  _cacheRowSize.height * (_cachedRowCount - 1));
+    
+    _selectedRow    = 0;
 }
 
 - (NSUInteger)rowNumberAtLocation:(CGPoint)location

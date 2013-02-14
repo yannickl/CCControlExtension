@@ -79,6 +79,7 @@
 @synthesize rowsLayer           = _rowsLayer;
 @synthesize cachedRowCount      = _cachedRowCount;
 @synthesize selectedRow         = _selectedRow;
+@synthesize cacheRowSize        = _cacheRowSize;
 @synthesize backgroundNode      = _backgroundNode;
 @synthesize swipeOrientation    = _swipeOrientation;
 @synthesize looping             = _looping;

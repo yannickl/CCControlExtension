@@ -70,16 +70,15 @@
     return [_source count];
 }
 
-- (CCControlPickerRowNode *)controlPicker:(CCControlPicker *)controlPicker nodeForRow:(NSUInteger)row
+- (CCControlPickerRow *)controlPicker:(CCControlPicker *)controlPicker nodeForRow:(NSUInteger)row
 {
-    return [[[CCControlPickerRowNode alloc] initWithTitle:[_source objectAtIndex:row]] autorelease];
+    return [CCControlPickerRow rowWithTitle:[_source objectAtIndex:row]];
 }
 
 #pragma mark - CCControlPicker Delegate Methods
 
 - (void)controlPicker:(CCControlPicker *)controlPicker didSelectRow:(NSUInteger)row
 {
-    NSLog(@"pickerControl:didSelectRow: %d", row);
 }
 
 @end

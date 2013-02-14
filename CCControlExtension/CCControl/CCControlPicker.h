@@ -163,16 +163,16 @@ typedef enum
 #pragma mark - CCControlPickerRowNode
 
 /**
- * The CCControlPickerNode class implements the row representation for
+ * The CCControlPickerRow class implements the row node representation for
  * the CCControlPicker.
  *
  * A row node implements some methods and callbacks to make the
  * CCControlPicker customization more easier.
  */
-@interface CCControlPickerRowNode : CCNode
+@interface CCControlPickerRow : CCNode
 
 #pragma mark Contructors - Initializers
-/** @name Create Picker Row Nodes */
+/** @name Create Picker' Rows */
 
 /** Initializes a simple row node with the content title. */
 - (id)initWithTitle:(NSString *)title;
@@ -180,10 +180,11 @@ typedef enum
 + (id)rowWithTitle:(NSString *)title;
 
 #pragma mark Managing Text as Row Content
+/** @name Managing Text as Row Content */
 /**
  * @abstract Returns the label used for the main textual content of 
  * the control picker row. (read-only)
- * @discussion Holds the main label of the row. CCControlPickerRowNode
+ * @discussion Holds the main label of the row. CCControlPickerRow
  * adds an appropriate label when you create the row.
  */
 @property (nonatomic, readonly) CCLabelTTF  *textLabel;
@@ -222,7 +223,7 @@ typedef enum
  * numbered top-to-bottom.
  * @return The node to use as the visual representation of the indicated row.
  */
-- (CCControlPickerRowNode *)controlPicker:(CCControlPicker *)controlPicker nodeForRow:(NSUInteger)row;
+- (CCControlPickerRow *)controlPicker:(CCControlPicker *)controlPicker nodeForRow:(NSUInteger)row;
 
 @end
 

@@ -252,7 +252,7 @@
     
     for (NSUInteger i = 0; i < rowCount; i++)
     {
-        CCControlPickerRowNode *row = [_dataSource controlPicker:self nodeForRow:i];
+        CCControlPickerRow *row     = [_dataSource controlPicker:self nodeForRow:i];
         row.anchorPoint             = ccp(0.5f, 0.5f);
         [_cellLayer addChild:row z:1];
         
@@ -266,19 +266,19 @@
     
     if ([self isLooping])
     {
-        CCControlPickerRowNode *lab_sub     = [_dataSource controlPicker:self nodeForRow:(rowCount - 1)];
+        CCControlPickerRow *lab_sub         = [_dataSource controlPicker:self nodeForRow:(rowCount - 1)];
         lab_sub.anchorPoint                 = ccp(0.5f, 0.5f);
         [_cellLayer addChild:lab_sub z:1];
         
-        CCControlPickerRowNode *lab_sub2    = [_dataSource controlPicker:self nodeForRow:(rowCount - 2)];
+        CCControlPickerRow *lab_sub2        = [_dataSource controlPicker:self nodeForRow:(rowCount - 2)];
         lab_sub2.anchorPoint                = ccp(0.5f, 0.5f);
         [_cellLayer addChild:lab_sub2 z:1];
         
-        CCControlPickerRowNode *lab_ove     = [_dataSource controlPicker:self nodeForRow:0];
+        CCControlPickerRow *lab_ove         = [_dataSource controlPicker:self nodeForRow:0];
         lab_ove.anchorPoint                 = ccp(0.5f, 0.5f);
         [_cellLayer addChild:lab_ove z:1];
         
-        CCControlPickerRowNode *lab_ove2    = [_dataSource controlPicker:self nodeForRow:1];
+        CCControlPickerRow *lab_ove2        = [_dataSource controlPicker:self nodeForRow:1];
         lab_ove2.anchorPoint                = ccp(0.5f, 0.5f);
         [_cellLayer addChild:lab_ove2 z:1];
         
@@ -465,13 +465,13 @@
 
 @end
 
-#pragma mark - CCControlPickerRowNode
+#pragma mark - CCControlPickerRow
 
-@interface CCControlPickerRowNode ()
+@interface CCControlPickerRow ()
 
 @end
 
-@implementation CCControlPickerRowNode
+@implementation CCControlPickerRow
 @synthesize textLabel               = _textLabel;
 
 - (void)dealloc
@@ -505,7 +505,7 @@
 
 + (id)rowWithTitle:(NSString *)title
 {
-    return [[[self alloc] initWithTitle:title] autorelease];
+    return SAFE_ARC_AUTORELEASE([[self alloc] initWithTitle:title]);
 }
 
 #pragma mark Properties

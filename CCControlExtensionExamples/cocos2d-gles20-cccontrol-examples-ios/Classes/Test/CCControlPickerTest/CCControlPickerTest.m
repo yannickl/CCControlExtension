@@ -85,8 +85,6 @@
         // Set the layer size
         layer.contentSize           = CGSizeMake(layer_width, 0);
         layer.anchorPoint           = ccp (0.5f, 0.5f);
-        
-        [self controlPicker:picker didSelectRow:0];
 	}
 	return self;
 }
@@ -119,10 +117,18 @@
 
 - (CCControlPickerRow *)controlPicker:(CCControlPicker *)controlPicker nodeForRow:(NSUInteger)row
 {
-    return [CCControlPickerRow rowWithTitle:[_source objectAtIndex:row]];
+    CCControlPickerRow *rowNode = [CCControlPickerRow node];
+    rowNode.textLabel.string    = [_source objectAtIndex:row];
+    
+    return rowNode;
 }
 
 #pragma mark - CCControlPicker Delegate Methods
+
+- (CGSize)rowSizeForControlPicker:(CCControlPicker *)controlPicker
+{
+    return CGSizeMake(35, 45);
+}
 
 - (void)controlPicker:(CCControlPicker *)controlPicker didSelectRow:(NSUInteger)row
 {

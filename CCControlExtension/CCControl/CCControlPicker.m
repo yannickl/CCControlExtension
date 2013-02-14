@@ -38,9 +38,9 @@
 @property (nonatomic, assign) CGPoint                       velocity;
 @property (nonatomic, assign) CGRect                        limitBounds;
 @property (nonatomic, strong) NSDate                        *previousDate;
+@property (nonatomic, assign) NSUInteger                    highlightRow;
 // Picker
-@property (nonatomic, strong) CCLayer                       *cellLayer;
-@property (nonatomic, strong) NSMutableArray                *cells;
+@property (nonatomic, strong) CCLayer                       *rowsLayer;
 @property (nonatomic, assign) NSUInteger                    cachedRowCount;
 @property (nonatomic, assign) NSInteger                     selectedRow;
 @property (nonatomic, assign) CGSize                        cacheRowSize;
@@ -64,6 +64,9 @@
 /** Calls the delegate to warn it that the selected row has changed. */
 -(void)sendSelectedRowCallback;
 
+/** Send to the picker's rows the appropriate events. */
+- (void)sendPickerRowEventForPosition:(CGPoint)location;
+
 @end
 
 @implementation CCControlPicker
@@ -72,8 +75,8 @@
 @synthesize velocity            = _velocity;
 @synthesize limitBounds         = _limitBounds;
 @synthesize previousDate        = _previousDate;
-@synthesize cellLayer           = _cellLayer;
-@synthesize cells               = _cells;
+@synthesize highlightRow        = _highlightRow;
+@synthesize rowsLayer           = _rowsLayer;
 @synthesize cachedRowCount      = _cachedRowCount;
 @synthesize selectedRow         = _selectedRow;
 @synthesize backgroundNode      = _backgroundNode;
@@ -85,8 +88,7 @@
 - (void)dealloc
 {
     SAFE_ARC_RELEASE(_previousDate);
-    SAFE_ARC_RELEASE(_cellLayer);
-    SAFE_ARC_RELEASE(_cells);
+    SAFE_ARC_RELEASE(_rowsLayer);
     SAFE_ARC_AUTORELEASE(_backgroundNode);
     
     SAFE_ARC_SUPER_DEALLOC();
@@ -102,10 +104,10 @@
         self.decelerating                   = NO;
         self.ignoreAnchorPointForPosition   = NO;
         self.contentSize                    = foregroundSprite.contentSize;
-        self.cells                          = [NSMutableArray array];
         
         _cachedRowCount                     = 0;
         _selectedRow                        = -1;
+        _highlightRow                       = -1;
         _cacheRowSize                       = CGSizeMake(CCControlPickerDefaultRowWidth,
                                                          CCControlPickerDefaultRowHeight);
         _swipeOrientation                   = CCControlPickerOrientationVertical;
@@ -115,8 +117,8 @@
         foregroundSprite.position           = center;
         [self addChild:foregroundSprite z:3];
         
-        self.cellLayer                      = [CCLayer node];
-        [self addChild:_cellLayer z:1];
+        self.rowsLayer                      = [CCLayer node];
+        [self addChild:_rowsLayer z:1];
         
         selectionSprite.position            = center;
         [self addChild:selectionSprite z:2];
@@ -171,13 +173,15 @@
     {
         _decelerating           = NO;
         
-        NSUInteger rowNumber    = [self rowNumberAtLocation:_cellLayer.position];
+        NSUInteger rowNumber    = [self rowNumberAtLocation:_rowsLayer.position];
         [self selectRow:rowNumber animated:YES];
         return;
     }
     
     CGPoint tranlation      = ccp (_velocity.x * delta, _velocity.y * delta);
-    _cellLayer.position     = [self positionWithTranslation:tranlation forLayerPosition:_cellLayer.position];
+    _rowsLayer.position     = [self positionWithTranslation:tranlation forLayerPosition:_rowsLayer.position];
+    
+    [self sendPickerRowEventForPosition:_rowsLayer.position];
     
     // Update the new velocity
     _velocity               = ccp(_velocity.x * CCControlPickerFriction,
@@ -224,7 +228,7 @@
 
 - (void)selectRow:(NSUInteger)row animated:(BOOL)animated
 {
-    CGPoint dest = _cellLayer.position;
+    CGPoint dest = _rowsLayer.position;
     
     if (_swipeOrientation == CCControlPickerOrientationVertical)
         dest.y  = _cacheRowSize.height * row;
@@ -233,9 +237,20 @@
 
     _selectedRow    = row;
     
+    // Send events
+    if (_highlightRow != _selectedRow && _highlightRow != -1)
+    {
+        id<CCControlPickerRowDelegate> rowNode  = (id<CCControlPickerRowDelegate>)[_rowsLayer getChildByTag:_selectedRow];
+        [rowNode rowDidMasked];
+    }
+    id<CCControlPickerRowDelegate> rowNode  = (id<CCControlPickerRowDelegate>)[_rowsLayer getChildByTag:_selectedRow];
+    [rowNode rowDidSelected];
+    
+    _highlightRow   = -1;
+    
     if (animated)
     {
-        [_cellLayer runAction:[CCSequence actions:
+        [_rowsLayer runAction:[CCSequence actions:
                                [CCEaseInOut actionWithAction:
                                 [CCEaseElasticOut actionWithAction:
                                  [CCMoveTo actionWithDuration:0.4f position:dest] period:0.02f] rate:1.0f],
@@ -255,13 +270,19 @@
 
 - (void)needsLayoutWithRowCount:(NSUInteger)rowCount
 {
-    CGPoint center  = ccp (self.contentSize.width / 2, self.contentSize.height /2);
+    CGPoint center      = ccp (self.contentSize.width / 2, self.contentSize.height /2);
+    
+    if (_delegate && [_delegate respondsToSelector:@selector(rowSizeForControlPicker:)])
+    {
+        _cacheRowSize   = [_delegate rowSizeForControlPicker:self];
+    }
     
     for (NSUInteger i = 0; i < rowCount; i++)
     {
         CCControlPickerRow *row     = [_dataSource controlPicker:self nodeForRow:i];
+        [row fitRowInSize:_cacheRowSize];
         row.anchorPoint             = ccp(0.5f, 0.5f);
-        [_cellLayer addChild:row z:1];
+        [_rowsLayer addChild:row z:1 tag:i];
         
         CGPoint position        = center;
         if (_swipeOrientation == CCControlPickerOrientationVertical)
@@ -274,20 +295,24 @@
     if ([self isLooping])
     {
         CCControlPickerRow *lab_sub         = [_dataSource controlPicker:self nodeForRow:(rowCount - 1)];
+        [lab_sub fitRowInSize:_cacheRowSize];
         lab_sub.anchorPoint                 = ccp(0.5f, 0.5f);
-        [_cellLayer addChild:lab_sub z:1];
+        [_rowsLayer addChild:lab_sub z:1];
         
         CCControlPickerRow *lab_sub2        = [_dataSource controlPicker:self nodeForRow:(rowCount - 2)];
+        [lab_sub2 fitRowInSize:_cacheRowSize];
         lab_sub2.anchorPoint                = ccp(0.5f, 0.5f);
-        [_cellLayer addChild:lab_sub2 z:1];
+        [_rowsLayer addChild:lab_sub2 z:1];
         
         CCControlPickerRow *lab_ove         = [_dataSource controlPicker:self nodeForRow:0];
+        [lab_ove fitRowInSize:_cacheRowSize];
         lab_ove.anchorPoint                 = ccp(0.5f, 0.5f);
-        [_cellLayer addChild:lab_ove z:1];
+        [_rowsLayer addChild:lab_ove z:1];
         
         CCControlPickerRow *lab_ove2        = [_dataSource controlPicker:self nodeForRow:1];
+        [lab_ove2 fitRowInSize:_cacheRowSize];
         lab_ove2.anchorPoint                = ccp(0.5f, 0.5f);
-        [_cellLayer addChild:lab_ove2 z:1];
+        [_rowsLayer addChild:lab_ove2 z:1];
         
         if (_swipeOrientation == CCControlPickerOrientationVertical)
         {
@@ -310,7 +335,7 @@
                                  0,
                                  _cacheRowSize.height * (_cachedRowCount - 1));
     
-    _selectedRow    = 0;
+    [self selectRow:0 animated:NO];
 }
 
 - (BOOL)isValue:(double)value outOfMinBound:(double)min maxBound:(double)max
@@ -421,6 +446,25 @@
     }
 }
 
+- (void)sendPickerRowEventForPosition:(CGPoint)location
+{
+    NSUInteger highlightRow = [self rowNumberAtLocation:_rowsLayer.position];
+    
+    if (_highlightRow != highlightRow)
+    {
+        id<CCControlPickerRowDelegate> rowNode;
+        if (_highlightRow != -1)
+        {
+            rowNode     = (id<CCControlPickerRowDelegate>)[_rowsLayer getChildByTag:_highlightRow];
+            [rowNode rowDidMasked];
+        }
+        
+        self.highlightRow               = highlightRow;
+        rowNode     = (id<CCControlPickerRowDelegate>)[_rowsLayer getChildByTag:_highlightRow];
+        [rowNode rowDidHighlighted];
+    }
+}
+
 #pragma mark -
 #pragma mark CCTargetedTouch Delegate Methods
 
@@ -429,7 +473,7 @@
     if (![self isTouchInside:touch])
         return NO;
 
-    [_cellLayer stopAllActions];
+    [_rowsLayer stopAllActions];
     
     CGPoint touchLocation   = [touch locationInView:[touch view]];
     touchLocation           = [[CCDirector sharedDirector] convertToGL:touchLocation];
@@ -443,7 +487,7 @@
     
     // Update the cell layer position
     CGPoint translation     = ccpSub(_previousLocation, touchLocation);
-    _cellLayer.position     = [self positionWithTranslation:translation forLayerPosition:_cellLayer.position];
+    _rowsLayer.position     = [self positionWithTranslation:translation forLayerPosition:_rowsLayer.position];
     
     return YES;
 }
@@ -456,7 +500,10 @@
     
     // Update the cell layer position
     CGPoint translation     = ccpSub(_previousLocation, touchLocation);
-    _cellLayer.position     = [self positionWithTranslation:translation forLayerPosition:_cellLayer.position];
+    _rowsLayer.position     = [self positionWithTranslation:translation forLayerPosition:_rowsLayer.position];
+    
+    // Sends the picker's row event
+    [self sendPickerRowEventForPosition:_rowsLayer.position];
     
     // Compute the current velocity
     double delta_time       = [[NSDate date] timeIntervalSinceDate:_previousDate];
@@ -496,24 +543,34 @@
     SAFE_ARC_SUPER_DEALLOC();
 }
 
-- (id)initWithTitle:(NSString *)title
+- (id)init
 {
     if ((self = [super init]))
     {
         CGSize defaultSize              = CGSizeMake(CCControlPickerDefaultRowWidth, CCControlPickerDefaultRowHeight);
-
-        _textLabel                      = SAFE_ARC_RETAIN([CCLabelTTF labelWithString:title
-                                                           dimensions:CGSizeMake(CCControlPickerDefaultRowWidth, CCControlPickerDefaultRowHeight)
-                                                           hAlignment:UITextAlignmentCenter
-                                                             fontName:@"Arial-BoldMT"
-                                                             fontSize:15]);
+        
+        _textLabel                      = SAFE_ARC_RETAIN([CCLabelTTF labelWithString:@""
+                                                                           dimensions:CGSizeMake(CCControlPickerDefaultRowWidth,
+                                                                                                 CCControlPickerDefaultRowHeight)
+                                                                           hAlignment:UITextAlignmentCenter
+                                                                             fontName:@"HelveticaNeue-Bold"
+                                                                             fontSize:18]);
         _textLabel.verticalAlignment    = kCCVerticalTextAlignmentCenter;
-        _textLabel.color                = ccBLACK;
+        _textLabel.color                = ccc3(86, 86, 86);
         _textLabel.anchorPoint          = ccp(0.5f, 0.5f);
         _textLabel.position             = ccp (CCControlPickerDefaultRowWidth / 2, CCControlPickerDefaultRowHeight / 2);
         [self addChild:_textLabel z:1];
         
         self.contentSize                = defaultSize;
+    }
+    return self;
+}
+
+- (id)initWithTitle:(NSString *)title
+{
+    if ((self = [self init]))
+    {
+        _textLabel.string   = title;
     }
     return self;
 }
@@ -524,5 +581,38 @@
 }
 
 #pragma mark Properties
+
+#pragma mark - Public Methods
+
+- (void)fitRowInSize:(CGSize)size
+{
+    CGPoint center          = ccp(size.width / 2, size.height / 2);
+
+    self.contentSize        = size;
+    _textLabel.dimensions   = size;
+    _textLabel.position     = center;
+}
+
+#pragma mark - CCControlPickerRow Delegate Methods
+
+- (void)rowDidHighlighted
+{
+    _textLabel.scale    = 1.3f;
+    _textLabel.color    = ccc3(201, 62, 119);
+}
+
+- (void)rowDidMasked
+{
+    _textLabel.scale    = 1.0f;
+    _textLabel.color    = ccc3(86, 86, 86);
+}
+
+- (void)rowDidSelected
+{
+    _textLabel.scale    = 1.3f;
+    _textLabel.color    = ccc3(201, 62, 119);
+}
+
+#pragma mark - Private Methods
 
 @end

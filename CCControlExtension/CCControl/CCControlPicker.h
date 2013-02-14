@@ -160,6 +160,43 @@ typedef enum
 
 @end
 
+#pragma mark - CCControlPickerRowDelegate
+
+/**
+ * The CCControlPickerRowDelegate class allows the receiver to respond to the
+ * CCControlPicker's events. By implementing these methods you can improve the
+ * user experience with appropriate visuals.
+ */
+@protocol CCControlPickerRowDelegate <NSObject>
+
+@required
+
+#pragma mark Responding to Control Picker Events
+/** @name Responding to Control Picker Events */
+
+/**
+ * @abstract Notifies the row that enters under the selection node.
+ * @discussion You can implement this method to perform additional tasks
+ * associated with presenting the view.
+ */
+- (void)rowDidHighlighted;
+
+/**
+ * @abstract Notifies the row that leaves the selection node.
+ * @discussion You can implement this method to perform additional tasks
+ * associated with presenting the view.
+ */
+- (void)rowDidMasked;
+
+/**
+ * @abstract Notifies the row that is selected.
+ * @discussion You can implement this method to perform additional tasks
+ * associated with presenting the view.
+ */
+- (void)rowDidSelected;
+
+@end
+
 #pragma mark - CCControlPickerRowNode
 
 /**
@@ -169,7 +206,7 @@ typedef enum
  * A row node implements some methods and callbacks to make the
  * CCControlPicker customization more easier.
  */
-@interface CCControlPickerRow : CCNode
+@interface CCControlPickerRow : CCNode <CCControlPickerRowDelegate>
 
 #pragma mark Contructors - Initializers
 /** @name Create Picker' Rows */
@@ -181,6 +218,7 @@ typedef enum
 
 #pragma mark Managing Text as Row Content
 /** @name Managing Text as Row Content */
+
 /**
  * @abstract Returns the label used for the main textual content of 
  * the control picker row. (read-only)
@@ -188,6 +226,21 @@ typedef enum
  * adds an appropriate label when you create the row.
  */
 @property (nonatomic, readonly) CCLabelTTF  *textLabel;
+
+#pragma mark Managing Row Size
+/** @name Managing Row Size */
+
+/**
+ * @abstract Called when the size must resize.
+ * @param size The size that the row should fit.
+ * @discussion The method is called by the CCControlPicker when its needed.
+ * The control picker uses the size defined by the rowSizeForControlPicker:
+ * method of the CCControlPickerDelegate.
+ *
+ * You have to override this method to layout your cell correctly.<br />
+ * (*do not forget to call the super [super fitRowInSize:size])*
+ */
+- (void)fitRowInSize:(CGSize)size;
 
 @end
 
@@ -205,6 +258,7 @@ typedef enum
 
 @required
 
+#pragma mark Providing Counts for the Control Picke
 /** @name Providing Counts for the Control Picker */
 
 /**
@@ -214,6 +268,7 @@ typedef enum
  */
 - (NSUInteger)numberOfRowsInControlPicker:(CCControlPicker *)controlPicker;
 
+#pragma mark Setting the Content of Component Rows
 /** @name Setting the Content of Component Rows */
 
 /**
@@ -244,7 +299,16 @@ typedef enum
 
 @optional
 
-#pragma mark Setting the Content of Component Rows
+#pragma mark Setting the Dimensions of the Control Picker's row
+/** @name Setting the Dimensions of the Control Picker's row */
+
+/**
+ * @abstract Called by the control picker when it needs the row size to use for drawing 
+ * row content.
+ * @param controlPicker The control picker requesting this information.
+ * @return A CGSize indicating the size of the row in points.
+ */
+- (CGSize)rowSizeForControlPicker:(CCControlPicker *)controlPicker;
 
 #pragma mark Responding to Row Selection
 /** @name Responding to Row Selection */

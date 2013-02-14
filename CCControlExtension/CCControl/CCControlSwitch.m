@@ -308,6 +308,9 @@
         self.maskTexture        = [maskSprite texture];
       
         // Position Texture Color shader
+        
+
+        
 #if COCOS2D_VERSION >= 0x00020100
         self.shaderProgram      = [[CCGLProgram alloc] initWithVertexShaderByteArray:ccPositionTextureColor_vert
                                                              fragmentShaderByteArray:ccControlSwitchMask_frag];

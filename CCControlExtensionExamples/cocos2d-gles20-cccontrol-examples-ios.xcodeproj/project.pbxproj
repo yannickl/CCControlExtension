@@ -209,7 +209,7 @@
 		C2B092581533962700007ECC /* vec4.c in Sources */ = {isa = PBXBuildFile; fileRef = C2B091F51533962700007ECC /* vec4.c */; };
 		C2B0925A1533964600007ECC /* fps_images-ipadhd.png in Resources */ = {isa = PBXBuildFile; fileRef = C2B092591533964600007ECC /* fps_images-ipadhd.png */; };
 		C2DC0C9A155065C0001670DC /* switch-on-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = C2DC0C90155065C0001670DC /* switch-on-hd.png */; };
-		C2DC0C9B155065C0001670DC /* switch-on-ipadhd .png in Resources */ = {isa = PBXBuildFile; fileRef = C2DC0C91155065C0001670DC /* switch-on-ipadhd .png */; };
+		C2DC0C9B155065C0001670DC /* switch-on-ipadhd.png in Resources */ = {isa = PBXBuildFile; fileRef = C2DC0C91155065C0001670DC /* switch-on-ipadhd.png */; };
 		C2DC0C9C155065C0001670DC /* switch-on.png in Resources */ = {isa = PBXBuildFile; fileRef = C2DC0C92155065C0001670DC /* switch-on.png */; };
 		C2DC0C9D155065C0001670DC /* switch-mask-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = C2DC0C93155065C0001670DC /* switch-mask-hd.png */; };
 		C2DC0C9E155065C0001670DC /* switch-mask-ipadhd.png in Resources */ = {isa = PBXBuildFile; fileRef = C2DC0C94155065C0001670DC /* switch-mask-ipadhd.png */; };
@@ -607,7 +607,7 @@
 		C2B091F51533962700007ECC /* vec4.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = vec4.c; sourceTree = "<group>"; };
 		C2B092591533964600007ECC /* fps_images-ipadhd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "fps_images-ipadhd.png"; path = "Resources/fps_images-ipadhd.png"; sourceTree = "<group>"; };
 		C2DC0C90155065C0001670DC /* switch-on-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "switch-on-hd.png"; sourceTree = "<group>"; };
-		C2DC0C91155065C0001670DC /* switch-on-ipadhd .png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "switch-on-ipadhd .png"; sourceTree = "<group>"; };
+		C2DC0C91155065C0001670DC /* switch-on-ipadhd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "switch-on-ipadhd.png"; sourceTree = "<group>"; };
 		C2DC0C92155065C0001670DC /* switch-on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "switch-on.png"; sourceTree = "<group>"; };
 		C2DC0C93155065C0001670DC /* switch-mask-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "switch-mask-hd.png"; sourceTree = "<group>"; };
 		C2DC0C94155065C0001670DC /* switch-mask-ipadhd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "switch-mask-ipadhd.png"; sourceTree = "<group>"; };
@@ -712,7 +712,7 @@
 				C2DC0C90155065C0001670DC /* switch-on-hd.png */,
 				C2DC0C95155065C0001670DC /* switch-off-hd.png */,
 				C2DC0C98155065C0001670DC /* switch-thumb-hd.png */,
-				C2DC0C91155065C0001670DC /* switch-on-ipadhd .png */,
+				C2DC0C91155065C0001670DC /* switch-on-ipadhd.png */,
 				C2DC0C94155065C0001670DC /* switch-mask-ipadhd.png */,
 				C2DC0C96155065C0001670DC /* switch-off-ipadhd.png */,
 				C2DC0C99155065C0001670DC /* switch-thumb-ipadhd.png */,
@@ -1632,7 +1632,7 @@
 				C227EA7C153439640030DD7E /* switch-mask.png in Resources */,
 				C227EA7F153439640030DD7E /* switch-thumb.png in Resources */,
 				C2DC0C9A155065C0001670DC /* switch-on-hd.png in Resources */,
-				C2DC0C9B155065C0001670DC /* switch-on-ipadhd .png in Resources */,
+				C2DC0C9B155065C0001670DC /* switch-on-ipadhd.png in Resources */,
 				C2DC0C9C155065C0001670DC /* switch-on.png in Resources */,
 				C2DC0C9D155065C0001670DC /* switch-mask-hd.png in Resources */,
 				C2DC0C9E155065C0001670DC /* switch-mask-ipadhd.png in Resources */,

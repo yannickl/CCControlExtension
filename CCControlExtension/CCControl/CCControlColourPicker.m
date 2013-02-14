@@ -29,11 +29,37 @@
 
 #import "CCControlColourPicker.h"
 
-#import "Utils.h"
 #import "ARCMacro.h"
 
 #pragma mark -
 #pragma mark - CCControlHuePicker Interface
+
+@interface Utils : NSObject
+
++ (CCSprite*)addSprite:(NSString *)spriteName toTarget:(id)target withPos:(CGPoint)pos andAnchor:(CGPoint)anchor;
+
+@end
+
+@implementation Utils
+
+
++ (CCSprite *)addSprite:(NSString *)spriteName toTarget:(CCNode *)target withPos:(CGPoint)pos andAnchor:(CGPoint)anchor
+{
+	CCSprite *sprite	= [CCSprite spriteWithSpriteFrameName:spriteName];
+    
+    // check the sprite exists
+    BOOL responds		= [sprite respondsToSelector:@selector(setPosition:)];
+    
+    if (responds == NO)	return nil;
+    
+	sprite.anchorPoint	= anchor;
+	sprite.position		= pos;
+	[target addChild:sprite];
+	
+	return sprite;
+}
+
+@end
 
 @interface CCControlHuePicker : CCControl
 {

@@ -18,7 +18,6 @@
 		C234FFC315264B9300141008 /* CCControlSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = C234FFB315264B9300141008 /* CCControlSlider.m */; };
 		C234FFC415264B9300141008 /* CCColourUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C234FFB615264B9300141008 /* CCColourUtils.m */; };
 		C234FFC515264B9300141008 /* CCScale9Sprite.m in Sources */ = {isa = PBXBuildFile; fileRef = C234FFB815264B9300141008 /* CCScale9Sprite.m */; };
-		C234FFC615264B9300141008 /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = C234FFBA15264B9300141008 /* Utils.m */; };
 		C234FFC715264B9300141008 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = C234FFBC15264B9300141008 /* README.md */; };
 		C234FFC815264B9300141008 /* LICENSE_CCControlExtention.txt in Resources */ = {isa = PBXBuildFile; fileRef = C234FFBD15264B9300141008 /* LICENSE_CCControlExtention.txt */; };
 		C23875AC1503DC13004BF57E /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C23875AB1503DC13004BF57E /* QuartzCore.framework */; };
@@ -276,8 +275,6 @@
 		C234FFB615264B9300141008 /* CCColourUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCColourUtils.m; sourceTree = "<group>"; };
 		C234FFB715264B9300141008 /* CCScale9Sprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCScale9Sprite.h; sourceTree = "<group>"; };
 		C234FFB815264B9300141008 /* CCScale9Sprite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCScale9Sprite.m; sourceTree = "<group>"; };
-		C234FFB915264B9300141008 /* Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utils.h; sourceTree = "<group>"; };
-		C234FFBA15264B9300141008 /* Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utils.m; sourceTree = "<group>"; };
 		C234FFBB15264B9300141008 /* CCControlExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCControlExtension.h; sourceTree = "<group>"; };
 		C234FFBC15264B9300141008 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		C234FFBD15264B9300141008 /* LICENSE_CCControlExtention.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = LICENSE_CCControlExtention.txt; path = ../../LICENSE_CCControlExtention.txt; sourceTree = "<group>"; };
@@ -768,8 +765,6 @@
 				C234FFB615264B9300141008 /* CCColourUtils.m */,
 				C234FFB715264B9300141008 /* CCScale9Sprite.h */,
 				C234FFB815264B9300141008 /* CCScale9Sprite.m */,
-				C234FFB915264B9300141008 /* Utils.h */,
-				C234FFBA15264B9300141008 /* Utils.m */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -1697,7 +1692,6 @@
 				C234FFC315264B9300141008 /* CCControlSlider.m in Sources */,
 				C234FFC415264B9300141008 /* CCColourUtils.m in Sources */,
 				C234FFC515264B9300141008 /* CCScale9Sprite.m in Sources */,
-				C234FFC615264B9300141008 /* Utils.m in Sources */,
 				C2B091F61533962700007ECC /* CCAction.m in Sources */,
 				C2B091F71533962700007ECC /* CCActionCamera.m in Sources */,
 				C2B091F81533962700007ECC /* CCActionEase.m in Sources */,

@@ -61,6 +61,9 @@
  * value and the bounds of the control picker. */
 - (double)adjustTranslation:(double)tranlation forAxisValue:(double)axis usingMinBound:(double)min maxBound:(double)max;
 
+/** Calls the delegate to warn it that the selected row has changed. */
+-(void)sendSelectedRowCallback;
+
 @end
 
 @implementation CCControlPicker
@@ -99,7 +102,6 @@
         self.decelerating                   = NO;
         self.ignoreAnchorPointForPosition   = NO;
         self.contentSize                    = foregroundSprite.contentSize;
-        self.anchorPoint                    = ccp(0.8f, 0.8f);
         self.cells                          = [NSMutableArray array];
         
         _cachedRowCount                     = 0;
@@ -145,12 +147,12 @@
     
     glEnable(GL_SCISSOR_TEST);
     
-    CGRect scissorRect  = [self boundingBox];
+    CGPoint worldOrg    = [self convertToWorldSpace:ccp(0, 0)];
+    CGPoint dest        = [self convertToWorldSpace:ccp(self.contentSize.width, self.contentSize.height)];
+    CGPoint dims        = ccpSub(dest, worldOrg);
     
-    scissorRect         = CGRectMake(scissorRect.origin.x * CC_CONTENT_SCALE_FACTOR(),
-                                     scissorRect.origin.y * CC_CONTENT_SCALE_FACTOR(),
-                                     scissorRect.size.width * CC_CONTENT_SCALE_FACTOR(),
-                                     scissorRect.size.height * CC_CONTENT_SCALE_FACTOR());
+    CGRect scissorRect  = CGRectMake(worldOrg.x, worldOrg.y, dims.x, dims.y);
+    scissorRect         = CC_RECT_POINTS_TO_PIXELS(scissorRect);
     
     glScissor(scissorRect.origin.x, scissorRect.origin.y,
               scissorRect.size.width, scissorRect.size.height);
@@ -228,15 +230,20 @@
         dest.y  = _cacheRowSize.height * row;
     else
         dest.x  = -_cacheRowSize.width * row;
-    
-    [_cellLayer runAction:[CCEaseInOut actionWithAction:
-                           [CCEaseElasticOut actionWithAction:
-                            [CCMoveTo actionWithDuration:0.4f position:dest] period:0.02f] rate:1.0f]];
-    
+
     _selectedRow    = row;
     
-    if (_delegate && [_delegate respondsToSelector:@selector(controlPicker:didSelectRow:)])
-        [_delegate controlPicker:self didSelectRow:row];
+    if (animated)
+    {
+        [_cellLayer runAction:[CCSequence actions:
+                               [CCEaseInOut actionWithAction:
+                                [CCEaseElasticOut actionWithAction:
+                                 [CCMoveTo actionWithDuration:0.4f position:dest] period:0.02f] rate:1.0f],
+                               [CCCallFunc actionWithTarget:self selector:@selector(sendSelectedRowCallback)],nil]];
+    } else
+    {
+        [self sendSelectedRowCallback];
+    }
 }
 
 - (NSInteger)selectedRow
@@ -406,6 +413,14 @@
     }
 }
 
+-(void)sendSelectedRowCallback
+{
+    if (_delegate && [_delegate respondsToSelector:@selector(controlPicker:didSelectRow:)])
+    {
+        [_delegate controlPicker:self didSelectRow:_selectedRow];
+    }
+}
+
 #pragma mark -
 #pragma mark CCTargetedTouch Delegate Methods
 
@@ -413,7 +428,7 @@
 {
     if (![self isTouchInside:touch])
         return NO;
-    
+
     [_cellLayer stopAllActions];
     
     CGPoint touchLocation   = [touch locationInView:[touch view]];

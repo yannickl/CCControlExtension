@@ -27,40 +27,87 @@
 #import "CCControlPickerTest.h"
 
 @interface CCControlPickerTest ()
-@property (nonatomic, strong) NSArray   *source;
+@property (nonatomic, strong) NSArray       *source;
+@property (nonatomic, retain) CCLabelTTF    *displayValueLabel;
+
+- (CCControlPicker *)makeControlPicker;
 
 @end
 
 @implementation CCControlPickerTest
-@synthesize source  = _source;
+@synthesize source              = _source;
+@synthesize displayValueLabel   = _displayValueLabel;
 
 - (void)dealloc
 {
-    [_source release];
+    [_source            release];
+    [_displayValueLabel release];
     
-    [super dealloc];
+    [super              dealloc];
 }
 
 - (id)init
 {
 	if ((self = [super init]))
     {
-        CGSize screenSize       = [[CCDirector sharedDirector] winSize];
-        self.source             = [NSArray arrayWithObjects:@"0", @"1", @"2", @"3", @"4", @"5", nil];
+        CGSize screenSize           = [[CCDirector sharedDirector] winSize];
+        self.source                 = [NSArray arrayWithObjects:@"0", @"1", @"2", @"3", @"4", @"5", nil];
         
-        CCSprite *background    = [CCSprite spriteWithFile:@"pickerBackground.png"];
-        CCSprite *selection     = [CCSprite spriteWithFile:@"pickerSelection.png"];
-        CCControlPicker *picker = [[CCControlPicker alloc] initWithForegroundSprite:background selectionSprite:selection];
-        picker.backgroundNode   = [CCLayerColor layerWithColor:ccc4(255, 255, 255, 255)];
-        picker.anchorPoint      = ccp (0.5f, 0.5f);
-        picker.position         = ccp (screenSize.width / 2, screenSize.height / 2);
-        picker.dataSource       = self;
-        picker.delegate         = self;
-        picker.looping          = NO;
-        picker.swipeOrientation = CCControlPickerOrientationVertical;
-        [self addChild:picker z:0];
+        CCNode *layer               = [CCNode node];
+        layer.position              = ccp (screenSize.width / 2, screenSize.height / 2);
+        [self addChild:layer z:1 tag:1];
+        
+        double layer_width = 0;
+        
+        // Add the black background for the text
+        CCScale9Sprite *background  = [CCScale9Sprite spriteWithFile:@"buttonBackground.png"];
+        [background setContentSize:CGSizeMake(80, 50)];
+        [background setPosition:ccp(layer_width + background.contentSize.width / 2.0f, 0)];
+        [layer addChild:background];
+        
+        layer_width += background.contentSize.width;
+        
+#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+        self.displayValueLabel      = [CCLabelTTF labelWithString:@"" fontName:@"HelveticaNeue-Bold" fontSize:30];
+#elif __MAC_OS_X_VERSION_MAX_ALLOWED
+        self.displayValueLabel      = [CCLabelTTF labelWithString:@"" fontName:@"Marker Felt" fontSize:30];
+#endif
+        _displayValueLabel.position = background.position;
+        [layer addChild:_displayValueLabel];
+        
+        // Create the picker and add it to the layer
+        CCControlPicker *picker     = [self makeControlPicker];
+        picker.position             = ccp(layer_width + 10 + picker.contentSize.width / 2, 0);
+        [layer addChild:picker];
+        
+        layer_width                 += picker.contentSize.width;
+        
+        // Set the layer size
+        layer.contentSize           = CGSizeMake(layer_width, 0);
+        layer.anchorPoint           = ccp (0.5f, 0.5f);
+        
+        [self controlPicker:picker didSelectRow:0];
 	}
 	return self;
+}
+
+#pragma mark - Public Methods
+#pragma mark - Private Methods
+
+- (CCControlPicker *)makeControlPicker
+{
+    CCSprite *pbackground       = [CCSprite spriteWithFile:@"pickerBackground.png"];
+    CCSprite *pselection        = [CCSprite spriteWithFile:@"pickerSelection.png"];
+    
+    CCControlPicker *picker     = [[CCControlPicker alloc] initWithForegroundSprite:pbackground selectionSprite:pselection];
+    picker.backgroundNode       = [CCLayerColor layerWithColor:ccc4(255, 255, 255, 255)];
+    picker.anchorPoint          = ccp (0.5f, 0.5f);
+    picker.dataSource           = self;
+    picker.delegate             = self;
+    picker.looping              = NO;
+    picker.swipeOrientation     = CCControlPickerOrientationVertical;
+    
+    return [picker autorelease];
 }
 
 #pragma mark - CCControlPicker DataSource Methods
@@ -79,6 +126,7 @@
 
 - (void)controlPicker:(CCControlPicker *)controlPicker didSelectRow:(NSUInteger)row
 {
+    _displayValueLabel.string   = [_source objectAtIndex:row];
 }
 
 @end

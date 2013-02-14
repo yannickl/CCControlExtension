@@ -27,5 +27,9 @@
 #import "CCControlScene.h"
 
 @interface CCControlPickerTest : CCControlScene <CCControlPickerDataSource, CCControlPickerDelegate>
+{
+@protected
+    CCLabelTTF *_displayValueLabel;
+}
 
 @end

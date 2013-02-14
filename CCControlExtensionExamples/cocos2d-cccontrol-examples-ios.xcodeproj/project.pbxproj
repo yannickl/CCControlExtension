@@ -214,6 +214,15 @@
 		F4539B2915B3320700ACFE96 /* potentiometerTrack-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F4539B1D15B3320700ACFE96 /* potentiometerTrack-ipad.png */; };
 		F4539B2A15B3320700ACFE96 /* potentiometerTrack-ipadhd.png in Resources */ = {isa = PBXBuildFile; fileRef = F4539B1E15B3320700ACFE96 /* potentiometerTrack-ipadhd.png */; };
 		F4539B2B15B3320700ACFE96 /* potentiometerTrack.png in Resources */ = {isa = PBXBuildFile; fileRef = F4539B1F15B3320700ACFE96 /* potentiometerTrack.png */; };
+		F4A88AAF16CD878300596724 /* CCControlPickerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F4A88AA516CD878300596724 /* CCControlPickerTest.m */; };
+		F4A88AB016CD878300596724 /* pickerBackground-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = F4A88AA716CD878300596724 /* pickerBackground-hd.png */; };
+		F4A88AB116CD878300596724 /* pickerBackground-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F4A88AA816CD878300596724 /* pickerBackground-ipad.png */; };
+		F4A88AB216CD878300596724 /* pickerBackground-ipadhd.png in Resources */ = {isa = PBXBuildFile; fileRef = F4A88AA916CD878300596724 /* pickerBackground-ipadhd.png */; };
+		F4A88AB316CD878300596724 /* pickerBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = F4A88AAA16CD878300596724 /* pickerBackground.png */; };
+		F4A88AB416CD878300596724 /* pickerSelection-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = F4A88AAB16CD878300596724 /* pickerSelection-hd.png */; };
+		F4A88AB516CD878300596724 /* pickerSelection-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F4A88AAC16CD878300596724 /* pickerSelection-ipad.png */; };
+		F4A88AB616CD878300596724 /* pickerSelection-ipadhd.png in Resources */ = {isa = PBXBuildFile; fileRef = F4A88AAD16CD878300596724 /* pickerSelection-ipadhd.png */; };
+		F4A88AB716CD878300596724 /* pickerSelection.png in Resources */ = {isa = PBXBuildFile; fileRef = F4A88AAE16CD878300596724 /* pickerSelection.png */; };
 		F4C9D4AA165057780070EFC9 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F4C9D4A9165057780070EFC9 /* Default-568h@2x.png */; };
 		F4FBB0CE15E2A0A200004945 /* CCSprite+Rotation.m in Sources */ = {isa = PBXBuildFile; fileRef = F4FBB0CD15E2A0A200004945 /* CCSprite+Rotation.m */; };
 /* End PBXBuildFile section */
@@ -565,6 +574,16 @@
 		F4539B1D15B3320700ACFE96 /* potentiometerTrack-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "potentiometerTrack-ipad.png"; sourceTree = "<group>"; };
 		F4539B1E15B3320700ACFE96 /* potentiometerTrack-ipadhd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "potentiometerTrack-ipadhd.png"; sourceTree = "<group>"; };
 		F4539B1F15B3320700ACFE96 /* potentiometerTrack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = potentiometerTrack.png; sourceTree = "<group>"; };
+		F4A88AA416CD878300596724 /* CCControlPickerTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCControlPickerTest.h; sourceTree = "<group>"; };
+		F4A88AA516CD878300596724 /* CCControlPickerTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCControlPickerTest.m; sourceTree = "<group>"; };
+		F4A88AA716CD878300596724 /* pickerBackground-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pickerBackground-hd.png"; sourceTree = "<group>"; };
+		F4A88AA816CD878300596724 /* pickerBackground-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pickerBackground-ipad.png"; sourceTree = "<group>"; };
+		F4A88AA916CD878300596724 /* pickerBackground-ipadhd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pickerBackground-ipadhd.png"; sourceTree = "<group>"; };
+		F4A88AAA16CD878300596724 /* pickerBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pickerBackground.png; sourceTree = "<group>"; };
+		F4A88AAB16CD878300596724 /* pickerSelection-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pickerSelection-hd.png"; sourceTree = "<group>"; };
+		F4A88AAC16CD878300596724 /* pickerSelection-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pickerSelection-ipad.png"; sourceTree = "<group>"; };
+		F4A88AAD16CD878300596724 /* pickerSelection-ipadhd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pickerSelection-ipadhd.png"; sourceTree = "<group>"; };
+		F4A88AAE16CD878300596724 /* pickerSelection.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pickerSelection.png; sourceTree = "<group>"; };
 		F4C9D4A5165050FA0070EFC9 /* ARCMacro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCMacro.h; sourceTree = "<group>"; };
 		F4C9D4A9165057780070EFC9 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "Resources/Default-568h@2x.png"; sourceTree = "<group>"; };
 		F4FBB0CC15E2A0A200004945 /* CCSprite+Rotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CCSprite+Rotation.h"; sourceTree = "<group>"; };
@@ -1226,6 +1245,7 @@
 			children = (
 				C2D0FB321472E62100FE4DCE /* CCControlButtonTest */,
 				C2A0F06D14D58FE200696B8A /* CCControlColourPicker */,
+				F4A88AA316CD878300596724 /* CCControlPickerTest */,
 				F4539AFC15B211AB00ACFE96 /* CCControlPotentiometerTest */,
 				C2D0FB371472E62100FE4DCE /* CCControlSliderTest */,
 				C290A5991567D2DE00BF10B3 /* CCControlStepperTest */,
@@ -1294,6 +1314,31 @@
 				F4539B1F15B3320700ACFE96 /* potentiometerTrack.png */,
 			);
 			name = sd;
+			sourceTree = "<group>";
+		};
+		F4A88AA316CD878300596724 /* CCControlPickerTest */ = {
+			isa = PBXGroup;
+			children = (
+				F4A88AA616CD878300596724 /* Resources */,
+				F4A88AA416CD878300596724 /* CCControlPickerTest.h */,
+				F4A88AA516CD878300596724 /* CCControlPickerTest.m */,
+			);
+			path = CCControlPickerTest;
+			sourceTree = "<group>";
+		};
+		F4A88AA616CD878300596724 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				F4A88AA716CD878300596724 /* pickerBackground-hd.png */,
+				F4A88AA816CD878300596724 /* pickerBackground-ipad.png */,
+				F4A88AA916CD878300596724 /* pickerBackground-ipadhd.png */,
+				F4A88AAA16CD878300596724 /* pickerBackground.png */,
+				F4A88AAB16CD878300596724 /* pickerSelection-hd.png */,
+				F4A88AAC16CD878300596724 /* pickerSelection-ipad.png */,
+				F4A88AAD16CD878300596724 /* pickerSelection-ipadhd.png */,
+				F4A88AAE16CD878300596724 /* pickerSelection.png */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1430,6 +1475,14 @@
 				F4539B2A15B3320700ACFE96 /* potentiometerTrack-ipadhd.png in Resources */,
 				F4539B2B15B3320700ACFE96 /* potentiometerTrack.png in Resources */,
 				F4C9D4AA165057780070EFC9 /* Default-568h@2x.png in Resources */,
+				F4A88AB016CD878300596724 /* pickerBackground-hd.png in Resources */,
+				F4A88AB116CD878300596724 /* pickerBackground-ipad.png in Resources */,
+				F4A88AB216CD878300596724 /* pickerBackground-ipadhd.png in Resources */,
+				F4A88AB316CD878300596724 /* pickerBackground.png in Resources */,
+				F4A88AB416CD878300596724 /* pickerSelection-hd.png in Resources */,
+				F4A88AB516CD878300596724 /* pickerSelection-ipad.png in Resources */,
+				F4A88AB616CD878300596724 /* pickerSelection-ipadhd.png in Resources */,
+				F4A88AB716CD878300596724 /* pickerSelection.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1557,6 +1610,7 @@
 				F4539B0715B2132200ACFE96 /* CCControlPotentiometer.m in Sources */,
 				F4FBB0CE15E2A0A200004945 /* CCSprite+Rotation.m in Sources */,
 				F42D2EE516CD857C0083C858 /* CCControlPicker.m in Sources */,
+				F4A88AAF16CD878300596724 /* CCControlPickerTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

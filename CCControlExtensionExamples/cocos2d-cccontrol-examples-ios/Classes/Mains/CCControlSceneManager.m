@@ -69,6 +69,7 @@ static CCControlSceneManager *sharedInstance = nil;
                          @"CCControlButtonTest_HelloVariableSize",
                          @"CCControlButtonTest_Styling",
                          @"CCControlPotentiometerTest",
+                         @"CCControlPickerTest",
                          nil];
     }
     return self;

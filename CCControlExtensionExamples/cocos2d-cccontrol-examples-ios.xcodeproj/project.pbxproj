@@ -197,6 +197,7 @@
 		C2DC0CB615507097001670DC /* switch-on-ipadhd .png in Resources */ = {isa = PBXBuildFile; fileRef = C2DC0CAE15507097001670DC /* switch-on-ipadhd .png */; };
 		C2DC0CB715507097001670DC /* switch-thumb-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = C2DC0CAF15507097001670DC /* switch-thumb-hd.png */; };
 		C2DC0CB815507097001670DC /* switch-thumb-ipadhd.png in Resources */ = {isa = PBXBuildFile; fileRef = C2DC0CB015507097001670DC /* switch-thumb-ipadhd.png */; };
+		F42D2EE516CD857C0083C858 /* CCControlPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = F42D2EE416CD857C0083C858 /* CCControlPicker.m */; };
 		F4539AED15B0706000ACFE96 /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F4539AEB15B0706000ACFE96 /* Default-Landscape~ipad.png */; };
 		F4539AEE15B0706000ACFE96 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F4539AEC15B0706000ACFE96 /* Default@2x.png */; };
 		F4539AFF15B211AB00ACFE96 /* CCControlPotentiometerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F4539AFE15B211AB00ACFE96 /* CCControlPotentiometerTest.m */; };
@@ -544,6 +545,8 @@
 		C2DC0CAE15507097001670DC /* switch-on-ipadhd .png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "switch-on-ipadhd .png"; sourceTree = "<group>"; };
 		C2DC0CAF15507097001670DC /* switch-thumb-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "switch-thumb-hd.png"; sourceTree = "<group>"; };
 		C2DC0CB015507097001670DC /* switch-thumb-ipadhd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "switch-thumb-ipadhd.png"; sourceTree = "<group>"; };
+		F42D2EE316CD857C0083C858 /* CCControlPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCControlPicker.h; sourceTree = "<group>"; };
+		F42D2EE416CD857C0083C858 /* CCControlPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCControlPicker.m; sourceTree = "<group>"; };
 		F4539AEB15B0706000ACFE96 /* Default-Landscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-Landscape~ipad.png"; path = "Resources/Default-Landscape~ipad.png"; sourceTree = "<group>"; };
 		F4539AEC15B0706000ACFE96 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@2x.png"; path = "Resources/Default@2x.png"; sourceTree = "<group>"; };
 		F4539AFD15B211AB00ACFE96 /* CCControlPotentiometerTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCControlPotentiometerTest.h; sourceTree = "<group>"; };
@@ -831,6 +834,8 @@
 				C27D3DA01528C4DD004EF65F /* CCControlHuePicker.m */,
 				C27D3DA11528C4DD004EF65F /* CCControlSaturationBrightnessPicker.h */,
 				C27D3DA21528C4DD004EF65F /* CCControlSaturationBrightnessPicker.m */,
+				F42D2EE316CD857C0083C858 /* CCControlPicker.h */,
+				F42D2EE416CD857C0083C858 /* CCControlPicker.m */,
 				F4539B0515B2132200ACFE96 /* CCControlPotentiometer.h */,
 				F4539B0615B2132200ACFE96 /* CCControlPotentiometer.m */,
 				C27D3DA31528C4DD004EF65F /* CCControlSlider.h */,
@@ -1551,6 +1556,7 @@
 				F4539AFF15B211AB00ACFE96 /* CCControlPotentiometerTest.m in Sources */,
 				F4539B0715B2132200ACFE96 /* CCControlPotentiometer.m in Sources */,
 				F4FBB0CE15E2A0A200004945 /* CCSprite+Rotation.m in Sources */,
+				F42D2EE516CD857C0083C858 /* CCControlPicker.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

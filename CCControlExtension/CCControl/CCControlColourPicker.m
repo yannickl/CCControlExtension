@@ -211,7 +211,7 @@
         }
 #endif
         
-        _huePicker                      = [[CCControlHuePicker alloc] initWithTarget:spriteSheet 
+        _huePicker                      = [[CCControlHuePicker alloc] initWithTarget:spriteSheet
                                                                              withPos:ccp(backgroundPointZero.x + hueShift, 
                                                                                          backgroundPointZero.y + hueShift)];
         _colourPicker                   = [[CCControlSaturationBrightnessPicker alloc] initWithTarget:spriteSheet
@@ -355,7 +355,7 @@
         // Add background and slider sprites
         self.background     = [Utils addSprite:@"huePickerBackground.png" toTarget:target withPos:pos andAnchor:ccp(0, 0)];
         self.slider         = [Utils addSprite:@"colourPicker.png" toTarget:target withPos:pos andAnchor:ccp(0.5f, 0.5f)];
-        
+
         _slider.position    = ccp(pos.x, pos.y + _background.boundingBox.size.height * 0.5f);
         
         _startPos           = pos;

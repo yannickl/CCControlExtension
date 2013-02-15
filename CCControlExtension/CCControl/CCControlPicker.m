@@ -28,8 +28,8 @@
 #import "ARCMacro.h"
 
 #define CCControlPickerFriction         0.70f   // Between 0 and 1
-#define CCControlPickerDefaultRowWidth  35      //px
-#define CCControlPickerDefaultRowHeight 35      //px
+#define CCControlPickerDefaultRowWidth  35      // px
+#define CCControlPickerDefaultRowHeight 35      // px
 
 @interface CCControlPicker ()
 // Scroll Animation

@@ -503,7 +503,7 @@
     // Check the touch position on the slider
     self.selected           = [self checkSliderPosition:eventLocation];
     
-    return isMoveInitiated;
+    return [self isSelected];
 }
 
 - (BOOL)ccMouseDragged:(NSEvent *)event
@@ -716,9 +716,9 @@
     // Get the event location
     CGPoint eventLocation   = [self eventLocation:event];
     // Check the touch position on the slider
-	self.selected           = [self checkSliderPosition:eventLocation];
+    self.selected           = [self checkSliderPosition:eventLocation];
     
-    return isMoveInitiated;
+    return [self isSelected];
 }
 
 - (BOOL)ccMouseDragged:(NSEvent *)event
@@ -738,12 +738,6 @@
 
 - (BOOL)ccMouseUp:(NSEvent *)event
 {
-    if (![self isEnabled]
-        || ![self isSelected])
-    {
-        return NO;
-    }
-    
     self.selected           = NO;
     return NO;
 }

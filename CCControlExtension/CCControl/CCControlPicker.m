@@ -103,6 +103,8 @@
         NSAssert(selectionSprite,    @"Selection sprite must be not nil");
         
         self.decelerating                   = NO;
+        self.isRelativeAnchorPoint          = YES;
+        self.anchorPoint                    = ccp(0.5f, 0.5f);
         self.contentSize                    = foregroundSprite.contentSize;
         
         _cachedRowCount                     = 0;
@@ -149,12 +151,45 @@
     
     glEnable(GL_SCISSOR_TEST);
     
-    CGPoint worldOrg    = [self convertToWorldSpace:ccp(0, 0)];
-    CGPoint dest        = [self convertToWorldSpace:ccp(self.contentSize.width, self.contentSize.height)];
-    CGPoint dims        = ccpSub(dest, worldOrg);
+    CCDirector *director    = [CCDirector sharedDirector];
+	CGSize size             = [director winSize];
     
-    CGRect scissorRect  = CGRectMake(worldOrg.x, worldOrg.y, dims.x, dims.y);
-    scissorRect         = CC_RECT_POINTS_TO_PIXELS(scissorRect);
+    CGPoint worldOrg        = [self convertToWorldSpace:ccp(0, 0)];
+    CGPoint dest            = [self convertToWorldSpace:ccp(self.contentSize.width, self.contentSize.height)];
+    CGPoint dims            = ccpSub(dest, worldOrg);
+    
+    CGRect scissorRect      = CGRectMake(worldOrg.x, worldOrg.y, dims.x, dims.y);
+    ccDeviceOrientation orientation = [[CCDirector sharedDirector] deviceOrientation];
+	switch (orientation)
+    {
+		case kCCDeviceOrientationPortrait:
+			break;
+		case kCCDeviceOrientationPortraitUpsideDown:
+			scissorRect.origin.x = size.width-scissorRect.size.width-scissorRect.origin.x;
+			scissorRect.origin.y = size.height-scissorRect.size.height-scissorRect.origin.y;
+			break;
+		case kCCDeviceOrientationLandscapeLeft:
+		{
+			float tmp = scissorRect.origin.x;
+			scissorRect.origin.x = scissorRect.origin.y;
+			scissorRect.origin.y = size.width-scissorRect.size.width-tmp;
+			tmp = scissorRect.size.width;
+			scissorRect.size.width = scissorRect.size.height;
+			scissorRect.size.height = tmp;
+		}
+			break;
+		case kCCDeviceOrientationLandscapeRight:
+		{
+			float tmp = scissorRect.origin.y;
+			scissorRect.origin.y = scissorRect.origin.x;
+			scissorRect.origin.x = size.height-scissorRect.size.height-tmp;
+			tmp = scissorRect.size.width;
+			scissorRect.size.width = scissorRect.size.height;
+			scissorRect.size.height = tmp;
+		}
+			break;
+	}
+    scissorRect             = CC_RECT_POINTS_TO_PIXELS(scissorRect);
     
     glScissor(scissorRect.origin.x, scissorRect.origin.y,
               scissorRect.size.width, scissorRect.size.height);

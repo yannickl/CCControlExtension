@@ -66,17 +66,17 @@ typedef void (^CCControlBlock) (id sender, CCControlEvent event);
 
 #endif
 
-/*
- * @class
- * CCControl is inspired by the UIControl API class from the UIKit library of 
- * CocoaTouch. It provides a base class for control CCSprites such as CCButton 
- * or CCSlider that convey user intent to the application.
+/**
+ * CCControl is inspired by the UIControl API class from the UIKit library of
+ * CocoaTouch. It provides a base class for Cocos2D control such as CCControlButton
+ * or CCControlSlider that convey user intent to the application.
  *
- * The goal of CCControl is to define an interface and base implementation for 
+ * The goal of CCControl is to define an interface and a base implementation for
  * preparing action messages and initially dispatching them to their targets when
  * certain events occur.
  *
- * To use the CCControl you have to subclass it.
+ * To use the CCControl class you have to subclass it and implement your own
+ * behavior.
  */
 @interface CCControl : CCLayer <CCRGBAProtocol>
 {
@@ -103,6 +103,8 @@ typedef void (^CCControlBlock) (id sender, CCControlEvent event);
 @property (nonatomic, readwrite) ccColor3B  color;
 /** Conforms to CocosNodeRGBA protocol. */
 @property (nonatomic, getter = doesOpacityModifyRGB) BOOL opacityModifyRGB;
+
+/** @name Object Attributes */
 /** Changes the priority of the button. The lower the number, the higher the
  priority. */
 @property (nonatomic, assign) NSInteger defaultTouchPriority;
@@ -118,6 +120,7 @@ typedef void (^CCControlBlock) (id sender, CCControlEvent event);
 @property(nonatomic,readonly) BOOL hasVisibleParents;
 
 #pragma mark CCControl - Preparing and Sending Action Messages
+/** @name Preparing and Sending Action Messages */
 
 /**
  * Sends action messages for the given control events.
@@ -158,6 +161,7 @@ typedef void (^CCControlBlock) (id sender, CCControlEvent event);
 
 #if NS_BLOCKS_AVAILABLE
 #pragma mark CCControl - Preparing Blocks
+/** @name Preparing Blocks */
 
 /**
  * Sets a block for a particular event (or events) to an internal dispatch 
@@ -171,6 +175,9 @@ typedef void (^CCControlBlock) (id sender, CCControlEvent event);
 - (void)setBlock:(CCControlBlock)block forControlEvents:(CCControlEvent)controlEvents;
 
 #endif
+
+#pragma mark - Tracking Touches and Redrawing Controls
+/** @name Tracking Touches and Redrawing Controls */
 
 /**
  * Returns a boolean value that indicates whether a location is inside the bounds

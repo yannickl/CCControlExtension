@@ -67,6 +67,11 @@
 /** Send to the picker's rows the appropriate events. */
 - (void)sendPickerRowEventForPosition:(CGPoint)location;
 
+// Manage mouse/touch events
+- (void)initMoveWithActionLocation:(CGPoint)location;
+- (void)updateMoveWithActionLocation:(CGPoint)location;
+- (void)endMoveWithActionLocation:(CGPoint)location;
+
 @end
 
 @implementation CCControlPicker
@@ -150,15 +155,17 @@
         return;
     
     glEnable(GL_SCISSOR_TEST);
-    
-    CCDirector *director    = [CCDirector sharedDirector];
-	CGSize size             = [director winSize];
-    
+
     CGPoint worldOrg        = [self convertToWorldSpace:ccp(0, 0)];
     CGPoint dest            = [self convertToWorldSpace:ccp(self.contentSize.width, self.contentSize.height)];
     CGPoint dims            = ccpSub(dest, worldOrg);
     
     CGRect scissorRect      = CGRectMake(worldOrg.x, worldOrg.y, dims.x, dims.y);
+    
+#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+    CCDirector *director    = [CCDirector sharedDirector];
+	CGSize size             = [director winSize];
+    
     ccDeviceOrientation orientation = [[CCDirector sharedDirector] deviceOrientation];
 	switch (orientation)
     {
@@ -189,6 +196,7 @@
 		}
 			break;
 	}
+#endif
     scissorRect             = CC_RECT_POINTS_TO_PIXELS(scissorRect);
     
     glScissor(scissorRect.origin.x, scissorRect.origin.y,
@@ -500,29 +508,58 @@
     }
 }
 
-#pragma mark -
-#pragma mark CCTargetedTouch Delegate Methods
-
-- (BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event
+- (void)initMoveWithActionLocation:(CGPoint)location
 {
-    if (![self isTouchInside:touch])
-        return NO;
-
     [_rowsLayer stopAllActions];
-    
-    CGPoint touchLocation   = [touch locationInView:[touch view]];
-    touchLocation           = [[CCDirector sharedDirector] convertToGL:touchLocation];
-    touchLocation           = [[self parent] convertToNodeSpace:touchLocation];
-    
-    CGPoint location        = touchLocation;
     
     _decelerating           = NO;
     _previousLocation       = location;
     self.previousDate       = [NSDate date];
     
     // Update the cell layer position
-    CGPoint translation     = ccpSub(_previousLocation, touchLocation);
+    CGPoint translation     = ccpSub(_previousLocation, location);
     _rowsLayer.position     = [self positionWithTranslation:translation forLayerPosition:_rowsLayer.position];
+}
+
+- (void)updateMoveWithActionLocation:(CGPoint)location
+{
+    // Update the cell layer position
+    CGPoint translation     = ccpSub(_previousLocation, location);
+    _rowsLayer.position     = [self positionWithTranslation:translation forLayerPosition:_rowsLayer.position];
+    
+    // Sends the picker's row event
+    [self sendPickerRowEventForPosition:_rowsLayer.position];
+    
+    // Compute the current velocity
+    double delta_time       = [[NSDate date] timeIntervalSinceDate:_previousDate];
+    CGPoint delta_position  = ccpSub(_previousLocation, location);
+    _velocity               = ccp(delta_position.x / delta_time, delta_position.y / delta_time);
+    
+    // Update the previous location and date
+    _previousLocation       = location;
+    self.previousDate       = [NSDate date];
+}
+
+- (void)endMoveWithActionLocation:(CGPoint)location
+{
+    _decelerating           = YES;
+}
+
+#pragma mark -
+#pragma mark CCTargetedTouch Delegate Methods
+
+#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+
+- (BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event
+{
+    if (![self isEnabled] || ![self isTouchInside:touch])
+        return NO;
+    
+    CGPoint touchLocation   = [touch locationInView:[touch view]];
+    touchLocation           = [[CCDirector sharedDirector] convertToGL:touchLocation];
+    touchLocation           = [[self parent] convertToNodeSpace:touchLocation];
+
+    [self initMoveWithActionLocation:eventLocation];
     
     return YES;
 }
@@ -533,32 +570,68 @@
     touchLocation           = [[CCDirector sharedDirector] convertToGL:touchLocation];
     touchLocation           = [[self parent] convertToNodeSpace:touchLocation];
     
-    // Update the cell layer position
-    CGPoint translation     = ccpSub(_previousLocation, touchLocation);
-    _rowsLayer.position     = [self positionWithTranslation:translation forLayerPosition:_rowsLayer.position];
-    
-    // Sends the picker's row event
-    [self sendPickerRowEventForPosition:_rowsLayer.position];
-    
-    // Compute the current velocity
-    double delta_time       = [[NSDate date] timeIntervalSinceDate:_previousDate];
-    CGPoint delta_position  = ccpSub(_previousLocation, touchLocation);
-    _velocity               = ccp(delta_position.x / delta_time, delta_position.y / delta_time);
-    
-    // Update the previous location and date
-    _previousLocation       = touchLocation;
-    self.previousDate       = [NSDate date];
+    [self updateMoveWithActionLocation:touchLocation];
 }
 
 - (void)ccTouchEnded:(UITouch *)touch withEvent:(UIEvent *)event
 {
-    _decelerating           = YES;
+    CGPoint touchLocation   = [touch locationInView:[touch view]];
+    touchLocation           = [[CCDirector sharedDirector] convertToGL:touchLocation];
+    touchLocation           = [[self parent] convertToNodeSpace:touchLocation];
+    
+    [self endMoveWithActionLocation:touchLocation];
 }
 
 - (void)ccTouchCancelled:(UITouch *)touch withEvent:(UIEvent *)event
 {
     [self ccTouchEnded:touch withEvent:event];
 }
+
+#elif __MAC_OS_X_VERSION_MAX_ALLOWED
+
+BOOL isMoveInitiated    = NO;
+
+- (BOOL)ccMouseDown:(NSEvent *)event
+{
+    if (![self isEnabled] || ![self isMouseInside:event])
+        return NO;
+    
+    [_rowsLayer stopAllActions];
+    
+    CGPoint eventLocation   = [[CCDirector sharedDirector] convertEventToGL:event];
+    eventLocation           = [[self parent] convertToNodeSpace:eventLocation];
+    
+    [self initMoveWithActionLocation:eventLocation];
+    isMoveInitiated = YES;
+    
+    return YES;
+}
+
+- (BOOL)ccMouseDragged:(NSEvent *)event
+{
+	if (![self isEnabled] || !isMoveInitiated)
+        return NO;
+    
+    CGPoint eventLocation   = [[CCDirector sharedDirector] convertEventToGL:event];
+    eventLocation           = [[self parent] convertToNodeSpace:eventLocation];
+    
+    [self updateMoveWithActionLocation:eventLocation];
+    
+	return YES;
+}
+
+- (BOOL)ccMouseUp:(NSEvent *)event
+{
+    CGPoint eventLocation   = [[CCDirector sharedDirector] convertEventToGL:event];
+    eventLocation           = [[self parent] convertToNodeSpace:eventLocation];
+    
+    [self endMoveWithActionLocation:eventLocation];
+    isMoveInitiated = NO;
+    
+	return NO;
+}
+
+#endif
 
 @end
 
@@ -587,7 +660,8 @@
         _textLabel                      = SAFE_ARC_RETAIN([CCLabelTTF labelWithString:@""
                                                                            dimensions:CGSizeMake(CCControlPickerDefaultRowWidth,
                                                                                                   CCControlPickerDefaultRowHeight)
-                                                                            alignment:UITextAlignmentCenter lineBreakMode:UILineBreakModeWordWrap
+                                                                            alignment:CCTextAlignmentCenter
+                                                                        lineBreakMode:CCLineBreakModeWordWrap
                                                                              fontName:@"HelveticaNeue-Bold"
                                                                              fontSize:18]);
         _textLabel.color                = ccc3(86, 86, 86);

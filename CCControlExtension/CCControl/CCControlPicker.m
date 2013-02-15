@@ -552,7 +552,10 @@
 
 - (BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event
 {
-    if (![self isEnabled] || ![self isTouchInside:touch])
+    if (![self isEnabled]
+        || ![self isTouchInside:touch]
+        || ![self visible]
+        || ![self hasVisibleParents])
         return NO;
     
     CGPoint touchLocation   = [touch locationInView:[touch view]];
@@ -589,11 +592,12 @@
 
 #elif __MAC_OS_X_VERSION_MAX_ALLOWED
 
-BOOL isMoveInitiated    = NO;
-
 - (BOOL)ccMouseDown:(NSEvent *)event
 {
-    if (![self isEnabled] || ![self isMouseInside:event])
+    if (![self isEnabled]
+        || ![self isMouseInside:event]
+        || ![self visible]
+        || ![self hasVisibleParents])
         return NO;
     
     [_rowsLayer stopAllActions];
@@ -602,14 +606,15 @@ BOOL isMoveInitiated    = NO;
     eventLocation           = [[self parent] convertToNodeSpace:eventLocation];
     
     [self initMoveWithActionLocation:eventLocation];
-    isMoveInitiated = YES;
+    self.selected           = YES;
     
     return YES;
 }
 
 - (BOOL)ccMouseDragged:(NSEvent *)event
 {
-	if (![self isEnabled] || !isMoveInitiated)
+	if (![self isEnabled]
+        || ![self isSelected])
         return NO;
     
     CGPoint eventLocation   = [[CCDirector sharedDirector] convertEventToGL:event];
@@ -622,11 +627,14 @@ BOOL isMoveInitiated    = NO;
 
 - (BOOL)ccMouseUp:(NSEvent *)event
 {
+    if (![self isSelected])
+        return NO;
+
     CGPoint eventLocation   = [[CCDirector sharedDirector] convertEventToGL:event];
     eventLocation           = [[self parent] convertToNodeSpace:eventLocation];
     
     [self endMoveWithActionLocation:eventLocation];
-    isMoveInitiated = NO;
+    self.selected           = NO;
     
 	return NO;
 }

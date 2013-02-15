@@ -224,7 +224,9 @@
 - (BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event
 {
     if (![self isTouchInside:touch]
-        || ![self isEnabled])
+        || ![self isEnabled]
+        || ![self visible]
+        || ![self hasVisibleParents])
     {
         return NO;
     }
@@ -283,7 +285,9 @@
 - (BOOL)ccMouseDown:(NSEvent*)event
 {
     if (![self isMouseInside:event]
-        || ![self isEnabled])
+        || ![self isEnabled]
+        || ![self visible]
+        || ![self hasVisibleParents])
     {
         return NO;
     }

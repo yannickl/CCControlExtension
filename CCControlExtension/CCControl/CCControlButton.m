@@ -474,12 +474,14 @@ enum
 - (BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event
 {
     if (![self isTouchInside:touch]
-        || ![self isEnabled])
+        || ![self isEnabled]
+        || ![self visible]
+        || ![self hasVisibleParents])
     {
 		return NO;
 	}
     
-    state_ = CCControlStateHighlighted;
+    state_  = CCControlStateHighlighted;
     pushed_ = YES;
     
     [self setHighlighted:YES];
@@ -554,15 +556,20 @@ enum
 
 #elif __MAC_OS_X_VERSION_MAX_ALLOWED
 
+BOOL isMoveInitiated    = NO;
 - (BOOL)ccMouseDown:(NSEvent *)event
 {
-    if (![self isMouseInside:event])
+    if (![self isMouseInside:event]
+        || ![self isEnabled]
+        || ![self visible]
+        || ![self hasVisibleParents])
     {
         return NO;
     }
     
-    state_ = CCControlStateHighlighted;
-    pushed_ = YES;
+    state_          = CCControlStateHighlighted;
+    pushed_         = YES;
+    isMoveInitiated = YES;
     
     [self setHighlighted:YES];
     
@@ -573,7 +580,10 @@ enum
 
 - (BOOL)ccMouseDragged:(NSEvent *)event
 {
-	if (![self isEnabled]
+    if (!isMoveInitiated)
+        return NO;
+    
+    if (![self isEnabled]
         || ![self isPushed]
         || [self isSelected])
     {
@@ -610,10 +620,19 @@ enum
 	return YES;
 }
 
+- (BOOL)ccMouseMoved:(NSEvent *)event
+{
+    return [self ccMouseDragged:event];
+}
+
 - (BOOL)ccMouseUp:(NSEvent *)event
 {
-    state_ = CCControlStateNormal;
-    pushed_ = NO;
+    if (!isMoveInitiated)
+        return NO;
+    
+    state_          = CCControlStateNormal;
+    pushed_         = NO;
+    isMoveInitiated = NO;
     
     [self setHighlighted:NO];
     

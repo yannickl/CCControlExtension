@@ -278,7 +278,9 @@
 - (BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event
 {
     if (![self isTouchInside:touch]
-        || ![self isEnabled])
+        || ![self isEnabled]
+        || ![self visible]
+        || ![self hasVisibleParents])
     {
         return NO;
     }
@@ -351,7 +353,9 @@
 - (BOOL)ccMouseDown:(NSEvent *)event
 {
     if (![self isMouseInside:event]
-        || ![self isEnabled])
+        || ![self isEnabled]
+        || ![self visible]
+        || ![self hasVisibleParents])
     {
         return NO;
     }
@@ -359,7 +363,8 @@
     CGPoint location    = [self eventLocation:event];
     [self updateLayoutUsingTouchLocation:location];
     
-    touchInsideFlag_ = YES;
+    touchInsideFlag_    = YES;
+    self.selected       = YES;
     
     if (autorepeat_)
     {
@@ -371,6 +376,9 @@
 
 - (BOOL)ccMouseDragged:(NSEvent *)event
 {
+    if (![self isSelected])
+        return NO;
+
     if ([self isMouseInside:event])
     {
         CGPoint location    = [self eventLocation:event];
@@ -405,6 +413,10 @@
 
 - (BOOL)ccMouseUp:(NSEvent *)event
 {
+    if (![self isSelected])
+        return NO;
+    
+    self.selected       = NO;
     minusSprite_.color  = ccWHITE;
     plusSprite_.color   = ccWHITE;
     

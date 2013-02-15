@@ -209,7 +209,9 @@
 - (BOOL)ccMouseDown:(NSEvent*)event
 {
     if (![self isMouseInside:event]
-        || ![self isEnabled])
+        || ![self isEnabled]
+        || ![self visible]
+        || ![self hasVisibleParents])
     {
         return NO;
     }

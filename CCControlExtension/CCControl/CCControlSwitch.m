@@ -184,7 +184,9 @@
 - (BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event
 {
     if (![self isTouchInside:touch]
-        || ![self isEnabled])
+        || ![self isEnabled]
+        || ![self visible]
+        || ![self hasVisibleParents])
     {
         return NO;
     }
@@ -254,7 +256,9 @@
 - (BOOL)ccMouseDown:(NSEvent *)event
 {
     if (![self isMouseInside:event]
-        || ![self isEnabled])
+        || ![self isEnabled]
+        || ![self visible]
+        || ![self hasVisibleParents])
     {
         return NO;
     }
@@ -298,11 +302,11 @@
         return NO;
     }
     
-    selected_           = YES;
+    selected_                       = NO;
     
-    CGPoint location    = [self locationFromEvent:event];
+    CGPoint location                = [self locationFromEvent:event];
     
-    switchSprite_.thumbSprite.color  = ccWHITE;
+    switchSprite_.thumbSprite.color = ccWHITE;
     
     if ([self hasMoved])
     {

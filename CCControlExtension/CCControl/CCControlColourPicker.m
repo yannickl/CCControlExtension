@@ -478,22 +478,26 @@
 
 - (BOOL)ccMouseDown:(NSEvent *)event
 {
-    if (!self.isEnabled)
+    if (![self isEnabled]
+        || ![self visible]
+        || ![self hasVisibleParents])
     {
         return NO;
     }
     
     // Get the event location
 	CGPoint eventLocation   = [self eventLocation:event];
-    
     // Check the touch position on the slider
-    return [self checkSliderPosition:eventLocation];
+    self.selected           = [self checkSliderPosition:eventLocation];
+    
+    return [self isSelected];
 }
 
 
 - (BOOL)ccMouseDragged:(NSEvent *)event
 {
-    if (!self.isEnabled)
+    if (![self isEnabled]
+        || ![self isSelected])
     {
         return NO;
     }
@@ -503,6 +507,12 @@
 	
     // Check the touch position on the slider
     return [self checkSliderPosition:eventLocation];
+}
+
+- (BOOL)ccMouseUp:(NSEvent *)event
+{
+    self.selected = NO;
+    return NO;
 }
 
 #endif
@@ -652,7 +662,9 @@
 
 -(BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event
 {
-    if (!self.isEnabled)
+    if (![self isEnabled]
+        || ![self visible]
+        || ![self hasVisibleParents])
     {
         return NO;
     }
@@ -677,21 +689,25 @@
 
 - (BOOL)ccMouseDown:(NSEvent *)event
 {
-    if (!self.isEnabled)
+    if (![self isEnabled]
+        || ![self visible]
+        || ![self hasVisibleParents])
     {
         return NO;
     }
     
     // Get the event location
 	CGPoint eventLocation   = [self eventLocation:event];
-	
     // Check the touch position on the slider
-    return [self checkSliderPosition:eventLocation];
+    self.selected           = [self checkSliderPosition:eventLocation];
+    
+    return [self isSelected];
 }
 
 - (BOOL)ccMouseDragged:(NSEvent *)event
 {
-    if (!self.isEnabled)
+    if (!self.isEnabled
+        || ![self isSelected])
     {
         return NO;
     }
@@ -701,6 +717,12 @@
 	
     // Check the touch position on the slider
     return [self checkSliderPosition:eventLocation];
+}
+
+- (BOOL)ccMouseUp:(NSEvent *)event
+{
+    self.selected = NO;
+    return NO;
 }
 
 #endif

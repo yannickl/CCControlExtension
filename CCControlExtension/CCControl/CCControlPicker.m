@@ -559,7 +559,7 @@
     touchLocation           = [[CCDirector sharedDirector] convertToGL:touchLocation];
     touchLocation           = [[self parent] convertToNodeSpace:touchLocation];
 
-    [self initMoveWithActionLocation:eventLocation];
+    [self initMoveWithActionLocation:touchLocation];
     
     return YES;
 }

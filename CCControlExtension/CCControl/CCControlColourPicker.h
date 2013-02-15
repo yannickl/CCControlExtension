@@ -29,7 +29,6 @@
 
 
 #import "CCControl.h"
-
 #import "CCColourUtils.h"
 
 @class CCControlSaturationBrightnessPicker;
@@ -39,11 +38,11 @@
 @interface CCControlColourPicker : CCControl
 {
 @protected
-    HSV                 hsv_;
+    HSV                                 hsv_;
     
-    CCSprite            *background_;
-    CCControlSaturationBrightnessPicker     *colourPicker_;
-    CCControlHuePicker  *huePicker_;
+    CCSprite                            *background_;
+    CCControlSaturationBrightnessPicker *colourPicker_;
+    CCControlHuePicker                  *huePicker_;
 }
 
 #pragma mark - Constuctors - Initializers

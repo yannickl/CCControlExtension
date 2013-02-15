@@ -45,6 +45,12 @@ The CCControlStepper class provides a user interface for incrementing or decreme
 
 CCControlPotentiometer is an already made potentiometer (but customizable) control for Cocos2D for iPhone. It allow you to configure its range value.
 
+* CCControlPicker:
+
+![CCControlPicker](http://github.com/YannickL/CCControlExtension/raw/master/screenshots/picker.png)
+
+The CCControlPicker is a control that use a spinning-wheel or slot-machine metaphor to show one set of values.
+
 Forthcoming
 =====================
 

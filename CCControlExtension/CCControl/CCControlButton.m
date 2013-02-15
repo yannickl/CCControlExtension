@@ -625,7 +625,9 @@ enum
 
 - (BOOL)ccMouseDown:(NSEvent *)event
 {
-    if (![self isMouseInside:event])
+    if (![self isMouseInside:event]
+        || ![self visible]
+        || ![self hasVisibleParents])
     {
         return NO;
     }

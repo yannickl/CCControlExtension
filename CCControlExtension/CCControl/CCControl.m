@@ -301,9 +301,9 @@
 - (BOOL)hasVisibleParents
 {
     for( CCNode *c = self.parent; c != nil; c = c.parent)
-    {
-		if(!c.visible) return NO;
-    }
+		if(!c.visible)
+            return NO;
+
     return YES;
 }
 

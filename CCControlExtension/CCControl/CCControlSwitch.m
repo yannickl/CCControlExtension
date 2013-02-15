@@ -193,7 +193,9 @@
 - (BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event
 {
     if (![self isTouchInside:touch]
-        || ![self isEnabled])
+        || ![self isEnabled]
+        || ![self visible]
+        || ![self hasVisibleParents])
     {
         return NO;
     }
@@ -237,9 +239,73 @@
 
 - (void)ccTouchCancelled:(UITouch *)touch withEvent:(UIEvent *)event
 {
-    CGPoint location   = [self locationFromTouch:touch];
+    [self ccTouchEnded:touch withEvent:event];
+}
+
+#elif __MAC_OS_X_VERSION_MAX_ALLOWED
+
+- (CGPoint)locationFromEvent:(NSEvent *)event
+{
+    CGPoint eventLocation   = [[CCDirector sharedDirector] convertEventToGL:event];
+    eventLocation           = [self convertToNodeSpace:eventLocation];
     
-    _switchSprite.thumbSprite.color  = ccWHITE;
+    return eventLocation;
+}
+
+- (BOOL)ccMouseDown:(NSEvent *)event
+{
+    if (![self isMouseInside:event]
+        || ![self isEnabled]
+        || ![self visible]
+        || ![self hasVisibleParents])
+    {
+        return NO;
+    }
+    
+    self.selected                   = YES;
+    _moved                          = NO;
+    
+    CGPoint location                = [self locationFromEvent:event];
+    
+    _initialTouchXPosition          = location.x - switchSprite_.sliderXPosition;
+    
+    _switchSprite.thumbSprite.color = ccGRAY;
+    [_switchSprite needsLayout];
+    
+    return YES;
+}
+
+- (BOOL)ccMouseDragged:(NSEvent *)event
+{
+    if (![self isEnabled]
+        || ![self isSelected])
+    {
+        return NO;
+    }
+    
+    CGPoint location    = [self locationFromEvent:event];
+    location            = ccp (location.x - _initialTouchXPosition, 0);
+    
+    _moved              = YES;
+    
+    [_switchSprite setSliderXPosition:location.x];
+    
+    return YES;
+}
+
+- (BOOL)ccMouseUp:(NSEvent *)event
+{
+    if (![self isEnabled]
+        || ![self isSelected])
+    {
+        return NO;
+    }
+    
+    selected_                       = NO;
+    
+    CGPoint location                = [self locationFromEvent:event];
+    
+    _switchSprite.thumbSprite.color = ccWHITE;
     
     if ([self hasMoved])
     {
@@ -248,6 +314,8 @@
     {
         [self setOn:![self isOn] animated:YES];
     }
+    
+    return NO;
 }
 
 #endif

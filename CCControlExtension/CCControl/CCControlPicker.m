@@ -251,7 +251,6 @@
     }
     id<CCControlPickerRowDelegate> rowNode  = (id<CCControlPickerRowDelegate>)[_rowsLayer getChildByTag:_selectedRow];
     [rowNode rowDidSelected];
-    
     _highlightRow   = -1;
     
     if (animated)
@@ -473,11 +472,13 @@
 
 - (void)initMoveWithActionLocation:(CGPoint)location
 {
+    self.selected       = YES;
+    
     [_rowsLayer stopAllActions];
     
-    _decelerating = NO;
-    _previousLocation = location;
-    self.previousDate = [NSDate date];
+    _decelerating       = NO;
+    _previousLocation   = location;
+    self.previousDate   = [NSDate date];
     
     // Update the cell layer position
     CGPoint translation = ccpSub(_previousLocation, location);
@@ -487,25 +488,26 @@
 - (void)updateMoveWithActionLocation:(CGPoint)location
 {
     // Update the cell layer position
-    CGPoint translation = ccpSub(_previousLocation, location);
-    _rowsLayer.position = [self positionWithTranslation:translation forLayerPosition:_rowsLayer.position];
+    CGPoint translation     = ccpSub(_previousLocation, location);
+    _rowsLayer.position     = [self positionWithTranslation:translation forLayerPosition:_rowsLayer.position];
     
     // Sends the picker's row event
     [self sendPickerRowEventForPosition:_rowsLayer.position];
     
     // Compute the current velocity
-    double delta_time = [[NSDate date] timeIntervalSinceDate:_previousDate];
-    CGPoint delta_position = ccpSub(_previousLocation, location);
-    _velocity = ccp(delta_position.x / delta_time, delta_position.y / delta_time);
+    double delta_time       = [[NSDate date] timeIntervalSinceDate:_previousDate];
+    CGPoint delta_position  = ccpSub(_previousLocation, location);
+    _velocity               = ccp(delta_position.x / delta_time, delta_position.y / delta_time);
     
     // Update the previous location and date
-    _previousLocation = location;
-    self.previousDate = [NSDate date];
+    _previousLocation       = location;
+    self.previousDate       = [NSDate date];
 }
 
 - (void)endMoveWithActionLocation:(CGPoint)location
 {
-    _decelerating = YES;
+    self.selected   = NO;
+    _decelerating   = YES;
 }
 
 #pragma mark -
@@ -515,7 +517,10 @@
 
 - (BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event
 {
-    if (![self isTouchInside:touch])
+    if (![self isTouchInside:touch]
+        || ![self isEnabled]
+        || ![self visible]
+        || ![self hasVisibleParents])
         return NO;
 
     CGPoint touchLocation   = [touch locationInView:[touch view]];
@@ -552,30 +557,30 @@
 
 #elif __MAC_OS_X_VERSION_MAX_ALLOWED
 
-BOOL isMoveInitiated = NO;
 - (BOOL)ccMouseDown:(NSEvent *)event
 {
-    if (![self isEnabled] || ![self isMouseInside:event])
+    if (![self isEnabled]
+        || ![self isMouseInside:event]
+        || ![self visible]
+        || ![self hasVisibleParents])
         return NO;
-    
-    [_rowsLayer stopAllActions];
-    
-    CGPoint eventLocation = [[CCDirector sharedDirector] convertEventToGL:event];
-    eventLocation = [[self parent] convertToNodeSpace:eventLocation];
+
+    CGPoint eventLocation   = [[CCDirector sharedDirector] convertEventToGL:event];
+    eventLocation           = [[self parent] convertToNodeSpace:eventLocation];
     
     [self initMoveWithActionLocation:eventLocation];
-    isMoveInitiated = YES;
     
     return YES;
 }
 
 - (BOOL)ccMouseDragged:(NSEvent *)event
 {
-    if (![self isEnabled] || !isMoveInitiated)
+    if (![self isEnabled]
+        || ![self isSelected])
         return NO;
     
-    CGPoint eventLocation = [[CCDirector sharedDirector] convertEventToGL:event];
-    eventLocation = [[self parent] convertToNodeSpace:eventLocation];
+    CGPoint eventLocation   = [[CCDirector sharedDirector] convertEventToGL:event];
+    eventLocation           = [[self parent] convertToNodeSpace:eventLocation];
     
     [self updateMoveWithActionLocation:eventLocation];
     
@@ -584,11 +589,14 @@ BOOL isMoveInitiated = NO;
 
 - (BOOL)ccMouseUp:(NSEvent *)event
 {
-    CGPoint eventLocation = [[CCDirector sharedDirector] convertEventToGL:event];
-    eventLocation = [[self parent] convertToNodeSpace:eventLocation];
+    if (![self isEnabled]
+        || ![self isSelected])
+        return NO;
+    
+    CGPoint eventLocation   = [[CCDirector sharedDirector] convertEventToGL:event];
+    eventLocation           = [[self parent] convertToNodeSpace:eventLocation];
     
     [self endMoveWithActionLocation:eventLocation];
-    isMoveInitiated = NO;
     
     return NO;
 }

@@ -635,7 +635,7 @@
 		F420A85815B3396A00A5F4BD /* potentiometerTrack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = potentiometerTrack.png; sourceTree = "<group>"; };
 		F42D2ED616CD04DD0083C858 /* CCControlColourPickerSpriteSheet-ipadhd.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "CCControlColourPickerSpriteSheet-ipadhd.plist"; sourceTree = "<group>"; };
 		F42D2ED716CD04DD0083C858 /* CCControlColourPickerSpriteSheet-ipadhd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CCControlColourPickerSpriteSheet-ipadhd.png"; sourceTree = "<group>"; };
-		F42D2ED816CD04DD0083C858 /* CCControlColourPickerSpriteSheet-ipadhd.tps */ = {isa = PBXFileReference; lastKnownFileType = file; path = "CCControlColourPickerSpriteSheet-ipadhd.tps"; sourceTree = "<group>"; };
+		F42D2ED816CD04DD0083C858 /* CCControlColourPickerSpriteSheet-ipadhd.tps */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "CCControlColourPickerSpriteSheet-ipadhd.tps"; sourceTree = "<group>"; };
 		F42D2EDD16CD06690083C858 /* background-ipadhd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "background-ipadhd.png"; sourceTree = "<group>"; };
 		F471E2E716C430A40097AD5A /* ccCArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ccCArray.m; sourceTree = "<group>"; };
 		F495C12816C800960046272F /* CCControlPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCControlPicker.h; sourceTree = "<group>"; };
@@ -743,6 +743,8 @@
 				C234FFAB15264B9300141008 /* CCControlButton.m */,
 				C234FFAC15264B9300141008 /* CCControlColourPicker.h */,
 				C234FFAD15264B9300141008 /* CCControlColourPicker.m */,
+				F495C12816C800960046272F /* CCControlPicker.h */,
+				F495C12916C800970046272F /* CCControlPicker.m */,
 				F420A84515B3394900A5F4BD /* CCControlPotentiometer.h */,
 				F420A84615B3394900A5F4BD /* CCControlPotentiometer.m */,
 				C234FFB215264B9300141008 /* CCControlSlider.h */,
@@ -751,8 +753,6 @@
 				C259696915657C4C009C82DB /* CCControlStepper.m */,
 				C227EA6C153436C70030DD7E /* CCControlSwitch.h */,
 				C227EA6D153436C70030DD7E /* CCControlSwitch.m */,
-				F495C12816C800960046272F /* CCControlPicker.h */,
-				F495C12916C800970046272F /* CCControlPicker.m */,
 			);
 			path = CCControl;
 			sourceTree = "<group>";

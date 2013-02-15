@@ -67,6 +67,11 @@
 /** Send to the picker's rows the appropriate events. */
 - (void)sendPickerRowEventForPosition:(CGPoint)location;
 
+// Manage mouse/touch events
+- (void)initMoveWithActionLocation:(CGPoint)location;
+- (void)updateMoveWithActionLocation:(CGPoint)location;
+- (void)endMoveWithActionLocation:(CGPoint)location;
+
 @end
 
 @implementation CCControlPicker
@@ -466,29 +471,58 @@
     }
 }
 
+- (void)initMoveWithActionLocation:(CGPoint)location
+{
+    [_rowsLayer stopAllActions];
+    
+    _decelerating = NO;
+    _previousLocation = location;
+    self.previousDate = [NSDate date];
+    
+    // Update the cell layer position
+    CGPoint translation = ccpSub(_previousLocation, location);
+    _rowsLayer.position = [self positionWithTranslation:translation forLayerPosition:_rowsLayer.position];
+}
+
+- (void)updateMoveWithActionLocation:(CGPoint)location
+{
+    // Update the cell layer position
+    CGPoint translation = ccpSub(_previousLocation, location);
+    _rowsLayer.position = [self positionWithTranslation:translation forLayerPosition:_rowsLayer.position];
+    
+    // Sends the picker's row event
+    [self sendPickerRowEventForPosition:_rowsLayer.position];
+    
+    // Compute the current velocity
+    double delta_time = [[NSDate date] timeIntervalSinceDate:_previousDate];
+    CGPoint delta_position = ccpSub(_previousLocation, location);
+    _velocity = ccp(delta_position.x / delta_time, delta_position.y / delta_time);
+    
+    // Update the previous location and date
+    _previousLocation = location;
+    self.previousDate = [NSDate date];
+}
+
+- (void)endMoveWithActionLocation:(CGPoint)location
+{
+    _decelerating = YES;
+}
+
 #pragma mark -
 #pragma mark CCTargetedTouch Delegate Methods
+
+#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 
 - (BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event
 {
     if (![self isTouchInside:touch])
         return NO;
 
-    [_rowsLayer stopAllActions];
-    
     CGPoint touchLocation   = [touch locationInView:[touch view]];
     touchLocation           = [[CCDirector sharedDirector] convertToGL:touchLocation];
     touchLocation           = [[self parent] convertToNodeSpace:touchLocation];
     
-    CGPoint location        = touchLocation;
-    
-    _decelerating           = NO;
-    _previousLocation       = location;
-    self.previousDate       = [NSDate date];
-    
-    // Update the cell layer position
-    CGPoint translation     = ccpSub(_previousLocation, touchLocation);
-    _rowsLayer.position     = [self positionWithTranslation:translation forLayerPosition:_rowsLayer.position];
+    [self initMoveWithActionLocation:touchLocation];
     
     return YES;
 }
@@ -499,32 +533,67 @@
     touchLocation           = [[CCDirector sharedDirector] convertToGL:touchLocation];
     touchLocation           = [[self parent] convertToNodeSpace:touchLocation];
     
-    // Update the cell layer position
-    CGPoint translation     = ccpSub(_previousLocation, touchLocation);
-    _rowsLayer.position     = [self positionWithTranslation:translation forLayerPosition:_rowsLayer.position];
-    
-    // Sends the picker's row event
-    [self sendPickerRowEventForPosition:_rowsLayer.position];
-    
-    // Compute the current velocity
-    double delta_time       = [[NSDate date] timeIntervalSinceDate:_previousDate];
-    CGPoint delta_position  = ccpSub(_previousLocation, touchLocation);
-    _velocity               = ccp(delta_position.x / delta_time, delta_position.y / delta_time);
-    
-    // Update the previous location and date
-    _previousLocation       = touchLocation;
-    self.previousDate       = [NSDate date];
+    [self updateMoveWithActionLocation:touchLocation];
 }
 
 - (void)ccTouchEnded:(UITouch *)touch withEvent:(UIEvent *)event
 {
-    _decelerating           = YES;
+    CGPoint touchLocation   = [touch locationInView:[touch view]];
+    touchLocation           = [[CCDirector sharedDirector] convertToGL:touchLocation];
+    touchLocation           = [[self parent] convertToNodeSpace:touchLocation];
+    
+    [self endMoveWithActionLocation:touchLocation];
 }
 
 - (void)ccTouchCancelled:(UITouch *)touch withEvent:(UIEvent *)event
 {
     [self ccTouchEnded:touch withEvent:event];
 }
+
+#elif __MAC_OS_X_VERSION_MAX_ALLOWED
+
+BOOL isMoveInitiated = NO;
+- (BOOL)ccMouseDown:(NSEvent *)event
+{
+    if (![self isEnabled] || ![self isMouseInside:event])
+        return NO;
+    
+    [_rowsLayer stopAllActions];
+    
+    CGPoint eventLocation = [[CCDirector sharedDirector] convertEventToGL:event];
+    eventLocation = [[self parent] convertToNodeSpace:eventLocation];
+    
+    [self initMoveWithActionLocation:eventLocation];
+    isMoveInitiated = YES;
+    
+    return YES;
+}
+
+- (BOOL)ccMouseDragged:(NSEvent *)event
+{
+    if (![self isEnabled] || !isMoveInitiated)
+        return NO;
+    
+    CGPoint eventLocation = [[CCDirector sharedDirector] convertEventToGL:event];
+    eventLocation = [[self parent] convertToNodeSpace:eventLocation];
+    
+    [self updateMoveWithActionLocation:eventLocation];
+    
+    return YES;
+}
+
+- (BOOL)ccMouseUp:(NSEvent *)event
+{
+    CGPoint eventLocation = [[CCDirector sharedDirector] convertEventToGL:event];
+    eventLocation = [[self parent] convertToNodeSpace:eventLocation];
+    
+    [self endMoveWithActionLocation:eventLocation];
+    isMoveInitiated = NO;
+    
+    return NO;
+}
+
+#endif
 
 @end
 
@@ -553,7 +622,7 @@
         _textLabel                      = SAFE_ARC_RETAIN([CCLabelTTF labelWithString:@""
                                                                            dimensions:CGSizeMake(CCControlPickerDefaultRowWidth,
                                                                                                  CCControlPickerDefaultRowHeight)
-                                                                           hAlignment:UITextAlignmentCenter
+                                                                           hAlignment:kCCTextAlignmentCenter
                                                                              fontName:@"HelveticaNeue-Bold"
                                                                              fontSize:18]);
         _textLabel.verticalAlignment    = kCCVerticalTextAlignmentCenter;
@@ -598,19 +667,19 @@
 
 - (void)rowDidHighlighted
 {
-    _textLabel.scale    = 1.3f;
+    _textLabel.fontSize = 24.0f;
     _textLabel.color    = ccc3(201, 62, 119);
 }
 
 - (void)rowDidMasked
 {
-    _textLabel.scale    = 1.0f;
+    _textLabel.fontSize = 18.0f;
     _textLabel.color    = ccc3(86, 86, 86);
 }
 
 - (void)rowDidSelected
 {
-    _textLabel.scale    = 1.3f;
+    _textLabel.fontSize = 29.0f;
     _textLabel.color    = ccc3(201, 62, 119);
 }
 

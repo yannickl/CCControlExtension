@@ -46,7 +46,7 @@ typedef enum
  * Users select values by rotating the wheels so that the desired row of values
  * aligns with a selection indicator.
  */
-@interface CCControlPicker : CCControl <UIGestureRecognizerDelegate>
+@interface CCControlPicker : CCControl
 
 #pragma mark Contructors - Initializers
 /** @name Create Pickers */

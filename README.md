@@ -1,6 +1,6 @@
 CCControlExtension
 =================
-CCControlExtension is an open-source library which provides a lot of convenient control objects for __Cocos2D v1.x__ for iPhone and Mac such as buttons, sliders or many more... ([see the exhaustive list](#control_list))
+CCControlExtension is an open-source library which provides a lot of convenient control objects for __Cocos2D v1.x__ for iPhone and Mac such as buttons, sliders or many more... ([see the exhaustive list](#available-control-list))
 
 All these controls are subclasses of CCControl, which is inspired by the UIControl API from the UIKit of CocoaTouch. The main goal of CCControl is to simplify the creation of control objects in Cocos2D by providing an interface and a base implementation ala UIKit. I.e that this class manages the target-action pair registration and dispatches them to their targets when events occur.
 For iOS 4.0 or later and Snow Leopard the CCControl also uses the power of blocks to dispatch the events. 
@@ -9,16 +9,23 @@ For iOS 4.0 or later and Snow Leopard the CCControl also uses the power of block
 
 ![](http://github.com/YannickL/CCControlExtension/raw/master/screenshots/cccontrolextension.png)
 
-<a id="control_list"></a>Available Control List
+Available Control List
 ====================
 
-  * __[Button](http://yannickloriot.com/library/ios/cccontrolextension/Classes/CCControlButton.html):__
-  * __[Colour Picker](http://yannickloriot.com/library/ios/cccontrolextension/Classes/CCControlColourPicker.html):__
-  * __[Picker](http://yannickloriot.com/library/ios/cccontrolextension/Classes/CCControlPicker.html):__
-  * __[Potentiometer](http://yannickloriot.com/library/ios/cccontrolextension/Classes/CCControlPotentiometer.html):__
-  * __[Slider](http://yannickloriot.com/library/ios/cccontrolextension/Classes/CCControlSlider.html):__
-  * __[Stepper](http://yannickloriot.com/library/ios/cccontrolextension/Classes/CCControlStepper.html):__
-  * __[Switch](http://yannickloriot.com/library/ios/cccontrolextension/Classes/CCControlSwitch.html):__
+  * [Button](http://yannickloriot.com/library/ios/cccontrolextension/Classes/CCControlButton.html):
+Intercepts touch events and sends an action message to a target object when tapped.
+  * [Colour Picker](http://yannickloriot.com/library/ios/cccontrolextension/Classes/CCControlColourPicker.html):
+It's a very useful control tool to preview and test color values.
+  * [Picker](http://yannickloriot.com/library/ios/cccontrolextension/Classes/CCControlPicker.html):
+Use a spinning-wheel or slot-machine metaphor to show one set of values.
+  * [Potentiometer](http://yannickloriot.com/library/ios/cccontrolextension/Classes/CCControlPotentiometer.html):
+Use a circular representation to show and select a single from a continuous range of value.
+  * [Slider](http://yannickloriot.com/library/ios/cccontrolextension/Classes/CCControlSlider.html):
+Use a linear representation to show and select a single value from a continuous range of values.
+  * [Stepper](http://yannickloriot.com/library/ios/cccontrolextension/Classes/CCControlStepper.html):
+User interface for incrementing or decrementing a value.
+  * [Switch](http://yannickloriot.com/library/ios/cccontrolextension/Classes/CCControlSwitch.html):
+Useful to create and manage On/Off buttons, like for example, in the option menus for volume as example.
 
 How to use it
 ====================

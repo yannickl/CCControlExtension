@@ -9,13 +9,13 @@ Controls available:
 ![CCControlButton](http://github.com/YannickL/CCControlExtension/raw/master/screenshots/button.png)
 
 CCControlButton provides a convenient way to create buttons with Cocos2D.
-A control button is compound of a title label and a background sprite. You can set it to a predetermined size, to a variable size to fit to the title size etc. (More information here: http://yannickloriot.com/2011/12/create-buttons-in-cocos2d-by-using-cccontrolbutton/)
+A button intercepts touch events and sends an action message to a target object when tapped. Methods for setting the target and action are inherited from CCControl. You can set it to a predetermined size, to a variable size to fit to the title size etc. (More information on [my blog](http://yannickloriot.com/2011/12/create-buttons-in-cocos2d-by-using-cccontrolbutton/))
 
  * [CCControlSlider](http://yannickloriot.com/library/ios/cccontrolextension/Classes/CCControlSlider.html):
 
 ![CCControlSlider](http://github.com/YannickL/CCControlExtension/raw/master/screenshots/slider.png)
 
-CCControlSlider is an already made slider (but customizable) control for Cocos2D for iPhone. It allow you to configure its range value. (More information here: http://yannickloriot.com/2011/08/use-cccontrol-to-create-a-slider-with-cocos2d-for-iphone/)
+CCControlSlider is an already made slider (but customizable) control for Cocos2D for iPhone. It is a visual control used to select a single value from a continuous range of values in a linear way. (More information on [my blog](http://yannickloriot.com/2011/08/use-cccontrol-to-create-a-slider-with-cocos2d-for-iphone/))
 
  * [CCControlColourPicker](http://yannickloriot.com/library/ios/cccontrolextension/Classes/CCControlColourPicker.html):
 
@@ -28,7 +28,7 @@ CCControlColourPicker is an already made colour picker for Cocos2D for iPhone. I
 ![CCControlSwitch](http://github.com/YannickL/CCControlExtension/raw/master/screenshots/switch.png)
 
 The CCControlSwitch is an implementation of the UISwitch for Cocos2D for iPhone.
-The CCControlSwitch class declares a property and a method to control its on/off state. As with CCControlSlider, when the user manipulates the switch control ("flips" it) an UIControlEventValueChanged event is generated.
+It is useful to create and manage On/Off buttons, like for example, in the option menus for volume as example. As with CCControlSlider, when the user manipulates the switch control ("flips" it) an UIControlEventValueChanged event is generated.
 You can customize the appearance of the switch by changing the on/off background sprites and label.
 
 * [CCControlStepper](http://yannickloriot.com/library/ios/cccontrolextension/Classes/CCControlStepper.html):
@@ -42,7 +42,7 @@ The CCControlStepper class provides a user interface for incrementing or decreme
 
 ![CCControlPotentiometer](http://github.com/YannickL/CCControlExtension/raw/master/screenshots/potentiometer.png)
 
-CCControlPotentiometer is an already made potentiometer (but customizable) control for Cocos2D for iPhone. It allow you to configure its range values.
+CCControlPotentiometer is an already made potentiometer (but customizable) control for Cocos2D for iPhone. It use a circular representation to show and select a single from a continuous range of value.
 
 * [CCControlPicker](http://yannickloriot.com/library/ios/cccontrolextension/Classes/CCControlPicker.html):
 
@@ -50,14 +50,29 @@ CCControlPotentiometer is an already made potentiometer (but customizable) contr
 
 The CCControlPicker is a control that use a spinning-wheel or slot-machine metaphor to show one set of values.
 
-Forthcoming
-=====================
-
- * CCControlMenu
- * CCControlGauge
-
-License
+License (MIT)
 ====================
-As well as Cocos2D for iPhone, these examples are licensed under the MIT License. 
+As well as Cocos2D for iPhone, these examples are licensed under the MIT License:
+
+Copyright (c) 2013 - Yannick Loriot and contributors
+(see each file to see the different copyright owners)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
 You can download cocos2d-for-iphone here: https://github.com/cocos2d/cocos2d-iphone
-You can find the cocos2d-iphone-extensions here: https://github.com/cocos2d/cocos2d-iphone-extensions

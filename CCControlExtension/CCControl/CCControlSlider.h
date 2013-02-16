@@ -26,7 +26,14 @@
 
 #import "CCControl.h"
 
-/** @class CCControlSlider Slider control for Cocos2D. */
+/**
+ * Slider control for Cocos2D.
+ *
+ * A CCControlSlider object is a visual control used to select a single
+ * value from a continuous range of values. An indicator, or thumb, notes
+ * the current value of the slider and can be moved by the user to change
+ * the setting.
+ */
 @interface CCControlSlider : CCControl 
 {  
 @public
@@ -39,16 +46,60 @@
     CCSprite *progressSprite_;
     CCSprite *backgroundSprite_;
 }  
-/** Contains the receiver’s current value. */
-@property (nonatomic, assign) float value; 
-/** Contains the minimum value of the receiver. 
- * The default value of this property is 0.0. */
+#pragma mark Accessing the Slider’s Value
+/** @name Accessing the Slider’s Value */
+/**
+ * @abstract Contains the receiver’s current value.
+ * @discussion Setting this property causes the receiver to redraw itself
+ * using the new value. To render an animated transition from the current
+ * value to the new value, you should use the setValue:animated: method
+ * instead.
+ *
+ * If you try to set a value that is below the minimum or above the maximum
+ * value, the minimum or maximum value is set instead. The default value of
+ * this property is 0.0.
+ */
+@property (nonatomic, assign) float value;
+
+/**
+ * @abstract Sets the receiver’s current value, allowing you to animate the
+ * change visually.
+ *
+ * @param value The new value to assign to the value property.
+ * @param animated Specify YES to animate the change in value when the
+ * receiver is redrawn; otherwise, specify NO to draw the receiver with the
+ * new value only. Animations are performed asynchronously and do not block
+ * the calling thread.
+ * @discussion If you try to set a value that is below the minimum or above
+ * the maximum value, the minimum or maximum value is set instead. The
+ * default value of this property is 0.0.
+ * @see value
+ */
+- (void)setValue:(float)value animated:(BOOL)animated;
+
+#pragma mark Accessing the Slider’s Value Limits
+/** @name Accessing the Slider’s Value Limits */
+/**
+ * @abstract Contains the minimum value of the receiver.
+ * @discussion If you change the value of this property, and the current
+ * value of the receiver is below the new minimum, the current value is
+ * adjusted to match the new minimum value automatically.
+ *
+ * The default value of this property is 0.0.
+ */
 @property (nonatomic, assign) float minimumValue;
-/** Contains the maximum value of the receiver. 
- * The default value of this property is 1.0. */
+/**
+ * @abstract Contains the maximum value of the receiver.
+ * @discussion If you change the value of this property, and the current
+ * value of the receiver is above the new maximum, the current value is
+ * adjusted to match the new maximum value automatically.
+ *
+ * The default value of this property is 1.0.
+ */
 @property (nonatomic, assign) float maximumValue;
 
 #pragma mark Contructors - Initializers
+/** @name Creating Sliders */
 
 /** 
  * Creates slider with a background filename, a progress filename and a 

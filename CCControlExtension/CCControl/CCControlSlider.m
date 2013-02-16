@@ -28,9 +28,10 @@
 #import "ARCMacro.h"
 
 @interface CCControlSlider () 
-@property (nonatomic, strong) CCSprite *thumbSprite;
-@property (nonatomic, strong) CCSprite *progressSprite;
-@property (nonatomic, strong) CCSprite *backgroundSprite;
+@property (nonatomic, strong) CCSprite  *thumbSprite;
+@property (nonatomic, strong) CCSprite  *progressSprite;
+@property (nonatomic, strong) CCSprite  *backgroundSprite;
+@property (nonatomic, assign) float     animatedValue;
 
 /** Factorize the event dispath into these methods. */
 - (void)sliderBegan:(CGPoint)location;
@@ -40,12 +41,16 @@
 /** Returns the value for the given location. */
 - (float)valueForLocation:(CGPoint)location;
 
+/** Layout the slider with the given value. */
+- (void)layoutWithValue:(float)value;
+
 @end
 
 @implementation CCControlSlider
 @synthesize thumbSprite         = thumbSprite_;
 @synthesize progressSprite      = progressSprite_;
 @synthesize backgroundSprite    = backgroundSprite_;
+@synthesize animatedValue       = animatedValue_;
 @synthesize value               = value_;
 @synthesize minimumValue        = minimumValue_;
 @synthesize maximumValue        = maximumValue_;
@@ -134,33 +139,12 @@
 
 - (void)setValue:(float)value
 {
-    // set new value with sentinel
-    if (value < minimumValue_)
-    {
-        value                   = minimumValue_;
-    }
-	
-    if (value > maximumValue_) 
-    {
-        value                   = maximumValue_;
-    }
+    [self setValue:value animated:NO];
+}
 
-    value_                      = value;
-	
-    // Update thumb position for new value
-    float percent               = (value_ - minimumValue_) / (maximumValue_ - minimumValue_);
-    
-    CGPoint pos                 = thumbSprite_.position;
-    pos.x                       = percent * backgroundSprite_.contentSize.width;
-    thumbSprite_.position       = pos;
-    
-    // Stretches content proportional to newLevel
-    CGRect textureRect          = progressSprite_.textureRect;
-    textureRect                 = CGRectMake(textureRect.origin.x, textureRect.origin.y, pos.x, textureRect.size.height);
-    CGRect textureRectInPixels  = CC_RECT_POINTS_TO_PIXELS(textureRect);
-    [progressSprite_ setTextureRectInPixels:textureRectInPixels rotated:progressSprite_.textureRectRotated untrimmedSize:textureRectInPixels.size];
-	
-    [self sendActionsForControlEvents:CCControlEventValueChanged];    
+- (void)setAnimatedValue:(float)animatedValue
+{
+    [self layoutWithValue:animatedValue];
 }
 
 - (void)setMinimumValue:(float)minimumValue
@@ -333,6 +317,30 @@
 #pragma mark -
 #pragma mark CCControlSlider Public Methods
 
+- (void)setValue:(float)value animated:(BOOL)animated
+{
+    // Set new value with sentinel
+    if (value < minimumValue_)
+        value = minimumValue_;
+    
+    if (value > maximumValue_)
+        value = maximumValue_;
+    
+    if (animated)
+    {
+        [self runAction:
+         [CCEaseInOut actionWithAction:[CCActionTween actionWithDuration:0.2f key:@"animatedValue" from:value_ to:value]
+                                  rate:1.5f]];
+    } else
+    {
+        [self layoutWithValue:value];
+    }
+    
+    value_  = value;
+    
+    [self sendActionsForControlEvents:CCControlEventValueChanged];
+}
+
 #pragma mark CCControlSlider Private Methods
 
 - (void)sliderBegan:(CGPoint)location
@@ -362,6 +370,22 @@
 {
     float percent = location.x / backgroundSprite_.contentSize.width;
     return minimumValue_ + percent * (maximumValue_ - minimumValue_);
+}
+
+- (void)layoutWithValue:(float)value
+{
+    // Update thumb position for new value
+    float percent               = (value - minimumValue_) / (maximumValue_ - minimumValue_);
+    
+    CGPoint pos                 = thumbSprite_.position;
+    pos.x                       = percent * backgroundSprite_.contentSize.width;
+    thumbSprite_.position       = pos;
+    
+    // Stretches content proportional to newLevel
+    CGRect textureRect          = progressSprite_.textureRect;
+    textureRect                 = CGRectMake(textureRect.origin.x, textureRect.origin.y, pos.x, textureRect.size.height);
+    CGRect textureRectInPixels  = CC_RECT_POINTS_TO_PIXELS(textureRect);
+    [progressSprite_ setTextureRectInPixels:textureRectInPixels rotated:progressSprite_.textureRectRotated untrimmedSize:textureRectInPixels.size];
 }
 
 @end

@@ -284,10 +284,10 @@
     if (_highlightRow != _selectedRow && _highlightRow != -1)
     {
         id<CCControlPickerRowDelegate> rowNode  = (id<CCControlPickerRowDelegate>)[_rowsLayer getChildByTag:_selectedRow];
-        [rowNode rowDidMasked];
+        [rowNode rowDidDownplayed];
     }
     id<CCControlPickerRowDelegate> rowNode  = (id<CCControlPickerRowDelegate>)[_rowsLayer getChildByTag:_selectedRow];
-    [rowNode rowDidSelected];
+    [rowNode rowWillBeSelected];
     
     _highlightRow   = -1;
     
@@ -487,6 +487,9 @@
     {
         [_delegate controlPicker:self didSelectRow:_selectedRow];
     }
+    
+    id<CCControlPickerRowDelegate> rowNode  = (id<CCControlPickerRowDelegate>)[_rowsLayer getChildByTag:_selectedRow];
+    [rowNode rowDidSelected];
 }
 
 - (void)sendPickerRowEventForPosition:(CGPoint)location
@@ -499,7 +502,7 @@
         if (_highlightRow != -1)
         {
             rowNode     = (id<CCControlPickerRowDelegate>)[_rowsLayer getChildByTag:_highlightRow];
-            [rowNode rowDidMasked];
+            [rowNode rowDidDownplayed];
         }
         
         self.highlightRow               = highlightRow;
@@ -717,16 +720,21 @@
     _textLabel.color    = ccc3(201, 62, 119);
 }
 
-- (void)rowDidMasked
+- (void)rowDidDownplayed
 {
     _textLabel.scale    = 1.0f;
     _textLabel.color    = ccc3(86, 86, 86);
 }
 
-- (void)rowDidSelected
+- (void)rowWillBeSelected
 {
     _textLabel.scale    = 1.3f;
     _textLabel.color    = ccc3(201, 62, 119);
+}
+
+- (void)rowDidSelected
+{
+    
 }
 
 #pragma mark - Private Methods

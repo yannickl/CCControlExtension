@@ -186,7 +186,14 @@ typedef enum
  * @discussion You can implement this method to perform additional tasks
  * associated with presenting the view.
  */
-- (void)rowDidMasked;
+- (void)rowDidDownplayed;
+
+/**
+ * @abstract Notifies the row that will be selected.
+ * @discussion You can implement this method to perform additional tasks
+ * associated with presenting the view.
+ */
+- (void)rowWillBeSelected;
 
 /**
  * @abstract Notifies the row that is selected.

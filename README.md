@@ -9,7 +9,7 @@ For iOS 4.0 or later and Snow Leopard the CCControl also uses the power of block
 
 ![](http://github.com/YannickL/CCControlExtension/raw/master/screenshots/cccontrolextension.png)
 
-<a id="control_list">CCControl list</a>
+<a id="control_list"></a>Available Control List
 ====================
 
   * __[Button](http://yannickloriot.com/library/ios/cccontrolextension/Classes/CCControlButton.html):__

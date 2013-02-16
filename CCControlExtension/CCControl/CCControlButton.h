@@ -33,7 +33,13 @@
 
 @class CCScale9Sprite;
 
-/** @class CCControlButton Button control for Cocos2D. */
+/**
+ * Button control for Cocos2D.
+ *
+ * A button intercepts touch events and sends an action message to a
+ * target object when tapped. Methods for setting the target and action
+ * are inherited from CCControl.
+ */
 @interface CCControlButton : CCControl
 {
 @public
@@ -78,6 +84,7 @@
 @property (nonatomic, assign) float marginLR, marginTB;
 
 #pragma mark Constructors - Initializers
+/** @name Creating Buttons */
 
 /** Initializes a button with a label in foreground and a sprite in background. */
 - (id)initWithLabel:(CCNode<CCLabelProtocol, CCRGBAProtocol> *)label backgroundSprite:(CCScale9Sprite *)backgroundsprite;
@@ -98,6 +105,9 @@
 + (id)buttonWithBackgroundSprite:(CCScale9Sprite *)sprite;
 
 #pragma mark - Public Methods
+
+#pragma mark Configuring/Getting the Button Title
+/** @name Configuring/Getting the Button Title */
 
 /**
  * Returns the title used for a state.
@@ -173,6 +183,9 @@
  * described in "CCControlState".
  */
 - (CCScale9Sprite *)backgroundSpriteForState:(CCControlState)state;
+
+#pragma mark Configuring/Getting Button Background Presentation
+/** @name Configuring/Getting Button Background Presentation */
 
 /**
  * Sets the background sprite to use for the specified button state.

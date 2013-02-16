@@ -4,26 +4,26 @@ The puporse of these examples are to show you how the CCControl can be used into
 
 Controls available:
 
- * CCControlButton:
+ * [CCControlButton](http://yannickloriot.com/library/ios/cccontrolextension/Classes/CCControlButton.html):
 
 ![CCControlButton](http://github.com/YannickL/CCControlExtension/raw/master/screenshots/button.png)
 
 CCControlButton provides a convenient way to create buttons with Cocos2D.
 A control button is compound of a title label and a background sprite. You can set it to a predetermined size, to a variable size to fit to the title size etc. (More information here: http://yannickloriot.com/2011/12/create-buttons-in-cocos2d-by-using-cccontrolbutton/)
 
- * CCControlSlider:
+ * [CCControlSlider](http://yannickloriot.com/library/ios/cccontrolextension/Classes/CCControlSlider.html):
 
 ![CCControlSlider](http://github.com/YannickL/CCControlExtension/raw/master/screenshots/slider.png)
 
 CCControlSlider is an already made slider (but customizable) control for Cocos2D for iPhone. It allow you to configure its range value. (More information here: http://yannickloriot.com/2011/08/use-cccontrol-to-create-a-slider-with-cocos2d-for-iphone/)
 
- * CCControlColourPicker:
+ * [CCControlColourPicker](http://yannickloriot.com/library/ios/cccontrolextension/Classes/CCControlColourPicker.html):
 
 ![CCControlColourPicker](http://github.com/YannickL/CCControlExtension/raw/master/screenshots/colorpicker.png)
 
 CCControlColourPicker is an already made colour picker for Cocos2D for iPhone. It's a very useful control tool to preview and test color values.
 
-* CCControlSwitch:
+* [CCControlSwitch](http://yannickloriot.com/library/ios/cccontrolextension/Classes/CCControlSwitch.html):
 
 ![CCControlSwitch](http://github.com/YannickL/CCControlExtension/raw/master/screenshots/switch.png)
 
@@ -31,20 +31,20 @@ The CCControlSwitch is an implementation of the UISwitch for Cocos2D for iPhone.
 The CCControlSwitch class declares a property and a method to control its on/off state. As with CCControlSlider, when the user manipulates the switch control ("flips" it) an UIControlEventValueChanged event is generated.
 You can customize the appearance of the switch by changing the on/off background sprites and label.
 
-* CCControlStepper:
+* [CCControlStepper](http://yannickloriot.com/library/ios/cccontrolextension/Classes/CCControlStepper.html):
 
 ![CCControlStepper](http://github.com/YannickL/CCControlExtension/raw/master/screenshots/stepper.png)
 
 The CCControlStepper is an implementation of the UIStepper for Cocos2D for iPhone.
 The CCControlStepper class provides a user interface for incrementing or decrementing a value. It displays two buttons, one with a minus ("-") symbol and one with a plus ("+") symbol.
 
- * CCControlPotentiometer:
+ * [CCControlPotentiometer](http://yannickloriot.com/library/ios/cccontrolextension/Classes/CCControlPotentiometer.html):
 
 ![CCControlPotentiometer](http://github.com/YannickL/CCControlExtension/raw/master/screenshots/potentiometer.png)
 
 CCControlPotentiometer is an already made potentiometer (but customizable) control for Cocos2D for iPhone. It allow you to configure its range values.
 
-* CCControlPicker:
+* [CCControlPicker](http://yannickloriot.com/library/ios/cccontrolextension/Classes/CCControlPicker.html):
 
 ![CCControlPicker](http://github.com/YannickL/CCControlExtension/raw/master/screenshots/picker.png)
 

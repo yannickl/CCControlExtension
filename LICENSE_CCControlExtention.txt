@@ -1,4 +1,4 @@
-CCControlExtension: http://www.cocos2d-iphone.org
+CCControlExtension: https://github.com/YannickL/CCControlExtension
 
 Copyright (c) 2013 - Yannick Loriot and contributors
 (see each file to see the different copyright owners)

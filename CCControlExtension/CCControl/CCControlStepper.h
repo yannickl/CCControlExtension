@@ -34,8 +34,8 @@ typedef enum
 } CCControlStepperPart;
 
 /**
- * @class CCControlStepper A stepper control provides a user interface for
- * incrementing or decrementing a value.
+ * CCControlStepper is a stepper control which provides a user
+ * interface for incrementing or decrementing a value.
  */
 @interface CCControlStepper : CCControl
 {
@@ -59,26 +59,92 @@ typedef enum
     CCControlStepperPart    touchedPart_;
     NSInteger               autorepeatCount_;
 }
-/** The numeric value of the stepper. */
+/** @name Accessing the Stepper’s Value */
+/**
+ * @abstract The numeric value of the stepper.
+ * @discussion When the value changes, the stepper sends
+ * the CCControlEventValueChanged flag to its target (see
+ * addTarget:action:forControlEvents:). Refer to the
+ * description of the continuous property for information
+ * about whether value change events are sent continuously
+ * or when user interaction ends.
+ *
+ * The default value for this property is 0. This property
+ * is clamped at its lower extreme to minimumValue and is
+ * clamped at its upper extreme to maximumValue.
+ */
 @property (nonatomic) double value;
-/** The continuous vs. noncontinuous state of the stepper. */
+/** @name Configuring the Stepper */
+/**
+ * @abstract The continuous vs. noncontinuous state of the
+ * stepper.
+ * @discussion If YES, value change events are sent
+ * immediately when the value changes during user interaction.
+ * If NO, a value change event is sent when user interaction
+ * ends.
+ *
+ * The default value for this property is YES.
+ */
 @property (nonatomic, getter=isContinuous) BOOL continuous;
-/** The automatic vs. nonautomatic repeat state of the stepper. */
+/**
+ * @abstract The automatic vs. nonautomatic repeat state of the
+ * stepper.
+ * @discussion If YES, the user pressing and holding on the
+ * stepper repeatedly alters value.
+ *
+ * The default value for this property is YES.
+ */
 @property (nonatomic) BOOL autorepeat;
-/** The wrap vs. no-wrap state of the stepper. */
+/**
+ * @abstract The wrap vs. no-wrap state of the stepper.
+ * @discussion If YES, incrementing beyond maximumValue sets
+ * value to minimumValue; likewise, decrementing below
+ * minimumValue sets value to maximumValue. If NO, the stepper
+ * does not increment beyond maximumValue nor does it decrement
+ * below minimumValue but rather holds at those values.
+ *
+ * The default value for this property is NO.
+ */
 @property (nonatomic) BOOL wraps;
-/** The lowest possible numeric value for the stepper. */
+/**
+ * @abstract The lowest possible numeric value for the stepper.
+ * @discussion Must be numerically less than maximumValue. If
+ * you attempt to set a value equal to or greater than
+ * maximumValue, the system raises an NSInvalidArgumentException
+ * exception.
+ *
+ *The default value for this property is 0.
+ */
 @property (nonatomic) double minimumValue;
-/** The highest possible numeric value for the stepper. */
+/**
+ * @abstract The highest possible numeric value for the stepper.
+ * @discussion Must be numerically greater than minimumValue. If
+ * you attempt to set a value equal to or lower than minimumValue,
+ * the system raises an NSInvalidArgumentException exception.
+ *
+ * The default value of this property is 100.
+ */
 @property (nonatomic) double maximumValue;
-/** The step, or increment, value for the stepper. */
+/**
+ * @abstract The step, or increment, value for the stepper.
+ * @discussion Must be numerically greater than 0. If you attempt
+ * to set this property’s value to 0 or to a negative number, the
+ * system raises an NSInvalidArgumentException exception.
+ *
+ * The default value for this property is 1.
+ */
 @property (nonatomic) double stepValue;
 
 #pragma mark Contructors - Initializers
+/** @name Creating Steppers */
 
 /** Initializes a stepper with a minus and plus sprites. */
 - (id)initWithMinusSprite:(CCSprite *)minusSprite plusSprite:(CCSprite *)plusSprite;
-/** Creates a stepper with a minus and plus sprites. */
+/**
+ * Creates a stepper with the given minus and plus sprites.
+ *
+ * @see initWithMinusSprite:plusSprite:
+ */
 + (id)stepperWithMinusSprite:(CCSprite *)minusSprite plusSprite:(CCSprite *)plusSprite;
 
 #pragma mark - Public Methods

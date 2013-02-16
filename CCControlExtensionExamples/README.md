@@ -75,4 +75,4 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
-You can download cocos2d-for-iphone here: https://github.com/cocos2d/cocos2d-iphone
+You can download *cocos2d-for-iphone* here: https://github.com/cocos2d/cocos2d-iphone

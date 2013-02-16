@@ -89,5 +89,5 @@ THE SOFTWARE.
 You can download *cocos2d-for-iphone* here: https://github.com/cocos2d/cocos2d-iphone
 
 [my blog]: http://yannickloriot.com/2011/08/create-a-control-object-with-cocos2d-for-iphone/
-[examples]: https://github.com/YannickL/CCControlExtension/tree/master/CCControlExamples
+[examples]: https://github.com/YannickL/CCControlExtension/tree/master/CCControlExtensionExamples
 [api documentation]: http://yannickloriot.com/library/ios/cccontrolextension/

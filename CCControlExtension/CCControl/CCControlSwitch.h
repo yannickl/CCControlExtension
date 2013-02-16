@@ -28,8 +28,11 @@
 
 @class CCControlSwitchSprite;
 
-/** 
- * @class CCControlSwitch Switch control for Cocos2D.
+/**
+ * CCControlSwitch is a switch control for Cocos2D.
+ *
+ * The CCControlSwitch class is useful to create and manage On/Off buttons,
+ * like for example, in the option menus for volume as example.
  */
 @interface CCControlSwitch : CCControl
 {
@@ -39,32 +42,52 @@
 @protected
     CCControlSwitchSprite   *switchSprite_;
 }
-/** A Boolean value that determines the off/on state of the switch. */
-@property (nonatomic, getter = isOn) BOOL on;
 
 #pragma mark Contructors - Initializers
+/** @name Creating Switches */
 
 /** Initializes a switch with a mask sprite, on/off sprites for on/off states and a thumb sprite. */
 - (id)initWithMaskSprite:(CCSprite *)maskSprite onSprite:(CCSprite *)onSprite offSprite:(CCSprite *)offSprite thumbSprite:(CCSprite *)thumbSprite;
 
-/** Creates a switch with a mask sprite, on/off sprites for on/off states and a thumb sprite. */
+/**
+ * Creates a switch with a mask sprite, on/off sprites for on/off states and a thumb sprite.
+ *
+ * @see initWithMaskSprite:onSprite:offSprite:thumbSprite:
+ */
 + (id)switchWithMaskSprite:(CCSprite *)maskSprite onSprite:(CCSprite *)onSprite offSprite:(CCSprite *)offSprite thumbSprite:(CCSprite *)thumbSprite;
 
 /** Initializes a switch with a mask sprite, on/off sprites for on/off states, a thumb sprite and an on/off labels. */
 - (id)initWithMaskSprite:(CCSprite *)maskSprite onSprite:(CCSprite *)onSprite offSprite:(CCSprite *)offSprite thumbSprite:(CCSprite *)thumbSprite onLabel:(CCNode<CCLabelProtocol, CCRGBAProtocol> *)onLabel offLabel:(CCNode<CCLabelProtocol, CCRGBAProtocol> *)offLabel;
 
-/** Creates a switch with a mask sprite, on/off sprites for on/off states, a thumb sprite and an on/off labels. */
+/**
+ * Creates a switch with a mask sprite, on/off sprites for on/off states, a thumb sprite and an on/off labels.
+ *
+ * @see initWithMaskSprite:onSprite:offSprite:thumbSprite:onLabel:offLabel:
+ */
 + (id)switchWithMaskSprite:(CCSprite *)maskSprite onSprite:(CCSprite *)onSprite offSprite:(CCSprite *)offSprite thumbSprite:(CCSprite *)thumbSprite onLabel:(CCNode<CCLabelProtocol, CCRGBAProtocol> *)onLabel offLabel:(CCNode<CCLabelProtocol, CCRGBAProtocol> *)offLabel;
 
 #pragma mark - Public Methods
 
+#pragma mark Setting the Off/On State
+/** @name Setting the Off/On State */
+
 /**
- * Set the state of the switch to On or Off, optionally animating the transition.
+ * @abstract A Boolean value that determines the off/on state of the switch.
+ * @discussion This property allows you to retrieve and set (without animation)
+ * a value determining whether the CCControlSwitch object is on or off.
+ */
+@property (nonatomic, getter = isOn) BOOL on;
+
+/**
+ * @abstract Set the state of the switch to On or Off, optionally animating the
+ * transition.
  *
- * @param isOn YES if the switch should be turned to the On position; NO if it 
- * should be turned to the Off position. If the switch is already in the 
+ * @param isOn YES if the switch should be turned to the On position; NO if it
+ * should be turned to the Off position. If the switch is already in the
  * designated position, nothing happens.
  * @param animated YES to animate the “flipping” of the switch; otherwise NO.
+ * @discussion Setting the switch to either position does result in an action
+ * message being sent.
  */
 - (void)setOn:(BOOL)isOn animated:(BOOL)animated;
 

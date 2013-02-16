@@ -50,8 +50,8 @@ The project already include a version of Cocos2D for its examples, so you just n
     cd CCControlExtension
     git checkout master
 
-   # to update the sources
-   git pull
+    # to update the sources
+    git pull
 ```
 
 Build & Runtime Requirements

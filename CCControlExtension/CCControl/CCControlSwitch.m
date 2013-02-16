@@ -91,6 +91,7 @@
 @synthesize initialTouchXPosition   = _initialTouchXPosition;
 @synthesize moved                   = _moved;
 @synthesize on                      = _on;
+@synthesize onThumbTintColor        = _onThumbTintColor;
 
 - (void)dealloc
 {
@@ -118,6 +119,7 @@
         NSAssert(offSprite,     @"offSprite must not be nil.");
         NSAssert(thumbSprite,   @"thumbSprite must not be nil.");
         
+        _onThumbTintColor           = ccGRAY;
         _on                         = YES;
 
         _switchSprite               = [[CCControlSwitchSprite alloc] initWithMaskSprite:maskSprite 
@@ -206,7 +208,7 @@
     
     _initialTouchXPosition          = location.x - _switchSprite.sliderXPosition;
     
-    _switchSprite.thumbSprite.color = ccGRAY;
+    _switchSprite.thumbSprite.color = _onThumbTintColor;
     [_switchSprite needsLayout];
     
     return YES;
@@ -269,7 +271,7 @@
     
     _initialTouchXPosition          = location.x - switchSprite_.sliderXPosition;
     
-    _switchSprite.thumbSprite.color = ccGRAY;
+    _switchSprite.thumbSprite.color = _onThumbTintColor;
     [_switchSprite needsLayout];
     
     return YES;

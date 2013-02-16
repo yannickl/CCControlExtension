@@ -37,8 +37,10 @@
 /**
  * Colour Picker control for Cocos2D.
  *
- * The color picker is a block-level element and is 353x334 pixels large.
- * You can control the position by styling your placeholder.
+ * The color picker is a very useful control tool to preview 
+ * and test color values.
+ *
+ * @see http://yannickloriot.com/library/ios/cccontrolextension/Classes/CCControlColourPicker.html
  */
 @interface CCControlColourPicker : CCControl
 {
@@ -56,12 +58,13 @@
 /** Creates a color picker control object. */
 + (id)colorPicker;
 
-#pragma mark - Public Methods
-
+#pragma mark - Properties
 #pragma mark Getting the Color
 /** @name Getting the Color */
 
 /** The current color of the picker. */
 @property (nonatomic, readwrite) ccColor3B color;
+
+#pragma mark - Public Methods
 
 @end

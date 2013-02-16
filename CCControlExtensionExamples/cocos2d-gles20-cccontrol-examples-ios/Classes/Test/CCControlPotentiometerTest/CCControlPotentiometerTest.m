@@ -26,7 +26,8 @@
 #import "CCControlPotentiometerTest.h"
 
 @interface CCControlPotentiometerTest ()
-@property (nonatomic, retain) CCLabelTTF *displayValueLabel;
+@property (nonatomic, strong) CCLabelTTF                *displayValueLabel;
+@property (nonatomic, strong) CCControlPotentiometer    *potentiometer;
 
 - (void)valueChanged:(CCControlPotentiometer *)sender;
 
@@ -34,12 +35,14 @@
 
 @implementation CCControlPotentiometerTest
 @synthesize displayValueLabel;
+@synthesize potentiometer;
 
 - (void)dealloc
 {
-    [displayValueLabel release], displayValueLabel = nil;
+    [displayValueLabel  release];
+    [potentiometer      release];
     
-    [super dealloc];
+    [super              dealloc];
 }
 
 - (id)init
@@ -48,8 +51,8 @@
     {
         CGSize screenSize = [[CCDirector sharedDirector] winSize];
         
-        CCNode *layer                       = [CCNode node];
-        layer.position                      = ccp (screenSize.width / 2, screenSize.height / 2);
+        CCNode *layer               = [CCNode node];
+        layer.position              = ccp (screenSize.width / 2, screenSize.height / 2);
         [self addChild:layer z:1];
         
         double layer_width = 0;
@@ -60,48 +63,53 @@
         [background setPosition:ccp(layer_width + background.contentSize.width / 2.0f, 0)];
         [layer addChild:background];
         
-        layer_width += background.contentSize.width;
+        layer_width                 += background.contentSize.width;
         
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
-        self.displayValueLabel  = [CCLabelTTF labelWithString:@"" fontName:@"HelveticaNeue-Bold" fontSize:30];
+        self.displayValueLabel      = [CCLabelTTF labelWithString:@"" fontName:@"HelveticaNeue-Bold" fontSize:30];
 #elif __MAC_OS_X_VERSION_MAX_ALLOWED
-        self.displayValueLabel  = [CCLabelTTF labelWithString:@"" fontName:@"Marker Felt" fontSize:30];
+        self.displayValueLabel      = [CCLabelTTF labelWithString:@"" fontName:@"Marker Felt" fontSize:30];
 #endif
-        displayValueLabel.position = background.position;
+        displayValueLabel.position  = background.position;
         [layer addChild:displayValueLabel];
 		
         // Add the slider
-		CCControlPotentiometer *potentiometer = [CCControlPotentiometer potentiometerWithTrackFile:@"potentiometerTrack.png"
-                                                                                      progressFile:@"potentiometerProgress.png"
-                                                                                         thumbFile:@"potentiometerButton.png"];
-        potentiometer.position = ccp (layer_width + 10 + potentiometer.contentSize.width / 2, 0);
-
+		self.potentiometer          = [CCControlPotentiometer potentiometerWithTrackFile:@"potentiometerTrack.png"
+                                                                            progressFile:@"potentiometerProgress.png"
+                                                                               thumbFile:@"potentiometerButton.png"];
+        potentiometer.position      = ccp (layer_width + 10 + potentiometer.contentSize.width / 2, 0);
+        potentiometer.value         = 0.0f;
+        
         // When the value of the slider will change, the given selector will be call
 		[potentiometer addTarget:self action:@selector(valueChanged:) forControlEvents:CCControlEventValueChanged];
         
 		[layer addChild:potentiometer];
         
-        layer_width += potentiometer.contentSize.width;
+        layer_width                 += potentiometer.contentSize.width;
         
         // Set the layer size
-        layer.contentSize                   = CGSizeMake(layer_width, 0);
-        layer.anchorPoint                   = ccp (0.5f, 0.5f);
-        
-        // Update the value label
-        [self valueChanged:potentiometer];
+        layer.contentSize           = CGSizeMake(layer_width, 0);
+        layer.anchorPoint           = ccp (0.5f, 0.5f);
 	}
 	return self;
 }
 
-#pragma mark -
-#pragma CCSliderTestLayer Public Methods
-
-#pragma CCSliderTestLayer Private Methods
-
-- (void)valueChanged:(CCControlPotentiometer *)sender
+- (void)onEnterTransitionDidFinish
 {
-	// Change value of label.
-	displayValueLabel.string = [NSString stringWithFormat:@"%.02f", sender.value];	
+    [super onEnterTransitionDidFinish];
+    
+    [potentiometer setValue:0.25f animated:YES];
 }
 
-@end
+#pragma mark -
+#pragma CCSliderTestLayer Public Methods
+     
+#pragma CCSliderTestLayer Private Methods
+     
+     - (void)valueChanged:(CCControlPotentiometer *)sender
+    {
+        // Change value of label.
+        displayValueLabel.string = [NSString stringWithFormat:@"%.02f", sender.value];
+    }
+     
+     @end

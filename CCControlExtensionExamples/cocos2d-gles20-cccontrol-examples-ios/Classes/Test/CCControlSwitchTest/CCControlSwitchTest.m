@@ -27,7 +27,8 @@
 #import "CCControlSwitchTest.h"
 
 @interface CCControlSwitchTest ()
-@property (nonatomic, strong) CCLabelTTF *displayValueLabel;
+@property (nonatomic, strong) CCLabelTTF        *displayValueLabel;
+@property (nonatomic, strong) CCControlSwitch   *switchControl;
 
 /** Creates and returns a new CCControlSwitch. */
 - (CCControlSwitch *)makeControlSwitch;
@@ -39,10 +40,11 @@
 
 @implementation CCControlSwitchTest
 @synthesize displayValueLabel;
-
+@synthesize switchControl;
 - (void)dealloc
 {
     [displayValueLabel  release];
+    [switchControl      release];
     
     [super              dealloc];
 }
@@ -53,44 +55,48 @@
     {
         CGSize screenSize = [[CCDirector sharedDirector] winSize];
         
-        CCNode *layer                       = [CCNode node];
-        layer.position                      = ccp (screenSize.width / 2, screenSize.height / 2);
+        CCNode *layer               = [CCNode node];
+        layer.position              = ccp (screenSize.width / 2, screenSize.height / 2);
         [self addChild:layer z:1];
         
         double layer_width = 0;
         
         // Add the black background for the text
-        CCScale9Sprite *background = [CCScale9Sprite spriteWithFile:@"buttonBackground.png"];
-        [background setContentSize:CGSizeMake(80, 50)];
-        [background setPosition:ccp(layer_width + background.contentSize.width / 2.0f, 0)];
+        CCScale9Sprite *background  = [CCScale9Sprite spriteWithFile:@"buttonBackground.png"];
+        background.contentSize      = CGSizeMake(80, 50);
+        background.position         = ccp(layer_width + background.contentSize.width / 2.0f, 0);
         [layer addChild:background];
         
         layer_width += background.contentSize.width;
         
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
-        self.displayValueLabel  = [CCLabelTTF labelWithString:@"on" fontName:@"HelveticaNeue-Bold" fontSize:30];
+        self.displayValueLabel      = [CCLabelTTF labelWithString:@"on" fontName:@"HelveticaNeue-Bold" fontSize:30];
 #elif __MAC_OS_X_VERSION_MAX_ALLOWED
-        self.displayValueLabel  = [CCLabelTTF labelWithString:@"on" fontName:@"Marker Felt" fontSize:30];
+        self.displayValueLabel      = [CCLabelTTF labelWithString:@"on" fontName:@"Marker Felt" fontSize:30];
 #endif
-        displayValueLabel.position = background.position;
+        displayValueLabel.position  = background.position;
         [layer addChild:displayValueLabel];
         
         // Create the switch
-        CCControlSwitch *switchControl      = [self makeControlSwitch];
-        switchControl.position               = ccp (layer_width + 10 + switchControl.contentSize.width / 2, 0);
-        [switchControl setOn:NO animated:NO];
+        self.switchControl          = [self makeControlSwitch];
+        switchControl.position      = ccp (layer_width + 10 + switchControl.contentSize.width / 2, 0);
+        switchControl.on            = NO;
         [layer addChild:switchControl];
 
         [switchControl addTarget:self action:@selector(valueChanged:) forControlEvents:CCControlEventValueChanged];
         
         // Set the layer size
-        layer.contentSize                   = CGSizeMake(layer_width, 0);
-        layer.anchorPoint                   = ccp (0.5f, 0.5f);
-        
-        // Update the value label
-        [self valueChanged:switchControl];
+        layer.contentSize           = CGSizeMake(layer_width, 0);
+        layer.anchorPoint           = ccp (0.5f, 0.5f);
 	}
 	return self;
+}
+
+- (void)onEnterTransitionDidFinish
+{
+    [super onEnterTransitionDidFinish];
+    
+    [switchControl setOn:YES animated:YES];
 }
 
 #pragma mark -

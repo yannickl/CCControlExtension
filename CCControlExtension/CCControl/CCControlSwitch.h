@@ -31,18 +31,26 @@
  *
  * The CCControlSwitch class is useful to create and manage On/Off buttons,
  * like for example, in the option menus for volume as example.
+ *
+ * The CCControlSwitch class declares a property and a method to control its
+ * on/off state. As with CCControlSlider, when the user manipulates the 
+ * switch control (“flips” it) a CCControlEventValueChanged event is
+ * generated, which results in the control (if properly configured) sending
+ * an action message.
+ *
+ * @see http://yannickloriot.com/library/ios/cccontrolextension/Classes/CCControlSwitch.html
  */
 @interface CCControlSwitch : CCControl
-{
-@public
-    BOOL                    _on;
-}
 
 #pragma mark Contructors - Initializers
 /** @name Creating Switches */
 
 /**
  * Initializes a switch with a mask sprite, on/off sprites for on/off states and a thumb sprite.
+ * @param maskSprite The sprite used as mask to hide on/off sprites.
+ * @param onSprite The sprite displayed when the switch is in the on position.
+ * @param offSprite The sprite displayed when the switch is in the off position.
+ * @param thumbSprite The sprite used for the thumb.
  */
 - (id)initWithMaskSprite:(CCSprite *)maskSprite onSprite:(CCSprite *)onSprite offSprite:(CCSprite *)offSprite thumbSprite:(CCSprite *)thumbSprite;
 
@@ -54,7 +62,13 @@
 + (id)switchWithMaskSprite:(CCSprite *)maskSprite onSprite:(CCSprite *)onSprite offSprite:(CCSprite *)offSprite thumbSprite:(CCSprite *)thumbSprite;
 
 /** 
- * Initializes a switch with a mask sprite, on/off sprites for on/off states, a thumb sprite and an on/off labels. 
+ * Initializes a switch with a mask sprite, on/off sprites for on/off states, a thumb sprite and an on/off labels.
+ * @param maskSprite The sprite used as mask to hide on/off sprites.
+ * @param onSprite The sprite displayed when the switch is in the on position.
+ * @param offSprite The sprite displayed when the switch is in the off position.
+ * @param thumbSprite The sprite used for the thumb.
+ * @param onLabel The label displayed over the onSprite when the switch is in the on position.
+ * @param offLabel The label displayed over the offSprite when the switch is in the off position.
  */
 - (id)initWithMaskSprite:(CCSprite *)maskSprite onSprite:(CCSprite *)onSprite offSprite:(CCSprite *)offSprite thumbSprite:(CCSprite *)thumbSprite onLabel:(CCNode<CCLabelProtocol, CCRGBAProtocol> *)onLabel offLabel:(CCNode<CCLabelProtocol, CCRGBAProtocol> *)offLabel;
 
@@ -65,8 +79,7 @@
  */
 + (id)switchWithMaskSprite:(CCSprite *)maskSprite onSprite:(CCSprite *)onSprite offSprite:(CCSprite *)offSprite thumbSprite:(CCSprite *)thumbSprite onLabel:(CCNode<CCLabelProtocol, CCRGBAProtocol> *)onLabel offLabel:(CCNode<CCLabelProtocol, CCRGBAProtocol> *)offLabel;
 
-#pragma mark - Public Methods
-
+#pragma mark - Properties
 #pragma mark Setting the Off/On State
 /** @name Setting the Off/On State */
 
@@ -89,5 +102,17 @@
  * message being sent.
  */
 - (void)setOn:(BOOL)isOn animated:(BOOL)animated;
+
+#pragma mark Customizing the Appearance of the Switch
+/** @name Customizing the Appearance of the Switch */
+
+/**
+ * @abstract The color used to tint the appearance of the thumb when the switch
+ * is pushed.
+ * @discussion The default color is ccGRAY.
+ */
+@property(nonatomic, assign) ccColor3B onThumbTintColor;
+
+#pragma mark - Public Methods
 
 @end

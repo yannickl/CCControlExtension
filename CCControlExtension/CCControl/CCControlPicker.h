@@ -45,6 +45,8 @@ typedef enum
  * use a spinning-wheel or slot-machine metaphor to show one set of values.
  * Users select values by rotating the wheels so that the desired row of values
  * aligns with a selection indicator.
+ *
+ * @see http://yannickloriot.com/library/ios/cccontrolextension/Classes/CCControlPicker.html
  */
 @interface CCControlPicker : CCControl
 
@@ -54,8 +56,7 @@ typedef enum
 /** Initializes a picker the foreground and the selection sprite. */
 - (id)initWithForegroundSprite:(CCSprite *)foregroundSprite selectionSprite:(CCSprite *)selectionSprite;
 
-#pragma mark - Public Methods
-
+#pragma mark - Properties
 #pragma mark Changing the Picker’s Appearance
 /** @name Changing the Picker’s Appearance */
 
@@ -86,34 +87,6 @@ typedef enum
  * from the data source and and caches it. The default value is zero.
  */
 - (NSUInteger)numberOfRows;
-
-#pragma mark Reloading the Control Picker
-/** @name Reloading the Control Picker */
-
-/**
- * Reloads the component of the picker control.
- */
-- (void)reloadComponent;
-
-#pragma mark Selecting Rows in the Control Picker
-/** @name Selecting Rows in the Control Picker */
-
-/**
- * Selects a row in the picker control.
- * @param row A zero-indexed number identifying a row of component.
- * @param animated YES to animate the selection by spinning the wheel
- * (component) to the new value; if you specify NO, the new selection
- * is shown immediately.
- */
-- (void)selectRow:(NSUInteger)row animated:(BOOL)animated;
-
-/**
- * Returns the index of the selected row.
- * @return A zero-indexed number identifying the selected row , or -1 
- * if no row is selected.
- * @see selectRow:animated:
- */
-- (NSInteger)selectedRow;
 
 #pragma mark Managing the Behavior of the Control Picker
 /** @name Managing the Behavior of the Control Picker */
@@ -157,6 +130,35 @@ typedef enum
  * rows in each component.
  */
 @property(nonatomic, assign) id<CCControlPickerDataSource> dataSource;
+
+#pragma mark - Public Methods
+#pragma mark Reloading the Control Picker
+/** @name Reloading the Control Picker */
+
+/**
+ * Reloads the component of the picker control.
+ */
+- (void)reloadComponent;
+
+#pragma mark Selecting Rows in the Control Picker
+/** @name Selecting Rows in the Control Picker */
+
+/**
+ * Selects a row in the picker control.
+ * @param row A zero-indexed number identifying a row of component.
+ * @param animated YES to animate the selection by spinning the wheel
+ * (component) to the new value; if you specify NO, the new selection
+ * is shown immediately.
+ */
+- (void)selectRow:(NSUInteger)row animated:(BOOL)animated;
+
+/**
+ * Returns the index of the selected row.
+ * @return A zero-indexed number identifying the selected row , or -1
+ * if no row is selected.
+ * @see selectRow:animated:
+ */
+- (NSInteger)selectedRow;
 
 @end
 
@@ -212,6 +214,8 @@ typedef enum
  *
  * A row node implements some methods and callbacks to make the
  * CCControlPicker customization more easier.
+ *
+ * @see http://yannickloriot.com/library/ios/cccontrolextension/Classes/CCControlPickerRow.html
  */
 @interface CCControlPickerRow : CCNode <CCControlPickerRowDelegate>
 

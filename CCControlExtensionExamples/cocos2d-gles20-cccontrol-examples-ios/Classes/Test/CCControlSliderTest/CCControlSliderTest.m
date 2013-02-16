@@ -28,7 +28,8 @@
 #import "CCControlSliderTest.h"
 
 @interface CCControlSliderTest ()
-@property (nonatomic, retain) CCLabelTTF *displayValueLabel;
+@property (nonatomic, strong) CCLabelTTF        *displayValueLabel;
+@property (nonatomic, strong) CCControlSlider   *slider;
 
 - (void)valueChanged:(CCControlSlider *)sender;
 
@@ -36,12 +37,14 @@
 
 @implementation CCControlSliderTest
 @synthesize displayValueLabel;
+@synthesize slider;
 
 - (void)dealloc
 {
-    [displayValueLabel release], displayValueLabel = nil;
+    [displayValueLabel  release];
+    [slider             release];
     
-    [super dealloc];
+    [super              dealloc];
 }
 
 - (id)init
@@ -57,13 +60,13 @@
 		[self addChild:displayValueLabel];
 		
         // Add the slider
-		CCControlSlider *slider = [CCControlSlider sliderWithBackgroundFile:@"sliderTrack.png" 
+		self.slider                     = [CCControlSlider sliderWithBackgroundFile:@"sliderTrack.png"
                                                                progressFile:@"sliderProgress.png" 
                                                                   thumbFile:@"sliderThumb.png"];
-        slider.anchorPoint      = ccp(0.5f, 1.0f);
-        slider.minimumValue     = 0.0f; // Sets the min value of range
-        slider.maximumValue     = 5.0f; // Sets the max value of range
-        slider.position         = ccp(screenSize.width / 2.0f, screenSize.height / 2.0f);
+        slider.anchorPoint              = ccp(0.5f, 1.0f);
+        slider.minimumValue             = 0.0f; // Sets the min value of range
+        slider.maximumValue             = 5.0f; // Sets the max value of range
+        slider.position                 = ccp(screenSize.width / 2.0f, screenSize.height / 2.0f);
         
         // When the value of the slider will change, the given selector will be call
 		[slider addTarget:self action:@selector(valueChanged:) forControlEvents:CCControlEventValueChanged];
@@ -71,6 +74,13 @@
 		[self addChild:slider z:0 tag:1];
 	}
 	return self;
+}
+
+- (void)onEnterTransitionDidFinish
+{
+    [super onEnterTransitionDidFinish];
+    
+    [slider setValue:1.0f animated:YES];
 }
 
 #pragma mark -

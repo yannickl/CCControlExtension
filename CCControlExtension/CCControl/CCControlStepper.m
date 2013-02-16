@@ -72,6 +72,7 @@
 @synthesize minimumValue    = _minimumValue;
 @synthesize maximumValue    = _maximumValue;
 @synthesize stepValue       = _stepValue;
+@synthesize pushedTintColor = _pushedTintColor;
 
 - (void)dealloc
 {
@@ -100,6 +101,7 @@
         _value                              = 0;
         _stepValue                          = 1;
         _wraps                              = NO;
+        _pushedTintColor                    = ccGRAY;
         self.ignoreAnchorPointForPosition   = NO;
     
         // Add the minus components
@@ -253,7 +255,7 @@
     {
         _touchedPart        = kCCControlStepperPartMinus;
         
-        _minusSprite.color  = ccGRAY;
+        _minusSprite.color  = _pushedTintColor;
         _plusSprite.color   = ccWHITE;
     } else if (location.x >= _minusSprite.contentSize.width
                && _value < _maximumValue)
@@ -261,7 +263,7 @@
         _touchedPart        = kCCControlStepperPartPlus;
         
         _minusSprite.color  = ccWHITE;
-        _plusSprite.color   = ccGRAY;
+        _plusSprite.color   = _pushedTintColor;
     } else
     {
         _touchedPart        = kCCControlStepperPartNone;

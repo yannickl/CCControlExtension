@@ -54,6 +54,7 @@
 @synthesize value               = _value;
 @synthesize minimumValue        = _minimumValue;
 @synthesize maximumValue        = _maximumValue;
+@synthesize onThumbTintColor    = _onThumbTintColor;
 
 - (void)dealloc
 {
@@ -121,6 +122,7 @@
 		[self addChild:_thumbSprite];
         
         // Init default values
+        _onThumbTintColor               = ccGRAY;
         _minimumValue                   = 0.0f;
         _maximumValue                   = 1.0f;
         self.value                      = _minimumValue;
@@ -342,7 +344,7 @@
 - (void)sliderBegan:(CGPoint)location
 {
     self.selected           = YES;
-    self.thumbSprite.color  = ccGRAY;
+    self.thumbSprite.color  = _onThumbTintColor;
     self.value              = [self valueForLocation:location];
 }
 

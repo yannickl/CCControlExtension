@@ -17,6 +17,8 @@
  * to specific areas of a sprite. With 9-slice scaling (3x3 grid),
  * you can ensure that the sprite does not become distorted when
  * scaled.
+ *
+ * @see http://yannickloriot.com/library/ios/cccontrolextension/Classes/CCScale9Sprite.html
  */
 @interface CCScale9Sprite : CCNode <CCRGBAProtocol>
 {

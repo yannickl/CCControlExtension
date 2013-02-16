@@ -33,6 +33,8 @@
  * value from a continuous range of values. An indicator, or thumb, notes
  * the current value of the slider and can be moved by the user to change 
  * the setting.
+ *
+ * @see http://yannickloriot.com/library/ios/cccontrolextension/Classes/CCControlSlider.html
  */
 @interface CCControlSlider : CCControl 
 {  
@@ -47,57 +49,6 @@
     CCSprite    *_progressSprite;
 	CCSprite    *_backgroundSprite;
 }
-#pragma mark Accessing the Slider’s Value
-/** @name Accessing the Slider’s Value */
-/**
- * @abstract Contains the receiver’s current value.
- * @discussion Setting this property causes the receiver to redraw itself
- * using the new value. To render an animated transition from the current
- * value to the new value, you should use the setValue:animated: method
- * instead.
- *
- * If you try to set a value that is below the minimum or above the maximum
- * value, the minimum or maximum value is set instead. The default value of
- * this property is 0.0.
- */
-@property (nonatomic, assign) float value;
-
-/**
- * @abstract Sets the receiver’s current value, allowing you to animate the
- * change visually.
- *
- * @param value The new value to assign to the value property.
- * @param animated Specify YES to animate the change in value when the 
- * receiver is redrawn; otherwise, specify NO to draw the receiver with the
- * new value only. Animations are performed asynchronously and do not block
- * the calling thread.
- * @discussion If you try to set a value that is below the minimum or above
- * the maximum value, the minimum or maximum value is set instead. The 
- * default value of this property is 0.0.
- * @see value
- */
-- (void)setValue:(float)value animated:(BOOL)animated;
-
-#pragma mark Accessing the Slider’s Value Limits
-/** @name Accessing the Slider’s Value Limits */
-/**
- * @abstract Contains the minimum value of the receiver.
- * @discussion If you change the value of this property, and the current 
- * value of the receiver is below the new minimum, the current value is 
- * adjusted to match the new minimum value automatically.
- *
- * The default value of this property is 0.0.
- */
-@property (nonatomic, assign) float minimumValue;
-/**
- * @abstract Contains the maximum value of the receiver.
- * @discussion If you change the value of this property, and the current
- * value of the receiver is above the new maximum, the current value is 
- * adjusted to match the new maximum value automatically.
- *
- * The default value of this property is 1.0.
- */
-@property (nonatomic, assign) float maximumValue;
 
 #pragma mark Contructors - Initializers
 /** @name Creating Sliders */
@@ -124,9 +75,72 @@
  *
  * @param backgroundSprite  CCSprite, that is used as a background.
  * @param progressSprite    CCSprite, that is used as a progress bar.
- * @param thumbItem         CCSprite, that is used as a thumb.
+ * @param thumbSprite       CCSprite, that is used as a thumb.
  */
 - (id)initWithBackgroundSprite:(CCSprite *)backgroundSprite progressSprite:(CCSprite *)progressSprite thumbSprite:(CCSprite *)thumbSprite;
+
+#pragma mark - Properties
+#pragma mark Accessing the Slider’s Value
+/** @name Accessing the Slider’s Value */
+/**
+ * @abstract Contains the receiver’s current value.
+ * @discussion Setting this property causes the receiver to redraw itself
+ * using the new value. To render an animated transition from the current
+ * value to the new value, you should use the setValue:animated: method
+ * instead.
+ *
+ * If you try to set a value that is below the minimum or above the maximum
+ * value, the minimum or maximum value is set instead. The default value of
+ * this property is 0.0.
+ */
+@property (nonatomic, assign) float value;
+
+/**
+ * @abstract Sets the receiver’s current value, allowing you to animate the
+ * change visually.
+ *
+ * @param value The new value to assign to the value property.
+ * @param animated Specify YES to animate the change in value when the
+ * receiver is redrawn; otherwise, specify NO to draw the receiver with the
+ * new value only. Animations are performed asynchronously and do not block
+ * the calling thread.
+ * @discussion If you try to set a value that is below the minimum or above
+ * the maximum value, the minimum or maximum value is set instead. The
+ * default value of this property is 0.0.
+ * @see value
+ */
+- (void)setValue:(float)value animated:(BOOL)animated;
+
+#pragma mark Accessing the Slider’s Value Limits
+/** @name Accessing the Slider’s Value Limits */
+/**
+ * @abstract Contains the minimum value of the receiver.
+ * @discussion If you change the value of this property, and the current
+ * value of the receiver is below the new minimum, the current value is
+ * adjusted to match the new minimum value automatically.
+ *
+ * The default value of this property is 0.0.
+ */
+@property (nonatomic, assign) float minimumValue;
+/**
+ * @abstract Contains the maximum value of the receiver.
+ * @discussion If you change the value of this property, and the current
+ * value of the receiver is above the new maximum, the current value is
+ * adjusted to match the new maximum value automatically.
+ *
+ * The default value of this property is 1.0.
+ */
+@property (nonatomic, assign) float maximumValue;
+
+#pragma mark Customizing the Appearance of the Slider
+/** @name Customizing the Appearance of the Slider */
+
+/**
+ * @abstract The color used to tint the appearance of the thumb when the slider
+ * is pushed.
+ * @discussion The default color is ccGRAY.
+ */
+@property(nonatomic, assign) ccColor3B onThumbTintColor;
 
 #pragma mark - Public Methods
 

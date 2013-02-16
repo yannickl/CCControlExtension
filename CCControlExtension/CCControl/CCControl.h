@@ -74,6 +74,8 @@ typedef void (^CCControlBlock) (id sender, CCControlEvent event);
  *
  * To use the CCControl class you have to subclass it and implement your own 
  * behavior.
+ *
+ * @see http://yannickloriot.com/library/ios/cccontrolextension/Classes/CCControl.html
  */
 @interface CCControl : CCLayer <CCRGBAProtocol>
 {

@@ -31,6 +31,7 @@
 @property (nonatomic, strong) CCSprite          *thumbSprite;
 @property (nonatomic, strong) CCProgressTimer   *progressTimer;
 @property (nonatomic, assign) CGPoint           previousLocation;
+@property (nonatomic, assign) float             animatedValue;
 
 /** Factorize the event dispath into these methods. */
 - (void)potentiometerBegan:(CGPoint)location;
@@ -45,15 +46,20 @@
                             toLineFromPoint:(CGPoint)beginLineB
                                     toPoint:(CGPoint)endLineB;
 
+/** Layout the slider with the given value. */
+- (void)layoutWithValue:(float)value;
+
 @end
 
 @implementation CCControlPotentiometer
 @synthesize value               = _value;
 @synthesize minimumValue        = _minimumValue;
 @synthesize maximumValue        = _maximumValue;
+@synthesize onThumbTintColor    = _onThumbTintColor;
 @synthesize thumbSprite         = _thumbSprite;
 @synthesize progressTimer       = _progressTimer;
-@synthesize previousLocation;
+@synthesize previousLocation    = _previousLocation;
+@synthesize animatedValue       = _animatedValue;
 
 - (void)dealloc
 {
@@ -93,6 +99,7 @@
         self.contentSize        = trackSprite.contentSize;
         
         // Init default values
+        _onThumbTintColor       = ccGRAY;
         _minimumValue           = 0.0f;
         _maximumValue           = 1.0f;
         self.value              = _minimumValue;
@@ -111,25 +118,12 @@
 
 - (void)setValue:(float)value
 {
-    // set new value with sentinel
-    if (value < _minimumValue)
-    {
-        value                   = _minimumValue;
-    }
-	
-    if (value > _maximumValue) 
-    {
-        value                   = _maximumValue;
-    }
-    
-    _value                      = value;
-    
-    // Update thumb and progress position for new value
-    float percent               = (value - _minimumValue) / (_maximumValue - _minimumValue);
-    _progressTimer.percentage   = percent * 100.0f;
-    _thumbSprite.rotation       = percent * 360.0f;
-    
-    [self sendActionsForControlEvents:CCControlEventValueChanged];    
+    [self setValue:value animated:NO];
+}
+
+- (void)setAnimatedValue:(float)animatedValue
+{
+    [self layoutWithValue:animatedValue];
 }
 
 - (void)setMinimumValue:(float)minimumValue
@@ -179,9 +173,9 @@
         return NO;
     }
     
-    previousLocation    = [self touchLocation:touch];
+    _previousLocation   = [self touchLocation:touch];
     
-    [self potentiometerBegan:previousLocation];
+    [self potentiometerBegan:_previousLocation];
     
     return YES;
 }
@@ -257,6 +251,29 @@
 #pragma mark -
 #pragma mark CCControlPotentiometer Public Methods
 
+- (void)setValue:(float)value animated:(BOOL)animated
+{
+    // set new value with sentinel
+    if (value < _minimumValue)
+        value                   = _minimumValue;
+	
+    if (value > _maximumValue)
+        value                   = _maximumValue;
+    
+    if (animated)
+    {
+        [self runAction:
+         [CCEaseInOut actionWithAction:[CCActionTween actionWithDuration:0.2f key:@"animatedValue" from:_value to:value]
+                                  rate:1.5f]];
+    } else
+    {
+        [self layoutWithValue:value];
+    }
+    
+    _value              = value;
+    [self sendActionsForControlEvents:CCControlEventValueChanged];
+}
+
 #pragma mark CCControlPotentiometer Private Methods
 
 - (float)distanceBetweenPoint:(CGPoint)point1 andPoint:(CGPoint)point2
@@ -286,7 +303,7 @@
 - (void)potentiometerBegan:(CGPoint)location
 {
     self.selected           = YES;
-    self.thumbSprite.color  = ccGRAY;
+    self.thumbSprite.color  = _onThumbTintColor;
 }
 
 - (void)potentiometerMoved:(CGPoint)location
@@ -294,7 +311,7 @@
     CGFloat angle       = [self angleInDegreesBetweenLineFromPoint:_progressTimer.position
                                                            toPoint:location 
                                                    toLineFromPoint:_progressTimer.position
-                                                           toPoint:previousLocation];
+                                                           toPoint:_previousLocation];
     
     // fix value, if the 12 o'clock position is between location and previousLocation
     if (angle > 180)
@@ -308,13 +325,21 @@
 
     self.value          += angle / 360.0f * (_maximumValue - _minimumValue);
     
-    previousLocation    = location;
+    _previousLocation   = location;
 }
 
 - (void)potentiometerEnded:(CGPoint)location
 {
     self.thumbSprite.color  = ccWHITE;
     self.selected           = NO;
+}
+
+- (void)layoutWithValue:(float)value
+{
+    // Update thumb and progress position for new value
+    float percent               = (value - _minimumValue) / (_maximumValue - _minimumValue);
+    _progressTimer.percentage   = percent * 100.0f;
+    _thumbSprite.rotation       = percent * 360.0f;
 }
 
 @end

@@ -27,8 +27,9 @@
 #import "CCControlPickerTest.h"
 
 @interface CCControlPickerTest ()
-@property (nonatomic, strong) NSArray       *source;
-@property (nonatomic, retain) CCLabelTTF    *displayValueLabel;
+@property (nonatomic, strong) NSArray           *source;
+@property (nonatomic, retain) CCLabelTTF        *displayValueLabel;
+@property (nonatomic, strong) CCControlPicker   *picker;
 
 - (CCControlPicker *)makeControlPicker;
 
@@ -37,11 +38,12 @@
 @implementation CCControlPickerTest
 @synthesize source              = _source;
 @synthesize displayValueLabel   = _displayValueLabel;
-
+@synthesize picker              = _picker;
 - (void)dealloc
 {
     [_source            release];
     [_displayValueLabel release];
+    [_picker            release];
     
     [super              dealloc];
 }
@@ -61,8 +63,8 @@
         
         // Add the black background for the text
         CCScale9Sprite *background  = [CCScale9Sprite spriteWithFile:@"buttonBackground.png"];
-        [background setContentSize:CGSizeMake(80, 50)];
-        [background setPosition:ccp(layer_width + background.contentSize.width / 2.0f, 0)];
+        background.contentSize      = CGSizeMake(80, 50);
+        background.position         = ccp(layer_width + background.contentSize.width / 2.0f, 0);
         [layer addChild:background];
         
         layer_width += background.contentSize.width;
@@ -76,17 +78,24 @@
         [layer addChild:_displayValueLabel];
         
         // Create the picker and add it to the layer
-        CCControlPicker *picker     = [self makeControlPicker];
-        picker.position             = ccp(layer_width + 10 + picker.contentSize.width / 2, 0);
-        [layer addChild:picker];
+        self.picker                 = [self makeControlPicker];
+        _picker.position            = ccp(layer_width + 10 + _picker.contentSize.width / 2, 0);
+        [layer addChild:_picker];
         
-        layer_width                 += picker.contentSize.width;
+        layer_width                 += _picker.contentSize.width;
         
         // Set the layer size
         layer.contentSize           = CGSizeMake(layer_width, 0);
         layer.anchorPoint           = ccp (0.5f, 0.5f);
 	}
 	return self;
+}
+
+- (void)onEnterTransitionDidFinish
+{
+    [super onEnterTransitionDidFinish];
+    
+    [_picker selectRow:1 animated:YES];
 }
 
 #pragma mark - Public Methods

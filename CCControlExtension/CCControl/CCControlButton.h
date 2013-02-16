@@ -39,6 +39,8 @@
  * A button intercepts touch events and sends an action message to a
  * target object when tapped. Methods for setting the target and action
  * are inherited from CCControl.
+ *
+ * @see http://yannickloriot.com/library/ios/cccontrolextension/Classes/CCControlButton.html
  */
 @interface CCControlButton : CCControl
 {
@@ -86,23 +88,44 @@
 #pragma mark Constructors - Initializers
 /** @name Creating Buttons */
 
-/** Initializes a button with a label in foreground and a sprite in background. */
+/** 
+ * Initializes a button with a label in foreground and a sprite in background.
+ * @param label            label, that is used as a foreground title.
+ * @param backgroundsprite CCScale9Sprite, that is used as a background.
+ */
 - (id)initWithLabel:(CCNode<CCLabelProtocol, CCRGBAProtocol> *)label backgroundSprite:(CCScale9Sprite *)backgroundsprite;
 
-/** Creates a button with a label in foreground and a sprite in background. */
+/**
+ * Creates a button with a label in foreground and a sprite in background.
+ * @see initWithLabel:backgroundSprite:
+ */
 + (id)buttonWithLabel:(CCNode<CCLabelProtocol, CCRGBAProtocol> *)label backgroundSprite:(CCScale9Sprite *)backgroundsprite;
 
-/** Initializes a button with a title, a font name and a font size for the label in foreground. */
+/**
+ * Initializes a button with a title, a font name and a font size for the label in foreground.
+ * @param title     Title displayed on the button.
+ * @param fontName  Font name to use to render the title.
+ * @param fontSize  Font name to use to render the title.
+ */
 - (id)initWithTitle:(NSString *)title fontName:(NSString *)fontName fontSize:(NSUInteger)fontsize;
 
-/** Creates a button with a title, a font name and a font size for the label in foreground. */
+/**
+ * Creates a button with a title, a font name and a font size for the label in foreground.
+ * @see buttonWithTitle:fontName:fontSize:
+ */
 + (id)buttonWithTitle:(NSString *)title fontName:(NSString *)fontName fontSize:(NSUInteger)fontsize;
 
-/** Initializes a button with a sprite in background. */
-- (id)initWithBackgroundSprite:(CCScale9Sprite *)sprite;
+/**
+ * Initializes a button with a sprite in background.
+ * @param backgroundsprite CCScale9Sprite, that is used as a background.
+ */
+- (id)initWithBackgroundSprite:(CCScale9Sprite *)backgroundsprite;
 
-/** Creates a button with a sprite in background. */
-+ (id)buttonWithBackgroundSprite:(CCScale9Sprite *)sprite;
+/**
+ * Creates a button with a sprite in background.
+ * @see initWithBackgroundSprite:
+ */
++ (id)buttonWithBackgroundSprite:(CCScale9Sprite *)backgroundsprite;
 
 #pragma mark - Public Methods
 

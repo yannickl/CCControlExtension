@@ -6,6 +6,7 @@ All these controls are subclasses of CCControl, which is inspired by the UIContr
 The CCControl extensions also uses the power of blocks to dispatch the events in addition to the target/action pair. 
 
 *Note: The CCControlExtension's classes are ARC compatibles (e.g for use with Kobold2D)*
+
 *Note2: the version for Cocos2D v1.1 is available on the [master](https://github.com/YannickL/CCControlExtension/tree/master) branch)*
 
 ![](http://github.com/YannickL/CCControlExtension/raw/master-v2/screenshots/cccontrolextension.png)

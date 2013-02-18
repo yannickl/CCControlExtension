@@ -19,7 +19,7 @@ It's a very useful control tool to preview and test color values.
   * [Picker](http://yannickloriot.com/library/ios/cccontrolextension/Classes/CCControlPicker.html):
 Use a spinning-wheel or slot-machine metaphor to show one set of values.
   * [Potentiometer](http://yannickloriot.com/library/ios/cccontrolextension/Classes/CCControlPotentiometer.html):
-Use a circular representation to show and select a single from a continuous range of value.
+Use a circular representation to show and select a single value from a continuous range of value.
   * [Slider](http://yannickloriot.com/library/ios/cccontrolextension/Classes/CCControlSlider.html):
 Use a linear representation to show and select a single value from a continuous range of values.
   * [Stepper](http://yannickloriot.com/library/ios/cccontrolextension/Classes/CCControlStepper.html):

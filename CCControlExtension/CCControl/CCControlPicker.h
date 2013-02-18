@@ -66,7 +66,7 @@ typedef enum
  *
  * This default value of this property is nil.
  */
-@property (nonatomic, strong) CCNode    *backgroundNode;
+@property (nonatomic, strong) CCNode    *background;
 
 #pragma mark Getting the Dimensions of the Control Picker
 /** @name Getting the Dimensions of the Control Picker */

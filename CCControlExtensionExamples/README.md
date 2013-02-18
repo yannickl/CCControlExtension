@@ -43,7 +43,7 @@ The CCControlStepper class provides a user interface for incrementing or decreme
 
 ![CCControlPotentiometer](http://github.com/YannickL/CCControlExtension/raw/master/screenshots/potentiometer.png)
 
-CCControlPotentiometer is an already made potentiometer (but customizable) control for Cocos2D for iPhone. It use a circular representation to show and select a single from a continuous range of value.
+CCControlPotentiometer is an already made potentiometer (but customizable) control for Cocos2D for iPhone. It use a circular representation to show and select a single value from a continuous range of value.
 
 * [CCControlPicker](http://yannickloriot.com/library/ios/cccontrolextension/Classes/CCControlPicker.html):
 

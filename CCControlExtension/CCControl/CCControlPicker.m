@@ -85,7 +85,7 @@
 @synthesize cachedRowCount      = _cachedRowCount;
 @synthesize selectedRow         = _selectedRow;
 @synthesize cacheRowSize        = _cacheRowSize;
-@synthesize backgroundNode      = _backgroundNode;
+@synthesize background          = _background;
 @synthesize swipeOrientation    = _swipeOrientation;
 @synthesize looping             = _looping;
 @synthesize delegate            = _delegate;
@@ -95,7 +95,7 @@
 {
     SAFE_ARC_RELEASE(_previousDate);
     SAFE_ARC_RELEASE(_rowsLayer);
-    SAFE_ARC_AUTORELEASE(_backgroundNode);
+    SAFE_ARC_AUTORELEASE(_background);
     
     SAFE_ARC_SUPER_DEALLOC();
 }
@@ -196,18 +196,18 @@
 
 #pragma mark Properties
 
-- (void)setBackgroundNode:(CCNode *)backgroundNode
+- (void)setBackground:(CCNode *)background
 {
-    if (_backgroundNode)
+    if (_background)
     {
-        [self removeChild:_backgroundNode cleanup:YES];
-        SAFE_ARC_RELEASE(_backgroundNode);
+        [self removeChild:_background cleanup:YES];
+        SAFE_ARC_RELEASE(_background);
     }
     
-    _backgroundNode = SAFE_ARC_RETAIN(backgroundNode);
+    _background = SAFE_ARC_RETAIN(background);
     
-    if (_backgroundNode)
-        [self addChild:_backgroundNode z:0];
+    if (_background)
+        [self addChild:_background z:0];
 }
 
 #pragma mark - CCControlPicker Public Methods
@@ -299,38 +299,35 @@
     
     if ([self isLooping])
     {
-        CCControlPickerRow *lab_sub         = [_dataSource controlPicker:self nodeForRow:(rowCount - 1)];
-        [lab_sub fitRowInSize:_cacheRowSize];
-        lab_sub.anchorPoint                 = ccp(0.5f, 0.5f);
-        [_rowsLayer addChild:lab_sub z:1];
-        
-        CCControlPickerRow *lab_sub2        = [_dataSource controlPicker:self nodeForRow:(rowCount - 2)];
-        [lab_sub2 fitRowInSize:_cacheRowSize];
-        lab_sub2.anchorPoint                = ccp(0.5f, 0.5f);
-        [_rowsLayer addChild:lab_sub2 z:1];
-        
-        CCControlPickerRow *lab_ove         = [_dataSource controlPicker:self nodeForRow:0];
-        [lab_ove fitRowInSize:_cacheRowSize];
-        lab_ove.anchorPoint                 = ccp(0.5f, 0.5f);
-        [_rowsLayer addChild:lab_ove z:1];
-        
-        CCControlPickerRow *lab_ove2        = [_dataSource controlPicker:self nodeForRow:1];
-        [lab_ove2 fitRowInSize:_cacheRowSize];
-        lab_ove2.anchorPoint                = ccp(0.5f, 0.5f);
-        [_rowsLayer addChild:lab_ove2 z:1];
+        CGSize pickerSize = [self contentSize];
+        int numberOfRowToLoop = 0;
         
         if (_swipeOrientation == CCControlPickerOrientationVertical)
+            numberOfRowToLoop = pickerSize.height / [self rowSize].height;
+        else
+            numberOfRowToLoop = pickerSize.width / [self rowSize].width;
+        
+        for (int i = 1; i <= numberOfRowToLoop; i++)
         {
-            lab_sub2.position   = ccpAdd(center, ccp (0, _cacheRowSize.height * 2));
-            lab_sub.position    = ccpAdd(center, ccp (0, _cacheRowSize.height));
-            lab_ove.position    = ccpAdd(center, ccp (0, -_cacheRowSize.height * rowCount));
-            lab_ove2.position   = ccpAdd(center, ccp (0, -_cacheRowSize.height * (rowCount + 1)));
-        } else
-        {
-            lab_sub2.position   = ccpAdd(center, ccp (-_cacheRowSize.width * 2, 0));
-            lab_sub.position    = ccpAdd(center, ccp (-_cacheRowSize.width, 0));
-            lab_ove.position    = ccpAdd(center, ccp (_cacheRowSize.height * rowCount, 0));
-            lab_ove2.position   = ccpAdd(center, ccp (_cacheRowSize.height * (rowCount + 1), 0));
+            CCControlPickerRow *row_sub = [_dataSource controlPicker:self nodeForRow:(rowCount - i)];
+            [row_sub fitRowInSize:_cacheRowSize];
+            row_sub.anchorPoint = ccp(0.5f, 0.5f);
+            [_rowsLayer addChild:row_sub z:1];
+            
+            CCControlPickerRow *row_over = [_dataSource controlPicker:self nodeForRow:(i - 1) % rowCount];
+            [row_over fitRowInSize:_cacheRowSize];
+            row_over.anchorPoint = ccp(0.5f, 0.5f);
+            [_rowsLayer addChild:row_over z:1];
+            
+            if (_swipeOrientation == CCControlPickerOrientationVertical)
+            {
+                row_sub.position = ccpAdd(center, ccp(0, _cacheRowSize.height * i));
+                row_over.position = ccpAdd(center, ccp(0, -_cacheRowSize.height * (rowCount + i - 1)));
+            } else
+            {
+                row_sub.position = ccpAdd(center, ccp(-_cacheRowSize.width * i, 0));
+                row_over.position = ccpAdd(center, ccp(_cacheRowSize.height * (rowCount + i - 1), 0));
+            }
         }
     }
     

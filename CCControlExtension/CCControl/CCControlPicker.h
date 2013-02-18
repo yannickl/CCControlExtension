@@ -41,7 +41,7 @@ typedef enum
 /**
  * Picker control for Cocos2D.
  *
- * The CCControlPicker class implements objects, called picker controls, that
+ * The CCControlPicker class implements objects, called control pickers, that
  * use a spinning-wheel or slot-machine metaphor to show one set of values.
  * Users select values by rotating the wheels so that the desired row of values
  * aligns with a selection indicator.
@@ -67,7 +67,7 @@ typedef enum
  *
  * This default value of this property is nil.
  */
-@property (nonatomic, strong) CCNode    *backgroundNode;
+@property (nonatomic, strong) CCNode    *background;
 
 #pragma mark Getting the Dimensions of the Control Picker
 /** @name Getting the Dimensions of the Control Picker */

@@ -7,7 +7,7 @@ The CCControl extensions also uses the power of blocks to dispatch the events in
 
 *Note: The CCControlExtension's classes are ARC compatibles (e.g for use with Kobold2D)*
 
-*Note2: the version for Cocos2D v1.1 is available in the __[master branch](https://github.com/YannickL/CCControlExtension/tree/master)__*
+*Note2: the version for __Cocos2D v1.1__ is available in the [master branch](https://github.com/YannickL/CCControlExtension/tree/master)*
 
 ![](http://github.com/YannickL/CCControlExtension/raw/master-v2/screenshots/cccontrolextension.png)
 

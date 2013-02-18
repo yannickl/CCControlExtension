@@ -100,12 +100,21 @@
     SAFE_ARC_SUPER_DEALLOC();
 }
 
+- (id)initWithForegroundSprite:(CCSprite *)foregroundSprite
+{
+    return [self initWithForegroundSprite:foregroundSprite selectionSprite:nil];
+}
+
++ (id)pickerWithForegroundSprite:(CCSprite *)foregroundSprite
+{
+    return SAFE_ARC_AUTORELEASE([[self alloc] initWithForegroundSprite:foregroundSprite]);
+}
+
 - (id)initWithForegroundSprite:(CCSprite *)foregroundSprite selectionSprite:(CCSprite *)selectionSprite
 {
     if ((self = [super init]))
     {
         NSAssert(foregroundSprite,   @"Foreground sprite must be not nil");
-        NSAssert(selectionSprite,    @"Selection sprite must be not nil");
         
         self.decelerating                   = NO;
         self.ignoreAnchorPointForPosition   = NO;
@@ -126,10 +135,18 @@
         self.rowsLayer                      = [CCLayer node];
         [self addChild:_rowsLayer z:1];
         
-        selectionSprite.position            = center;
-        [self addChild:selectionSprite z:2];
+        if (selectionSprite)
+        {
+            selectionSprite.position        = center;
+            [self addChild:selectionSprite z:2];
+        }
     }
     return self;
+}
+
++ (id)pickerWithForegroundSprite:(CCSprite *)foregroundSprite selectionSprite:(CCSprite *)selectionSprite
+{
+    return SAFE_ARC_AUTORELEASE([[self alloc] initWithForegroundSprite:foregroundSprite selectionSprite:selectionSprite]);
 }
 
 - (void)onEnter

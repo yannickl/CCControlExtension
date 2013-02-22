@@ -35,8 +35,10 @@
 	// IMPORTANT: [self init] and not [super init];
 	if( (self = [self init]) )
 	{
+        rect    = CC_RECT_POINTS_TO_PIXELS(rect);
+        
 		[self setTexture:texture];
-		[self setTextureRectInPixels:CC_RECT_POINTS_TO_PIXELS(rect) rotated:rotated untrimmedSize:rect.size];
+		[self setTextureRectInPixels:rect rotated:rotated untrimmedSize:rect.size];
 	}
 	return self;
 }

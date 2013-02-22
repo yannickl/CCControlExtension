@@ -221,6 +221,7 @@
 		F4A88AB616CD878300596724 /* pickerSelection-ipadhd.png in Resources */ = {isa = PBXBuildFile; fileRef = F4A88AAD16CD878300596724 /* pickerSelection-ipadhd.png */; };
 		F4A88AB716CD878300596724 /* pickerSelection.png in Resources */ = {isa = PBXBuildFile; fileRef = F4A88AAE16CD878300596724 /* pickerSelection.png */; };
 		F4C9D4AA165057780070EFC9 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F4C9D4A9165057780070EFC9 /* Default-568h@2x.png */; };
+		F4F5F1ED16D7E29A00133C04 /* buttonBackground-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = F4F5F1EC16D7E29A00133C04 /* buttonBackground-hd.png */; };
 		F4FBB0CE15E2A0A200004945 /* CCSprite+Rotation.m in Sources */ = {isa = PBXBuildFile; fileRef = F4FBB0CD15E2A0A200004945 /* CCSprite+Rotation.m */; };
 /* End PBXBuildFile section */
 
@@ -577,6 +578,7 @@
 		F4A88AAE16CD878300596724 /* pickerSelection.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pickerSelection.png; sourceTree = "<group>"; };
 		F4C9D4A5165050FA0070EFC9 /* ARCMacro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCMacro.h; sourceTree = "<group>"; };
 		F4C9D4A9165057780070EFC9 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "Resources/Default-568h@2x.png"; sourceTree = "<group>"; };
+		F4F5F1EC16D7E29A00133C04 /* buttonBackground-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "buttonBackground-hd.png"; sourceTree = "<group>"; };
 		F4FBB0CC15E2A0A200004945 /* CCSprite+Rotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CCSprite+Rotation.h"; sourceTree = "<group>"; };
 		F4FBB0CD15E2A0A200004945 /* CCSprite+Rotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CCSprite+Rotation.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1183,6 +1185,7 @@
 		C2D0FB351472E62100FE4DCE /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				F4F5F1EC16D7E29A00133C04 /* buttonBackground-hd.png */,
 				C290E59714D4AB4C003DE439 /* buttonBackground.png */,
 				C290E59314D4A863003DE439 /* buttonHighlighted-hd.png */,
 				C290E59414D4A863003DE439 /* buttonHighlighted.png */,
@@ -1468,6 +1471,7 @@
 				F4A88AB516CD878300596724 /* pickerSelection-ipad.png in Resources */,
 				F4A88AB616CD878300596724 /* pickerSelection-ipadhd.png in Resources */,
 				F4A88AB716CD878300596724 /* pickerSelection.png in Resources */,
+				F4F5F1ED16D7E29A00133C04 /* buttonBackground-hd.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

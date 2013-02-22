@@ -670,8 +670,11 @@
                                                                            dimensions:CGSizeMake(CCControlPickerDefaultRowWidth,
                                                                                                   CCControlPickerDefaultRowHeight)
                                                                             alignment:CCTextAlignmentCenter
-                                                                        lineBreakMode:CCLineBreakModeWordWrap
+#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
                                                                              fontName:@"HelveticaNeue-Bold"
+#elif __MAC_OS_X_VERSION_MAX_ALLOWED
+                                                                             fontName:@"Marker Felt"
+#endif
                                                                              fontSize:18]);
         _textLabel.color                = ccc3(86, 86, 86);
         _textLabel.anchorPoint          = ccp(0.5f, 0.5f);

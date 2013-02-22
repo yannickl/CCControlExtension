@@ -98,7 +98,7 @@
     CCSprite *pselection        = [CCSprite spriteWithFile:@"pickerSelection.png"];
     
     CCControlPicker *picker     = [[CCControlPicker alloc] initWithForegroundSprite:pbackground selectionSprite:pselection];
-    picker.backgroundNode       = [CCLayerColor layerWithColor:ccc4(255, 255, 255, 255)];
+    picker.background           = [CCLayerColor layerWithColor:ccc4(255, 255, 255, 255)];
     picker.anchorPoint          = ccp (0.5f, 0.5f);
     picker.dataSource           = self;
     picker.delegate             = self;

@@ -71,24 +71,11 @@
 	// attach the openglView to the director
 	[director setOpenGLView:glView];
 	
-//	// Enables High Res mode (Retina Display) on iPhone 4 and maintains low res on all other devices
+  	// Enables High Res mode (Retina Display) on iPhone 4 and maintains low res on all other devices
 	if( ![director enableRetinaDisplay:YES] )
 		CCLOG(@"Retina Display Not supported");
 	
-	//
-	// VERY IMPORTANT:
-	// If the rotation is going to be controlled by a UIViewController
-	// then the device orientation should be "Portrait".
-	//
-	// IMPORTANT:
-	// By default, this template only supports Landscape orientations.
-	// Edit the RootViewController.m file to edit the supported orientations.
-	//
-#if GAME_AUTOROTATION == kGameAutorotationUIViewController
-	[director setDeviceOrientation:kCCDeviceOrientationPortrait];
-#else
 	[director setDeviceOrientation:kCCDeviceOrientationLandscapeLeft];
-#endif
 	
 	[director setAnimationInterval:1.0/60];
 	[director setDisplayFPS:YES];

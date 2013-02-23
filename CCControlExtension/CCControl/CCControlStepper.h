@@ -73,9 +73,10 @@ typedef enum
 
 #pragma mark Contructors - Initializers
 /** @name Creating Steppers */
-
 /**
  * Initializes a stepper with the given minus and plus sprites.
+ * @param minusSprite  CCSprite, that is used for the minus component.
+ * @param plusSprite   CCSprite, that is used for the plus component.
  */
 - (id)initWithMinusSprite:(CCSprite *)minusSprite plusSprite:(CCSprite *)plusSprite;
 
@@ -85,6 +86,13 @@ typedef enum
  * @see initWithMinusSprite:plusSprite:
  */
 + (id)stepperWithMinusSprite:(CCSprite *)minusSprite plusSprite:(CCSprite *)plusSprite;
+
+/**
+ * Creates a stepper with the given minus and plus filenames.
+ *
+ * @see stepperWithMinusSprite:plusSprite:
+ */
++ (id)stepperWithMinusFile:(NSString *)minusFile plusFile:(NSString *)plusFile;
 
 #pragma mark - Properties
 #pragma mark Accessing the Stepper’s Value

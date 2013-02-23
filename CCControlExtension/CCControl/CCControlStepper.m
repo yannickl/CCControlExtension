@@ -138,6 +138,17 @@
     return SAFE_ARC_AUTORELEASE([[self alloc] initWithMinusSprite:minusSprite plusSprite:plusSprite]);
 }
 
++ (id)stepperWithMinusFile:(NSString *)minusFile plusFile:(NSString *)plusFile
+{
+    // Prepare minus for stepper
+    CCSprite *minusSprite   = [CCSprite spriteWithFile:plusFile];
+    
+    // Prepare plus for stepper
+    CCSprite *plusSprite    = [CCSprite spriteWithFile:minusFile];
+    
+    return [self stepperWithMinusSprite:minusSprite plusSprite:plusSprite];
+}
+
 #pragma mark Properties
 
 - (void)setWraps:(BOOL)wraps

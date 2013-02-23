@@ -24,7 +24,7 @@
 {
 @public
     CGSize              _originalSize;
-    CGSize              _preferedSize;
+    CGSize              _preferredSize;
     CGRect              _capInsets;
     
     float               _insetLeft;
@@ -34,8 +34,8 @@
     
     // CCRGBAProtocol
     GLubyte             _opacity, _displayedOpacity, _realOpacity;
-	ccColor3B           _color, _displayedColor, _realColor;
-	BOOL                _opacityModifyRGB, _cascadeOpacityEnabled, _cascadeColorEnabled;
+    ccColor3B           _color, _displayedColor, _realColor;
+    BOOL                _opacityModifyRGB, _cascadeOpacityEnabled, _cascadeColorEnabled;
     
 @protected
     CGRect              _spriteRect;
@@ -58,8 +58,8 @@
 /** @name Setting the Default Sizes */
 /** Original sprite's size. */
 @property (nonatomic, readonly) CGSize originalSize;
-/** Prefered sprite's size. By default the prefered size is the original size. */
-@property (nonatomic, assign) CGSize preferedSize;
+/** Preferred sprite's size. By default the preferred size is the original size. */
+@property (nonatomic, assign) CGSize preferredSize;
 
 /** @name 3x3 Grid Attributes */
 /** 

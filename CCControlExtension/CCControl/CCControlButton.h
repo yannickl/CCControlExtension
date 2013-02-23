@@ -53,7 +53,7 @@
     ccColor3B                               _currentTitleColor;
     CCNode<CCLabelProtocol, CCRGBAProtocol> *_titleLabel;
     CCScale9Sprite                          *_backgroundSprite;
-    CGSize                                  _preferedSize;
+    CGSize                                  _preferredSize;
     
 @protected
     BOOL                                    _pushed;
@@ -65,7 +65,7 @@
     CGPoint                                 _labelAnchorPoint;
 }
 /** Adjust the background image. YES by default. If the property is set to NO, the 
- background will use the prefered size of the background image. */
+ background will use the preferred size of the background image. */
 @property (nonatomic, getter = doesAdjustBackgroundImage) BOOL adjustBackgroundImage;
 /** The current title that is displayed on the button. */
 @property(nonatomic, readonly, strong) NSString *currentTitle;
@@ -75,8 +75,8 @@
 @property (nonatomic, strong) CCNode<CCLabelProtocol,CCRGBAProtocol> *titleLabel;
 /** The current background sprite. */
 @property (nonatomic, strong) CCScale9Sprite *backgroundSprite;
-/** The prefered size of the button, if label is larger it will be expanded. */
-@property (nonatomic, assign) CGSize preferedSize;
+/** The preferred size of the button, if label is larger it will be expanded. */
+@property (nonatomic, assign) CGSize preferredSize;
 /** Scale the button up when it is touched, default is YES. */
 @property (nonatomic, assign) BOOL zoomOnTouchDown;
 /** The anchorPoint of the label, default is (0.5,0.5) */

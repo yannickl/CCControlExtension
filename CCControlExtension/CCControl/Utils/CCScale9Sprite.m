@@ -35,7 +35,7 @@ enum positions
 @synthesize insetLeft               = _insetLeft;
 @synthesize insetBottom             = _insetBottom;
 @synthesize insetRight              = _insetRight;
-@synthesize preferedSize            = _preferedSize;
+@synthesize preferredSize           = _preferredSize;
 
 // CCRGBAProtocol (v2.1)
 @synthesize opacity                 = _opacity;
@@ -231,7 +231,7 @@ enum positions
     // Set the given rect's size as original size
     _spriteRect         = rect;
     _originalSize       = rect.size;
-    _preferedSize       = _originalSize;
+    _preferredSize      = _originalSize;
     _capInsetsInternal  = capInsets;
     
     // Get the image edges
@@ -510,10 +510,10 @@ enum positions
     _centre.position            = ccp(leftWidth, bottomHeight);
 }
 
-- (void)setPreferedSize:(CGSize)preferedSize
+- (void)setPreferredSize:(CGSize)preferredSize
 {
-    self.contentSize        = preferedSize;
-    _preferedSize           = preferedSize;
+    self.contentSize        = preferredSize;
+    _preferredSize          = preferredSize;
 }
 
 #pragma mark CCRGBAProtocol

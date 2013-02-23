@@ -60,7 +60,7 @@ enum
 @synthesize currentTitle                    = _currentTitle;
 @synthesize currentTitleColor               = _currentTitleColor;
 @synthesize zoomOnTouchDown                 = _zoomOnTouchDown;
-@synthesize preferedSize                    = _preferedSize;
+@synthesize preferredSize                   = _preferredSize;
 @synthesize marginLR                        = _marginLR;
 @synthesize marginTB                        = _marginTB;
 
@@ -99,7 +99,7 @@ enum
         
         // Adjust the background image by default
         self.adjustBackgroundImage          = YES;
-        self.preferedSize                   = CGSizeZero;
+        self.preferredSize                  = CGSizeZero;
         
         // Set the default anchor point
         self.ignoreAnchorPointForPosition   = NO;
@@ -197,9 +197,9 @@ enum
     [self needsLayout];
 }
 
-- (void)setPreferedSize:(CGSize)preferedSize
+- (void)setPreferredSize:(CGSize)preferredSize
 {
-    if (preferedSize.width == 0 && preferedSize.height == 0)
+    if (preferredSize.width == 0 && preferredSize.height == 0)
     {
         _adjustBackgroundImage  = YES;
     }
@@ -210,11 +210,11 @@ enum
         for (id key in _backgroundSpriteDispatchTable)
         {
             CCScale9Sprite* sprite = [_backgroundSpriteDispatchTable objectForKey:key];
-            [sprite setPreferedSize:preferedSize];
+            [sprite setPreferredSize:preferredSize];
         }
     }
     
-    _preferedSize   = preferedSize;
+    _preferredSize   = preferredSize;
     
     [self needsLayout];
 }
@@ -417,7 +417,7 @@ enum
 
 - (void)setBackgroundSprite:(CCScale9Sprite *)sprite forState:(CCControlState)state
 {
-    CGSize oldPreferedSize = _preferedSize;
+    CGSize oldPreferredSize = _preferredSize;
     
     NSNumber *stateNumber                       = [NSNumber numberWithLong:state];
     
@@ -432,15 +432,15 @@ enum
     [sprite setVisible:NO];
     [self addChild:sprite];
     
-    if (_preferedSize.width != 0 || _preferedSize.height != 0)
+    if (_preferredSize.width != 0 || _preferredSize.height != 0)
     {
-        if (CGSizeEqualToSize(oldPreferedSize, _preferedSize))
+        if (CGSizeEqualToSize(oldPreferredSize, _preferredSize))
         {
             // Force update of preferred size
-            [sprite setPreferedSize:CGSizeMake(oldPreferedSize.width+1, oldPreferedSize.height+1)];
+            [sprite setPreferredSize:CGSizeMake(oldPreferredSize.width+1, oldPreferredSize.height+1)];
         }
         
-        [sprite setPreferedSize:_preferedSize];
+        [sprite setPreferredSize:_preferredSize];
     }
     
     // If the current state if equal to the given state we update the layout
@@ -510,18 +510,18 @@ enum
          CGSizeMake(titleLabelSize.width + _marginLR * 2, titleLabelSize.height + _marginTB * 2)];
     } else
     {
-        CGSize preferedSize     = [_backgroundSprite preferedSize];
+        CGSize preferredSize     = [_backgroundSprite preferredSize];
 
-        if (preferedSize.width <= 0)
+        if (preferredSize.width <= 0)
         {
-            preferedSize.width = titleLabelSize.width;
+            preferredSize.width = titleLabelSize.width;
         }
-        if (preferedSize.height <= 0)
+        if (preferredSize.height <= 0)
         {
-            preferedSize.height = titleLabelSize.height;
+            preferredSize.height = titleLabelSize.height;
         }
         
-        [_backgroundSprite setContentSize:preferedSize];
+        [_backgroundSprite setContentSize:preferredSize];
     }
     
     // Set the content size

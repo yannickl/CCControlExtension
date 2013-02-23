@@ -7,7 +7,7 @@ The CCControl extensions also uses the power of blocks to dispatch the events in
 
 *Note: The CCControlExtension's classes are ARC compatibles (e.g for use with Kobold2D)*
 
-![](http://github.com/YannickL/CCControlExtension/raw/master-v2/screenshots/cccontrolextension.png)
+![](http://github.com/YannickL/CCControlExtension/raw/master/screenshots/cccontrolextension.png)
 
 Available Control List
 ====================

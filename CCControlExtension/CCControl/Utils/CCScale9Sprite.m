@@ -32,7 +32,7 @@ enum positions
 
 @implementation CCScale9Sprite
 @synthesize originalSize        = originalSize_;
-@synthesize preferedSize        = preferedSize_;
+@synthesize preferredSize       = preferredSize_;
 @synthesize capInsets           = capInsets_;
 @synthesize opacity             = opacity_;
 @synthesize color               = color_;
@@ -243,11 +243,11 @@ enum positions
 
 #pragma mark Properties
 
-- (void)setPreferedSize:(CGSize)preferedSize
+- (void)setPreferredSize:(CGSize)preferredSize
 {
-    [self setContentSize:preferedSize];
+    [self setContentSize:preferredSize];
     
-    preferedSize_ = preferedSize;
+    preferredSize_  = preferredSize;
 }
 
 - (void)setColor:(ccColor3B)color
@@ -393,7 +393,7 @@ enum positions
     // Set the given rect's size as original size
     spriteRect          = rect;
     originalSize_       = rect.size;
-    preferedSize_       = originalSize_;
+    preferredSize_      = originalSize_;
     capInsets_          = capInsets;
     spriteFrameRotated_ = rotated;
     capInsetsInternal_  = capInsets;

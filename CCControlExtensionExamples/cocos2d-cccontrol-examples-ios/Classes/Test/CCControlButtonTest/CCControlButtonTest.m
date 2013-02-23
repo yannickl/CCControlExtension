@@ -252,7 +252,7 @@
                 // Add the buttons
                 CCControlButton *button = [self standardButtonWithTitle:[NSString stringWithFormat:@"%d",arc4random() % 30]];
                 button.adjustBackgroundImage = NO;  // Tells the button that the background image must not be adjust
-                                                    // It'll use the prefered size of the background image
+                                                    // It'll use the preferred size of the background image
                 button.position = ccp (button.contentSize.width / 2 + (button.contentSize.width + space) * i,
                                        button.contentSize.height / 2 + (button.contentSize.height + space) * j);
                 [layer addChild:button];
@@ -284,9 +284,9 @@
 {
     /** Creates and return a button with a default background and title color. */
     CCScale9Sprite *backgroundButton = [CCScale9Sprite spriteWithFile:@"button.png"];
-    [backgroundButton setPreferedSize:CGSizeMake(45, 45)];  // Set the prefered size
+    [backgroundButton setPreferredSize:CGSizeMake(45, 45)];  // Set the preferred size
     CCScale9Sprite *backgroundHighlightedButton = [CCScale9Sprite spriteWithFile:@"buttonHighlighted.png"];
-    [backgroundHighlightedButton setPreferedSize:CGSizeMake(45, 45)];  // Set the prefered size
+    [backgroundHighlightedButton setPreferredSize:CGSizeMake(45, 45)];  // Set the preferred size
     
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
     CCLabelTTF *titleButton = [CCLabelTTF labelWithString:title fontName:@"HelveticaNeue-Bold" fontSize:30];

@@ -17,7 +17,7 @@
 {
 @public
     CGSize              originalSize_;
-    CGSize              preferedSize_;
+    CGSize              preferredSize_;
     CGRect              capInsets_;
     float               insetLeft_;
 	float               insetTop_;
@@ -48,8 +48,8 @@
 }
 /** Original sprite's size. */
 @property (nonatomic, readonly) CGSize originalSize;
-/** Prefered sprite's size. By default the prefered size is the original size. */
-@property (nonatomic, assign) CGSize preferedSize;
+/** Preferred sprite's size. By default the preferred size is the original size. */
+@property (nonatomic, assign) CGSize preferredSize;
 /** 
  * The end-cap insets. 
  * On a non-resizeable sprite, this property is set to CGRectZero; the sprite 

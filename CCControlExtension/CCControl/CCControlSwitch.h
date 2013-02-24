@@ -91,7 +91,7 @@
  *
  * @see switchWithMaskSprite:onSprite:offSprite:thumbSprite:onLabel:offLabel:
  */
-+ (id)switchWithMaskFile:(NSString *)maskFile onFile:(NSString *)onFile offFile:(NSString *)offFile thumbFile:(NSString *)thumbFile onTitle:(NSString *)onTitle offLabel:(NSString *)offTitle;
++ (id)switchWithMaskFile:(NSString *)maskFile onFile:(NSString *)onFile offFile:(NSString *)offFile thumbFile:(NSString *)thumbFile onTitle:(NSString *)onTitle offTitle:(NSString *)offTitle;
 
 #pragma mark - Properties
 #pragma mark Setting the Off/On State

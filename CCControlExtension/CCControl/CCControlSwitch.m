@@ -160,7 +160,7 @@
     return SAFE_ARC_AUTORELEASE([[self alloc] initWithMaskSprite:maskSprite onSprite:onSprite offSprite:offSprite thumbSprite:thumbSprite onLabel:onLabel offLabel:offLabel]);
 }
 
-+ (id)switchWithMaskFile:(NSString *)maskFile onFile:(NSString *)onFile offFile:(NSString *)offFile thumbFile:(NSString *)thumbFile onTitle:(NSString *)onTitle offLabel:(NSString *)offTitle
++ (id)switchWithMaskFile:(NSString *)maskFile onFile:(NSString *)onFile offFile:(NSString *)offFile thumbFile:(NSString *)thumbFile onTitle:(NSString *)onTitle offTitle:(NSString *)offTitle
 {
     // Prepare the mask for the switch
     CCSprite *maskSprite   = [CCSprite spriteWithFile:maskFile];

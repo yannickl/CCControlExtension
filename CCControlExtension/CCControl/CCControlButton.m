@@ -52,7 +52,7 @@ enum
 @synthesize pushed                          = pushed_;
 @synthesize titleLabel                      = titleLabel_;
 @synthesize backgroundSprite                = backgroundSprite_;
-@synthesize preferedSize                    = preferedSize_;
+@synthesize preferredSize                   = preferredSize_;
 @synthesize titleDispatchTable              = titleDispatchTable_;
 @synthesize titleColorDispatchTable         = titleColorDispatchTable_;
 @synthesize titleLabelDispatchTable         = titleLabelDispatchTable_;
@@ -194,9 +194,9 @@ enum
     [self needsLayout];
 }
 
-- (void) setPreferedSize:(CGSize)preferedSize
+- (void)setPreferredSize:(CGSize)preferredSize
 {
-    if (preferedSize.width == 0 && preferedSize.height == 0)
+    if (preferredSize.width == 0 && preferredSize.height == 0)
     {
         adjustBackgroundImage_      = YES;
     } else
@@ -206,10 +206,10 @@ enum
         for (id key in backgroundSpriteDispatchTable_)
         {
             CCScale9Sprite *sprite  = [backgroundSpriteDispatchTable_ objectForKey:key];
-            sprite.preferedSize     = preferedSize;
+            sprite.preferredSize    = preferredSize;
         }
         
-        preferedSize_               = preferedSize;
+        preferredSize_              = preferredSize;
     }
 
     [self needsLayout];
@@ -387,9 +387,9 @@ enum
     [sprite setVisible:NO];
     [self addChild:sprite];
     
-    if (preferedSize_.width != 0 || preferedSize_.height != 0)
+    if (preferredSize_.width != 0 || preferredSize_.height != 0)
     {
-            [sprite setPreferedSize:preferedSize_];
+            [sprite setPreferredSize:preferredSize_];
     }
     
     // If the current state if equal to the given state we update the layout
@@ -441,7 +441,7 @@ enum
          CGSizeMake(titleLabelSize.width + marginLR_ * 2, titleLabelSize.height + marginTB_ * 2)];
     } else
     {
-        CGSize preferedSize     = [backgroundSprite_ preferedSize];
+        CGSize preferedSize     = [backgroundSprite_ preferredSize];
         if (preferedSize.width <= 0)
         {
             preferedSize.width  = titleLabelSize.width;

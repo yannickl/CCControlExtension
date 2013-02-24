@@ -51,7 +51,7 @@
     ccColor3B                               currentTitleColor_;
     CCNode<CCLabelProtocol, CCRGBAProtocol> *titleLabel_;
     CCScale9Sprite                          *backgroundSprite_;
-    CGSize                                  preferedSize_;
+    CGSize                                  preferredSize_;
     
 @protected
     BOOL                                    pushed_;
@@ -63,7 +63,7 @@
 }
 #pragma mark Configuring Background Image Size
 /** Adjust the background image. YES by default. If the property is set to NO, the 
- background will use the prefered size of the background image. */
+ background will use the preferred size of the background image. */
 @property (nonatomic, getter = doesAdjustBackgroundImage) BOOL adjustBackgroundImage;
 /** Scale the button up when it is touched, default is YES. */
 @property (nonatomic, assign) BOOL zoomOnTouchDown;
@@ -77,8 +77,8 @@
 @property (nonatomic, strong) CCNode<CCLabelProtocol,CCRGBAProtocol> *titleLabel;
 /** The current background sprite. */
 @property (nonatomic, strong) CCScale9Sprite *backgroundSprite;
-/** The prefered size of the button, if label is larger it will be expanded. */
-@property (nonatomic, assign) CGSize preferedSize;
+/** The preferred size of the button, if label is larger it will be expanded. */
+@property (nonatomic, assign) CGSize preferredSize;
 /** The margins. By default the values of marginLR and marginTB are,
  respectively, equals to CCControlButtonMarginLR and CCControlButtonMarginTB. */
 @property (nonatomic, assign) float marginLR, marginTB;

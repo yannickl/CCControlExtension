@@ -46,7 +46,13 @@
 #pragma mark Contructors - Initializers
 /** @name Creating Switches */
 
-/** Initializes a switch with a mask sprite, on/off sprites for on/off states and a thumb sprite. */
+/** 
+ * Initializes a switch with a mask sprite, on/off sprites for on/off states and a thumb sprite.
+ * @param maskSprite  The sprite used as mask to hide on/off sprites.
+ * @param onSprite    The sprite displayed when the switch is in the on position.
+ * @param offSprite   The sprite displayed when the switch is in the off position.
+ * @param thumbSprite The sprite used for the thumb.
+ */
 - (id)initWithMaskSprite:(CCSprite *)maskSprite onSprite:(CCSprite *)onSprite offSprite:(CCSprite *)offSprite thumbSprite:(CCSprite *)thumbSprite;
 
 /**
@@ -56,7 +62,22 @@
  */
 + (id)switchWithMaskSprite:(CCSprite *)maskSprite onSprite:(CCSprite *)onSprite offSprite:(CCSprite *)offSprite thumbSprite:(CCSprite *)thumbSprite;
 
-/** Initializes a switch with a mask sprite, on/off sprites for on/off states, a thumb sprite and an on/off labels. */
+/**
+ * Creates a switch with a mask, the on/off and a thumb filenames.
+ *
+ * @see switchWithMaskSprite:onSprite:offSprite:thumbSprite:
+ */
++ (id)switchWithMaskFile:(NSString *)maskFile onFile:(NSString *)onFile offFile:(NSString *)offFile thumbFile:(NSString *)thumbFile;
+
+/** 
+ * Initializes a switch with a mask sprite, on/off sprites for on/off states, a thumb sprite and an on/off labels.
+ * @param maskSprite The sprite used as mask to hide on/off sprites.
+ * @param onSprite The sprite displayed when the switch is in the on position.
+ * @param offSprite The sprite displayed when the switch is in the off position.
+ * @param thumbSprite The sprite used for the thumb.
+ * @param onLabel The label displayed over the onSprite when the switch is in the on position.
+ * @param offLabel The label displayed over the offSprite when the switch is in the off position.
+ */
 - (id)initWithMaskSprite:(CCSprite *)maskSprite onSprite:(CCSprite *)onSprite offSprite:(CCSprite *)offSprite thumbSprite:(CCSprite *)thumbSprite onLabel:(CCNode<CCLabelProtocol, CCRGBAProtocol> *)onLabel offLabel:(CCNode<CCLabelProtocol, CCRGBAProtocol> *)offLabel;
 
 /**
@@ -65,6 +86,13 @@
  * @see initWithMaskSprite:onSprite:offSprite:thumbSprite:onLabel:offLabel:
  */
 + (id)switchWithMaskSprite:(CCSprite *)maskSprite onSprite:(CCSprite *)onSprite offSprite:(CCSprite *)offSprite thumbSprite:(CCSprite *)thumbSprite onLabel:(CCNode<CCLabelProtocol, CCRGBAProtocol> *)onLabel offLabel:(CCNode<CCLabelProtocol, CCRGBAProtocol> *)offLabel;
+
+/**
+ * Creates a switch with a mask, the on/off and a thumb filenames and the on/off titles.
+ *
+ * @see switchWithMaskSprite:onSprite:offSprite:thumbSprite:onLabel:offLabel:
+ */
++ (id)switchWithMaskFile:(NSString *)maskFile onFile:(NSString *)onFile offFile:(NSString *)offFile thumbFile:(NSString *)thumbFile onTitle:(NSString *)onTitle offTitle:(NSString *)offTitle;
 
 #pragma mark - Public Methods
 

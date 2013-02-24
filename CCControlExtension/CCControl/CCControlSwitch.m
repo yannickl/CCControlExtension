@@ -101,6 +101,23 @@
     return SAFE_ARC_AUTORELEASE([[self alloc] initWithMaskSprite:maskSprite onSprite:onSprite offSprite:offSprite thumbSprite:thumbSprite]);
 }
 
++ (id)switchWithMaskFile:(NSString *)maskFile onFile:(NSString *)onFile offFile:(NSString *)offFile thumbFile:(NSString *)thumbFile
+{
+    // Prepare the mask for the switch
+    CCSprite *maskSprite = [CCSprite spriteWithFile:maskFile];
+    
+    // Prepare the on sprite for the switch
+    CCSprite *onSprite = [CCSprite spriteWithFile:onFile];
+    
+    // Prepare the off sprite for the switch
+    CCSprite *offSprite = [CCSprite spriteWithFile:offFile];
+    
+    // Prepare the thumb sprite for the switch
+    CCSprite *thumbSprite = [CCSprite spriteWithFile:thumbFile];
+    
+    return [self switchWithMaskSprite:maskSprite onSprite:onSprite offSprite:offSprite thumbSprite:thumbSprite];
+}
+
 - (id)initWithMaskSprite:(CCSprite *)maskSprite onSprite:(CCSprite *)onSprite offSprite:(CCSprite *)offSprite thumbSprite:(CCSprite *)thumbSprite onLabel:(CCNode<CCLabelProtocol, CCRGBAProtocol> *)onLabel offLabel:(CCNode<CCLabelProtocol, CCRGBAProtocol> *)offLabel
 {
     if ((self = [super init]))
@@ -131,6 +148,29 @@
 + (id)switchWithMaskSprite:(CCSprite *)maskSprite onSprite:(CCSprite *)onSprite offSprite:(CCSprite *)offSprite thumbSprite:(CCSprite *)thumbSprite onLabel:(CCNode<CCLabelProtocol, CCRGBAProtocol> *)onLabel offLabel:(CCNode<CCLabelProtocol, CCRGBAProtocol> *)offLabel
 {
     return SAFE_ARC_AUTORELEASE([[self alloc] initWithMaskSprite:maskSprite onSprite:onSprite offSprite:offSprite thumbSprite:thumbSprite onLabel:onLabel offLabel:offLabel]);
+}
+
++ (id)switchWithMaskFile:(NSString *)maskFile onFile:(NSString *)onFile offFile:(NSString *)offFile thumbFile:(NSString *)thumbFile onTitle:(NSString *)onTitle offTitle:(NSString *)offTitle
+{
+    // Prepare the mask for the switch
+    CCSprite *maskSprite = [CCSprite spriteWithFile:maskFile];
+    
+    // Prepare the on sprite for the switch
+    CCSprite *onSprite = [CCSprite spriteWithFile:onFile];
+    
+    // Prepare the off sprite for the switch
+    CCSprite *offSprite = [CCSprite spriteWithFile:offFile];
+    
+    // Prepare the thumb sprite for the switch
+    CCSprite *thumbSprite = [CCSprite spriteWithFile:thumbFile];
+    
+    // Prepare the on title for the switch
+    CCLabelTTF *onLabel = [CCLabelTTF labelWithString:onTitle fontName:@"Arial-BoldMT" fontSize:16];
+    
+    // Prepare the off title for the switch
+    CCLabelTTF *offLabel = [CCLabelTTF labelWithString:offTitle fontName:@"Arial-BoldMT" fontSize:16];
+    
+    return [self switchWithMaskSprite:maskSprite onSprite:onSprite offSprite:offSprite thumbSprite:thumbSprite onLabel:onLabel offLabel:offLabel];
 }
 
 #pragma mark Properties

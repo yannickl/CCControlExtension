@@ -110,6 +110,14 @@
     return SAFE_ARC_AUTORELEASE([[self alloc] initWithForegroundSprite:foregroundSprite]);
 }
 
++ (id)pickerWithForegroundFile:(NSString *)foregroundFile
+{
+    // Prepare the foreground for the picker
+    CCSprite *foregroundSprite  = [CCSprite spriteWithFile:foregroundFile];
+    
+    return [self pickerWithForegroundSprite:foregroundSprite];
+}
+
 - (id)initWithForegroundSprite:(CCSprite *)foregroundSprite selectionSprite:(CCSprite *)selectionSprite
 {
     if ((self = [super init]))
@@ -147,6 +155,17 @@
 + (id)pickerWithForegroundSprite:(CCSprite *)foregroundSprite selectionSprite:(CCSprite *)selectionSprite
 {
     return SAFE_ARC_AUTORELEASE([[self alloc] initWithForegroundSprite:foregroundSprite selectionSprite:selectionSprite]);
+}
+
++ (id)pickerWithForegroundFile:(NSString *)foregroundFile selectionFile:(NSString *)selectionFile
+{
+    // Prepare the foreground for the picker
+    CCSprite *foregroundSprite  = [CCSprite spriteWithFile:foregroundFile];
+    
+    // Prepare the selection for the picker
+    CCSprite *selectionSprite   = [CCSprite spriteWithFile:selectionFile];
+    
+    return [self pickerWithForegroundSprite:foregroundSprite selectionSprite:selectionSprite];
 }
 
 - (void)onEnter

@@ -69,6 +69,13 @@ typedef enum
 + (id)pickerWithForegroundSprite:(CCSprite *)foregroundSprite;
 
 /**
+ * @abstract Creates a picker by only defining the foreground filename (with no
+ * selection indicator).
+ * @see pickerWithForegroundSprite:
+ */
++ (id)pickerWithForegroundFile:(NSString *)foregroundFile;
+
+/**
  * @abstract Initializes a picker by defining the foreground and the selection sprites.
  * @param foregroundSprite foreground sprite which defines the area of the picker.
  * @param selectionSprite  selection indicator sprite.
@@ -80,6 +87,12 @@ typedef enum
  * @see initWithForegroundSprite:selectionSprite:
  */
 + (id)pickerWithForegroundSprite:(CCSprite *)foregroundSprite selectionSprite:(CCSprite *)selectionSprite;
+
+/**
+ * @abstract Creates a picker by defining the foreground and the selection filenames.
+ * @see pickerWithForegroundSprite:selectionSprite:
+ */
++ (id)pickerWithForegroundFile:(NSString *)foregroundFile selectionFile:(NSString *)selectionFile;
 
 #pragma mark - Properties
 #pragma mark Changing the Picker’s Appearance

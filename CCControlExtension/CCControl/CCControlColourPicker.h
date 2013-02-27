@@ -4,7 +4,7 @@
  * Copyright 2012 Stewart Hamilton-Arrandale.
  * http://creativewax.co.uk
  *
- * Modified by Yannick Loriot.
+ * Modified in 2012/2013 by Yannick Loriot.
  * http://yannickloriot.com
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -31,6 +31,15 @@
 #import "CCControl.h"
 #import "CCColourUtils.h"
 
+/** Defines the possible arrow directions. */
+typedef enum
+{
+    CCControlColourPickerArrowDirectionTop,
+    CCControlColourPickerArrowDirectionBottom,
+    CCControlColourPickerArrowDirectionRight,
+    CCControlColourPickerArrowDirectionLeft
+} CCControlColourPickerArrowDirection;
+
 @class CCControlSaturationBrightnessPicker;
 @class CCControlHuePicker;
 
@@ -42,10 +51,13 @@
  */
 @interface CCControlColourPicker : CCControl
 {
+@public
+    CCSprite                            *arrow_;
+    CCControlColourPickerArrowDirection arrowDirection_;
+    
 @protected
     HSV                                 hsv_;
     
-    CCSprite                            *background_;
     CCControlSaturationBrightnessPicker *colourPicker_;
     CCControlHuePicker                  *huePicker_;
 }
@@ -53,8 +65,55 @@
 #pragma mark - Constuctors - Initializers
 /** @name Create ColourPickers */
 
-/** Creates a color picker control object. */
-+ (id)colorPicker;
+/**
+ * Initializes a colour picker by given its differents component names (without arrow).
+ * @param hueBackgroundFile the hue color wheel filename
+ * @param tintBackgroundFile the background filename for the tint/shade representation.
+ * @param tintOverlayFile the overlay filename for the tint/shade representation.
+ * @param pickerFile filename for the hue and the tint pickers.
+ * @see initWithHueFile:tintBackgroundFile:tintOverlayFile:pickerFile:arrowFile:
+ */
+- (id)initWithHueFile:(NSString *)hueBackgroundFile tintBackgroundFile:(NSString *)tintBackgroundFile tintOverlayFile:(NSString *)tintOverlayFile pickerFile:(NSString *)pickerFile;
+
+/**
+ * Creates a colour picker by given its differents component names.
+ * @see initWithHueFile:tintBackgroundFile:tintOverlayFile:pickerFile:
+ */
++ (id)colourPickerWithHueFile:(NSString *)hueBackgroundFile tintBackgroundFile:(NSString *)tintBackgroundFile tintOverlayFile:(NSString *)tintOverlayFile pickerFile:(NSString *)pickerFile;
+
+/**
+ * Initializes a colour picker by given its differents component names.
+ * @param hueBackgroundFile the hue color wheel filename
+ * @param tintBackgroundFile the background filename for the tint/shade representation.
+ * @param tintOverlayFile the overlay filename for the tint/shade representation.
+ * @param pickerFile filename for the hue and the tint pickers.
+ * @param arrowFile file for the arrow which represents the attachement direction.
+ */
+- (id)initWithHueFile:(NSString *)hueBackgroundFile tintBackgroundFile:(NSString *)tintBackgroundFile tintOverlayFile:(NSString *)tintOverlayFile pickerFile:(NSString *)pickerFile arrowFile:(NSString *)arrowFile;
+
+/**
+ * Creates a colour picker by given its differents component names.
+ * @see initWithHueFile:tintBackgroundFile:tintOverlayFile:pickerFile:arrowFile:
+ */
++ (id)colourPickerWithHueFile:(NSString *)hueBackgroundFile tintBackgroundFile:(NSString *)tintBackgroundFile tintOverlayFile:(NSString *)tintOverlayFile pickerFile:(NSString *)pickerFile arrowFile:(NSString *)arrowFile;
+
+#pragma mark - Properties
+
+#pragma mark Managing the Arrow of the Colour Picker
+/** @name Managing the Arrow of the Colour Picker */
+
+/**
+ * @abstract Contains the sprite to represent the attachment as arrow shape.
+ * @discussion By default there is no arrow.
+ * @see initWithHueFile:tintBackgroundFile:tintOverlayFile:pickerFile:arrowFile:
+ */
+@property (nonatomic, strong) CCSprite  *arrow;
+
+/**
+ * @abstract The arrow direction/orientation.
+ * @discussion By default the arrow direction is set to CCControlColourPickerArrowDirectionRight.
+ */
+@property (nonatomic, assign) CCControlColourPickerArrowDirection arrowDirection;
 
 #pragma mark - Public Methods
 

@@ -48,34 +48,12 @@
 	if ((self = [super init]))
     {
         CGSize screenSize = [[CCDirector sharedDirector] winSize];
-
+        
         CCNode *layer                       = [CCNode node];
         layer.position                      = ccp (screenSize.width / 2, screenSize.height / 2);
         [self addChild:layer z:1];
         
         double layer_width = 0;
-        
-        // Create the colour picker
-        CCControlColourPicker *colourPicker = [CCControlColourPicker colorPicker];
-        colourPicker.color                  = ccc3(37, 46, 252);
-        colourPicker.position               = ccp (colourPicker.contentSize.width / 2, 0);
-        
-        // Add it to the layer
-        [layer addChild:colourPicker];
-        
-#if NS_BLOCKS_AVAILABLE
-        // Add block for value changed event
-        [colourPicker setBlock:^(id sender, CCControlEvent event)
-         {
-             [self colourValueChanged:sender];
-         } 
-              forControlEvents:CCControlEventValueChanged];
-#else
-        // Add the target-action pair
-        [colourPicker addTarget:self action:@selector(colourValueChanged:) forControlEvents:CCControlEventValueChanged];
-#endif
-        
-        layer_width += colourPicker.contentSize.width;
         
         // Add the black background for the text
         CCScale9Sprite *background = [CCScale9Sprite spriteWithFile:@"buttonBackground.png"];
@@ -92,6 +70,33 @@
 #endif
         colorLabel.position = background.position;
         [layer addChild:colorLabel];
+        
+        // Create the colour picker
+        CCControlColourPicker *colourPicker = [CCControlColourPicker colourPickerWithHueFile:@"hueBackground.png"
+                                                                          tintBackgroundFile:@"tintBackground.png"
+                                                                             tintOverlayFile:@"tintOverlay.png"
+                                                                                  pickerFile:@"picker.png"
+                                                                                   arrowFile:@"arrow.png"];
+        colourPicker.color                  = ccc3(37, 46, 252);
+        colourPicker.position               = ccp (layer_width + colourPicker.contentSize.width / 2, 0);
+        colourPicker.arrowDirection         = CCControlColourPickerArrowDirectionLeft;
+        
+        // Add it to the layer
+        [layer addChild:colourPicker];
+        
+#if NS_BLOCKS_AVAILABLE
+        // Add block for value changed event
+        [colourPicker setBlock:^(id sender, CCControlEvent event)
+         {
+             [self colourValueChanged:sender];
+         }
+              forControlEvents:CCControlEventValueChanged];
+#else
+        // Add the target-action pair
+        [colourPicker addTarget:self action:@selector(colourValueChanged:) forControlEvents:CCControlEventValueChanged];
+#endif
+        
+        layer_width += colourPicker.contentSize.width;
         
         // Set the layer size
         layer.contentSize                   = CGSizeMake(layer_width, 0);

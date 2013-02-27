@@ -45,7 +45,35 @@
     CCSprite *thumbSprite_;
     CCSprite *progressSprite_;
     CCSprite *backgroundSprite_;
-}  
+}
+#pragma mark Contructors - Initializers
+/** @name Creating Sliders */
+
+/**
+ * Creates slider with a background filename, a progress filename and a
+ * thumb image filename.
+ */
++ (id)sliderWithBackgroundFile:(NSString *)backgroundFile progressFile:(NSString *)progressFile thumbFile:(NSString *)thumbFile;
+
+/**
+ * Creates a slider with a given background sprite and a progress bar and a
+ * thumb item.
+ *
+ * @see initWithBackgroundSprite:progressSprite:thumbMenuItem:
+ */
++ (id)sliderWithBackgroundSprite:(CCSprite *)backgroundSprite progressSprite:(CCSprite *)pogressSprite thumbSprite:(CCSprite *)thumbSprite;
+
+/**
+ * Initializes a slider with a background sprite, a progress bar and a thumb
+ * item.
+ *
+ * @param backgroundSprite CCSprite, that is used as a background.
+ * @param progressSprite CCSprite, that is used as a progress bar.
+ * @param thumbSprite CCSprite, that is used as a thumb.
+ */
+- (id)initWithBackgroundSprite:(CCSprite *)backgroundSprite progressSprite:(CCSprite *)progressSprite thumbSprite:(CCSprite *)thumbSprite;
+
+#pragma mark - Properties
 #pragma mark Accessing the Slider’s Value
 /** @name Accessing the Slider’s Value */
 /**
@@ -97,33 +125,6 @@
  * The default value of this property is 1.0.
  */
 @property (nonatomic, assign) float maximumValue;
-
-#pragma mark Contructors - Initializers
-/** @name Creating Sliders */
-
-/** 
- * Creates slider with a background filename, a progress filename and a 
- * thumb image filename.
- */
-+ (id)sliderWithBackgroundFile:(NSString *)backgroundFile progressFile:(NSString *)progressFile thumbFile:(NSString *)thumbFile;
-
-/** 
- * Creates a slider with a given background sprite and a progress bar and a
- * thumb item.
- *
- * @see initWithBackgroundSprite:progressSprite:thumbMenuItem:
- */
-+ (id)sliderWithBackgroundSprite:(CCSprite *)backgroundSprite progressSprite:(CCSprite *)pogressSprite thumbSprite:(CCSprite *)thumbSprite;
-
-/** 
- * Initializes a slider with a background sprite, a progress bar and a thumb
- * item.
- *
- * @param backgroundSprite CCSprite, that is used as a background.
- * @param progressSprite CCSprite, that is used as a progress bar.
- * @param thumbSprite CCSprite, that is used as a thumb.
- */
-- (id)initWithBackgroundSprite:(CCSprite *)backgroundSprite progressSprite:(CCSprite *)progressSprite thumbSprite:(CCSprite *)thumbSprite;
 
 #pragma mark - Public Methods
 

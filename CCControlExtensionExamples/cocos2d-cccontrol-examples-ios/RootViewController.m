@@ -2,8 +2,8 @@
 //  RootViewController.m
 //  cocos2d-cccontrol-examples-ios
 //
-//  Created by Yannick LORIOT on 16/08/11.
-//  Copyright __MyCompanyName__ 2011. All rights reserved.
+//  Created by YannickL on 22/02/13.
+//  Copyright __MyCompanyName__ 2013. All rights reserved.
 //
 
 //
@@ -19,7 +19,7 @@
 @implementation RootViewController
 
 /*
- // The designated initializer. Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
+ // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
  - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
  if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
  // Custom initialization
@@ -45,50 +45,56 @@
 // Override to allow orientations other than the default portrait orientation
 //valid for iOS 4 and 5, IMPORTANT, for iOS6 also modify supportedInterfaceOrientations
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    //
-    // There are 2 ways to support auto-rotation:
-    // - The OpenGL / cocos2d way
-    // - Faster, but doesn't rotate the UIKit objects
-    // - The ViewController way
-    // - A bit slower, but the UiKit objects are placed in the right place
-    //
+	
+	//
+	// There are 2 ways to support auto-rotation:
+	//  - The OpenGL / cocos2d way
+	//     - Faster, but doesn't rotate the UIKit objects
+	//  - The ViewController way
+	//    - A bit slower, but the UiKit objects are placed in the right place
+	//
+	
 #if GAME_AUTOROTATION==kGameAutorotationNone
-    //
-    // EAGLView won't be autorotated.
-    // Since this method should return YES in at least 1 orientation,
-    // we return YES only in the Portrait orientation
-    //
-    return ( interfaceOrientation == UIInterfaceOrientationPortrait );
+	//
+	// EAGLView won't be autorotated.
+	// Since this method should return YES in at least 1 orientation,
+	// we return YES only in the Portrait orientation
+	//
+	return ( interfaceOrientation == UIInterfaceOrientationPortrait );
+	
 #elif GAME_AUTOROTATION==kGameAutorotationCCDirector
-    //
-    // EAGLView will be rotated by cocos2d
-    //
-    // Sample: Autorotate only in landscape mode
-    //
-    if( interfaceOrientation == UIInterfaceOrientationLandscapeLeft ) {
-        [[CCDirector sharedDirector] setDeviceOrientation: kCCDeviceOrientationLandscapeRight];
-    } else if( interfaceOrientation == UIInterfaceOrientationLandscapeRight) {
-        [[CCDirector sharedDirector] setDeviceOrientation: kCCDeviceOrientationLandscapeLeft];
-    }
-    
-    // Since this method should return YES in at least 1 orientation,
-    // we return YES only in the Portrait orientation
-    return ( interfaceOrientation == UIInterfaceOrientationPortrait );
+	//
+	// EAGLView will be rotated by cocos2d
+	//
+	// Sample: Autorotate only in landscape mode
+	//
+	if( interfaceOrientation == UIInterfaceOrientationLandscapeLeft ) {
+		[[CCDirector sharedDirector] setDeviceOrientation: kCCDeviceOrientationLandscapeRight];
+	} else if( interfaceOrientation == UIInterfaceOrientationLandscapeRight) {
+		[[CCDirector sharedDirector] setDeviceOrientation: kCCDeviceOrientationLandscapeLeft];
+	}
+	
+	// Since this method should return YES in at least 1 orientation,
+	// we return YES only in the Portrait orientation
+	return ( interfaceOrientation == UIInterfaceOrientationPortrait );
+	
 #elif GAME_AUTOROTATION == kGameAutorotationUIViewController
-    //
-    // EAGLView will be rotated by the UIViewController
-    //
-    // Sample: Autorotate only in portrait mode
-    //
-    // return YES for the supported orientations
-    
-    return ( UIInterfaceOrientationIsPortrait( interfaceOrientation ) );
+	//
+	// EAGLView will be rotated by the UIViewController
+	//
+	// Sample: Autorotate only in portrait mode
+	//
+	// return YES for the supported orientations
+	
+	return ( UIInterfaceOrientationIsLandscape( interfaceOrientation ) );
+	
 #else
 #error Unknown value in GAME_AUTOROTATION
+	
 #endif // GAME_AUTOROTATION
-    
-    // Shold not happen
-    return NO;
+	
+	// Shold not happen
+	return NO;
 }
 
 // these methods are needed for iOS 6
@@ -97,8 +103,17 @@
 
 -(NSUInteger)supportedInterfaceOrientations{
     //Modify for supported orientations, put your masks here, trying to mimic behavior of shouldAutorotate..
+#if GAME_AUTOROTATION==kGameAutorotationNone
+    return UIInterfaceOrientationMaskPortrait;
+#elif GAME_AUTOROTATION==kGameAutorotationCCDirector
+    NSAssert(NO, @"RootviewController: kGameAutorotation isn't supported on iOS6");
     return UIInterfaceOrientationMaskLandscape;
-    //for both landscape orientations return UIInterfaceOrientationLandscape
+#elif GAME_AUTOROTATION == kGameAutorotationUIViewController
+    return UIInterfaceOrientationMaskLandscape;
+#else
+#error Unknown value in GAME_AUTOROTATION
+	
+#endif // GAME_AUTOROTATION
 }
 
 #if GAME_AUTOROTATION==kGameAutorotationUIViewController

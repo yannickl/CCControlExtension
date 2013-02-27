@@ -284,9 +284,9 @@
 {
     /** Creates and return a button with a default background and title color. */
     CCScale9Sprite *backgroundButton = [CCScale9Sprite spriteWithFile:@"button.png"];
-    [backgroundButton setPreferedSize:CGSizeMake(45, 45)];  // Set the prefered size
+    [backgroundButton setPreferredSize:CGSizeMake(45, 45)];  // Set the prefered size
     CCScale9Sprite *backgroundHighlightedButton = [CCScale9Sprite spriteWithFile:@"buttonHighlighted.png"];
-    [backgroundHighlightedButton setPreferedSize:CGSizeMake(45, 45)];  // Set the prefered size
+    [backgroundHighlightedButton setPreferredSize:CGSizeMake(45, 45)];  // Set the prefered size
     
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
     CCLabelTTF *titleButton = [CCLabelTTF labelWithString:title fontName:@"HelveticaNeue-Bold" fontSize:30];

@@ -82,6 +82,10 @@
 {
     if ((self = [super init]))
     {
+        NSAssert(trackSprite,   @"Track sprite must be not nil");
+        NSAssert(progressTimer, @"Progress sprite must be not nil");
+        NSAssert(thumbSprite,   @"Thumb sprite must be not nil");
+        
         self.progressTimer      = progressTimer;
         self.thumbSprite        = thumbSprite;
         thumbSprite.position    = progressTimer_.position;

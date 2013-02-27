@@ -55,10 +55,31 @@
         
         double layer_width = 0;
         
+        // Add the black background for the text
+        CCScale9Sprite *background = [CCScale9Sprite spriteWithFile:@"buttonBackground.png"];
+        [background setContentSize:CGSizeMake(150, 50)];
+        [background setPosition:ccp(layer_width + background.contentSize.width / 2.0f, 0)];
+        [layer addChild:background];
+        
+        layer_width += background.contentSize.width;
+        
+#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
+        colorLabel = [CCLabelTTF labelWithString:@"#color" fontName:@"HelveticaNeue-Bold" fontSize:30];
+#elif __MAC_OS_X_VERSION_MAX_ALLOWED
+        colorLabel = [CCLabelTTF labelWithString:@"#color" fontName:@"Marker Felt" fontSize:30];
+#endif
+        colorLabel.position = background.position;
+        [layer addChild:colorLabel];
+        
         // Create the colour picker
-        CCControlColourPicker *colourPicker = [CCControlColourPicker colorPicker];
+        CCControlColourPicker *colourPicker = [CCControlColourPicker colourPickerWithHueFile:@"hueBackground.png"
+                                                                          tintBackgroundFile:@"tintBackground.png"
+                                                                             tintOverlayFile:@"tintOverlay.png"
+                                                                                  pickerFile:@"picker.png"
+                                                                                   arrowFile:@"arrow.png"];
         colourPicker.color                  = ccc3(37, 46, 252);
-        colourPicker.position               = ccp (colourPicker.contentSize.width / 2, 0);
+        colourPicker.position               = ccp (layer_width + colourPicker.contentSize.width / 2, 0);
+        colourPicker.arrowDirection         = CCControlColourPickerArrowDirectionLeft;
         
         // Add it to the layer
         [layer addChild:colourPicker];
@@ -76,22 +97,6 @@
 #endif
         
         layer_width += colourPicker.contentSize.width;
-        
-        // Add the black background for the text
-        CCScale9Sprite *background = [CCScale9Sprite spriteWithFile:@"buttonBackground.png"];
-        [background setContentSize:CGSizeMake(150, 50)];
-        [background setPosition:ccp(layer_width + background.contentSize.width / 2.0f, 0)];
-        [layer addChild:background];
-        
-        layer_width += background.contentSize.width;
-        
-#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
-        colorLabel = [CCLabelTTF labelWithString:@"#color" fontName:@"HelveticaNeue-Bold" fontSize:30];
-#elif __MAC_OS_X_VERSION_MAX_ALLOWED
-        colorLabel = [CCLabelTTF labelWithString:@"#color" fontName:@"Marker Felt" fontSize:30];
-#endif
-        colorLabel.position = background.position;
-        [layer addChild:colorLabel];
         
         // Set the layer size
         layer.contentSize                   = CGSizeMake(layer_width, 0);

@@ -221,6 +221,9 @@
 
 - (void)updateArrow
 {
+    if (!_arrow)
+        return;
+    
     CGSize arrowSize    = [_arrow contentSize];
     CGSize hueSize      = [_huePicker contentSize];
     

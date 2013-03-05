@@ -16,7 +16,7 @@ A button intercepts touch events and sends an action message to a target object 
 
 ![CCControlSlider](http://github.com/YannickL/CCControlExtension/raw/master/screenshots/slider.png)
 
-CCControlSlider is an already made slider (but customizable) control for Cocos2D for iPhone. It is a visual control used to select a single value from a continuous range of values in a linear way. (More information on [my blog](http://yannickloriot.com/2011/08/use-cccontrol-to-create-a-slider-with-cocos2d-for-iphone/))
+CCControlSlider is an already made slider (but customizable) control for Cocos2D for iPhone. It is a visual control used to select a single value from a continuous range of values in a linear way. (More information on [my blog](http://yannickloriot.com/2013/03/cccontrolextension-the-sliders/))
 
  * [CCControlColourPicker](http://yannickloriot.com/library/ios/cccontrolextension/Classes/CCControlColourPicker.html):
 

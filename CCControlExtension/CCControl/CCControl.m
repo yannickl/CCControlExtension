@@ -149,8 +149,13 @@
         self.isTouchEnabled         = YES;
     #endif
 #elif __MAC_OS_X_VERSION_MAX_ALLOWED
+    #if COCOS2D_VERSION >= 0x00020100
+        // Enabled the mouse event
+		self.mouseEnabled           = YES;
+    #else
         // Enabled the mouse event
 		self.isMouseEnabled         = YES;
+    #endif
 #endif
         
         // Initialise instance variables

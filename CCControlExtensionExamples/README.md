@@ -10,13 +10,13 @@ Controls available:
 ![CCControlButton](http://github.com/YannickL/CCControlExtension/raw/master/screenshots/button.png)
 
 CCControlButton provides a convenient way to create buttons with Cocos2D.
-A button intercepts touch events and sends an action message to a target object when tapped. Methods for setting the target and action are inherited from CCControl. You can set it to a predetermined size, to a variable size to fit to the title size etc. (More information on [my blog](http://yannickloriot.com/2011/12/create-buttons-in-cocos2d-by-using-cccontrolbutton/))
+A button intercepts touch events and sends an action message to a target object when tapped. Methods for setting the target and action are inherited from CCControl. You can set it to a predetermined size, to a variable size to fit to the title size etc. (More information on [my blog](http://yannickloriot.com/2013/03/cccontrolextension-the-buttons/))
 
  * [CCControlSlider](http://yannickloriot.com/library/ios/cccontrolextension/Classes/CCControlSlider.html):
 
 ![CCControlSlider](http://github.com/YannickL/CCControlExtension/raw/master/screenshots/slider.png)
 
-CCControlSlider is an already made slider (but customizable) control for Cocos2D for iPhone. It is a visual control used to select a single value from a continuous range of values in a linear way. (More information on [my blog](http://yannickloriot.com/2011/08/use-cccontrol-to-create-a-slider-with-cocos2d-for-iphone/))
+CCControlSlider is an already made slider (but customizable) control for Cocos2D for iPhone. It is a visual control used to select a single value from a continuous range of values in a linear way. (More information on [my blog](http://yannickloriot.com/2013/03/cccontrolextension-the-sliders/))
 
  * [CCControlColourPicker](http://yannickloriot.com/library/ios/cccontrolextension/Classes/CCControlColourPicker.html):
 

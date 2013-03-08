@@ -198,7 +198,7 @@
 
 - (NSInteger)mouseDelegatePriority
 {
-	return defaultTouchPriority_;
+	return _defaultTouchPriority;
 }
 
 #endif

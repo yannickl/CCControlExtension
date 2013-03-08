@@ -292,9 +292,7 @@
         || ![self isEnabled]
         || ![self visible]
         || ![self hasVisibleParents])
-    {
         return NO;
-    }
     
     CGPoint location    = [self touchLocation:touch];
     [self updateLayoutUsingTouchLocation:location];
@@ -367,17 +365,15 @@
         || ![self isEnabled]
         || ![self visible]
         || ![self hasVisibleParents])
-    {
         return NO;
-    }
     
     CGPoint location    = [self eventLocation:event];
     [self updateLayoutUsingTouchLocation:location];
     
-    touchInsideFlag_    = YES;
+    _touchInsideFlag    = YES;
     self.selected       = YES;
     
-    if (autorepeat_)
+    if (_autorepeat)
     {
         [self startAutorepeat];
     }
@@ -387,35 +383,33 @@
 
 - (BOOL)ccMouseDragged:(NSEvent *)event
 {
-    if (![self selected])
-    {
+    if (![self isSelected])
         return NO;
-    }
     
     if ([self isMouseInside:event])
     {
         CGPoint location    = [self eventLocation:event];
         [self updateLayoutUsingTouchLocation:location];
         
-        if (!touchInsideFlag_)
+        if (!_touchInsideFlag)
         {
-            touchInsideFlag_    = YES;
+            _touchInsideFlag    = YES;
             
-            if (autorepeat_)
+            if (_autorepeat)
             {
                 [self startAutorepeat];
             }
         }
     } else
     {
-        touchInsideFlag_    = NO;
+        _touchInsideFlag    = NO;
         
-        touchedPart_        = kCCControlStepperPartNone;
+        _touchedPart        = kCCControlStepperPartNone;
         
-        minusSprite_.color  = ccWHITE;
-        plusSprite_.color   = ccWHITE;
+        _minusSprite.color  = ccWHITE;
+        _plusSprite.color   = ccWHITE;
         
-        if (autorepeat_)
+        if (_autorepeat)
         {
             [self stopAutorepeat];
         }
@@ -426,16 +420,14 @@
 
 - (BOOL)ccMouseUp:(NSEvent *)event
 {
-    if (![self selected])
-    {
+    if (![self isSelected])
         return NO;
-    }
     
     self.selected       = NO;
-    minusSprite_.color  = ccWHITE;
-    plusSprite_.color   = ccWHITE;
+    _minusSprite.color  = ccWHITE;
+    _plusSprite.color   = ccWHITE;
     
-    if (autorepeat_)
+    if (_autorepeat)
     {
         [self stopAutorepeat];
     }
@@ -444,7 +436,7 @@
     {
         CGPoint location    = [self eventLocation:event];
         
-        self.value += (location.x < minusSprite_.contentSize.width) ? - stepValue_ : stepValue_;
+        self.value += (location.x < _minusSprite.contentSize.width) ? - _stepValue : _stepValue;
     }
     
 	return YES;

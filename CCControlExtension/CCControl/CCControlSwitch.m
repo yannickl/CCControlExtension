@@ -238,9 +238,7 @@
         || ![self isEnabled]
         || ![self visible]
         || ![self hasVisibleParents])
-    {
         return NO;
-    }
     
     _moved                          = NO;
     
@@ -300,16 +298,14 @@
         || ![self isEnabled]
         || ![self visible]
         || ![self hasVisibleParents])
-    {
         return NO;
-    }
     
     self.selected                   = YES;
     _moved                          = NO;
     
     CGPoint location                = [self locationFromEvent:event];
     
-    _initialTouchXPosition          = location.x - switchSprite_.sliderXPosition;
+    _initialTouchXPosition          = location.x - _switchSprite.sliderXPosition;
     
     _switchSprite.thumbSprite.color = _onThumbTintColor;
     [_switchSprite needsLayout];
@@ -321,9 +317,7 @@
 {
     if (![self isEnabled]
         || ![self isSelected])
-    {
         return NO;
-    }
     
     CGPoint location    = [self locationFromEvent:event];
     location            = ccp (location.x - _initialTouchXPosition, 0);
@@ -339,11 +333,9 @@
 {
     if (![self isEnabled]
         || ![self isSelected])
-    {
         return NO;
-    }
     
-    selected_                       = NO;
+    _selected                       = NO;
     
     CGPoint location                = [self locationFromEvent:event];
     

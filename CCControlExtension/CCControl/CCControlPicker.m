@@ -663,13 +663,22 @@
     if ((self = [super init]))
     {
         CGSize defaultSize              = CGSizeMake(CCControlPickerDefaultRowWidth, CCControlPickerDefaultRowHeight);
-        
+
+#if COCOS2D_VERSION >= 0x00020100
+        _textLabel                      = [[CCLabelTTF alloc] initWithString:@""
+                                                                    fontName:@"HelveticaNeue-Bold"
+                                                                    fontSize:18
+                                                                  dimensions:CGSizeMake(CCControlPickerDefaultRowWidth,
+                                                                                        CCControlPickerDefaultRowHeight)
+                                                                  hAlignment:kCCTextAlignmentCenter];
+#else
         _textLabel                      = SAFE_ARC_RETAIN([CCLabelTTF labelWithString:@""
                                                                            dimensions:CGSizeMake(CCControlPickerDefaultRowWidth,
                                                                                                  CCControlPickerDefaultRowHeight)
                                                                            hAlignment:kCCTextAlignmentCenter
                                                                              fontName:@"HelveticaNeue-Bold"
                                                                              fontSize:18]);
+#endif
         _textLabel.verticalAlignment    = kCCVerticalTextAlignmentCenter;
         _textLabel.color                = ccc3(86, 86, 86);
         _textLabel.anchorPoint          = ccp(0.5f, 0.5f);

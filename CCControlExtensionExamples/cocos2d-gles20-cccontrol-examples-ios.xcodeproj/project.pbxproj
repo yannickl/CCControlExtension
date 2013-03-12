@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		C227EA6E153436C70030DD7E /* CCControlSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = C227EA6D153436C70030DD7E /* CCControlSwitch.m */; };
-		C227EA6F153438100030DD7E /* CCControlSwitchMask.fsh in Resources */ = {isa = PBXBuildFile; fileRef = C227EA6A153436A20030DD7E /* CCControlSwitchMask.fsh */; };
 		C227EA7B153439640030DD7E /* CCControlSwitchTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C227EA75153439640030DD7E /* CCControlSwitchTest.m */; };
 		C227EA7C153439640030DD7E /* switch-mask.png in Resources */ = {isa = PBXBuildFile; fileRef = C227EA77153439640030DD7E /* switch-mask.png */; };
 		C227EA7F153439640030DD7E /* switch-thumb.png in Resources */ = {isa = PBXBuildFile; fileRef = C227EA7A153439640030DD7E /* switch-thumb.png */; };
@@ -264,7 +263,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		C227EA6A153436A20030DD7E /* CCControlSwitchMask.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = CCControlSwitchMask.fsh; sourceTree = "<group>"; };
 		C227EA6C153436C70030DD7E /* CCControlSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCControlSwitch.h; sourceTree = "<group>"; };
 		C227EA6D153436C70030DD7E /* CCControlSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCControlSwitch.m; sourceTree = "<group>"; };
 		C227EA74153439640030DD7E /* CCControlSwitchTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCControlSwitchTest.h; sourceTree = "<group>"; };
@@ -703,7 +701,6 @@
 				F4F57F9D16C6A6420027FCBE /* ccControlShaders.h */,
 				F4F57F9B16C6A6160027FCBE /* ccControlShaders.m */,
 				F4F57F9916C6A5600027FCBE /* ccShader_ControlSwitchMask_frag.h */,
-				C227EA6A153436A20030DD7E /* CCControlSwitchMask.fsh */,
 			);
 			path = Shaders;
 			sourceTree = "<group>";
@@ -1638,7 +1635,6 @@
 				C2B0924B1533962700007ECC /* ChangeLog in Resources */,
 				C2B0924C1533962700007ECC /* CMakeLists.txt in Resources */,
 				C2B0925A1533964600007ECC /* fps_images-ipadhd.png in Resources */,
-				C227EA6F153438100030DD7E /* CCControlSwitchMask.fsh in Resources */,
 				C227EA7C153439640030DD7E /* switch-mask.png in Resources */,
 				C227EA7F153439640030DD7E /* switch-thumb.png in Resources */,
 				C2DC0C9A155065C0001670DC /* switch-on-hd.png in Resources */,

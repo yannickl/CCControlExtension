@@ -25,9 +25,9 @@
 	<key>--project-version</key>
 	<string>2.0</string>
 	<key>--docset-feed-url</key>
-	<string>http://yannickloriot.com/library/ios/cccontrolextension/%DOCSETATOMFILENAME</string>
+	<string>http://yannickloriot.com/library/ios/cccontrolextension/</string>
 	<key>--docset-package-url</key>
-	<string>http://yannickloriot.com/library/ios/cccontrolextension/%DOCSETPACKAGEFILENAME</string>
+	<string>http://yannickloriot.com/library/ios/cccontrolextension/</string>
 	<key>--keep-undocumented-objects</key>
 	<false/>
 	<key>--keep-undocumented-members</key>

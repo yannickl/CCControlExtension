@@ -190,7 +190,7 @@ enum positions
     return [self initWithBatchNode:NULL rect:CGRectZero capInsets:CGRectZero];
 }
 
-- (void) updateWithBatchNode:(CCSpriteBatchNode*)batchnode rect:(CGRect)rect rotated:(BOOL)rotated capInsets:(CGRect)capInsets
+- (void) updateWithBatchNode:(CCSpriteBatchNode *)batchnode rect:(CGRect)rect rotated:(BOOL)rotated capInsets:(CGRect)capInsets
 {
     GLubyte opacity = opacity;
     ccColor3B color = _color;

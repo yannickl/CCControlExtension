@@ -211,7 +211,7 @@
 		E38095951559124100A1C4BB /* CCNode+Debug.m in Sources */ = {isa = PBXBuildFile; fileRef = E38095931559124100A1C4BB /* CCNode+Debug.m */; };
 		F420A84715B3394900A5F4BD /* CCControlPotentiometer.m in Sources */ = {isa = PBXBuildFile; fileRef = F420A84615B3394900A5F4BD /* CCControlPotentiometer.m */; };
 		F420A85915B3396A00A5F4BD /* CCControlPotentiometerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F420A84B15B3396A00A5F4BD /* CCControlPotentiometerTest.m */; };
-		F420A85A15B3396A00A5F4BD /* potentiometerButton -ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F420A84D15B3396A00A5F4BD /* potentiometerButton -ipad.png */; };
+		F420A85A15B3396A00A5F4BD /* potentiometerButton-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = F420A84D15B3396A00A5F4BD /* potentiometerButton-ipad.png */; };
 		F420A85B15B3396A00A5F4BD /* potentiometerButton-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = F420A84E15B3396A00A5F4BD /* potentiometerButton-hd.png */; };
 		F420A85C15B3396A00A5F4BD /* potentiometerButton-ipadhd.png in Resources */ = {isa = PBXBuildFile; fileRef = F420A84F15B3396A00A5F4BD /* potentiometerButton-ipadhd.png */; };
 		F420A85D15B3396A00A5F4BD /* potentiometerButton.png in Resources */ = {isa = PBXBuildFile; fileRef = F420A85015B3396A00A5F4BD /* potentiometerButton.png */; };
@@ -618,7 +618,7 @@
 		F420A84615B3394900A5F4BD /* CCControlPotentiometer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCControlPotentiometer.m; sourceTree = "<group>"; };
 		F420A84A15B3396A00A5F4BD /* CCControlPotentiometerTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCControlPotentiometerTest.h; sourceTree = "<group>"; };
 		F420A84B15B3396A00A5F4BD /* CCControlPotentiometerTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCControlPotentiometerTest.m; sourceTree = "<group>"; };
-		F420A84D15B3396A00A5F4BD /* potentiometerButton -ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "potentiometerButton -ipad.png"; sourceTree = "<group>"; };
+		F420A84D15B3396A00A5F4BD /* potentiometerButton-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "potentiometerButton-ipad.png"; sourceTree = "<group>"; };
 		F420A84E15B3396A00A5F4BD /* potentiometerButton-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "potentiometerButton-hd.png"; sourceTree = "<group>"; };
 		F420A84F15B3396A00A5F4BD /* potentiometerButton-ipadhd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "potentiometerButton-ipadhd.png"; sourceTree = "<group>"; };
 		F420A85015B3396A00A5F4BD /* potentiometerButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = potentiometerButton.png; sourceTree = "<group>"; };
@@ -1416,7 +1416,7 @@
 		F420A86615B339DE00A5F4BD /* ipad */ = {
 			isa = PBXGroup;
 			children = (
-				F420A84D15B3396A00A5F4BD /* potentiometerButton -ipad.png */,
+				F420A84D15B3396A00A5F4BD /* potentiometerButton-ipad.png */,
 				F420A85215B3396A00A5F4BD /* potentiometerProgress-ipad.png */,
 				F420A85615B3396A00A5F4BD /* potentiometerTrack-ipad.png */,
 			);
@@ -1655,7 +1655,7 @@
 				C259697615667A45009C82DB /* stepper-plus.png in Resources */,
 				F4F5778615B063010013C51E /* Default-Landscape~ipad.png in Resources */,
 				F4F5778915B067320013C51E /* Default@2x.png in Resources */,
-				F420A85A15B3396A00A5F4BD /* potentiometerButton -ipad.png in Resources */,
+				F420A85A15B3396A00A5F4BD /* potentiometerButton-ipad.png in Resources */,
 				F420A85B15B3396A00A5F4BD /* potentiometerButton-hd.png in Resources */,
 				F420A85C15B3396A00A5F4BD /* potentiometerButton-ipadhd.png in Resources */,
 				F420A85D15B3396A00A5F4BD /* potentiometerButton.png in Resources */,

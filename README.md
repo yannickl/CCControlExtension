@@ -93,5 +93,3 @@ You can download *cocos2d-for-iphone* here: https://github.com/cocos2d/cocos2d-i
 [my blog]: http://yannickloriot.com/2013/02/the-control-extension-for-cocos2d/
 [examples]: https://github.com/YannickL/CCControlExtension/tree/master-v2/CCControlExtensionExamples
 [api documentation]: http://yannickloriot.com/library/ios/cccontrolextension/
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/YannickL/cccontrolextension/trend.png)](https://bitdeli.com/free "Bitdeli Badge")

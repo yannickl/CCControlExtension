@@ -408,7 +408,7 @@ enum positions
 
 - (void)setContentSize:(CGSize)size
 {
-    super.contentSize   = size;
+    [super setContentSize:size];
     
     _positionsAreDirty  = YES;
 }

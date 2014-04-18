@@ -71,7 +71,7 @@ enum positions
         if (batchnode)
         {
             [self updateWithBatchNode:batchnode rect:rect rotated:rotated capInsets:capInsets];
-            self.anchorPoint    = ccp(0.5f, 0.5f);
+            self.anchorPoint = ccp(0.5f, 0.5f);
         }
         _positionsAreDirty = YES;
     }

@@ -29,22 +29,22 @@ enum positions
 @end
 
 @implementation CCScale9Sprite
-@synthesize originalSize            = _originalSize;
-@synthesize capInsets               = _capInsets;
-@synthesize insetTop                = _insetTop;
-@synthesize insetLeft               = _insetLeft;
-@synthesize insetBottom             = _insetBottom;
-@synthesize insetRight              = _insetRight;
-@synthesize preferredSize           = _preferredSize;
+@synthesize originalSize  = _originalSize;
+@synthesize capInsets     = _capInsets;
+@synthesize insetTop      = _insetTop;
+@synthesize insetLeft     = _insetLeft;
+@synthesize insetBottom   = _insetBottom;
+@synthesize insetRight    = _insetRight;
+@synthesize preferredSize = _preferredSize;
 
 // CCRGBAProtocol (v2.1)
-@synthesize opacity                 = _opacity;
-@synthesize displayedOpacity        = _displayedOpacity;
-@synthesize color                   = _color;
-@synthesize displayedColor          = _displayedColor;
-@synthesize opacityModifyRGB        = _opacityModifyRGB;
-@synthesize cascadeColorEnabled     = _cascadeColorEnabled;
-@synthesize cascadeOpacityEnabled   = _cascadeOpacityEnabled;
+@synthesize opacity               = _opacity;
+@synthesize displayedOpacity      = _displayedOpacity;
+@synthesize color                 = _color;
+@synthesize displayedColor        = _displayedColor;
+@synthesize opacityModifyRGB      = _opacityModifyRGB;
+@synthesize cascadeColorEnabled   = _cascadeColorEnabled;
+@synthesize cascadeOpacityEnabled = _cascadeOpacityEnabled;
 
 - (void)dealloc
 {

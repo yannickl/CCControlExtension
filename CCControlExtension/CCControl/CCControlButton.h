@@ -198,7 +198,7 @@
  * @param state The state that uses the specified fntFile. The values are described
  * in "CCControlState".
  */
-- (void)setTitleBMFont:(NSString*)fntFile forState:(CCControlState)state;
+- (void)setTitleBMFont:(NSString *)fntFile forState:(CCControlState)state;
 
 /**
  * Sets the font of the label, changes the label to a CCLabelTTF if neccessary.
@@ -207,7 +207,7 @@
  * @param state The state that uses the specified fntFile. The values are described
  * in "CCControlState".
  */
-- (void)setTitleTTF:(NSString*)fontName forState:(CCControlState)state;
+- (void)setTitleTTF:(NSString *)fontName forState:(CCControlState)state;
 
 /**
  * Returns the name of the TTF font used by the label, or NULL if the
@@ -216,7 +216,7 @@
  * @param state The state that uses the specified font. The values are described
  * in "CCControlState".
  */
-- (NSString*) titleTTFForState:(CCControlState)state;
+- (NSString *)titleTTFForState:(CCControlState)state;
 
 
 /**
@@ -264,6 +264,6 @@
  * @param state The state that uses the specified image. The values are described
  * in "CCControlState".
  */
-- (void)setBackgroundSpriteFrame:(CCSpriteFrame*)spriteFrame forState:(CCControlState)state;
+- (void)setBackgroundSpriteFrame:(CCSpriteFrame *)spriteFrame forState:(CCControlState)state;
 
 @end

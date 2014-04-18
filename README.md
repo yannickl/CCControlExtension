@@ -1,13 +1,13 @@
 CCControlExtension
 =================
-CCControlExtension is an open-source library which provides a lot of convenient control objects for __Cocos2D v2.x__ for iPhone and Mac such as buttons, sliders or many more... ([see the exhaustive list](#available-control-list))
+CCControlExtension is an open-source library that provides many convenient control objects for __Cocos2D v2.x__ for iPhone and Mac, such as buttons, sliders and many more... ([see the exhaustive list](#available-control-list))
 
 All these controls are subclasses of CCControl, which is inspired by the UIControl API from the UIKit of CocoaTouch. The main goal of CCControl is to simplify the creation of control objects in Cocos2D by providing an interface and a base implementation ala UIKit. I.e that this class manages the target-action pair registration and dispatches them to their targets when events occur.
-The CCControl extensions also uses the power of blocks to dispatch the events in addition to the target/action pair. 
+The CCControl extension also uses the power of blocks to dispatch the events in addition to the target/action pair. 
 
-*Note: The CCControlExtension's classes are ARC compatibles (e.g for use with Kobold2D)*
+*Note: The CCControlExtension's classes are ARC compatible (e.g for use with Kobold2D)*
 
-*Note2: the version for __Cocos2D v1.1__ is available in the [master branch](https://github.com/YannickL/CCControlExtension/tree/master)*
+*Note2: The version for __Cocos2D v1.1__ is available in the [master branch](https://github.com/YannickL/CCControlExtension/tree/master)*
 
 ![](http://github.com/YannickL/CCControlExtension/raw/master/screenshots/cccontrolextension.png)
 
@@ -21,29 +21,29 @@ It's a very useful control tool to preview and test color values.
   * [Picker](http://yannickloriot.com/library/ios/cccontrolextension/Classes/CCControlPicker.html):
 Use a spinning-wheel or slot-machine metaphor to show one set of values.
   * [Potentiometer](http://yannickloriot.com/library/ios/cccontrolextension/Classes/CCControlPotentiometer.html):
-Use a circular representation to show and select a single value from a continuous range of value.
+Use a circular representation to show and select a single value from a continuous range of values.
   * [Slider](http://yannickloriot.com/library/ios/cccontrolextension/Classes/CCControlSlider.html):
 Use a linear representation to show and select a single value from a continuous range of values.
   * [Stepper](http://yannickloriot.com/library/ios/cccontrolextension/Classes/CCControlStepper.html):
 User interface for incrementing or decrementing a value.
   * [Switch](http://yannickloriot.com/library/ios/cccontrolextension/Classes/CCControlSwitch.html):
-Useful to create and manage On/Off buttons, like for example, in the option menus for volume as example.
+Useful to create and manage On/Off buttons.
 
 How to use it
 ====================
 - Include the CCControlExtension folder into your project
-- In the needed files include this header:
+- Where necessary, include this header:
 
         #import "CCControlExtension.h"
 
-The `CCControlExtension.h` includes all the already controls.
-There are various [examples][] to understand how the controls works and to use pre-made visual for each of them.
+The `CCControlExtension.h` already includes all the controls.
+There are various [examples][] to learn how the controls work and how to use a pre-made visual for each of them.
 
-For more informations you can check [my blog][] and the [api documentation][].
+For more information you can check [my blog][] and the [api documentation][].
 
 Getting started with the source
 ===================== 
-The project already include a version of Cocos2D for its examples, so you just need to download the source like the following instructions:
+The example project already includes a version of Cocos2D, so you just need to download the source like the following:
 
 ```
     git clone git@github.com:YannickL/CCControlExtension.git

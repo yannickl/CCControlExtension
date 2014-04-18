@@ -578,10 +578,10 @@ enum positions
     [self updateWithBatchNode:batchnode rect:spriteFrame.rect rotated:spriteFrame.rotated capInsets:CGRectZero];
     
     // Reset insets
-    _insetLeft      = 0;
-    _insetTop       = 0;
-    _insetRight     = 0;
-    _insetBottom    = 0;
+    _insetLeft   = 0;
+    _insetTop    = 0;
+    _insetRight  = 0;
+    _insetBottom = 0;
 }
 
 - (void)setCapInsets:(CGRect)capInsets

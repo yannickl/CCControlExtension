@@ -495,15 +495,15 @@ enum positions
 
 - (void)setPreferredSize:(CGSize)preferredSize
 {
-    self.contentSize        = preferredSize;
-    _preferredSize          = preferredSize;
+    self.contentSize = preferredSize;
+    _preferredSize   = preferredSize;
 }
 
 #pragma mark CCRGBAProtocol
 
 - (void)setColor:(ccColor3B)color
 {
-    _color      = color;
+    _color = color;
     
     for (CCNode<CCRGBAProtocol> *child in _scale9Image.children)
     {
@@ -513,7 +513,7 @@ enum positions
 
 - (void)setOpacity:(GLubyte)opacity
 {
-    _opacity    = opacity;
+    _opacity = opacity;
     
     for (CCNode<CCRGBAProtocol> *child in _scale9Image.children)
     {

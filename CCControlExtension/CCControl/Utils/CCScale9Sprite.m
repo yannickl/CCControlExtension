@@ -415,52 +415,82 @@ enum positions
 
 - (void)updatePosition
 {
-    CGSize size                 = self.contentSize;
+    CGSize size = self.contentSize;
     
-    float sizableWidth          = size.width - _topLeft.contentSize.width - _topRight.contentSize.width;
-    float sizableHeight         = size.height - _topLeft.contentSize.height - _bottomRight.contentSize.height;
+    float topProportion    =  _top.contentSize.height / _scale9Image.contentSize.height;
+    float bottomProportion =  _bottom.contentSize.height / _scale9Image.contentSize.height;
+    float leftProportion   = _left.contentSize.width / _scale9Image.contentSize.width;
+    float rightProportion  = _right.contentSize.width / _scale9Image.contentSize.width;
     
-    float horizontalScale       = sizableWidth / _centre.contentSize.width;
-    float verticalScale         = sizableHeight / _centre.contentSize.height;
+    float sizableWidth  = size.width - _topLeft.contentSize.width - _topRight.contentSize.width;
+    float sizableHeight = size.height - _topLeft.contentSize.height - _bottomRight.contentSize.height;
     
-    _centre.scaleX              = horizontalScale;
-    _centre.scaleY              = verticalScale;
+    float scaleLeftFactor   = 1;
+    float scaleCenterFactor = (sizableWidth / _centre.contentSize.width);
+    float scaleRightFactor  = 1;
+    float scaleTopFactor    = 1;
+    float scaleMiddleFactor = (sizableHeight / _centre.contentSize.height);
+    float scaleBottomFactor = 1;
     
-    float rescaledWidth         = _centre.contentSize.width * horizontalScale;
-    float rescaledHeight        = _centre.contentSize.height * verticalScale;
+    if (sizableWidth < 0) {
+        scaleLeftFactor   = (size.width * topProportion) / _left.contentSize.width;
+        scaleCenterFactor = (size.width * (1.0f - leftProportion - rightProportion)) / _centre.contentSize.width;
+        scaleRightFactor  = (size.width * rightProportion) / _right.contentSize.width;
+    }
     
-    float leftWidth             = _bottomLeft.contentSize.width;
-    float bottomHeight          = _bottomLeft.contentSize.height;
+    if (sizableHeight < 0) {
+        scaleTopFactor    = (size.height * topProportion) / _top.contentSize.height;
+        scaleMiddleFactor = (size.height * (1.0f - topProportion - bottomProportion)) / _centre.contentSize.height;
+        scaleBottomFactor = (size.height * bottomProportion) / _bottom.contentSize.height;
+    }
+    
+    // Computes the sizes
+    float centerWidth  = _centre.contentSize.width * scaleCenterFactor;
+    float leftWidth    = _left.contentSize.width * scaleLeftFactor;
+    float middleHeight = _centre.contentSize.height * scaleMiddleFactor;
+    float bottomHeight = _bottom.contentSize.height * scaleBottomFactor;
+    
+    // Apply the scales
+    _topLeft.scaleX     = scaleLeftFactor;
+    _topLeft.scaleY     = scaleTopFactor;
+    _top.scaleX         = scaleCenterFactor;
+    _top.scaleY         = scaleTopFactor;
+    _topRight.scaleX    = scaleRightFactor;
+    _topRight.scaleY    = scaleTopFactor;
+    _left.scaleX        = scaleLeftFactor;
+    _left.scaleY        = scaleMiddleFactor;
+    _centre.scaleX      = scaleCenterFactor;
+    _centre.scaleY      = scaleMiddleFactor;
+    _right.scaleX       = scaleRightFactor;
+    _right.scaleY       = scaleMiddleFactor;
+    _bottomLeft.scaleX  = scaleLeftFactor;
+    _bottomLeft.scaleY  = scaleBottomFactor;
+    _bottom.scaleX      = scaleCenterFactor;
+    _bottom.scaleY      = scaleBottomFactor;
+    _bottomRight.scaleX = scaleRightFactor;
+    _bottomRight.scaleY = scaleBottomFactor;
     
     // Set anchor points
-    _bottomLeft.anchorPoint     = ccp(0,0);
-    _bottomRight.anchorPoint    = ccp(0,0);
-    _topLeft.anchorPoint        = ccp(0,0);
-    _topRight.anchorPoint       = ccp(0,0);
-    _left.anchorPoint           = ccp(0,0);
-    _right.anchorPoint          = ccp(0,0);
-    _top.anchorPoint            = ccp(0,0);
-    _bottom.anchorPoint         = ccp(0,0);
-    _centre.anchorPoint         = ccp(0,0);
+    _bottomLeft.anchorPoint  = ccp(0,0);
+    _bottomRight.anchorPoint = ccp(0,0);
+    _topLeft.anchorPoint     = ccp(0,0);
+    _topRight.anchorPoint    = ccp(0,0);
+    _left.anchorPoint        = ccp(0,0);
+    _right.anchorPoint       = ccp(0,0);
+    _top.anchorPoint         = ccp(0,0);
+    _bottom.anchorPoint      = ccp(0,0);
+    _centre.anchorPoint      = ccp(0,0);
     
-    // Position corners
-    _bottomLeft.position        = ccp(0,0);
-    _bottomRight.position       = ccp(leftWidth+rescaledWidth,0);
-    _topLeft.position           = ccp(0, bottomHeight+rescaledHeight);
-    _topRight.position          = ccp(leftWidth+rescaledWidth, bottomHeight+rescaledHeight);
-    
-    // Scale and position borders
-    _left.position              = ccp(0, bottomHeight);
-    _left.scaleY                = verticalScale;
-    _right.position             = ccp(leftWidth+rescaledWidth,bottomHeight);
-    _right.scaleY               = verticalScale;
-    _bottom.position            = ccp(leftWidth,0);
-    _bottom.scaleX              = horizontalScale;
-    _top.position               = ccp(leftWidth,bottomHeight+rescaledHeight);
-    _top.scaleX                 = horizontalScale;
-    
-    // Position centre
-    _centre.position            = ccp(leftWidth, bottomHeight);
+    // Set positions
+    _bottomLeft.position  = ccp(0,0);
+    _bottomRight.position = ccp(leftWidth + centerWidth, 0);
+    _topLeft.position     = ccp(0, bottomHeight + middleHeight);
+    _topRight.position    = ccp(leftWidth + centerWidth, bottomHeight + middleHeight);
+    _left.position        = ccp(0, bottomHeight);
+    _right.position       = ccp(leftWidth + centerWidth, bottomHeight);
+    _bottom.position      = ccp(leftWidth, 0);
+    _top.position         = ccp(leftWidth, bottomHeight + middleHeight);
+    _centre.position      = ccp(leftWidth, bottomHeight);
 }
 
 - (void)setPreferredSize:(CGSize)preferredSize

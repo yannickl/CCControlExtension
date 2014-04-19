@@ -69,7 +69,7 @@ License (MIT)
 ====================
 As well as Cocos2D for iPhone, CCControlExtension is licensed under the MIT License:
 
-Copyright (c) 2013 - Yannick Loriot and contributors
+Copyright (c) 2011-present - Yannick Loriot and contributors
 (see each file to see the different copyright owners)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy

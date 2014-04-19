@@ -136,6 +136,34 @@
         _onThumbTintColor           = ccGRAY;
         _on                         = YES;
         
+        CCRenderTexture *rt = [CCRenderTexture renderTextureWithWidth:maskSprite.contentSize.width height:maskSprite.contentSize.height];
+        [rt begin];
+        maskSprite.position = ccp(maskSprite.contentSize.width / 2, maskSprite.contentSize.height / 2);
+        [maskSprite visit];
+        [rt end];
+        maskSprite = [CCSprite spriteWithTexture:rt.sprite.texture rect:rt.sprite.textureRect];
+        
+        rt = [CCRenderTexture renderTextureWithWidth:onSprite.contentSize.width height:onSprite.contentSize.height];
+        [rt begin];
+        onSprite.position = ccp(onSprite.contentSize.width / 2, onSprite.contentSize.height / 2);
+        [onSprite visit];
+        [rt end];
+        onSprite = [CCSprite spriteWithTexture:rt.sprite.texture rect:rt.sprite.textureRect];
+        
+        rt = [CCRenderTexture renderTextureWithWidth:offSprite.contentSize.width height:offSprite.contentSize.height];
+        [rt begin];
+        offSprite.position = ccp(offSprite.contentSize.width / 2, offSprite.contentSize.height / 2);
+        [offSprite visit];
+        [rt end];
+        offSprite =  [CCSprite spriteWithTexture:rt.sprite.texture rect:rt.sprite.textureRect];
+        
+        rt = [CCRenderTexture renderTextureWithWidth:thumbSprite.contentSize.width height:thumbSprite.contentSize.height];
+        [rt begin];
+        thumbSprite.position = ccp(thumbSprite.contentSize.width / 2, thumbSprite.contentSize.height / 2);
+        [thumbSprite visit];
+        [rt end];
+        thumbSprite = [CCSprite spriteWithTexture:rt.sprite.texture rect:rt.sprite.textureRect];
+        
         _switchSprite               = [[CCControlSwitchSprite alloc] initWithMaskSprite:maskSprite
                                                                                onSprite:onSprite
                                                                               offSprite:offSprite
@@ -384,7 +412,7 @@
 
 - (id)initWithMaskSprite:(CCSprite *)maskSprite onSprite:(CCSprite *)onSprite offSprite:(CCSprite *)offSprite thumbSprite:(CCSprite *)thumbSprite onLabel:(CCNode<CCLabelProtocol, CCRGBAProtocol> *)onLabel offLabel:(CCNode<CCLabelProtocol, CCRGBAProtocol> *)offLabel
 {
-    if ((self = [super initWithTexture:[maskSprite texture]]))
+    if ((self = [super initWithTexture:maskSprite.texture rect:maskSprite.textureRect]))
     {
         // Sets the default values
         _onPosition             = 0;

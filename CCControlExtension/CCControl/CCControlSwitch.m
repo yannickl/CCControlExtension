@@ -84,11 +84,11 @@
 @end
 
 @implementation CCControlSwitch
-@synthesize switchSprite            = _switchSprite;
-@synthesize initialTouchXPosition   = _initialTouchXPosition;
-@synthesize moved                   = _moved;
-@synthesize on                      = _on;
-@synthesize onThumbTintColor        = _onThumbTintColor;
+@synthesize switchSprite          = _switchSprite;
+@synthesize initialTouchXPosition = _initialTouchXPosition;
+@synthesize moved                 = _moved;
+@synthesize on                    = _on;
+@synthesize onThumbTintColor      = _onThumbTintColor;
 
 - (void)dealloc
 {
@@ -128,13 +128,13 @@
 {
     if ((self = [super init]))
     {
-        NSAssert(maskSprite,    @"Mask must not be nil.");
-        NSAssert(onSprite,      @"onSprite must not be nil.");
-        NSAssert(offSprite,     @"offSprite must not be nil.");
-        NSAssert(thumbSprite,   @"thumbSprite must not be nil.");
+        NSAssert(maskSprite,  @"Mask must not be nil.");
+        NSAssert(onSprite,    @"onSprite must not be nil.");
+        NSAssert(offSprite,   @"offSprite must not be nil.");
+        NSAssert(thumbSprite, @"thumbSprite must not be nil.");
         
-        _onThumbTintColor           = ccGRAY;
-        _on                         = YES;
+        _onThumbTintColor = ccGRAY;
+        _on               = YES;
         
         CCRenderTexture *rt = [CCRenderTexture renderTextureWithWidth:maskSprite.contentSize.width height:maskSprite.contentSize.height];
         [rt begin];
@@ -143,39 +143,18 @@
         [rt end];
         maskSprite = [CCSprite spriteWithTexture:rt.sprite.texture rect:rt.sprite.textureRect];
         
-        rt = [CCRenderTexture renderTextureWithWidth:onSprite.contentSize.width height:onSprite.contentSize.height];
-        [rt begin];
-        onSprite.position = ccp(onSprite.contentSize.width / 2, onSprite.contentSize.height / 2);
-        [onSprite visit];
-        [rt end];
-        onSprite = [CCSprite spriteWithTexture:rt.sprite.texture rect:rt.sprite.textureRect];
-        
-        rt = [CCRenderTexture renderTextureWithWidth:offSprite.contentSize.width height:offSprite.contentSize.height];
-        [rt begin];
-        offSprite.position = ccp(offSprite.contentSize.width / 2, offSprite.contentSize.height / 2);
-        [offSprite visit];
-        [rt end];
-        offSprite =  [CCSprite spriteWithTexture:rt.sprite.texture rect:rt.sprite.textureRect];
-        
-        rt = [CCRenderTexture renderTextureWithWidth:thumbSprite.contentSize.width height:thumbSprite.contentSize.height];
-        [rt begin];
-        thumbSprite.position = ccp(thumbSprite.contentSize.width / 2, thumbSprite.contentSize.height / 2);
-        [thumbSprite visit];
-        [rt end];
-        thumbSprite = [CCSprite spriteWithTexture:rt.sprite.texture rect:rt.sprite.textureRect];
-        
-        _switchSprite               = [[CCControlSwitchSprite alloc] initWithMaskSprite:maskSprite
-                                                                               onSprite:onSprite
-                                                                              offSprite:offSprite
-                                                                            thumbSprite:thumbSprite
-                                                                                onLabel:onLabel
-                                                                               offLabel:offLabel];
-        _switchSprite.position      = ccp (_switchSprite.contentSize.width / 2, _switchSprite.contentSize.height / 2);
+        _switchSprite = [[CCControlSwitchSprite alloc] initWithMaskSprite:maskSprite
+                                                                 onSprite:onSprite
+                                                                offSprite:offSprite
+                                                              thumbSprite:thumbSprite
+                                                                  onLabel:onLabel
+                                                                 offLabel:offLabel];
+        _switchSprite.position = ccp (_switchSprite.contentSize.width / 2, _switchSprite.contentSize.height / 2);
         [self addChild:_switchSprite];
         
-        self.ignoreAnchorPointForPosition  = NO;
-        self.anchorPoint            = ccp (0.5f, 0.5f);
-        self.contentSize            = [_switchSprite contentSize];
+        self.ignoreAnchorPointForPosition = NO;
+        self.anchorPoint                  = ccp (0.5f, 0.5f);
+        self.contentSize                  = [_switchSprite contentSize];
     }
     return self;
 }
@@ -428,7 +407,7 @@
         [self addChild:thumbSprite];
         
         // Set up the mask with the Mask shader
-        self.maskSprite        = maskSprite;
+        self.maskSprite         = maskSprite;
         
         // Position Texture Color shader
         CCGLProgram *tProgram   = [[CCGLProgram alloc] initWithVertexShaderByteArray:ccPositionTextureColor_vert
@@ -558,7 +537,7 @@
         sliderXPosition = _onPosition;
     }
     
-    _sliderXPosition    = sliderXPosition;
+    _sliderXPosition = sliderXPosition;
     
     [self needsLayout];
 }

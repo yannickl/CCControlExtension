@@ -9,6 +9,8 @@ The CCControl extensions also uses the power of blocks to dispatch the events in
 
 *Note2: the version for __Cocos2D v1.1__ is available in the [master branch](https://github.com/YannickL/CCControlExtension/tree/master)*
 
+*Note3: __Cocos2d v3__ now provides native controls*
+
 ![](http://github.com/YannickL/CCControlExtension/raw/master/screenshots/cccontrolextension.png)
 
 Available Control List
@@ -67,7 +69,7 @@ License (MIT)
 ====================
 As well as Cocos2D for iPhone, CCControlExtension is licensed under the MIT License:
 
-Copyright (c) 2013 - Yannick Loriot and contributors
+Copyright (c) 2011 - present Yannick Loriot and contributors
 (see each file to see the different copyright owners)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy

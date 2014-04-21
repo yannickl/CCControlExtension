@@ -1,7 +1,7 @@
 /**
  * ColourUtils.m
  *
- * Copyright 2012 Stewart Hamilton-Arrandale.
+ * Copyright 2012-present Stewart Hamilton-Arrandale.
  * http://creativewax.co.uk
  *
  * Modified by Yannick Loriot.
@@ -38,8 +38,8 @@
 
 + (HSV)HSVfromRGB:(RGBA)value
 {
-    HSV         out;
-    double      min, max, delta;
+    HSV    out;
+    double min, max, delta;
     
     min = value.r < value.g ? value.r : value.g;
     min = min  < value.b ? min  : value.b;
@@ -49,31 +49,33 @@
     
     out.v = max;                                // v
     delta = max - min;
-    if( max > 0.0 )
-    {
+    if (max > 0.0) {
         out.s = (delta / max);                  // s
-    } else
-    {
+    }
+    else {
         // r = g = b = 0                        // s = 0, v is undefined
         out.s = 0.0;
         out.h = NAN;                            // its now undefined
         return out;
     }
-    if( value.r >= max )                        // > is bogus, just keeps compilor happy
-    {
-        out.h = ( value.g - value.b ) / delta;        // between yellow & magenta
-    } else
-    {
-        if( value.g >= max )
-            out.h = 2.0 + ( value.b - value.r ) / delta;  // between cyan & yellow
-        else
-            out.h = 4.0 + ( value.r - value.g ) / delta;  // between magenta & cyan
+    
+    if (value.r >= max) {                       // > is bogus, just keeps compilor happy
+        out.h = (value.g - value.b) / delta;        // between yellow & magenta
+    }
+    else {
+        if ( value.g >= max ) {
+            out.h = 2.0 + (value.b - value.r) / delta;  // between cyan & yellow
+        }
+        else {
+            out.h = 4.0 + (value.r - value.g) / delta;  // between magenta & cyan
+        }
     }
     
     out.h *= 60.0;                              // degrees
     
-    if( out.h < 0.0 )
+    if (out.h < 0.0) {
         out.h += 360.0;
+    }
     
     return out;
 }
@@ -86,10 +88,8 @@
     RGBA        out;
     out.a		= 1;
     
-    if (value.s <= 0.0) // < is bogus, just shuts up warnings
-    {       
-        if (isnan(value.h)) // value.h == NAN
-        {   
+    if (value.s <= 0.0) { // < is bogus, just shuts up warnings
+        if (isnan(value.h)) { // value.h == NAN
             out.r = value.v;
             out.g = value.v;
             out.b = value.v;
@@ -104,7 +104,11 @@
     }
     
     hh = value.h;
-    if(hh >= 360.0) hh = 0.0;
+    
+    if (hh >= 360.0) {
+        hh = 0.0;
+    }
+    
     hh /= 60.0;
     i = (long)hh;
     ff = hh - i;
@@ -112,8 +116,7 @@
     q = value.v * (1.0 - (value.s * ff));
     t = value.v * (1.0 - (value.s * (1.0 - ff)));
     
-    switch(i)
-    {
+    switch (i) {
         case 0:
             out.r = value.v;
             out.g = t;
@@ -129,7 +132,6 @@
             out.g = value.v;
             out.b = t;
             break;
-            
         case 3:
             out.r = p;
             out.g = q;
@@ -147,6 +149,7 @@
             out.b = q;
             break;
     }
+    
     return out;     
 }
 

@@ -1,7 +1,7 @@
 /*
  * ColourUtils.h
  *
- * Copyright 2012 Stewart Hamilton-Arrandale.
+ * Copyright 2012-present Stewart Hamilton-Arrandale.
  * http://creativewax.co.uk
  *
  * Modified by Yannick Loriot.

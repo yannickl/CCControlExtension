@@ -1,7 +1,7 @@
 /*
  * CCControlPotentiometer.h
  *
- * Copyright 2012 Yannick Loriot. All rights reserved.
+ * Copyright 2012-present Yannick Loriot. All rights reserved.
  * http://yannickloriot.com
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -39,9 +39,9 @@
 @interface CCControlPotentiometer : CCControl
 {
 @public
-    float           _value;
-    float           _minimumValue;
-    float           _maximumValue;
+    float _value;
+    float _minimumValue;
+    float _maximumValue;
     
 @protected
     CCSprite        *_thumbSprite;
@@ -53,9 +53,9 @@
 /** 
  * Initializes a potentiometer with a track sprite and a progress bar.
  *
- * @param trackSprite    CCSprite, that is used as a background.
- * @param progressTimer  CCProgressTimer, that is used as a progress bar.
- * @param thumbSprite    CCSprite, that is used as a thumb.
+ * @param trackSprite   CCSprite, that is used as a background.
+ * @param progressTimer CCProgressTimer, that is used as a progress bar.
+ * @param thumbSprite   CCSprite, that is used as a thumb.
  */
 - (id)initWithTrackSprite:(CCSprite *)trackSprite progressSprite:(CCProgressTimer *)progressTimer thumbSprite:(CCSprite *)thumbSprite;
 

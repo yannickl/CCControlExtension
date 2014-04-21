@@ -1,7 +1,7 @@
 /*
  * CCControlStepper.h
  *
- * Copyright 2012 Yannick Loriot. All rights reserved.
+ * Copyright 2012-present Yannick Loriot. All rights reserved.
  * http://yannickloriot.com
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -51,28 +51,29 @@ typedef enum
 @interface CCControlStepper : CCControl
 {
 @public
-    double                  _value;
-    BOOL                    _continuous;
-    BOOL                    _autorepeat;
-    BOOL                    _wraps;
-    double                  _minimumValue;
-    double                  _maximumValue;
-    double                  _stepValue;
+    double _value;
+    BOOL   _continuous;
+    BOOL   _autorepeat;
+    BOOL   _wraps;
+    double _minimumValue;
+    double _maximumValue;
+    double _stepValue;
         
 @protected
     // Weak links to childrens
-	CCSprite                *_minusSprite;
-    CCSprite                *_plusSprite;
-    CCLabelTTF              *_minusLabel;
-    CCLabelTTF              *_plusLabel;
+	CCSprite   *_minusSprite;
+    CCSprite   *_plusSprite;
+    CCLabelTTF *_minusLabel;
+    CCLabelTTF *_plusLabel;
     
-    BOOL                    _touchInsideFlag;
-    CCControlStepperPart    _touchedPart;
-    NSInteger               _autorepeatCount;
+    BOOL                 _touchInsideFlag;
+    CCControlStepperPart _touchedPart;
+    NSInteger            _autorepeatCount;
 }
 
 #pragma mark Contructors - Initializers
 /** @name Creating Steppers */
+
 /**
  * Initializes a stepper with the given minus and plus sprites.
  * @param minusSprite  CCSprite, that is used for the minus component.
@@ -97,6 +98,7 @@ typedef enum
 #pragma mark - Properties
 #pragma mark Accessing the Stepper’s Value
 /** @name Accessing the Stepper’s Value */
+
 /**
  * @abstract The numeric value of the stepper.
  * @discussion When the value changes, the stepper sends
@@ -114,6 +116,7 @@ typedef enum
 
 #pragma mark Configuring the Steppe
 /** @name Configuring the Stepper */
+
 /**
  * @abstract The continuous vs. noncontinuous state of the
  * stepper.

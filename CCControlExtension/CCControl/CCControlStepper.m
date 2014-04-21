@@ -1,19 +1,19 @@
 /*
  * CCControlStepper.m
  *
- * Copyright 2012 Yannick Loriot. All rights reserved.
+ * Copyright 2012-present Yannick Loriot. All rights reserved.
  * http://yannickloriot.com
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -27,23 +27,23 @@
 #import "CCControlStepper.h"
 #import "ARCMacro.h"
 
-#define CCControlStepperLabelColorEnabled   ccc3(55, 55, 55)
-#define CCControlStepperLabelColorDisabled  ccc3(147, 147, 147)
+#define CCControlStepperLabelColorEnabled  ccc3(55, 55, 55)
+#define CCControlStepperLabelColorDisabled ccc3(147, 147, 147)
 
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
-#define CCControlStepperLabelFont           @"CourierNewPSMT"
+#define CCControlStepperLabelFont @"CourierNewPSMT"
 #elif __MAC_OS_X_VERSION_MAX_ALLOWED
-#define CCControlStepperLabelFont           @"Courier New"
+#define CCControlStepperLabelFont @"Courier New"
 #endif
 
-#define kAutorepeatDeltaTime                0.15f
-#define kAutorepeatIncreaseTimeIncrement    12
+#define kAutorepeatDeltaTime             0.15f
+#define kAutorepeatIncreaseTimeIncrement 12
 
 @interface CCControlStepper ()
-@property (nonatomic, strong) CCSprite      *minusSprite;
-@property (nonatomic, strong) CCSprite      *plusSprite;
-@property (nonatomic, strong) CCLabelTTF    *minusLabel;
-@property (nonatomic, strong) CCLabelTTF    *plusLabel;
+@property (nonatomic, strong) CCSprite   *minusSprite;
+@property (nonatomic, strong) CCSprite   *plusSprite;
+@property (nonatomic, strong) CCLabelTTF *minusLabel;
+@property (nonatomic, strong) CCLabelTTF *plusLabel;
 
 /** Update the layout of the stepper with the given touch location. */
 - (void)updateLayoutUsingTouchLocation:(CGPoint)location;
@@ -60,10 +60,10 @@
 @end
 
 @implementation CCControlStepper
-@synthesize minusSprite     = _minusSprite;
-@synthesize plusSprite      = _plusSprite;
-@synthesize minusLabel      = _minusLabel;
-@synthesize plusLabel       = _plusLabel;
+@synthesize minusSprite = _minusSprite;
+@synthesize plusSprite  = _plusSprite;
+@synthesize minusLabel  = _minusLabel;
+@synthesize plusLabel   = _plusLabel;
 
 @synthesize value           = _value;
 @synthesize continuous      = _continuous;
@@ -90,45 +90,45 @@
 {
     if ((self = [super init]))
     {
-        NSAssert(minusSprite,   @"Minus sprite must be not nil");
-        NSAssert(plusSprite,    @"Plus sprite must be not nil");
+        NSAssert(minusSprite, @"Minus sprite must be not nil");
+        NSAssert(plusSprite,  @"Plus sprite must be not nil");
         
         // Set the default values
-        _autorepeat                         = YES;
-        _continuous                         = YES;
-        _minimumValue                       = 0;
-        _maximumValue                       = 100;
-        _value                              = 0;
-        _stepValue                          = 1;
-        _wraps                              = NO;
-        _pushedTintColor                    = ccGRAY;
-        self.ignoreAnchorPointForPosition   = NO;
-    
+        _autorepeat                       = YES;
+        _continuous                       = YES;
+        _minimumValue                     = 0;
+        _maximumValue                     = 100;
+        _value                            = 0;
+        _stepValue                        = 1;
+        _wraps                            = NO;
+        _pushedTintColor                  = ccGRAY;
+        self.ignoreAnchorPointForPosition = NO;
+        
         // Add the minus components
-        self.minusSprite                    = minusSprite;
-		_minusSprite.position               = ccp(minusSprite.contentSize.width / 2, minusSprite.contentSize.height / 2);
+        self.minusSprite      = minusSprite;
+		_minusSprite.position = ccp(minusSprite.contentSize.width / 2, minusSprite.contentSize.height / 2);
 		[self addChild:_minusSprite];
         
-        self.minusLabel                     = [CCLabelTTF labelWithString:@"-" fontName:CCControlStepperLabelFont fontSize:40];
-        _minusLabel.color                   = CCControlStepperLabelColorDisabled;
-        _minusLabel.position                = CGPointMake(_minusSprite.contentSize.width / 2, _minusSprite.contentSize.height / 2);
+        self.minusLabel      = [CCLabelTTF labelWithString:@"-" fontName:CCControlStepperLabelFont fontSize:40];
+        _minusLabel.color    = CCControlStepperLabelColorDisabled;
+        _minusLabel.position = CGPointMake(_minusSprite.contentSize.width / 2, _minusSprite.contentSize.height / 2);
         [_minusSprite addChild:_minusLabel];
         
-        // Add the plus components 
-        self.plusSprite                     = plusSprite;
-		_plusSprite.position                = ccp(minusSprite.contentSize.width + plusSprite.contentSize.width / 2,
-                                                  minusSprite.contentSize.height / 2);
+        // Add the plus components
+        self.plusSprite      = plusSprite;
+		_plusSprite.position = ccp(minusSprite.contentSize.width + plusSprite.contentSize.width / 2,
+                                   minusSprite.contentSize.height / 2);
 		[self addChild:_plusSprite];
         
-        self.plusLabel                      = [CCLabelTTF labelWithString:@"+" fontName:CCControlStepperLabelFont fontSize:40];
-        _plusLabel.color                    = CCControlStepperLabelColorEnabled;
-        _plusLabel.position                 = CGPointMake(_plusSprite.contentSize.width / 2, _plusSprite.contentSize.height / 2);
+        self.plusLabel      = [CCLabelTTF labelWithString:@"+" fontName:CCControlStepperLabelFont fontSize:40];
+        _plusLabel.color    = CCControlStepperLabelColorEnabled;
+        _plusLabel.position = CGPointMake(_plusSprite.contentSize.width / 2, _plusSprite.contentSize.height / 2);
         [_plusSprite addChild:_plusLabel];
         
         // Defines the content size
-        CGRect maxRect                      = CGRectUnion([_minusSprite boundingBox], [_plusSprite boundingBox]);
-        self.contentSize                    = CGSizeMake(_minusSprite.contentSize.width + _plusSprite.contentSize.height,
-                                                         maxRect.size.height);
+        CGRect maxRect   = CGRectUnion([_minusSprite boundingBox], [_plusSprite boundingBox]);
+        self.contentSize = CGSizeMake(_minusSprite.contentSize.width + _plusSprite.contentSize.height,
+                                      maxRect.size.height);
     }
     return self;
 }
@@ -141,10 +141,10 @@
 + (id)stepperWithMinusFile:(NSString *)minusFile plusFile:(NSString *)plusFile
 {
     // Prepare minus for stepper
-    CCSprite *minusSprite   = [CCSprite spriteWithFile:plusFile];
+    CCSprite *minusSprite = [CCSprite spriteWithFile:plusFile];
     
     // Prepare plus for stepper
-    CCSprite *plusSprite    = [CCSprite spriteWithFile:minusFile];
+    CCSprite *plusSprite  = [CCSprite spriteWithFile:minusFile];
     
     return [self stepperWithMinusSprite:minusSprite plusSprite:plusSprite];
 }
@@ -155,35 +155,32 @@
 {
     _wraps = wraps;
     
-    if (_wraps)
-    {
-        _minusLabel.color   = CCControlStepperLabelColorEnabled;
-        _plusLabel.color    = CCControlStepperLabelColorEnabled;
+    if (_wraps) {
+        _minusLabel.color = CCControlStepperLabelColorEnabled;
+        _plusLabel.color  = CCControlStepperLabelColorEnabled;
     }
     
-    self.value  = _value;
+    self.value = _value;
 }
 
 - (void)setMinimumValue:(double)minimumValue
 {
-    if (minimumValue >= _maximumValue)
-    {
+    if (minimumValue >= _maximumValue) {
         @throw [NSException exceptionWithName:NSInvalidArgumentException reason:@"Must be numerically less than maximumValue." userInfo:nil];
     }
     
-    _minimumValue   = minimumValue;
-    self.value      = _value;
+    _minimumValue = minimumValue;
+    self.value    = _value;
 }
 
 - (void)setMaximumValue:(double)maximumValue
 {
-    if (maximumValue <= _minimumValue)
-    {
+    if (maximumValue <= _minimumValue) {
         @throw [NSException exceptionWithName:NSInvalidArgumentException reason:@"Must be numerically greater than minimumValue." userInfo:nil];
     }
     
-    _maximumValue   = maximumValue;
-    self.value      = _value;
+    _maximumValue = maximumValue;
+    self.value    = _value;
 }
 
 - (void)setValue:(double)value
@@ -193,12 +190,11 @@
 
 - (void)setStepValue:(double)stepValue
 {
-    if (stepValue <= 0)
-    {
-        @throw [NSException exceptionWithName:NSInvalidArgumentException reason:@"Must be numerically greater than 0." userInfo:nil];  
+    if (stepValue <= 0) {
+        @throw [NSException exceptionWithName:NSInvalidArgumentException reason:@"Must be numerically greater than 0." userInfo:nil];
     }
     
-    _stepValue  = stepValue;
+    _stepValue = stepValue;
 }
 
 #pragma mark -
@@ -206,31 +202,28 @@
 
 - (void)setValue:(double)value sendingEvent:(BOOL)send
 {
-    if (value < _minimumValue)
-    {
+    if (value < _minimumValue) {
         value = _wraps ? _maximumValue : _minimumValue;
-    } else if (value > _maximumValue)
-    {
+    }
+    else if (value > _maximumValue) {
         value = _wraps ? _minimumValue : _maximumValue;
     }
     
     _value = value;
     
-    if (!_wraps)
-    {
-        _minusLabel.color   = (value == _minimumValue) ? CCControlStepperLabelColorDisabled : CCControlStepperLabelColorEnabled;
-        _plusLabel.color    = (value == _maximumValue) ? CCControlStepperLabelColorDisabled : CCControlStepperLabelColorEnabled;
+    if (!_wraps) {
+        _minusLabel.color = (value == _minimumValue) ? CCControlStepperLabelColorDisabled : CCControlStepperLabelColorEnabled;
+        _plusLabel.color  = (value == _maximumValue) ? CCControlStepperLabelColorDisabled : CCControlStepperLabelColorEnabled;
     }
     
-    if (send)
-    {
+    if (send) {
         [self sendActionsForControlEvents:CCControlEventValueChanged];
     }
 }
 
 - (void)startAutorepeat
 {
-    _autorepeatCount    = -1;
+    _autorepeatCount = -1;
     
     [self schedule:@selector(update:) interval:kAutorepeatDeltaTime repeat:kCCRepeatForever delay:kAutorepeatDeltaTime * 3];
 }
@@ -245,14 +238,14 @@
 {
     _autorepeatCount++;
     
-    if ((_autorepeatCount < kAutorepeatIncreaseTimeIncrement) && (_autorepeatCount % 3) != 0)
+    if ((_autorepeatCount < kAutorepeatIncreaseTimeIncrement) && (_autorepeatCount % 3) != 0) {
         return;
+    }
     
-    if (_touchedPart == kCCControlStepperPartMinus)
-    {
+    if (_touchedPart == kCCControlStepperPartMinus) {
         [self setValue:(_value - _stepValue) sendingEvent:_continuous];
-    } else if (_touchedPart == kCCControlStepperPartPlus)
-    {
+    }
+    else if (_touchedPart == kCCControlStepperPartPlus) {
         [self setValue:(_value + _stepValue) sendingEvent:_continuous];
     }
 }
@@ -262,25 +255,24 @@
 - (void)updateLayoutUsingTouchLocation:(CGPoint)location
 {
     if (location.x < _minusSprite.contentSize.width
-        && _value > _minimumValue)
-    {
-        _touchedPart        = kCCControlStepperPartMinus;
+        && _value > _minimumValue) {
+        _touchedPart = kCCControlStepperPartMinus;
         
-        _minusSprite.color  = _pushedTintColor;
-        _plusSprite.color   = ccWHITE;
-    } else if (location.x >= _minusSprite.contentSize.width
-               && _value < _maximumValue)
-    {
-        _touchedPart        = kCCControlStepperPartPlus;
+        _minusSprite.color = _pushedTintColor;
+        _plusSprite.color  = ccWHITE;
+    }
+    else if (location.x >= _minusSprite.contentSize.width
+               && _value < _maximumValue) {
+        _touchedPart = kCCControlStepperPartPlus;
         
-        _minusSprite.color  = ccWHITE;
-        _plusSprite.color   = _pushedTintColor;
-    } else
-    {
-        _touchedPart        = kCCControlStepperPartNone;
+        _minusSprite.color = ccWHITE;
+        _plusSprite.color  = _pushedTintColor;
+    }
+    else {
+        _touchedPart = kCCControlStepperPartNone;
         
-        _minusSprite.color  = ccWHITE;
-        _plusSprite.color   = ccWHITE;
+        _minusSprite.color = ccWHITE;
+        _plusSprite.color  = ccWHITE;
     }
 }
 
@@ -291,16 +283,16 @@
     if (![self isTouchInside:touch]
         || ![self isEnabled]
         || ![self visible]
-        || ![self hasVisibleParents])
+        || ![self hasVisibleParents]) {
         return NO;
+    }
     
-    CGPoint location    = [self touchLocation:touch];
+    CGPoint location = [self touchLocation:touch];
     [self updateLayoutUsingTouchLocation:location];
     
     _touchInsideFlag = YES;
     
-    if (_autorepeat)
-    {
+    if (_autorepeat) {
         [self startAutorepeat];
     }
     
@@ -309,31 +301,27 @@
 
 - (void)ccTouchMoved:(UITouch *)touch withEvent:(UIEvent *)event
 {
-    if ([self isTouchInside:touch])
-    {
-        CGPoint location    = [self touchLocation:touch];
+    if ([self isTouchInside:touch]) {
+        CGPoint location = [self touchLocation:touch];
         [self updateLayoutUsingTouchLocation:location];
         
-        if (!_touchInsideFlag)
-        {
-            _touchInsideFlag    = YES;
+        if (!_touchInsideFlag) {
+            _touchInsideFlag = YES;
             
-            if (_autorepeat)
-            {
+            if (_autorepeat) {
                 [self startAutorepeat];
             }
         }
-    } else
-    {
-        _touchInsideFlag    = NO;
+    }
+    else {
+        _touchInsideFlag = NO;
         
-        _touchedPart        = kCCControlStepperPartNone;
+        _touchedPart = kCCControlStepperPartNone;
         
-        _minusSprite.color  = ccWHITE;
-        _plusSprite.color   = ccWHITE;
+        _minusSprite.color = ccWHITE;
+        _plusSprite.color  = ccWHITE;
         
-        if (_autorepeat)
-        {
+        if (_autorepeat) {
             [self stopAutorepeat];
         }
     }
@@ -344,14 +332,12 @@
     _minusSprite.color  = ccWHITE;
     _plusSprite.color   = ccWHITE;
     
-    if (_autorepeat)
-    {
+    if (_autorepeat) {
         [self stopAutorepeat];
     }
     
-    if ([self isTouchInside:touch])
-    {
-        CGPoint location    = [self touchLocation:touch];
+    if ([self isTouchInside:touch]) {
+        CGPoint location = [self touchLocation:touch];
         
         self.value += (location.x < _minusSprite.contentSize.width) ? - _stepValue : _stepValue;
     }
@@ -364,17 +350,17 @@
     if (![self isMouseInside:event]
         || ![self isEnabled]
         || ![self visible]
-        || ![self hasVisibleParents])
+        || ![self hasVisibleParents]) {
         return NO;
+    }
     
-    CGPoint location    = [self eventLocation:event];
+    CGPoint location = [self eventLocation:event];
     [self updateLayoutUsingTouchLocation:location];
     
-    _touchInsideFlag    = YES;
-    self.selected       = YES;
+    _touchInsideFlag = YES;
+    self.selected    = YES;
     
-    if (_autorepeat)
-    {
+    if (_autorepeat) {
         [self startAutorepeat];
     }
     
@@ -383,34 +369,31 @@
 
 - (BOOL)ccMouseDragged:(NSEvent *)event
 {
-    if (![self isSelected])
+    if (![self isSelected]) {
         return NO;
+    }
     
-    if ([self isMouseInside:event])
-    {
-        CGPoint location    = [self eventLocation:event];
+    if ([self isMouseInside:event]) {
+        CGPoint location = [self eventLocation:event];
         [self updateLayoutUsingTouchLocation:location];
         
-        if (!_touchInsideFlag)
-        {
-            _touchInsideFlag    = YES;
+        if (!_touchInsideFlag) {
+            _touchInsideFlag = YES;
             
-            if (_autorepeat)
-            {
+            if (_autorepeat) {
                 [self startAutorepeat];
             }
         }
-    } else
-    {
-        _touchInsideFlag    = NO;
+    }
+    else {
+        _touchInsideFlag = NO;
         
-        _touchedPart        = kCCControlStepperPartNone;
+        _touchedPart = kCCControlStepperPartNone;
         
-        _minusSprite.color  = ccWHITE;
-        _plusSprite.color   = ccWHITE;
+        _minusSprite.color = ccWHITE;
+        _plusSprite.color  = ccWHITE;
         
-        if (_autorepeat)
-        {
+        if (_autorepeat) {
             [self stopAutorepeat];
         }
     }
@@ -420,21 +403,20 @@
 
 - (BOOL)ccMouseUp:(NSEvent *)event
 {
-    if (![self isSelected])
+    if (![self isSelected]) {
         return NO;
+    }
     
-    self.selected       = NO;
-    _minusSprite.color  = ccWHITE;
-    _plusSprite.color   = ccWHITE;
+    self.selected      = NO;
+    _minusSprite.color = ccWHITE;
+    _plusSprite.color  = ccWHITE;
     
-    if (_autorepeat)
-    {
+    if (_autorepeat) {
         [self stopAutorepeat];
     }
     
-    if ([self isMouseInside:event])
-    {
-        CGPoint location    = [self eventLocation:event];
+    if ([self isMouseInside:event]) {
+        CGPoint location = [self eventLocation:event];
         
         self.value += (location.x < _minusSprite.contentSize.width) ? - _stepValue : _stepValue;
     }

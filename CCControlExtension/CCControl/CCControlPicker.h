@@ -1,7 +1,7 @@
 /*
  * CCControlPicker.h
  *
- * Copyright 2013 Yannick Loriot. All rights reserved.
+ * Copyright 2013-present Yannick Loriot. All rights reserved.
  * http://yannickloriot.com
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy

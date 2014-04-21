@@ -1,7 +1,7 @@
 /*
  * CCControlColourPicker.h
  *
- * Copyright 2012 Stewart Hamilton-Arrandale.
+ * Copyright 2012-present Stewart Hamilton-Arrandale.
  * http://creativewax.co.uk
  *
  * Modified in 2012/2013 by Yannick Loriot.
@@ -58,7 +58,7 @@ typedef enum
     CCControlColourPickerArrowDirection _arrowDirection;
     
 @protected
-    HSV                                 _hsv;
+    HSV _hsv;
     
     CCControlSaturationBrightnessPicker *_colourPicker;
     CCControlHuePicker                  *_huePicker;

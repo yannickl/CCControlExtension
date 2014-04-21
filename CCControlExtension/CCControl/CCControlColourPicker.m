@@ -1,22 +1,22 @@
 /*
  * CCControlColourPicker.m
  *
- * Copyright 2012 Stewart Hamilton-Arrandale.
+ * Copyright 2012-present Stewart Hamilton-Arrandale.
  * http://creativewax.co.uk
  *
  * Modified in 2012/2013 by Yannick Loriot.
  * http://yannickloriot.com
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -100,10 +100,10 @@
 @synthesize arrowDirection  = _arrowDirection;
 
 - (void)dealloc
-{    
-    [_huePicker     removeFromParentAndCleanup:YES];
-    [_colourPicker  removeFromParentAndCleanup:YES];
-
+{
+    [_huePicker    removeFromParentAndCleanup:YES];
+    [_colourPicker removeFromParentAndCleanup:YES];
+    
     SAFE_ARC_RELEASE(_huePicker);
     SAFE_ARC_RELEASE(_colourPicker);
     SAFE_ARC_RELEASE(_arrow);
@@ -123,28 +123,27 @@
 
 - (id)initWithHueFile:(NSString *)hueBackgroundFile tintBackgroundFile:(NSString *)tintBackgroundFile tintOverlayFile:(NSString *)tintOverlayFile pickerFile:(NSString *)pickerFile arrowFile:(NSString *)arrowFile
 {
-    if ((self = [super init]))
-	{
-        NSAssert(hueBackgroundFile,     @"Hue background must be not nil");
-        NSAssert(tintBackgroundFile,    @"Tint background sprite must be not nil");
-        NSAssert(tintOverlayFile,       @"Tint overlay must be not nil");
-        NSAssert(pickerFile,            @"Picker must be not nil");
+    if ((self = [super init])) {
+        NSAssert(hueBackgroundFile,  @"Hue background must be not nil");
+        NSAssert(tintBackgroundFile, @"Tint background sprite must be not nil");
+        NSAssert(tintOverlayFile,    @"Tint overlay must be not nil");
+        NSAssert(pickerFile,         @"Picker must be not nil");
         
         // Init the arrow direction
-        _arrowDirection                 = CCControlColourPickerArrowDirectionRight;
+        _arrowDirection = CCControlColourPickerArrowDirectionRight;
         
         // Init default color
-        _hsv.h                          = 0;
-        _hsv.s                          = 0;
-        _hsv.v                          = 0;
+        _hsv.h = 0;
+        _hsv.s = 0;
+        _hsv.v = 0;
         
         // Setup panels
-        _colourPicker                   = [[CCControlSaturationBrightnessPicker alloc] initWithBackgroundFile:tintBackgroundFile
-                                                                                                  overlayFile:tintOverlayFile
-                                                                                                   pickerFile:pickerFile];
-        _huePicker                      = [[CCControlHuePicker alloc] initWithBackgroundFile:hueBackgroundFile
-                                                                                  pickerFile:pickerFile
-                                                                           disableZoneLength:(_colourPicker.contentSize.width / 2)];
+        _colourPicker = [[CCControlSaturationBrightnessPicker alloc] initWithBackgroundFile:tintBackgroundFile
+                                                                                overlayFile:tintOverlayFile
+                                                                                 pickerFile:pickerFile];
+        _huePicker    = [[CCControlHuePicker alloc] initWithBackgroundFile:hueBackgroundFile
+                                                                pickerFile:pickerFile
+                                                         disableZoneLength:(_colourPicker.contentSize.width / 2)];
         
         // Setup events
 		[_huePicker addTarget:self action:@selector(huePickerValueChanged:) forControlEvents:CCControlEventValueChanged];
@@ -160,9 +159,8 @@
         [self setContentSize:[_huePicker contentSize]];
         
         // Add the arrow
-        if (arrowFile)
-        {
-            self.arrow                  = [CCSprite spriteWithFile:arrowFile];
+        if (arrowFile) {
+            self.arrow = [CCSprite spriteWithFile:arrowFile];
             [self addChild:_arrow z:0];
         }
 	}
@@ -178,33 +176,34 @@
 
 - (void)setColor:(ccColor3B)color
 {
-    _color      = color;
+    _color = color;
     
     RGBA rgba;
-    rgba.r      = color.r / 255.0f;
-    rgba.g      = color.g / 255.0f;
-    rgba.b      = color.b / 255.0f;
-    rgba.a      = 1.0f;
+    rgba.r = color.r / 255.0f;
+    rgba.g = color.g / 255.0f;
+    rgba.b = color.b / 255.0f;
+    rgba.a = 1.0f;
     
-    _hsv        = [CCColourUtils HSVfromRGB:rgba];
-
+    _hsv = [CCColourUtils HSVfromRGB:rgba];
+    
     [self updateHueAndControlPicker];
 }
 
 - (void)setEnabled:(BOOL)enabled
 {
-    super.enabled           = enabled;
+    super.enabled = enabled;
     
-    _huePicker.enabled      = enabled;
-    _colourPicker.enabled   = enabled;
+    _huePicker.enabled    = enabled;
+    _colourPicker.enabled = enabled;
 }
 
 - (void)setArrow:(CCSprite *)arrow
 {
-    if (_arrow)
+    if (_arrow) {
         SAFE_ARC_RELEASE(_arrow);
+    }
     
-    _arrow  = SAFE_ARC_RETAIN(arrow);
+    _arrow = SAFE_ARC_RETAIN(arrow);
     
     [self updateArrow];
 }
@@ -221,14 +220,14 @@
 
 - (void)updateArrow
 {
-    if (!_arrow)
+    if (!_arrow) {
         return;
+    }
     
-    CGSize arrowSize    = [_arrow contentSize];
-    CGSize hueSize      = [_huePicker contentSize];
+    CGSize arrowSize = [_arrow contentSize];
+    CGSize hueSize   = [_huePicker contentSize];
     
-    switch (_arrowDirection)
-    {
+    switch (_arrowDirection) {
         case CCControlColourPickerArrowDirectionTop:
             _arrow.rotation = 270;
             _arrow.position = ccp(0, hueSize.height / 2 + arrowSize.width / 2 - 3);
@@ -271,11 +270,11 @@
 
 - (void)huePickerValueChanged:(CCControlHuePicker *)sender
 {
-    _hsv.h      = sender.hue;
-
+    _hsv.h = sender.hue;
+    
     // Update the value
-    RGBA rgb    = [CCColourUtils RGBfromHSV:_hsv];
-    _color      = ccc3(rgb.r * 255.0f, rgb.g * 255.0f, rgb.b * 255.0f);
+    RGBA rgb = [CCColourUtils RGBfromHSV:_hsv];
+    _color   = ccc3(rgb.r * 255.0f, rgb.g * 255.0f, rgb.b * 255.0f);
     
 	// Send CCControl callback
 	[self sendActionsForControlEvents:CCControlEventValueChanged];
@@ -284,12 +283,12 @@
 
 - (void)colourPickerValueChanged:(CCControlSaturationBrightnessPicker *)sender
 {
-    _hsv.s      = sender.saturation;
-    _hsv.v      = sender.brightness;
-
+    _hsv.s = sender.saturation;
+    _hsv.v = sender.brightness;
+    
     // Update the value
-    RGBA rgb    = [CCColourUtils RGBfromHSV:_hsv];
-    _color      = ccc3(rgb.r * 255.0f, rgb.g * 255.0f, rgb.b * 255.0f);
+    RGBA rgb = [CCColourUtils RGBfromHSV:_hsv];
+    _color   = ccc3(rgb.r * 255.0f, rgb.g * 255.0f, rgb.b * 255.0f);
     
     // Send CCControl callback
     [self sendActionsForControlEvents:CCControlEventValueChanged];
@@ -320,11 +319,11 @@
 #pragma mark - CCControlHuePicker Implementation
 
 @implementation CCControlHuePicker
-@synthesize background      = _background;
-@synthesize picker          = _picker;
-@synthesize length          = _length;
-@synthesize hue             = _hue;
-@synthesize huePercentage   = _huePercentage;
+@synthesize background    = _background;
+@synthesize picker        = _picker;
+@synthesize length        = _length;
+@synthesize hue           = _hue;
+@synthesize huePercentage = _huePercentage;
 
 - (void)dealloc
 {
@@ -338,28 +337,27 @@
 
 - (id)initWithBackgroundFile:(NSString *)backgroundFile pickerFile:(NSString *)pickerFile disableZoneLength:(double)length
 {
-    if ((self = [super init]))
-    {
-        self.background     = [CCSprite spriteWithFile:backgroundFile];
+    if ((self = [super init])) {
+        self.background = [CCSprite spriteWithFile:backgroundFile];
         [self addChild:_background];
         
-        self.picker         = [CCSprite spriteWithFile:pickerFile];
+        self.picker = [CCSprite spriteWithFile:pickerFile];
         [self addChild:_picker];
         
-        _length             = length;
+        _length = length;
         
         // Sets the default value
-        _hue                = 0.0f;
-        _huePercentage      = 0.0f;
+        _hue           = 0.0f;
+        _huePercentage = 0.0f;
         
-        self.contentSize    = [_background contentSize];
+        self.contentSize = [_background contentSize];
     }
     return self;
 }
 
 - (void)setHue:(CGFloat)hueValue
 {
-    _hue                = hueValue;
+    _hue = hueValue;
     
     // Set the position of the picker to the correct hue
     // We need to divide it by 360 as its taken as an angle in degrees
@@ -371,25 +369,25 @@
 
 - (void)setHuePercentage:(CGFloat)hueValueInPercent
 {
-    _huePercentage          = hueValueInPercent;
-    _hue                    = hueValueInPercent * 360.0f;
+    _huePercentage = hueValueInPercent;
+    _hue           = hueValueInPercent * 360.0f;
     
     // Work out the limit to the distance of the picker when moving around the hue bar
-    float limit             = _length + (((self.contentSize.width / 2) - _length) / 2) - 1;
+    float limit = _length + (((self.contentSize.width / 2) - _length) / 2) - 1;
     
     // Update angle
-    float angleDeg          = _huePercentage * 360.0f - 180.0f;
-    float angle             = CC_DEGREES_TO_RADIANS(angleDeg);
+    float angleDeg = _huePercentage * 360.0f - 180.0f;
+    float angle    = CC_DEGREES_TO_RADIANS(angleDeg);
     
     // Set new position of the picker
-    float x                 = limit * cosf(angle);
-    float y                 = limit * sinf(angle);
-    _picker.position        = ccp(x, y);
+    float x          = limit * cosf(angle);
+    float y          = limit * sinf(angle);
+    _picker.position = ccp(x, y);
 }
 
 - (void)setEnabled:(BOOL)enabled
 {
-    super.enabled   = enabled;
+    super.enabled = enabled;
     
     _picker.opacity = enabled ? 255.0f : 128.0f;
 }
@@ -400,15 +398,15 @@
 - (void)updatePickerPosition:(CGPoint)location
 {
     // Work out the distance difference between the location and center
-    float dx                = location.x;
-    float dy                = location.y;
+    float dx = location.x;
+    float dy = location.y;
     
     // Update angle by using the direction of the location
-    float angle             = atan2f(dy, dx);
-    float angleDeg          = CC_RADIANS_TO_DEGREES(angle) + 180.0f;
+    float angle    = atan2f(dy, dx);
+    float angleDeg = CC_RADIANS_TO_DEGREES(angle) + 180.0f;
     
     // Use the position / picker width to determin the percentage the dragger is at
-    self.hue                = angleDeg;
+    self.hue = angleDeg;
     
 	// Send CCControl callback
     [self sendActionsForControlEvents:CCControlEventValueChanged];
@@ -417,13 +415,12 @@
 - (BOOL)checkPickerPosition:(CGPoint)location
 {
     // Compute the distance between the current location and the center
-    double distance     = sqrt(pow(location.x, 2) + pow(location.y, 2));
-    int max_distance    = self.contentSize.width / 2;
-    int min_distance    = _length;
+    double distance  = sqrt(pow(location.x, 2) + pow(location.y, 2));
+    int max_distance = self.contentSize.width / 2;
+    int min_distance = _length;
     
     // Check that the touch location is within the bounding rectangle before sending updates
-    if (max_distance > distance && distance > min_distance)
-    {
+    if (max_distance > distance && distance > min_distance) {
         [self updatePickerPosition:location];
         
         return YES;
@@ -440,11 +437,12 @@
 {
     if (![self isEnabled]
         || ![self visible]
-        || ![self hasVisibleParents])
+        || ![self hasVisibleParents]) {
         return NO;
+    }
     
     // Get the touch location
-    CGPoint touchLocation   = [self touchLocation:touch];
+    CGPoint touchLocation = [self touchLocation:touch];
 	
     // Check the touch position on the picker
     return [self checkPickerPosition:touchLocation];
@@ -453,7 +451,7 @@
 - (void)ccTouchMoved:(UITouch *)touch withEvent:(UIEvent *)event
 {
     // Get the touch location
-    CGPoint touchLocation   = [self touchLocation:touch];
+    CGPoint touchLocation = [self touchLocation:touch];
 	[self updatePickerPosition:touchLocation];
 }
 
@@ -463,13 +461,14 @@
 {
     if (![self isEnabled]
         || ![self visible]
-        || ![self hasVisibleParents])
+        || ![self hasVisibleParents]) {
         return NO;
+    }
     
     // Get the event location
-	CGPoint eventLocation   = [self eventLocation:event];
+	CGPoint eventLocation = [self eventLocation:event];
     // Check the touch position on the picker
-    self.selected           = [self checkPickerPosition:eventLocation];
+    self.selected         = [self checkPickerPosition:eventLocation];
     
     return [self isSelected];
 }
@@ -477,11 +476,12 @@
 - (BOOL)ccMouseDragged:(NSEvent *)event
 {
     if (![self isEnabled]
-        || ![self isSelected])
+        || ![self isSelected]) {
         return NO;
+    }
     
 	// Get the event location
-	CGPoint eventLocation   = [self eventLocation:event];
+	CGPoint eventLocation = [self eventLocation:event];
 	[self updatePickerPosition:eventLocation];
     
     return YES;
@@ -501,10 +501,10 @@
 #pragma mark - CCControlSaturationBrightnessPicker Implementation
 
 @implementation CCControlSaturationBrightnessPicker
-@synthesize background  = _background;
-@synthesize picker      = _picker;
-@synthesize saturation  = _saturation;
-@synthesize brightness  = _brightness;
+@synthesize background = _background;
+@synthesize picker     = _picker;
+@synthesize saturation = _saturation;
+@synthesize brightness = _brightness;
 
 - (void)dealloc
 {
@@ -518,24 +518,23 @@
 
 - (id)initWithBackgroundFile:(NSString *)backgroundFile overlayFile:(NSString *)overlayFile pickerFile:(NSString *)pickerFile
 {
-    if ((self = [super init]))
-    {
+    if ((self = [super init])) {
         self.background = [CCSprite spriteWithFile:backgroundFile];
         [self addChild:_background];
         
         [self addChild:[CCSprite spriteWithFile:overlayFile] z:1];
         
-        self.picker     = [CCSprite spriteWithFile:pickerFile];
+        self.picker = [CCSprite spriteWithFile:pickerFile];
         [self addChild:_picker z:2];
         
-        self.contentSize    = [_background contentSize];
+        self.contentSize = [_background contentSize];
     }
     return self;
 }
 
 - (void)setEnabled:(BOOL)enabled
 {
-    super.enabled   = enabled;
+    super.enabled = enabled;
     
     _picker.opacity = enabled ? 255.0f : 128.0f;
 }
@@ -545,13 +544,13 @@
 - (void)updateWithHSV:(HSV)hsv
 {
     HSV hsvTemp;
-    hsvTemp.s           = 1;
-    hsvTemp.h           = hsv.h;
-    hsvTemp.v           = 1;
+    hsvTemp.s = 1;
+    hsvTemp.h = hsv.h;
+    hsvTemp.v = 1;
     
-    RGBA rgb            = [CCColourUtils RGBfromHSV:hsvTemp];
+    RGBA rgb = [CCColourUtils RGBfromHSV:hsvTemp];
     
-    _background.color   = ccc3(rgb.r * 255.0f, rgb.g * 255.0f, rgb.b * 255.0f);
+    _background.color = ccc3(rgb.r * 255.0f, rgb.g * 255.0f, rgb.b * 255.0f);
 }
 
 - (void)updateDraggerWithHSV:(HSV)hsv
@@ -572,38 +571,46 @@
     static const int boxPos = 20;
     
     // Work out the distance difference between the location and center
-    float dx                = pickerPosition.x;
-    float dy                = pickerPosition.y;
-    float dist              = sqrtf(dx * dx + dy * dy);
+    float dx   = pickerPosition.x;
+    float dy   = pickerPosition.y;
+    float dist = sqrtf(dx * dx + dy * dy);
     
     // Update angle by using the direction of the location
-    float angle             = atan2f(dy, dx);
+    float angle = atan2f(dy, dx);
     
     // Set the limit to the picker movement within the colour picker
-    float limit             = self.contentSize.width * 0.5f;
+    float limit = self.contentSize.width * 0.5f;
     
     // Check distance doesn't exceed the bounds of the circle
-    if (dist > limit)
-    {
-        pickerPosition.x    = limit * cosf(angle);
-        pickerPosition.y    = limit * sinf(angle);
+    if (dist > limit) {
+        pickerPosition.x = limit * cosf(angle);
+        pickerPosition.y = limit * sinf(angle);
     }
     
     // Set the position of the dragger
-    _picker.position        = pickerPosition;
+    _picker.position = pickerPosition;
     
     // Compute the box size
-    float boxSize           = self.contentSize.width - (boxPos * 2);
+    float boxSize = self.contentSize.width - (boxPos * 2);
     
     // Clamp the position within the virtual box for colour selection
-    if (pickerPosition.x < -limit + boxPos)         pickerPosition.x = -limit + boxPos;
-    else if (pickerPosition.x > limit - boxPos - 1) pickerPosition.x = limit - boxPos - 1;
-    if (pickerPosition.y < -limit + boxPos)         pickerPosition.y = -limit + boxPos;
-    else if (pickerPosition.y > limit - boxPos)     pickerPosition.y = limit - boxPos;
+    if (pickerPosition.x < -limit + boxPos) {
+        pickerPosition.x = -limit + boxPos;
+    }
+    else if (pickerPosition.x > limit - boxPos - 1) {
+        pickerPosition.x = limit - boxPos - 1;
+    }
+    
+    if (pickerPosition.y < -limit + boxPos) {
+        pickerPosition.y = -limit + boxPos;
+    }
+    else if (pickerPosition.y > limit - boxPos) {
+        pickerPosition.y = limit - boxPos;
+    }
     
     // Use the position / picker width to determin the percentage the dragger is at
-    self.saturation         = 1 - ABS((-limit + boxPos - pickerPosition.x) / boxSize);
-    self.brightness         = ABS((-limit + boxPos - pickerPosition.y) / boxSize);
+    self.saturation = 1 - ABS((-limit + boxPos - pickerPosition.x) / boxSize);
+    self.brightness = ABS((-limit + boxPos - pickerPosition.y) / boxSize);
 }
 
 - (BOOL)checkPickerPosition:(CGPoint)location
@@ -611,17 +618,16 @@
     // Clamp the position of the icon within the circle
     
     // Get the center point of the bkgd image
-    float centerX   = 0;
-    float centerY   = 0;
+    float centerX = 0;
+    float centerY = 0;
     
     // Work out the distance difference between the location and center
-    float dx        = location.x - centerX;
-    float dy        = location.y - centerY;
-    float dist      = sqrtf(dx*dx + dy*dy);
+    float dx   = location.x - centerX;
+    float dy   = location.y - centerY;
+    float dist = sqrtf(dx*dx + dy*dy);
     
     // Check that the touch location is within the bounding rectangle before sending updates
-	if (dist <= self.contentSize.width / 2)
-    {
+	if (dist <= self.contentSize.width / 2) {
         [self updatePickerPosition:location];
         
         // Send CCControl callback
@@ -640,11 +646,12 @@
 {
     if (![self isEnabled]
         || ![self visible]
-        || ![self hasVisibleParents])
+        || ![self hasVisibleParents]) {
         return NO;
+    }
     
     // Get the touch location
-    CGPoint touchLocation   = [self touchLocation:touch];
+    CGPoint touchLocation = [self touchLocation:touch];
 	
     // check the touch position on the picker
     return [self checkPickerPosition:touchLocation];
@@ -653,7 +660,7 @@
 -(void)ccTouchMoved:(UITouch *)touch withEvent:(UIEvent *)event
 {
     // Get the touch location
-    CGPoint touchLocation   = [self touchLocation:touch];
+    CGPoint touchLocation = [self touchLocation:touch];
     [self updatePickerPosition:touchLocation];
     
     // Send CCControl callback
@@ -666,13 +673,14 @@
 {
     if (![self isEnabled]
         || ![self visible]
-        || ![self hasVisibleParents])
+        || ![self hasVisibleParents]) {
         return NO;
+    }
     
     // Get the event location
-    CGPoint eventLocation   = [self eventLocation:event];
+    CGPoint eventLocation = [self eventLocation:event];
     // Check the touch position on the picker
-    self.selected           = [self checkPickerPosition:eventLocation];
+    self.selected         = [self checkPickerPosition:eventLocation];
     
     return [self isSelected];
 }
@@ -680,11 +688,12 @@
 - (BOOL)ccMouseDragged:(NSEvent *)event
 {
     if (![self isEnabled]
-        || ![self isSelected])
+        || ![self isSelected]) {
         return NO;
+    }
     
     // Get the event location
-    CGPoint eventLocation   = [self eventLocation:event];
+    CGPoint eventLocation = [self eventLocation:event];
 	[self updatePickerPosition:eventLocation];
     
     // Send CCControl callback
@@ -695,7 +704,7 @@
 
 - (BOOL)ccMouseUp:(NSEvent *)event
 {
-    self.selected           = NO;
+    self.selected = NO;
     return NO;
 }
 

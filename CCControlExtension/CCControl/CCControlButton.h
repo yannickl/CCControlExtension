@@ -1,7 +1,7 @@
 /*
  * CCControlButton.h
  *
- * Copyright 2011 Yannick Loriot. All rights reserved.
+ * Copyright 2011-present Yannick Loriot. All rights reserved.
  * http://yannickloriot.com
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -45,9 +45,9 @@
 @interface CCControlButton : CCControl
 {
 @public    
-    BOOL                                    _adjustBackgroundImage;
-    BOOL                                    _zoomOnTouchDown;
-    float                                   _marginLR, _marginTB;
+    BOOL  _adjustBackgroundImage;
+    BOOL  _zoomOnTouchDown;
+    float _marginLR, _marginTB;
     
     NSString                                *_currentTitle;
     ccColor3B                               _currentTitleColor;
@@ -56,13 +56,13 @@
     CGSize                                  _preferredSize;
     
 @protected
-    BOOL                                    _pushed;
+    BOOL _pushed;
     
-    NSMutableDictionary                     *_titleDispatchTable;
-    NSMutableDictionary                     *_titleColorDispatchTable;
-    NSMutableDictionary                     *_titleLabelDispatchTable;
-    NSMutableDictionary                     *_backgroundSpriteDispatchTable;
-    CGPoint                                 _labelAnchorPoint;
+    NSMutableDictionary *_titleDispatchTable;
+    NSMutableDictionary *_titleColorDispatchTable;
+    NSMutableDictionary *_titleLabelDispatchTable;
+    NSMutableDictionary *_backgroundSpriteDispatchTable;
+    CGPoint            _labelAnchorPoint;
 }
 /** Adjust the background image. YES by default. If the property is set to NO, the 
  background will use the preferred size of the background image. */

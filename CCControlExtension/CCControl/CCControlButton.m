@@ -1,7 +1,7 @@
 /*
  * CCControlButton.m
  *
- * Copyright 2011 Yannick Loriot.
+ * Copyright 2011-present Yannick Loriot.
  * http://yannickloriot.com
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -88,48 +88,47 @@ enum
 
 - (id)initWithLabel:(CCNode<CCLabelProtocol,CCRGBAProtocol> *)label backgroundSprite:(CCScale9Sprite *)backgroundsprite
 {
-    if ((self = [super init]))
-    {
+    if ((self = [super init])) {
         NSAssert(label, @"Label must not be nil.");
         NSAssert(backgroundsprite, @"Background sprite must not be nil.");
         NSAssert([backgroundsprite isKindOfClass:[CCScale9Sprite class]], @"The background sprite must be kind of 'CCScale9Sprite' class.");
         
-        self.pushed                         = NO;
-        self.zoomOnTouchDown                = YES;
+        self.pushed          = NO;
+        self.zoomOnTouchDown = YES;
         
         // Adjust the background image by default
-        self.adjustBackgroundImage          = YES;
-        self.preferredSize                  = CGSizeZero;
+        self.adjustBackgroundImage = YES;
+        self.preferredSize         = CGSizeZero;
         
         // Set the default anchor point
-        self.ignoreAnchorPointForPosition   = NO;
-        self.anchorPoint                    = ccp (0.5f, 0.5f);
+        self.ignoreAnchorPointForPosition = NO;
+        self.anchorPoint                  = ccp (0.5f, 0.5f);
         
         // Set the nodes    
-        self.titleLabel                     = label;
-        self.backgroundSprite               = backgroundsprite;
+        self.titleLabel       = label;
+        self.backgroundSprite = backgroundsprite;
         
         // Initialize the button state tables
-        self.titleDispatchTable             = [NSMutableDictionary dictionary];
-        self.titleColorDispatchTable        = [NSMutableDictionary dictionary];
-        self.titleLabelDispatchTable        = [NSMutableDictionary dictionary];
-        self.backgroundSpriteDispatchTable  = [NSMutableDictionary dictionary];
+        self.titleDispatchTable            = [NSMutableDictionary dictionary];
+        self.titleColorDispatchTable       = [NSMutableDictionary dictionary];
+        self.titleLabelDispatchTable       = [NSMutableDictionary dictionary];
+        self.backgroundSpriteDispatchTable = [NSMutableDictionary dictionary];
         
         // Set the default color and opacity
-        self.color                          = ccc3(255.0f, 255.0f, 255.0f);
-        self.opacity                        = 255.0f;
-        self.opacityModifyRGB               = YES;
+        self.color            = ccc3(255.0f, 255.0f, 255.0f);
+        self.opacity          = 255.0f;
+        self.opacityModifyRGB = YES;
         
         // Initialize the dispatch table
-        [self setTitle:[label string]               forState:CCControlStateNormal];
-        [self setTitleColor:[label color]           forState:CCControlStateNormal];
-        [self setTitleLabel:label                   forState:CCControlStateNormal];
-        [self setBackgroundSprite:backgroundsprite  forState:CCControlStateNormal];
+        [self setTitle:[label string]              forState:CCControlStateNormal];
+        [self setTitleColor:[label color]          forState:CCControlStateNormal];
+        [self setTitleLabel:label                  forState:CCControlStateNormal];
+        [self setBackgroundSprite:backgroundsprite forState:CCControlStateNormal];
         
-        self.labelAnchorPoint               = ccp (0.5f, 0.5f);
+        self.labelAnchorPoint = ccp (0.5f, 0.5f);
         
-        self.marginLR                       = CCControlButtonMarginLR;
-        self.marginTB                       = CCControlButtonMarginTB;
+        self.marginLR = CCControlButtonMarginLR;
+        self.marginTB = CCControlButtonMarginTB;
         
         // Layout update
         [self needsLayout];
@@ -174,15 +173,14 @@ enum
     _highlighted = highlighted;
     
     CCAction *action = [self getActionByTag:kZoomActionTag];
-    if (action)
-    {
+    
+    if (action) {
         [self stopAction:action];
     }
     
     [self needsLayout];
     
-    if (_zoomOnTouchDown)
-    {
+    if (_zoomOnTouchDown) {
         float scaleValue     = (highlighted && [self isEnabled] && ![self isSelected]) ? 1.1f : 1.0f;
         CCAction *zoomAction = [CCScaleTo actionWithDuration:0.05f scale:scaleValue];
         zoomAction.tag       = kZoomActionTag;
@@ -199,16 +197,13 @@ enum
 
 - (void)setPreferredSize:(CGSize)preferredSize
 {
-    if (preferredSize.width == 0 && preferredSize.height == 0)
-    {
+    if (preferredSize.width == 0 && preferredSize.height == 0) {
         _adjustBackgroundImage = YES;
     }
-    else
-    {
+    else {
         _adjustBackgroundImage = NO;
     
-        for (id key in _backgroundSpriteDispatchTable)
-        {
+        for (id key in _backgroundSpriteDispatchTable) {
             CCScale9Sprite* sprite = [_backgroundSpriteDispatchTable objectForKey:key];
             [sprite setPreferredSize:preferredSize];
         }
@@ -240,8 +235,7 @@ enum
     
     NSString *title = [_titleDispatchTable objectForKey:stateNumber];
     
-    if (title)
-    {
+    if (title) {
         return title;
     }
     
@@ -254,14 +248,12 @@ enum
     
     [_titleDispatchTable removeObjectForKey:stateNumber];
     
-    if (title)
-    {
+    if (title) {
         [_titleDispatchTable setObject:title forKey:stateNumber];
     }
     
     // If the current state if equal to the given state we update the layout
-    if (_state == state)
-    {
+    if (_state == state) {
         [self needsLayout];
     }
 }
@@ -273,8 +265,7 @@ enum
     ccColor3B returnColor;
     NSValue *colorValue = [_titleColorDispatchTable objectForKey:stateNumber];
     
-    if (colorValue)
-    {
+    if (colorValue) {
         [colorValue getValue:&returnColor];
         
         return returnColor;
@@ -296,8 +287,7 @@ enum
     [_titleColorDispatchTable setObject:colorValue forKey:stateNumber];
     
     // If the current state if equal to the given state we update the layout
-    if (_state == state)
-    {
+    if (_state == state) {
         [self needsLayout];
     }
 }
@@ -308,8 +298,7 @@ enum
     
     CCNode<CCLabelProtocol,CCRGBAProtocol> *titleLabel = [_titleLabelDispatchTable objectForKey:stateNumber];
     
-    if (titleLabel)
-    {
+    if (titleLabel) {
         return titleLabel;
     }
     
@@ -321,8 +310,7 @@ enum
     NSNumber *stateNumber = [NSNumber numberWithLong:state];
     
     CCNode<CCLabelProtocol,CCRGBAProtocol> *previousLabel = [_titleLabelDispatchTable objectForKey:stateNumber];
-    if (previousLabel)
-    {
+    if (previousLabel) {
         [self removeChild:previousLabel cleanup:YES];
         [_titleLabelDispatchTable removeObjectForKey:stateNumber];
     }
@@ -333,29 +321,31 @@ enum
     [self addChild:label z:1];
     
     // If the current state if equal to the given state we update the layout
-    if (_state == state)
-    {
+    if (_state == state) {
         [self needsLayout];
     }
 }
 
 - (void)setTitleBMFont:(NSString*)fntFile forState:(CCControlState)state
 {
-    NSString* title = [self titleForState:state];
-    if (!title) title = @"";
+    NSString *title = [self titleForState:state];
+    
+    if (!title) {
+        title = @"";
+    }
     
     [self setTitleLabel:[CCLabelBMFont labelWithString:title fntFile:fntFile] forState:state];
 }
 
 - (NSString *)titleBMFontForState:(CCControlState)state
 {
-    CCNode<CCLabelProtocol>* label = [self titleLabelForState:state];
-    if ([label isKindOfClass:[CCLabelBMFont class]])
-    {
+    CCNode<CCLabelProtocol> *label = [self titleLabelForState:state];
+    
+    if ([label isKindOfClass:[CCLabelBMFont class]]) {
         CCLabelBMFont* bmLabel = (CCLabelBMFont *)label;
         return [bmLabel fntFile];
-    } else
-    {
+    }
+    else {
         return @"";
     }
 }
@@ -363,7 +353,10 @@ enum
 - (void)setTitleTTF:(NSString *)fontName forState:(CCControlState)state
 {
     NSString* title = [self titleForState:state];
-    if (!title) title = @"";
+    
+    if (!title) {
+        title = @"";
+    }
     
     [self setTitleLabel:[CCLabelTTF labelWithString:title fontName:fontName fontSize:12] forState:state];
 }
@@ -371,20 +364,24 @@ enum
 - (NSString *)titleTTFForState:(CCControlState)state
 {
     CCNode<CCLabelProtocol> *label = [self titleLabelForState:state];
-    if (!label) return NULL;
-    if ([label isKindOfClass:[CCLabelTTF class]])
-    {
+    
+    if (!label) {
+       return NULL;
+    }
+    
+    if ([label isKindOfClass:[CCLabelTTF class]]) {
         CCLabelTTF* labelTTF = (CCLabelTTF*)label;
         return [labelTTF fontName];
     }
+    
     return NULL;
 }
 
 - (void)setTitleTTFSize:(float)size forState:(CCControlState)state
 {
-    CCNode<CCLabelProtocol>* label = [self titleLabelForState:state];
-    if (label && [label isKindOfClass:[CCLabelTTF class]])
-    {
+    CCNode<CCLabelProtocol> *label = [self titleLabelForState:state];
+    
+    if (label && [label isKindOfClass:[CCLabelTTF class]]) {
         CCLabelTTF *labelTTF = (CCLabelTTF*)label;
         [labelTTF setFontSize:size];
     }
@@ -393,8 +390,8 @@ enum
 - (float)titleTTFSizeForState:(CCControlState)state
 {
     CCNode<CCLabelProtocol> *label = [self titleLabelForState:state];
-    if (label && [label isKindOfClass:[CCLabelTTF class]])
-    {
+    
+    if (label && [label isKindOfClass:[CCLabelTTF class]]) {
         CCLabelTTF *labelTTF = (CCLabelTTF*)label;
         return [labelTTF fontSize];
     }
@@ -407,8 +404,7 @@ enum
     
     CCScale9Sprite *backgroundSprite = [_backgroundSpriteDispatchTable objectForKey:stateNumber];
     
-    if (backgroundSprite)
-    {
+    if (backgroundSprite) {
         return backgroundSprite;
     }
     
@@ -422,8 +418,8 @@ enum
     NSNumber *stateNumber = [NSNumber numberWithLong:state];
     
     CCScale9Sprite *previousBackgroundSprite = [_backgroundSpriteDispatchTable objectForKey:stateNumber];
-    if (previousBackgroundSprite)
-    {
+    
+    if (previousBackgroundSprite) {
         [self removeChild:previousBackgroundSprite cleanup:YES];
         [_backgroundSpriteDispatchTable removeObjectForKey:stateNumber];
     }
@@ -432,10 +428,8 @@ enum
     [sprite setVisible:NO];
     [self addChild:sprite];
     
-    if (_preferredSize.width != 0 || _preferredSize.height != 0)
-    {
-        if (CGSizeEqualToSize(oldPreferredSize, _preferredSize))
-        {
+    if (_preferredSize.width != 0 || _preferredSize.height != 0) {
+        if (CGSizeEqualToSize(oldPreferredSize, _preferredSize)) {
             // Force update of preferred size
             [sprite setPreferredSize:CGSizeMake(oldPreferredSize.width + 1, oldPreferredSize.height + 1)];
         }
@@ -444,8 +438,7 @@ enum
     }
     
     // If the current state if equal to the given state we update the layout
-    if (_state == state)
-    {
+    if (_state == state) {
         [self needsLayout];
     }
 }
@@ -458,13 +451,13 @@ enum
 
 - (void)setMarginLR:(float)marginLR
 {
-    _marginLR   = marginLR;
+    _marginLR = marginLR;
     [self needsLayout];
 }
 
 - (void)setMarginTB:(float)marginTB
 {
-    _marginTB   = marginTB;
+    _marginTB = marginTB;
     [self needsLayout];
 }
 
@@ -480,18 +473,19 @@ enum
     self.labelAnchorPoint = _labelAnchorPoint;
     
     // Update the label to match with the current state
-    if (_currentTitle)
-    {
+    if (_currentTitle) {
         SAFE_ARC_RELEASE(_currentTitle);
     }
+    
     _currentTitle      = SAFE_ARC_RETAIN([self titleForState:_state]);
     _currentTitleColor = [self titleColorForState:_state];
     
     self.titleLabel = [self titleLabelForState:_state];
-    if (_currentTitle)
-    {
+    
+    if (_currentTitle) {
         _titleLabel.string = _currentTitle;
     }
+    
     _titleLabel.color    = _currentTitleColor;
     _titleLabel.position = ccp (self.contentSize.width / 2, self.contentSize.height / 2);
     
@@ -503,21 +497,19 @@ enum
     CGSize titleLabelSize = [_titleLabel boundingBox].size;
     
     // Adjust the background image if necessary
-    if ([self doesAdjustBackgroundImage])
-    {
+    if ([self doesAdjustBackgroundImage]) {
         // Add the margins
         [_backgroundSprite setContentSize:
          CGSizeMake(titleLabelSize.width + _marginLR * 2, titleLabelSize.height + _marginTB * 2)];
-    } else
-    {
+    }
+    else {
         CGSize preferredSize = [_backgroundSprite preferredSize];
 
-        if (preferredSize.width <= 0)
-        {
+        if (preferredSize.width <= 0) {
             preferredSize.width = titleLabelSize.width;
         }
-        if (preferredSize.height <= 0)
-        {
+        
+        if (preferredSize.height <= 0) {
             preferredSize.height = titleLabelSize.height;
         }
         
@@ -546,8 +538,7 @@ enum
     if (![self isTouchInside:touch]
         || ![self isEnabled]
         || ![self visible]
-        || ![self hasVisibleParents])
-    {
+        || ![self hasVisibleParents]) {
 		return NO;
 	}
     
@@ -564,35 +555,35 @@ enum
 {
     if (![self isEnabled]
         || ![self isPushed]
-        || [self isSelected])
-    {
-        if ([self isHighlighted])
-        {
+        || [self isSelected]) {
+        
+        if ([self isHighlighted]) {
             [self setHighlighted:NO];
         }
+        
         return;
     }
     
     BOOL isTouchMoveInside = [self isTouchInside:touch];
-    if (isTouchMoveInside && ![self isHighlighted])
-    {
+    
+    if (isTouchMoveInside && ![self isHighlighted]) {
         _state = CCControlStateHighlighted;
         
         [self setHighlighted:YES];
         
         [self sendActionsForControlEvents:CCControlEventTouchDragEnter];
-    } else if (isTouchMoveInside && [self isHighlighted])
-    {
+    }
+    else if (isTouchMoveInside && [self isHighlighted]) {
         [self sendActionsForControlEvents:CCControlEventTouchDragInside];
-    } else if (!isTouchMoveInside && [self isHighlighted])
-    {
+    }
+    else if (!isTouchMoveInside && [self isHighlighted]) {
         _state = CCControlStateNormal;
         
         [self setHighlighted:NO];
         
         [self sendActionsForControlEvents:CCControlEventTouchDragExit];
-    } else if (!isTouchMoveInside && ![self isHighlighted])
-    {
+    }
+    else if (!isTouchMoveInside && ![self isHighlighted]) {
         [self sendActionsForControlEvents:CCControlEventTouchDragOutside];
     }
 }
@@ -603,11 +594,10 @@ enum
     _pushed          = NO;
     self.highlighted = NO;
     
-    if ([self isTouchInside:touch])
-    {
+    if ([self isTouchInside:touch]) {
         [self sendActionsForControlEvents:CCControlEventTouchUpInside];
-    } else
-    {
+    }
+    else {
         [self sendActionsForControlEvents:CCControlEventTouchUpOutside];
     }
 }
@@ -627,8 +617,7 @@ enum
 {
     if (![self isMouseInside:event]
         || ![self visible]
-        || ![self hasVisibleParents])
-    {
+        || ![self hasVisibleParents]) {
         return NO;
     }
     
@@ -646,35 +635,35 @@ enum
 {
 	if (![self isEnabled]
         || ![self isPushed]
-        || [self isSelected])
-    {
-        if ([self isHighlighted])
-        {
+        || [self isSelected]) {
+        
+        if ([self isHighlighted]) {
             [self setHighlighted:NO];
         }
+        
         return NO;
     }
     
     BOOL isMouseMoveInside = [self isMouseInside:event];
-    if (isMouseMoveInside && ![self isHighlighted])
-    {
+    
+    if (isMouseMoveInside && ![self isHighlighted]) {
         _state = CCControlStateHighlighted;
         
         [self setHighlighted:YES];
         
         [self sendActionsForControlEvents:CCControlEventTouchDragEnter];
-    } else if (isMouseMoveInside && [self isHighlighted])
-    {
+    }
+    else if (isMouseMoveInside && [self isHighlighted]) {
         [self sendActionsForControlEvents:CCControlEventTouchDragInside];
-    } else if (!isMouseMoveInside && [self isHighlighted])
-    {
+    }
+    else if (!isMouseMoveInside && [self isHighlighted]) {
         _state = CCControlStateNormal;
         
         [self setHighlighted:NO];
         
         [self sendActionsForControlEvents:CCControlEventTouchDragExit];
-    } else if (!isMouseMoveInside && ![self isHighlighted])
-    {
+    }
+    else if (!isMouseMoveInside && ![self isHighlighted]) {
         [self sendActionsForControlEvents:CCControlEventTouchDragOutside];
     }
     
@@ -687,11 +676,10 @@ enum
     _pushed          = NO;
     self.highlighted = NO;
     
-    if ([self isMouseInside:event])
-    {
+    if ([self isMouseInside:event]) {
         [self sendActionsForControlEvents:CCControlEventTouchUpInside];
-    } else
-    {
+    }
+    else {
         [self sendActionsForControlEvents:CCControlEventTouchUpOutside];
     }
     
@@ -703,46 +691,36 @@ enum
 - (void)setValue:(id)value forUndefinedKey:(NSString *)key
 {
     NSArray *chunks = [key componentsSeparatedByString:@"|"];
-    if ([chunks count] == 2)
-    {
-        NSString* keyChunk = [chunks objectAtIndex:0];
-        int state = [[chunks objectAtIndex:1] intValue];
+    
+    if ([chunks count] == 2) {
+        NSString *keyChunk = [chunks objectAtIndex:0];
+        int state          = [[chunks objectAtIndex:1] intValue];
         
-        if ([keyChunk isEqualToString:@"title"])
-        {
+        if ([keyChunk isEqualToString:@"title"]) {
             [self setTitle:value forState:state];
         }
-        else if ([keyChunk isEqualToString:@"backgroundSpriteFrame"])
-        {
+        else if ([keyChunk isEqualToString:@"backgroundSpriteFrame"]) {
             [self setBackgroundSpriteFrame:value forState:state];
         }
-        else if ([keyChunk isEqualToString:@"titleColor"])
-        {
+        else if ([keyChunk isEqualToString:@"titleColor"]) {
             ccColor3B c;
             [value getValue:&c];
             [self setTitleColor:c forState:state];
         }
-        else if ([keyChunk isEqualToString:@"titleBMFont"])
-        {
+        else if ([keyChunk isEqualToString:@"titleBMFont"]) {
             [self setTitleBMFont:value forState:state];
         }
-        else if ([keyChunk isEqualToString:@"titleTTF"])
-        {
-            NSLog(@"setTitleTTF: %@ forState:%d", value, state);
-            
+        else if ([keyChunk isEqualToString:@"titleTTF"]) {
             [self setTitleTTF:value forState:state];
         }
-        else if ([keyChunk isEqualToString:@"titleTTFSize"])
-        {
+        else if ([keyChunk isEqualToString:@"titleTTFSize"]) {
             [self setTitleTTFSize:[value floatValue] forState:state];
         }
-        else
-        {
+        else {
             [super setValue:value forUndefinedKey:key];
         }
     }
-    else
-    {
+    else {
         [super setValue:value forUndefinedKey:key];
     }
 }
@@ -750,39 +728,32 @@ enum
 - (id)valueForUndefinedKey:(NSString *)key
 {
     NSArray *chunks = [key componentsSeparatedByString:@"|"];
-    if ([chunks count] == 2)
-    {
-        NSString* keyChunk = [chunks objectAtIndex:0];
-        int state = [[chunks objectAtIndex:1] intValue];
+    
+    if ([chunks count] == 2) {
+        NSString *keyChunk = [chunks objectAtIndex:0];
+        int state          = [[chunks objectAtIndex:1] intValue];
         
-        if ([keyChunk isEqualToString:@"title"])
-        {
+        if ([keyChunk isEqualToString:@"title"]) {
             return [self titleForState:state];
         }
-        else if ([keyChunk isEqualToString:@"titleColor"])
-        {
+        else if ([keyChunk isEqualToString:@"titleColor"]) {
             ccColor3B c = [self titleColorForState:state];
             return [NSValue value:&c withObjCType:@encode(ccColor3B)];
         }
-        else if ([keyChunk isEqualToString:@"titleBMFont"])
-        {
+        else if ([keyChunk isEqualToString:@"titleBMFont"]) {
             return [self titleBMFontForState:state];
         }
-        else if ([keyChunk isEqualToString:@"titleTTF"])
-        {
+        else if ([keyChunk isEqualToString:@"titleTTF"]) {
             return [self titleTTFForState:state];
         }
-        else if ([keyChunk isEqualToString:@"titleTTFSize"])
-        {
+        else if ([keyChunk isEqualToString:@"titleTTFSize"]) {
             return [NSNumber numberWithFloat:[self titleTTFSizeForState:state]];
         }
-        else
-        {
+        else {
             return [super valueForUndefinedKey:key];
         }
     }
-    else
-    {
+    else {
         return [super valueForUndefinedKey:key];
     }
 }

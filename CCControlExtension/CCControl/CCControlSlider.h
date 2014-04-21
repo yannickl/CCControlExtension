@@ -1,7 +1,7 @@
 /*
  * CCControlSlider
  *
- * Copyright 2011 Yannick Loriot. All rights reserved.
+ * Copyright 2011-present Yannick Loriot. All rights reserved.
  * http://yannickloriot.com
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -39,15 +39,15 @@
 @interface CCControlSlider : CCControl 
 {  
 @public
-	float       _value;
-    float       _minimumValue;
-    float       _maximumValue;
+	float _value;
+    float _minimumValue;
+    float _maximumValue;
     
 @protected
 	// Weak links to children
-	CCSprite    *_thumbSprite;
-    CCSprite    *_progressSprite;
-	CCSprite    *_backgroundSprite;
+	CCSprite *_thumbSprite;
+    CCSprite *_progressSprite;
+	CCSprite *_backgroundSprite;
 }
 
 #pragma mark Contructors - Initializers

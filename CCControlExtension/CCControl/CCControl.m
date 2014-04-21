@@ -1,7 +1,7 @@
 /*
  * CCControl.m
  *
- * Copyright 2011 Yannick Loriot.
+ * Copyright 2011-present Yannick Loriot.
  * http://yannickloriot.com
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -111,22 +111,22 @@
 @end
 
 @implementation CCControl
-@synthesize dispatchTable           = _dispatchTable;
-@synthesize dispatchBlockTable      = _dispatchBlockTable;
-@synthesize defaultTouchPriority    = _defaultTouchPriority;
-@synthesize state                   = _state;
-@synthesize enabled                 = _enabled;
-@synthesize selected                = _selected;
-@synthesize highlighted             = _highlighted;
+@synthesize dispatchTable        = _dispatchTable;
+@synthesize dispatchBlockTable   = _dispatchBlockTable;
+@synthesize defaultTouchPriority = _defaultTouchPriority;
+@synthesize state                = _state;
+@synthesize enabled              = _enabled;
+@synthesize selected             = _selected;
+@synthesize highlighted          = _highlighted;
 
 // CCRGBAProtocol (v2.1)
-@synthesize opacity                 = _opacity;
-@synthesize displayedOpacity        = _displayedOpacity;
-@synthesize color                   = _color;
-@synthesize displayedColor          = _displayedColor;
-@synthesize opacityModifyRGB        = _opacityModifyRGB;
-@synthesize cascadeColorEnabled     = _cascadeColorEnabled;
-@synthesize cascadeOpacityEnabled   = _cascadeOpacityEnabled;
+@synthesize opacity               = _opacity;
+@synthesize displayedOpacity      = _displayedOpacity;
+@synthesize color                 = _color;
+@synthesize displayedColor        = _displayedColor;
+@synthesize opacityModifyRGB      = _opacityModifyRGB;
+@synthesize cascadeColorEnabled   = _cascadeColorEnabled;
+@synthesize cascadeOpacityEnabled = _cascadeOpacityEnabled;
 
 - (void)dealloc
 {
@@ -138,39 +138,38 @@
 
 - (id)init
 {
-    if ((self = [super init]))
-    {
+    if ((self = [super init])) {
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
     #if COCOS2D_VERSION >= 0x00020100
         // Enabled the touch event
-        self.touchEnabled           = YES;
+        self.touchEnabled   = YES;
     #else
 		// Enabled the touch event
-        self.isTouchEnabled         = YES;
+        self.isTouchEnabled = YES;
     #endif
 #elif __MAC_OS_X_VERSION_MAX_ALLOWED
     #if COCOS2D_VERSION >= 0x00020100
         // Enabled the mouse event
-		self.mouseEnabled           = YES;
+		self.mouseEnabled   = YES;
     #else
         // Enabled the mouse event
-		self.isMouseEnabled         = YES;
+		self.isMouseEnabled = YES;
     #endif
 #endif
         
         // Initialise instance variables
-        _state                      = CCControlStateNormal;
-        
-        self.enabled                = YES;
-        self.selected               = NO;
-        self.highlighted            = NO;
+        _state = CCControlStateNormal;
+
+        self.enabled     = YES;
+        self.selected    = NO;
+        self.highlighted = NO;
         
         // Set the touch dispatcher priority by default to 1
-        self.defaultTouchPriority   = 1;
+        self.defaultTouchPriority = 1;
         
         // Initialise the tables
-        _dispatchTable              = [[NSMutableDictionary alloc] initWithCapacity:1];
-        _dispatchBlockTable         = [[NSMutableDictionary alloc] initWithCapacity:1];
+        _dispatchTable      = [[NSMutableDictionary alloc] initWithCapacity:1];
+        _dispatchBlockTable = [[NSMutableDictionary alloc] initWithCapacity:1];
     }
     return self;
 }
@@ -178,7 +177,7 @@
 - (void)onEnter
 {
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
-    CCTouchDispatcher * dispatcher  = [CCDirector sharedDirector].touchDispatcher;
+    CCTouchDispatcher *dispatcher = [CCDirector sharedDirector].touchDispatcher;
 	[dispatcher addTargetedDelegate:self priority:_defaultTouchPriority swallowsTouches:YES];
 #endif
 	[super onEnter];
@@ -187,7 +186,7 @@
 - (void)onExit
 {
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
-    CCTouchDispatcher * dispatcher  = [CCDirector sharedDirector].touchDispatcher;
+    CCTouchDispatcher *dispatcher = [CCDirector sharedDirector].touchDispatcher;
 	[dispatcher removeDelegate:self];
 #endif
     
@@ -209,8 +208,7 @@
 {
     _color = color;
     
-    for (CCNode<CCRGBAProtocol> *child in self.children)
-    {
+    for (CCNode<CCRGBAProtocol> *child in self.children) {
         [child setColor:color];
     }
 }
@@ -219,8 +217,7 @@
 {
     _opacity = opacity;
     
-    for (CCNode<CCRGBAProtocol> *child in self.children)
-    {
+    for (CCNode<CCRGBAProtocol> *child in self.children) {
         [child setOpacity:opacity];
     }
 }
@@ -229,8 +226,7 @@
 {
     _opacityModifyRGB = opacityModifyRGB;
     
-    for (CCNode<CCRGBAProtocol> *child in self.children)
-    {
+    for (CCNode<CCRGBAProtocol> *child in self.children) {
         [child setOpacityModifyRGB:opacityModifyRGB];
     }
 }
@@ -241,13 +237,11 @@
 {
 	_displayedOpacity = _realOpacity * parentOpacity/255.0;
     
-    if (_cascadeOpacityEnabled)
-    {
+    if (_cascadeOpacityEnabled) {
         id<CCRGBAProtocol> item;
-        CCARRAY_FOREACH(self.children, item)
-        {
-            if ([item conformsToProtocol:@protocol(CCRGBAProtocol)])
-            {
+        
+        CCARRAY_FOREACH(self.children, item) {
+            if ([item conformsToProtocol:@protocol(CCRGBAProtocol)]) {
                 [item updateDisplayedOpacity:_displayedOpacity];
             }
         }
@@ -262,10 +256,9 @@
     
     if (_cascadeColorEnabled) {
         id<CCRGBAProtocol> item;
-        CCARRAY_FOREACH(self.children, item)
-        {
-            if ([item conformsToProtocol:@protocol(CCRGBAProtocol)])
-            {
+        
+        CCARRAY_FOREACH(self.children, item) {
+            if ([item conformsToProtocol:@protocol(CCRGBAProtocol)]) {
                 [item updateDisplayedColor:_displayedColor];
             }
         }
@@ -278,11 +271,12 @@
 
 - (void)setEnabled:(BOOL)enabled
 {
-    _enabled        = enabled;
+    _enabled = enabled;
     
     if(_enabled) {
         _state = CCControlStateNormal;
-    } else {
+    }
+    else {
         _state = CCControlStateDisabled;
     }
     
@@ -291,23 +285,25 @@
 
 - (void)setSelected:(BOOL)selected
 {
-    _selected       = selected;
+    _selected = selected;
     
     [self needsLayout];
 }
 
 - (void)setHighlighted:(BOOL)highlighted
 {
-    _highlighted    = highlighted;
+    _highlighted = highlighted;
     
     [self needsLayout];
 }
 
 - (BOOL)hasVisibleParents
 {
-    for( CCNode *c = self.parent; c != nil; c = c.parent)
-		if(!c.visible)
+    for( CCNode *c = self.parent; c != nil; c = c.parent) {
+		if (!c.visible) {
             return NO;
+        }
+    }
 
     return YES;
 }
@@ -318,22 +314,20 @@
 - (void)sendActionsForControlEvents:(CCControlEvent)controlEvents
 {
     // For each control events
-    for (int i = 0; i < kControlEventTotalNumber; i++)
-    {
+    for (int i = 0; i < kControlEventTotalNumber; i++) {
         // If the given controlEvents bitmask contains the curent event
-        if ((controlEvents & (1 << i)))
-        {
+        if ((controlEvents & (1 << i))) {
             // Call invocations
             NSArray *invocationList = [self dispatchListforControlEvent:(1 << i)];
-            for (NSInvocation *invocation in invocationList)
-            {
+            
+            for (NSInvocation *invocation in invocationList) {
                 [invocation invoke];
             }
             
             // Call blocks
             CCControlBlock block = [_dispatchBlockTable objectForKey:[NSNumber numberWithUnsignedInteger:(1 << i)]];
-            if (block)
-            {
+            
+            if (block) {
                 block (self, (1 << i));
             }
         }
@@ -343,11 +337,9 @@
 - (void)addTarget:(id)target action:(SEL)action forControlEvents:(CCControlEvent)controlEvents
 {
     // For each control events
-    for (int i = 0; i < kControlEventTotalNumber; i++)
-    {
+    for (int i = 0; i < kControlEventTotalNumber; i++) {
         // If the given controlEvents bitmask contains the curent event
-        if ((controlEvents & (1 << i)))
-        {
+        if ((controlEvents & (1 << i))) {
             [self addTarget:target action:action forControlEvent:(1 << i)];
         }
     }
@@ -356,11 +348,9 @@
 - (void)removeTarget:(id)target action:(SEL)action forControlEvents:(CCControlEvent)controlEvents
 {
     // For each control events
-    for (int i = 0; i < kControlEventTotalNumber; i++)
-    {
+    for (int i = 0; i < kControlEventTotalNumber; i++) {
         // If the given controlEvents bitmask contains the curent event
-        if ((controlEvents & (1 << i)))
-        {
+        if ((controlEvents & (1 << i))) {
             [self removeTarget:target action:action forControlEvent:(1 << i)];
         }
     }
@@ -375,18 +365,18 @@
 
 - (CGPoint)touchLocation:(UITouch *)touch
 {
-    CGPoint touchLocation   = [touch locationInView:[touch view]];                      // Get the touch position
-    touchLocation           = [[CCDirector sharedDirector] convertToGL:touchLocation];  // Convert the position to GL space
-    touchLocation           = [self convertToNodeSpace:touchLocation];                  // Convert to the node space of this class
+    CGPoint touchLocation = [touch locationInView:[touch view]];                     // Get the touch position
+    touchLocation         = [[CCDirector sharedDirector] convertToGL:touchLocation]; // Convert the position to GL space
+    touchLocation         = [self convertToNodeSpace:touchLocation];                 // Convert to the node space of this class
     
     return touchLocation;
 }
 
 - (BOOL)isTouchInside:(UITouch *)touch
 {
-    CGPoint touchLocation   = [touch locationInView:[touch view]];                      // Get the touch position
-    touchLocation           = [[CCDirector sharedDirector] convertToGL:touchLocation];  // Convert the position to GL space
-    touchLocation           = [[self parent] convertToNodeSpace:touchLocation];         // Convert to the node space of this class
+    CGPoint touchLocation = [touch locationInView:[touch view]];                     // Get the touch position
+    touchLocation         = [[CCDirector sharedDirector] convertToGL:touchLocation]; // Convert the position to GL space
+    touchLocation         = [[self parent] convertToNodeSpace:touchLocation];        // Convert to the node space of this class
 
     return [self isPointInside:touchLocation];
 }
@@ -395,16 +385,16 @@
 
 - (CGPoint)eventLocation:(NSEvent *)event
 {
-    CGPoint eventLocation   = [[CCDirector sharedDirector] convertEventToGL:event];
-    eventLocation           = [self convertToNodeSpace:eventLocation];
+    CGPoint eventLocation = [[CCDirector sharedDirector] convertEventToGL:event];
+    eventLocation         = [self convertToNodeSpace:eventLocation];
     
     return eventLocation;
 }
 
 - (BOOL)isMouseInside:(NSEvent *)event
 {
-    CGPoint eventLocation   = [[CCDirector sharedDirector] convertEventToGL:event];
-    eventLocation           = [[self parent] convertToNodeSpace:eventLocation];
+    CGPoint eventLocation = [[CCDirector sharedDirector] convertEventToGL:event];
+    eventLocation         = [[self parent] convertToNodeSpace:eventLocation];
 
     return [self isPointInside:eventLocation];
 }
@@ -413,6 +403,7 @@
 
 - (void)needsLayout
 {
+    // Do nothing by default
 }
 
 #pragma mark CCControl Private Methods
@@ -433,15 +424,13 @@
     NSMutableArray *eventInvocationList = [self dispatchListforControlEvent:controlEvent];
 
     NSPredicate *predicate = 
-    [NSPredicate predicateWithBlock:^BOOL(id object, NSDictionary *bindings)
-     {
+    [NSPredicate predicateWithBlock:^ BOOL (id object, NSDictionary *bindings) {
          NSInvocation *evaluatedObject = object;
          
          if ((target == nil && action == NULL)
              || (target == nil && [evaluatedObject selector] == action)
              || (action == NULL && [evaluatedObject target] == target)
-             || ([evaluatedObject target] == target && [evaluatedObject selector] == action))
-         {
+             || ([evaluatedObject target] == target && [evaluatedObject selector] == action)) {
              return YES;
          } 
 
@@ -471,15 +460,13 @@
     [invocation setSelector:action];
     
     // If the selector accept the sender as third argument
-    if ([sig numberOfArguments] >= 3)
-    {
+    if ([sig numberOfArguments] >= 3) {
         CCControl *me   = self;
         [invocation setArgument:&me atIndex:2];
     }
     
     // If the selector accept the CCControlEvent as fourth argument
-    if ([sig numberOfArguments] >= 4)
-    {
+    if ([sig numberOfArguments] >= 4) {
         [invocation setArgument:&controlEvent atIndex:3];
     }
     
@@ -495,8 +482,7 @@
     NSMutableArray *invocationList = [_dispatchTable objectForKey:controlEventKey];
     
     // If the invocation list does not exist for the  dispatch table, we create it
-    if (invocationList == nil)
-    {
+    if (invocationList == nil) {
         invocationList = [NSMutableArray arrayWithCapacity:1];
         
         [_dispatchTable setObject:invocationList forKey:controlEventKey];
@@ -512,11 +498,9 @@
 - (void)setBlock:(CCControlBlock)block forControlEvents:(CCControlEvent)controlEvents
 {
     // For each control events
-    for (int i = 0; i < kControlEventTotalNumber; i++)
-    {
+    for (int i = 0; i < kControlEventTotalNumber; i++) {
         // If the given controlEvents bitmask contains the curent event
-        if ((controlEvents & (1 << i)))
-        {
+        if ((controlEvents & (1 << i))) {
             [self setBlock:block forControlEvent:(1 << i)];
         }
     }
@@ -529,14 +513,13 @@
     // Get the key for the given control event
     NSNumber *controlEventKey = [NSNumber numberWithUnsignedInteger:controlEvent];
     
-    if (block)
-    {
+    if (block) {
         // Think to copy and release the block
         CCControlBlock currentBlock = SAFE_ARC_BLOCK_COPY(block);
         [_dispatchBlockTable setObject:currentBlock forKey:controlEventKey];
         SAFE_ARC_BLOCK_RELEASE(currentBlock);
-    } else
-    {
+    }
+    else {
         [_dispatchBlockTable removeObjectForKey:controlEventKey];
     }
 }

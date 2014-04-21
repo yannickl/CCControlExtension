@@ -1,7 +1,7 @@
 /*
  * CCControl.h
  *
- * Copyright 2011 Yannick Loriot.
+ * Copyright 2011-present Yannick Loriot.
  * http://yannickloriot.com
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -33,25 +33,25 @@
 /** Kinds of possible events for the control objects. */
 enum 
 {
-    CCControlEventTouchDown           = 1 << 0,    // A touch-down event in the control.
-    CCControlEventTouchDragInside     = 1 << 1,    // An event where a finger is dragged inside the bounds of the control.
-    CCControlEventTouchDragOutside    = 1 << 2,    // An event where a finger is dragged just outside the bounds of the control. 
-    CCControlEventTouchDragEnter      = 1 << 3,    // An event where a finger is dragged into the bounds of the control.
-    CCControlEventTouchDragExit       = 1 << 4,    // An event where a finger is dragged from within a control to outside its bounds.
-    CCControlEventTouchUpInside       = 1 << 5,    // A touch-up event in the control where the finger is inside the bounds of the control. 
-    CCControlEventTouchUpOutside      = 1 << 6,    // A touch-up event in the control where the finger is outside the bounds of the control.
-    CCControlEventTouchCancel         = 1 << 7,    // A system event canceling the current touches for the control.
-    CCControlEventValueChanged        = 1 << 8      // A touch dragging or otherwise manipulating a control, causing it to emit a series of different values.
+    CCControlEventTouchDown        = 1 << 0, // A touch-down event in the control.
+    CCControlEventTouchDragInside  = 1 << 1, // An event where a finger is dragged inside the bounds of the control.
+    CCControlEventTouchDragOutside = 1 << 2, // An event where a finger is dragged just outside the bounds of the control.
+    CCControlEventTouchDragEnter   = 1 << 3, // An event where a finger is dragged into the bounds of the control.
+    CCControlEventTouchDragExit    = 1 << 4, // An event where a finger is dragged from within a control to outside its bounds.
+    CCControlEventTouchUpInside    = 1 << 5, // A touch-up event in the control where the finger is inside the bounds of the control.
+    CCControlEventTouchUpOutside   = 1 << 6, // A touch-up event in the control where the finger is outside the bounds of the control.
+    CCControlEventTouchCancel      = 1 << 7, // A system event canceling the current touches for the control.
+    CCControlEventValueChanged     = 1 << 8  // A touch dragging or otherwise manipulating a control, causing it to emit a series of different values.
 };
 typedef NSUInteger CCControlEvent;
 
 /** The possible state for a control.  */
 enum 
 {
-    CCControlStateNormal       = 1 << 0, // The normal, or default state of a control—that is, enabled but neither selected nor highlighted.
-    CCControlStateHighlighted  = 1 << 1, // Highlighted state of a control. A control enters this state when a touch down, drag inside or drag enter is performed. You can retrieve and set this value through the highlighted property.
-    CCControlStateDisabled     = 1 << 2, // Disabled state of a control. This state indicates that the control is currently disabled. You can retrieve and set this value through the enabled property.
-    CCControlStateSelected     = 1 << 3  // Selected state of a control. This state indicates that the control is currently selected. You can retrieve and set this value through the selected property.
+    CCControlStateNormal      = 1 << 0, // The normal, or default state of a control—that is, enabled but neither selected nor highlighted.
+    CCControlStateHighlighted = 1 << 1, // Highlighted state of a control. A control enters this state when a touch down, drag inside or drag enter is performed. You can retrieve and set this value through the highlighted property.
+    CCControlStateDisabled    = 1 << 2, // Disabled state of a control. This state indicates that the control is currently disabled. You can retrieve and set this value through the enabled property.
+    CCControlStateSelected    = 1 << 3  // Selected state of a control. This state indicates that the control is currently selected. You can retrieve and set this value through the selected property.
 };
 typedef NSUInteger CCControlState;
 
@@ -81,17 +81,18 @@ typedef void (^CCControlBlock) (id sender, CCControlEvent event);
 {
 @public
     // CCRGBAProtocol
-    GLubyte             _opacity, _displayedOpacity, _realOpacity;
-	ccColor3B           _color, _displayedColor, _realColor;
-	BOOL                _opacityModifyRGB, _cascadeOpacityEnabled, _cascadeColorEnabled;
+    GLubyte   _opacity, _displayedOpacity, _realOpacity;
+	ccColor3B _color, _displayedColor, _realColor;
+	BOOL      _opacityModifyRGB, _cascadeOpacityEnabled, _cascadeColorEnabled;
     
-    NSInteger           _defaultTouchPriority;
+    // CCTouchDispatcher
+    NSInteger      _defaultTouchPriority;
     
-    CCControlState      _state;
-    
-    BOOL                _enabled;
-    BOOL                _selected;
-    BOOL                _highlighted;
+    // CCControl
+    CCControlState _state;
+    BOOL           _enabled;
+    BOOL           _selected;
+    BOOL           _highlighted;
     
 @private
     NSMutableDictionary *_dispatchTable;

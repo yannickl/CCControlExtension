@@ -1,7 +1,7 @@
 /*
  * CCControlSwitch.m
  *
- * Copyright 2012 Yannick Loriot. All rights reserved.
+ * Copyright 2012-present Yannick Loriot. All rights reserved.
  * http://yannickloriot.com
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -33,13 +33,13 @@
 @interface CCControlSwitchSprite : CCSprite
 {
 @public
-    CGFloat                                 _sliderXPosition;
-    CGFloat                                 _onPosition;
-    CGFloat                                 _offPosition;
+    CGFloat _sliderXPosition;
+    CGFloat _onPosition;
+    CGFloat _offPosition;
     
-    CCSprite                                *_maskSprite;
-    GLuint                                  _textureLocation;
-    GLuint                                  _maskLocation;
+    CCSprite *_maskSprite;
+    GLuint   _textureLocation;
+    GLuint   _maskLocation;
     
     CCSprite                                *_onSprite;
     CCSprite                                *_offSprite;
@@ -48,19 +48,19 @@
     CCNode<CCLabelProtocol, CCRGBAProtocol> *_offLabel;
 }
 /** Contains the position (in x-axis) of the slider inside the receiver. */
-@property (nonatomic, assign) CGFloat                                   sliderXPosition;
-@property (nonatomic, assign) CGFloat                                   onPosition;
-@property (nonatomic, assign) CGFloat                                   offPosition;
+@property (nonatomic, assign) CGFloat sliderXPosition;
+@property (nonatomic, assign) CGFloat onPosition;
+@property (nonatomic, assign) CGFloat offPosition;
 
-@property (nonatomic, strong) CCSprite                                  *maskSprite;
-@property (nonatomic, assign) GLuint                                    textureLocation;
-@property (nonatomic, assign) GLuint                                    maskLocation;
+@property (nonatomic, strong) CCSprite *maskSprite;
+@property (nonatomic, assign) GLuint   textureLocation;
+@property (nonatomic, assign) GLuint   maskLocation;
 
-@property (nonatomic, strong) CCSprite                                  *onSprite;
-@property (nonatomic, strong) CCSprite                                  *offSprite;
-@property (nonatomic, strong) CCSprite                                  *thumbSprite;
-@property (nonatomic, strong) CCNode<CCLabelProtocol, CCRGBAProtocol>   *onLabel;
-@property (nonatomic, strong) CCNode<CCLabelProtocol, CCRGBAProtocol>   *offLabel;
+@property (nonatomic, strong) CCSprite                                *onSprite;
+@property (nonatomic, strong) CCSprite                                *offSprite;
+@property (nonatomic, strong) CCSprite                                *thumbSprite;
+@property (nonatomic, strong) CCNode<CCLabelProtocol, CCRGBAProtocol> *onLabel;
+@property (nonatomic, strong) CCNode<CCLabelProtocol, CCRGBAProtocol> *offLabel;
 
 #pragma mark Contructors Initializers
 
@@ -110,16 +110,16 @@
 + (id)switchWithMaskFile:(NSString *)maskFile onFile:(NSString *)onFile offFile:(NSString *)offFile thumbFile:(NSString *)thumbFile
 {
     // Prepare the mask for the switch
-    CCSprite *maskSprite   = [CCSprite spriteWithFile:maskFile];
+    CCSprite *maskSprite = [CCSprite spriteWithFile:maskFile];
     
     // Prepare the on sprite for the switch
-    CCSprite *onSprite      = [CCSprite spriteWithFile:onFile];
+    CCSprite *onSprite = [CCSprite spriteWithFile:onFile];
     
     // Prepare the off sprite for the switch
-    CCSprite *offSprite     = [CCSprite spriteWithFile:offFile];
+    CCSprite *offSprite = [CCSprite spriteWithFile:offFile];
     
     // Prepare the thumb sprite for the switch
-    CCSprite *thumbSprite   = [CCSprite spriteWithFile:thumbFile];
+    CCSprite *thumbSprite = [CCSprite spriteWithFile:thumbFile];
     
     return [self switchWithMaskSprite:maskSprite onSprite:onSprite offSprite:offSprite thumbSprite:thumbSprite];
 }
@@ -167,22 +167,22 @@
 + (id)switchWithMaskFile:(NSString *)maskFile onFile:(NSString *)onFile offFile:(NSString *)offFile thumbFile:(NSString *)thumbFile onTitle:(NSString *)onTitle offTitle:(NSString *)offTitle
 {
     // Prepare the mask for the switch
-    CCSprite *maskSprite   = [CCSprite spriteWithFile:maskFile];
+    CCSprite *maskSprite = [CCSprite spriteWithFile:maskFile];
     
     // Prepare the on sprite for the switch
-    CCSprite *onSprite      = [CCSprite spriteWithFile:onFile];
+    CCSprite *onSprite = [CCSprite spriteWithFile:onFile];
     
     // Prepare the off sprite for the switch
-    CCSprite *offSprite     = [CCSprite spriteWithFile:offFile];
+    CCSprite *offSprite = [CCSprite spriteWithFile:offFile];
     
     // Prepare the thumb sprite for the switch
-    CCSprite *thumbSprite   = [CCSprite spriteWithFile:thumbFile];
+    CCSprite *thumbSprite = [CCSprite spriteWithFile:thumbFile];
     
     // Prepare the on title for the switch
-    CCLabelTTF *onLabel     = [CCLabelTTF labelWithString:onTitle fontName:@"Arial-BoldMT" fontSize:16];
+    CCLabelTTF *onLabel = [CCLabelTTF labelWithString:onTitle fontName:@"Arial-BoldMT" fontSize:16];
     
     // Prepare the off title for the switch
-    CCLabelTTF *offLabel    = [CCLabelTTF labelWithString:offTitle fontName:@"Arial-BoldMT" fontSize:16];
+    CCLabelTTF *offLabel = [CCLabelTTF labelWithString:offTitle fontName:@"Arial-BoldMT" fontSize:16];
     
     return [self switchWithMaskSprite:maskSprite onSprite:onSprite offSprite:offSprite thumbSprite:thumbSprite onLabel:onLabel offLabel:offLabel];
 }
@@ -196,19 +196,17 @@
 
 - (void)setOn:(BOOL)isOn animated:(BOOL)animated
 {
-    _on                     = isOn;
+    _on = isOn;
     
-    double internalOffset   = (isOn) ? _switchSprite.onPosition : _switchSprite.offPosition;
+    double internalOffset = (isOn) ? _switchSprite.onPosition : _switchSprite.offPosition;
     
-    if (animated)
-    {
-        [_switchSprite runAction:
-         [CCActionTween actionWithDuration:0.2f
-                                       key:@"sliderXPosition"
-                                      from:_switchSprite.sliderXPosition
-                                        to:internalOffset]];
-    } else
-    {
+    if (animated) {
+        [_switchSprite runAction:[CCActionTween actionWithDuration:0.2f
+                                                               key:@"sliderXPosition"
+                                                              from:_switchSprite.sliderXPosition
+                                                                to:internalOffset]];
+    }
+    else {
         _switchSprite.sliderXPosition   = internalOffset;
     }
     
@@ -240,8 +238,9 @@
     if (![self isTouchInside:touch]
         || ![self isEnabled]
         || ![self visible]
-        || ![self hasVisibleParents])
+        || ![self hasVisibleParents]) {
         return NO;
+    }
     
     _moved = NO;
     
@@ -270,11 +269,10 @@
     
     _switchSprite.thumbSprite.color  = ccWHITE;
     
-    if ([self hasMoved])
-    {
+    if ([self hasMoved]) {
         [self setOn:!(location.x < _switchSprite.contentSize.width / 2) animated:YES];
-    } else
-    {
+    }
+    else {
         [self setOn:![self isOn] animated:YES];
     }
 }
@@ -299,8 +297,9 @@
     if (![self isMouseInside:event]
         || ![self isEnabled]
         || ![self visible]
-        || ![self hasVisibleParents])
+        || ![self hasVisibleParents]) {
         return NO;
+    }
     
     self.selected = YES;
     _moved        = NO;
@@ -317,8 +316,9 @@
 - (BOOL)ccMouseDragged:(NSEvent *)event
 {
     if (![self isEnabled]
-        || ![self isSelected])
+        || ![self isSelected]) {
         return NO;
+    }
     
     CGPoint location = [self locationFromEvent:event];
     location         = ccp (location.x - _initialTouchXPosition, 0);
@@ -333,19 +333,19 @@
 - (BOOL)ccMouseUp:(NSEvent *)event
 {
     if (![self isEnabled]
-        || ![self isSelected])
+        || ![self isSelected]) {
         return NO;
+    }
     
     _selected = NO;
     
     CGPoint location                = [self locationFromEvent:event];
     _switchSprite.thumbSprite.color = ccWHITE;
     
-    if ([self hasMoved])
-    {
+    if ([self hasMoved]) {
         [self setOn:!(location.x < _switchSprite.contentSize.width / 2) animated:YES];
-    } else
-    {
+    }
+    else {
         [self setOn:![self isOn] animated:YES];
     }
     
@@ -391,33 +391,32 @@
 
 - (id)initWithMaskSprite:(CCSprite *)maskSprite onSprite:(CCSprite *)onSprite offSprite:(CCSprite *)offSprite thumbSprite:(CCSprite *)thumbSprite onLabel:(CCNode<CCLabelProtocol, CCRGBAProtocol> *)onLabel offLabel:(CCNode<CCLabelProtocol, CCRGBAProtocol> *)offLabel
 {
-    if ((self = [super initWithTexture:maskSprite.texture rect:maskSprite.textureRect]))
-    {
+    if ((self = [super initWithTexture:maskSprite.texture rect:maskSprite.textureRect])) {
         // Sets the default values
-        _onPosition             = 0;
-        _offPosition            = -onSprite.contentSize.width + thumbSprite.contentSize.width / 2;
-        _sliderXPosition        = _onPosition;
+        _onPosition      = 0;
+        _offPosition     = -onSprite.contentSize.width + thumbSprite.contentSize.width / 2;
+        _sliderXPosition = _onPosition;
         
-        self.onSprite           = onSprite;
-        self.offSprite          = offSprite;
-        self.thumbSprite        = thumbSprite;
-        self.onLabel            = onLabel;
-        self.offLabel           = offLabel;
+        self.onSprite    = onSprite;
+        self.offSprite   = offSprite;
+        self.thumbSprite = thumbSprite;
+        self.onLabel     = onLabel;
+        self.offLabel    = offLabel;
         
         [self addChild:thumbSprite];
         
         // Set up the mask with the Mask shader
-        self.maskSprite         = maskSprite;
+        self.maskSprite = maskSprite;
         
         // Position Texture Color shader
-        CCGLProgram *tProgram   = [[CCGLProgram alloc] initWithVertexShaderByteArray:ccPositionTextureColor_vert
+        CCGLProgram *tProgram = [[CCGLProgram alloc] initWithVertexShaderByteArray:ccPositionTextureColor_vert
                                                              fragmentShaderByteArray:ccControlSwitchMask_frag];
-        self.shaderProgram      = tProgram;
+        self.shaderProgram = tProgram;
         SAFE_ARC_RELEASE(tProgram);
 #if COCOS2D_VERSION >= 0x00020100
-        GLuint program          = [self.shaderProgram program];
+        GLuint program = [self.shaderProgram program];
 #else
-        GLuint program          = self.shaderProgram->program_;
+        GLuint program = self.shaderProgram->program_;
 #endif
         CHECK_GL_ERROR_DEBUG();
         
@@ -492,13 +491,12 @@
     _thumbSprite.position = ccp(_onSprite.contentSize.width + _sliderXPosition,
                                 _maskSprite.contentSize.height / 2);
     
-    if (_onLabel)
-    {
+    if (_onLabel) {
         _onLabel.position = ccp(_onSprite.position.x - _thumbSprite.contentSize.width / 6,
                                 _onSprite.contentSize.height / 2);
     }
-    if (_offLabel)
-    {
+    
+    if (_offLabel) {
         _offLabel.position = ccp(_offSprite.position.x + _thumbSprite.contentSize.width / 6,
                                  _offSprite.contentSize.height / 2);
     }
@@ -510,12 +508,11 @@
     [self.onSprite  visit];
     [self.offSprite visit];
     
-    if (_onLabel)
-    {
+    if (_onLabel) {
         [_onLabel visit];
     }
-    if (_offLabel)
-    {
+    
+    if (_offLabel) {
         [_offLabel visit];
     }
     
@@ -527,12 +524,11 @@
 
 - (void)setSliderXPosition:(CGFloat)sliderXPosition
 {
-    if (sliderXPosition <= _offPosition)
-    {
+    if (sliderXPosition <= _offPosition) {
         // Off
         sliderXPosition = _offPosition;
-    } else if (sliderXPosition >= _onPosition)
-    {
+    }
+    else if (sliderXPosition >= _onPosition) {
         // On
         sliderXPosition = _onPosition;
     }

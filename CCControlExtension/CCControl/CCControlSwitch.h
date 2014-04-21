@@ -1,7 +1,7 @@
 /*
  * CCControlSwitch.h
  *
- * Copyright 2012 Yannick Loriot. All rights reserved.
+ * Copyright 2012-present Yannick Loriot. All rights reserved.
  * http://yannickloriot.com
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy

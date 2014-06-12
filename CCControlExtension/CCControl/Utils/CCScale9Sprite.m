@@ -391,11 +391,6 @@ enum positions
 {
     CGSize size = self.contentSize;
     
-    float topProportion    =  _top.contentSize.height / _scale9Image.contentSize.height;
-    float bottomProportion =  _bottom.contentSize.height / _scale9Image.contentSize.height;
-    float leftProportion   = _left.contentSize.width / _scale9Image.contentSize.width;
-    float rightProportion  = _right.contentSize.width / _scale9Image.contentSize.width;
-    
     float sizableWidth  = size.width - _topLeft.contentSize.width - _topRight.contentSize.width;
     float sizableHeight = size.height - _topLeft.contentSize.height - _bottomRight.contentSize.height;
     
@@ -405,25 +400,32 @@ enum positions
     float scaleTopFactor    = 1;
     float scaleMiddleFactor = (sizableHeight / _centre.contentSize.height);
     float scaleBottomFactor = 1;
-    
-    if (sizableWidth < 0) {
-        scaleLeftFactor   = (size.width * topProportion) / _left.contentSize.width;
-        scaleCenterFactor = (size.width * (1.0f - leftProportion - rightProportion)) / _centre.contentSize.width;
-        scaleRightFactor  = (size.width * rightProportion) / _right.contentSize.width;
+
+    if (sizableWidth < 0 || sizableHeight < 0) {
+        float topProportion    =  (_originalSize.height - _capInsetsInternal.origin.y - _capInsetsInternal.size.height) / _originalSize.height;
+        float bottomProportion = _capInsetsInternal.origin.y / _originalSize.height;
+        float leftProportion   = _capInsetsInternal.origin.x / _originalSize.width;
+        float rightProportion  = (_originalSize.width - _capInsetsInternal.origin.x - _capInsetsInternal.size.width) / _originalSize.width;
+        
+        if (sizableWidth < 0) {
+            scaleLeftFactor   = (size.width * topProportion) / _left.contentSize.width;
+            scaleCenterFactor = (size.width * (1.0f - leftProportion - rightProportion)) / _centre.contentSize.width;
+            scaleRightFactor  = (size.width * rightProportion) / _right.contentSize.width;
+        }
+        
+        if (sizableHeight < 0) {
+            scaleTopFactor    = (size.height * topProportion) / _top.contentSize.height;
+            scaleMiddleFactor = (size.height * (1.0f - topProportion - bottomProportion)) / _centre.contentSize.height;
+            scaleBottomFactor = (size.height * bottomProportion) / _bottom.contentSize.height;
+        }
     }
-    
-    if (sizableHeight < 0) {
-        scaleTopFactor    = (size.height * topProportion) / _top.contentSize.height;
-        scaleMiddleFactor = (size.height * (1.0f - topProportion - bottomProportion)) / _centre.contentSize.height;
-        scaleBottomFactor = (size.height * bottomProportion) / _bottom.contentSize.height;
-    }
-    
+
     // Computes the sizes
     float centerWidth  = _centre.contentSize.width * scaleCenterFactor;
     float leftWidth    = _left.contentSize.width * scaleLeftFactor;
     float middleHeight = _centre.contentSize.height * scaleMiddleFactor;
     float bottomHeight = _bottom.contentSize.height * scaleBottomFactor;
-    
+
     // Apply the scales
     _topLeft.scaleX     = scaleLeftFactor;
     _topLeft.scaleY     = scaleTopFactor;

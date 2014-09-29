@@ -7,7 +7,7 @@ For iOS 4.0 or later and Snow Leopard the CCControl also uses the power of block
 
 *Note: The CCControlExtension's classes are ARC compatibles (e.g for use with Kobold2D)*
 
-![CCControlExtensions](http://github.com/YannickL/CCControlExtension/raw/master/screenshots/cccontrolextension.png)
+![CCControlExtensions](https://github.com/YannickL/CCControlExtension/blob/master/screenshots/cccontrolextension.png)
 
 Available Control List
 ====================

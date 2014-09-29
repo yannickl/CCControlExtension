@@ -11,7 +11,7 @@ The CCControl extension also uses the power of blocks to dispatch the events in 
 
 *Note3: __Cocos2d v3__ now provides native controls*
 
-![](http://github.com/YannickL/CCControlExtension/raw/master/screenshots/cccontrolextension.png)
+![CCControlExtensions](http://github.com/YannickL/CCControlExtension/raw/master/screenshots/cccontrolextension.png)
 
 Available Control List
 ====================

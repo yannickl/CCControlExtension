@@ -25,7 +25,7 @@ CCControlColourPicker is an already made colour picker for Cocos2D for iPhone. I
 
 * [CCControlSwitch](http://yannickloriot.com/library/ios/cccontrolextension/Classes/CCControlSwitch.html):
 
-![CCControlSwitch]https://github.com/YannickL/CCControlExtension/blob/master/screenshots/switch.png)
+![CCControlSwitch](https://github.com/YannickL/CCControlExtension/blob/master/screenshots/switch.png)
 
 The CCControlSwitch is an implementation of the UISwitch for Cocos2D for iPhone.
 It is useful to create and manage On/Off buttons, like for example, in the option menus for volume as example. As with CCControlSlider, when the user manipulates the switch control ("flips" it) an UIControlEventValueChanged event is generated.

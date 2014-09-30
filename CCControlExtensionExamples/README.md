@@ -46,7 +46,7 @@ CCControlPotentiometer is an already made potentiometer (but customizable) contr
 
 * [CCControlPicker](http://yannickloriot.com/library/ios/cccontrolextension/Classes/CCControlPicker.html):
 
-![CCControlPicker]https://github.com/YannickL/CCControlExtension/blob/master/screenshots/picker.png)
+![CCControlPicker](https://github.com/YannickL/CCControlExtension/blob/master/screenshots/picker.png)
 
 The CCControlPicker is a control that use a spinning-wheel or slot-machine metaphor to show one set of values.
 
